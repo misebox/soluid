@@ -1,0 +1,16 @@
+.soui-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.soui-stack--gap-1 { gap: var(--soui-space-1); }
+.soui-stack--gap-2 { gap: var(--soui-space-2); }
+.soui-stack--gap-3 { gap: var(--soui-space-3); }
+.soui-stack--gap-4 { gap: var(--soui-space-4); }
+.soui-stack--gap-5 { gap: var(--soui-space-5); }
+.soui-stack--gap-6 { gap: var(--soui-space-6); }
+
+.soui-stack--align-start { align-items: flex-start; }
+.soui-stack--align-center { align-items: center; }
+.soui-stack--align-end { align-items: flex-end; }
+.soui-stack--align-stretch { align-items: stretch; }

@@ -1,0 +1,52 @@
+.soui-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--soui-radius);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* --- Sizes --- */
+
+.soui-badge--sm {
+  padding: var(--soui-space-1) var(--soui-space-2);
+  font-size: var(--soui-font-size-sm);
+}
+
+.soui-badge--md {
+  padding: var(--soui-space-1) var(--soui-space-3);
+  font-size: var(--soui-font-size-md);
+}
+
+/* --- Variants (subtle backgrounds) --- */
+
+.soui-badge--primary {
+  background-color: var(--soui-color-primary-subtle);
+  color: var(--soui-color-primary-subtle-fg);
+}
+
+.soui-badge--neutral {
+  background-color: var(--soui-color-neutral-subtle);
+  color: var(--soui-color-neutral-subtle-fg);
+}
+
+.soui-badge--danger {
+  background-color: var(--soui-color-danger-subtle);
+  color: var(--soui-color-danger-subtle-fg);
+}
+
+.soui-badge--success {
+  background-color: var(--soui-color-success-subtle);
+  color: var(--soui-color-success-subtle-fg);
+}
+
+.soui-badge--warning {
+  background-color: var(--soui-color-warning-subtle);
+  color: var(--soui-color-warning-subtle-fg);
+}
+
+.soui-badge--info {
+  background-color: var(--soui-color-info-subtle);
+  color: var(--soui-color-info-subtle-fg);
+}

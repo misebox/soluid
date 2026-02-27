@@ -1,0 +1,20 @@
+.soui-hstack {
+  display: flex;
+  flex-direction: row;
+}
+
+.soui-hstack--wrap {
+  flex-wrap: wrap;
+}
+
+.soui-hstack--gap-1 { gap: var(--soui-space-1); }
+.soui-hstack--gap-2 { gap: var(--soui-space-2); }
+.soui-hstack--gap-3 { gap: var(--soui-space-3); }
+.soui-hstack--gap-4 { gap: var(--soui-space-4); }
+.soui-hstack--gap-5 { gap: var(--soui-space-5); }
+.soui-hstack--gap-6 { gap: var(--soui-space-6); }
+
+.soui-hstack--align-start { align-items: flex-start; }
+.soui-hstack--align-center { align-items: center; }
+.soui-hstack--align-end { align-items: flex-end; }
+.soui-hstack--align-stretch { align-items: stretch; }

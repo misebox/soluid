@@ -1,0 +1,77 @@
+.soui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--soui-space-1);
+  border-radius: var(--soui-radius);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* --- Sizes --- */
+
+.soui-tag--sm {
+  padding: var(--soui-space-1) var(--soui-space-2);
+  font-size: var(--soui-font-size-sm);
+}
+
+.soui-tag--md {
+  padding: var(--soui-space-1) var(--soui-space-3);
+  font-size: var(--soui-font-size-md);
+}
+
+/* --- Variants (subtle backgrounds) --- */
+
+.soui-tag--primary {
+  background-color: var(--soui-color-primary-subtle);
+  color: var(--soui-color-primary-subtle-fg);
+}
+
+.soui-tag--neutral {
+  background-color: var(--soui-color-neutral-subtle);
+  color: var(--soui-color-neutral-subtle-fg);
+}
+
+.soui-tag--danger {
+  background-color: var(--soui-color-danger-subtle);
+  color: var(--soui-color-danger-subtle-fg);
+}
+
+.soui-tag--success {
+  background-color: var(--soui-color-success-subtle);
+  color: var(--soui-color-success-subtle-fg);
+}
+
+.soui-tag--warning {
+  background-color: var(--soui-color-warning-subtle);
+  color: var(--soui-color-warning-subtle-fg);
+}
+
+.soui-tag--info {
+  background-color: var(--soui-color-info-subtle);
+  color: var(--soui-color-info-subtle-fg);
+}
+
+/* --- Remove button --- */
+
+.soui-tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.soui-tag__remove:hover {
+  opacity: 1;
+}
