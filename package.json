@@ -2,42 +2,22 @@
   "name": "soui",
   "version": "0.1.0",
   "type": "module",
-  "description": "SolidJS Opinionated UI - business-focused component library",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./styles": "./dist/styles.css"
+  "description": "SolidJS Opinionated UI - copy-paste component toolkit",
+  "bin": {
+    "soui": "./dist-cli/index.js"
   },
   "files": [
-    "dist"
+    "dist-cli",
+    "src"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc --emitDeclarationOnly",
-    "prepare": "npm run build",
+    "build:cli": "tsc -p cli/tsconfig.json",
+    "prepare": "npm run build:cli",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "solid-js": "^1.9.0"
-  },
-  "dependencies": {
-    "date-fns": "^4.1.0",
-    "@solid-primitives/event-listener": "^2.3.3",
-    "@solid-primitives/keyboard": "^1.2.8",
-    "@solid-primitives/media": "^2.2.9",
-    "@solid-primitives/resize-observer": "^2.0.26",
-    "@solid-primitives/scheduled": "^1.4.3",
-    "@solid-primitives/refs": "^1.0.8",
-    "@solid-primitives/active-element": "^2.0.20",
-    "@solid-primitives/props": "^3.1.11",
-    "@solid-primitives/utils": "^6.2.3"
-  },
   "devDependencies": {
+    "@types/node": "^20.19.34",
     "solid-js": "^1.9.0",
     "typescript": "^5.7.0",
     "vite": "^6.0.0",
