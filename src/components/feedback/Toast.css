@@ -96,6 +96,10 @@
   border-left: 4px solid var(--soui-color-danger-base);
 }
 
+.soui-toast--dismissing {
+  animation: soui-toast-exit 0.15s ease-in forwards;
+}
+
 @keyframes soui-toast-enter {
   from {
     opacity: 0;
@@ -104,5 +108,16 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes soui-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
   }
 }

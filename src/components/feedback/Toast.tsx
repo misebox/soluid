@@ -47,8 +47,9 @@ export function ToastContainer(props: ToastContainerProps) {
               class={cls(
                 "soui-toast",
                 `soui-toast--${toast.variant ?? "info"}`,
+                toast.dismissing && "soui-toast--dismissing",
               )}
-              role="status"
+              role={toast.variant === "danger" || toast.variant === "warning" ? "alert" : "status"}
             >
               <span class="soui-toast__message">{toast.message}</span>
               <button

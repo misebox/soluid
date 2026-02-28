@@ -2,11 +2,14 @@ import { createStore, produce } from "solid-js/store";
 import { debounce } from "@solid-primitives/scheduled";
 import type { FeedbackVariant } from "../core/types";
 
+const EXIT_DURATION = 150;
+
 export interface Toast {
   id: string;
   message: string;
   variant?: FeedbackVariant;
   duration?: number;
+  dismissing?: boolean;
 }
 
 export interface ToastOptions {
@@ -34,18 +37,32 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
   const [toasts, setToasts] = createStore<Toast[]>([]);
   const timers = new Map<string, ReturnType<typeof debounce>>();
 
-  function dismiss(id: string): void {
-    const timer = timers.get(id);
-    if (timer) {
-      timer.clear();
-      timers.delete(id);
-    }
+  function remove(id: string): void {
     setToasts(produce((list) => {
       const idx = list.findIndex((t) => t.id === id);
       if (idx !== -1) {
         list.splice(idx, 1);
       }
     }));
+  }
+
+  function dismiss(id: string): void {
+    const timer = timers.get(id);
+    if (timer) {
+      timer.clear();
+      timers.delete(id);
+    }
+
+    // Mark as dismissing for exit animation
+    setToasts(produce((list) => {
+      const toast = list.find((t) => t.id === id);
+      if (toast) {
+        toast.dismissing = true;
+      }
+    }));
+
+    // Remove after exit animation
+    setTimeout(() => remove(id), EXIT_DURATION);
   }
 
   function add(input: ToastInput): string {
