@@ -50,3 +50,35 @@
   background-color: var(--soui-color-info-subtle);
   color: var(--soui-color-info-subtle-fg);
 }
+
+/* --- Solid fill --- */
+
+.soui-badge--solid.soui-badge--primary {
+  background-color: var(--soui-color-primary-base);
+  color: var(--soui-color-primary-fg);
+}
+
+.soui-badge--solid.soui-badge--neutral {
+  background-color: var(--soui-color-neutral-base);
+  color: var(--soui-color-neutral-fg);
+}
+
+.soui-badge--solid.soui-badge--danger {
+  background-color: var(--soui-color-danger-base);
+  color: var(--soui-color-danger-fg);
+}
+
+.soui-badge--solid.soui-badge--success {
+  background-color: var(--soui-color-success-base);
+  color: var(--soui-color-success-fg);
+}
+
+.soui-badge--solid.soui-badge--warning {
+  background-color: var(--soui-color-warning-base);
+  color: var(--soui-color-warning-fg);
+}
+
+.soui-badge--solid.soui-badge--info {
+  background-color: var(--soui-color-info-base);
+  color: var(--soui-color-info-fg);
+}

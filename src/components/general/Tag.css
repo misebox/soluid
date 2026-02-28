@@ -52,6 +52,38 @@
   color: var(--soui-color-info-subtle-fg);
 }
 
+/* --- Solid fill --- */
+
+.soui-tag--solid.soui-tag--primary {
+  background-color: var(--soui-color-primary-base);
+  color: var(--soui-color-primary-fg);
+}
+
+.soui-tag--solid.soui-tag--neutral {
+  background-color: var(--soui-color-neutral-base);
+  color: var(--soui-color-neutral-fg);
+}
+
+.soui-tag--solid.soui-tag--danger {
+  background-color: var(--soui-color-danger-base);
+  color: var(--soui-color-danger-fg);
+}
+
+.soui-tag--solid.soui-tag--success {
+  background-color: var(--soui-color-success-base);
+  color: var(--soui-color-success-fg);
+}
+
+.soui-tag--solid.soui-tag--warning {
+  background-color: var(--soui-color-warning-base);
+  color: var(--soui-color-warning-fg);
+}
+
+.soui-tag--solid.soui-tag--info {
+  background-color: var(--soui-color-info-base);
+  color: var(--soui-color-info-fg);
+}
+
 /* --- Remove button --- */
 
 .soui-tag__remove {

@@ -6,6 +6,7 @@ import "./Badge.css";
 
 export interface BadgeProps extends CommonProps {
   variant?: Variant;
+  fill?: "subtle" | "solid";
   size?: "sm" | "md";
   children: JSX.Element;
 }
@@ -16,6 +17,7 @@ export function Badge(
   const [local, others] = splitProps(props, [
     "class",
     "variant",
+    "fill",
     "size",
     "children",
   ]);
@@ -26,6 +28,7 @@ export function Badge(
         "soui-badge",
         `soui-badge--${local.variant ?? "neutral"}`,
         `soui-badge--${local.size ?? "md"}`,
+        local.fill === "solid" && "soui-badge--solid",
         local.class,
       )}
       {...others}

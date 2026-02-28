@@ -6,6 +6,7 @@ import "./Tag.css";
 
 export interface TagProps extends CommonProps {
   variant?: Variant;
+  fill?: "subtle" | "solid";
   size?: "sm" | "md";
   onRemove?: () => void;
   children: JSX.Element;
@@ -17,6 +18,7 @@ export function Tag(
   const [local, others] = splitProps(props, [
     "class",
     "variant",
+    "fill",
     "size",
     "onRemove",
     "children",
@@ -28,6 +30,7 @@ export function Tag(
         "soui-tag",
         `soui-tag--${local.variant ?? "neutral"}`,
         `soui-tag--${local.size ?? "md"}`,
+        local.fill === "solid" && "soui-tag--solid",
         local.class,
       )}
       {...others}

@@ -12,7 +12,7 @@
 }
 
 .soui-icon-button:disabled {
-  opacity: 0.5;
+  opacity: var(--soui-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -70,4 +70,15 @@
 }
 .soui-icon-button--danger:active:not(:disabled) {
   background-color: var(--soui-color-danger-active);
+}
+
+.soui-icon-button--ghost {
+  background-color: transparent;
+  color: var(--soui-text);
+}
+.soui-icon-button--ghost:hover:not(:disabled) {
+  background-color: var(--soui-color-neutral-subtle);
+}
+.soui-icon-button--ghost:active:not(:disabled) {
+  background-color: var(--soui-color-neutral-border);
 }

@@ -15,7 +15,7 @@
 }
 
 .soui-button:disabled {
-  opacity: 0.5;
+  opacity: var(--soui-disabled-opacity);
   cursor: not-allowed;
 }
 
@@ -75,6 +75,17 @@
   background-color: var(--soui-color-danger-active);
 }
 
+.soui-button--ghost {
+  background-color: transparent;
+  color: var(--soui-text);
+}
+.soui-button--ghost:hover:not(:disabled) {
+  background-color: var(--soui-color-neutral-subtle);
+}
+.soui-button--ghost:active:not(:disabled) {
+  background-color: var(--soui-color-neutral-border);
+}
+
 /* --- Loading --- */
 
 .soui-button--loading {
@@ -110,7 +121,8 @@
   color: var(--soui-color-primary-fg);
 }
 
-.soui-button--loading.soui-button--neutral .soui-button__spinner {
+.soui-button--loading.soui-button--neutral .soui-button__spinner,
+.soui-button--loading.soui-button--ghost .soui-button__spinner {
   color: var(--soui-text);
 }
 
