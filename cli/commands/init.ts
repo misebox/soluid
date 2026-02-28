@@ -1,15 +1,36 @@
+import * as fs from "node:fs";
 import * as path from "node:path";
+import * as readline from "node:readline";
 import { saveConfig, findConfigPath, CONFIG_FILENAME } from "../config.js";
 import type { SouiConfig } from "../config.js";
-import { allComponentNames, registry } from "../registry.js";
-import * as fs from "node:fs";
+import { allComponentNames } from "../registry.js";
 
-export function init(cwd: string): void {
+function confirm(question: string): Promise<boolean> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase() === "y");
+    });
+  });
+}
+
+export async function init(cwd: string): Promise<void> {
   const configPath = findConfigPath(cwd);
 
   if (fs.existsSync(configPath)) {
     console.error(`${CONFIG_FILENAME} already exists. Delete it first to re-initialize.`);
     process.exit(1);
+    return;
+  }
+
+  const pkgPath = path.join(cwd, "package.json");
+  if (!fs.existsSync(pkgPath)) {
+    const ok = await confirm("package.json not found. Continue anyway? (y/n) ");
+    if (!ok) {
+      console.log("Aborted.");
+      return;
+    }
   }
 
   const allNames = allComponentNames();
@@ -33,26 +54,5 @@ export function init(cwd: string): void {
   console.log("     - components: remove items you don't need");
   console.log("  2. Run: npx soui add");
   console.log("");
-  console.log("Available components:");
-
-  const categories = new Map<string, string[]>();
-  for (const name of allNames) {
-    const entry = registry[name];
-    if (!entry) continue;
-    const cat = entry.category === "primitives" ? "Primitives" : capitalize(entry.category);
-    if (!categories.has(cat)) categories.set(cat, []);
-    const list = categories.get(cat);
-    if (list) list.push(`  ${name.padEnd(20)} ${entry.description}`);
-  }
-
-  for (const [cat, items] of categories) {
-    console.log(`\n  [${cat}]`);
-    for (const item of items) {
-      console.log(item);
-    }
-  }
-}
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  console.log(`Run "soui list" to see available components.`);
 }
