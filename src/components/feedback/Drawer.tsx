@@ -1,4 +1,4 @@
-import { splitProps, Show, createSignal } from "solid-js";
+import { splitProps, Show, createSignal, createEffect, on } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import type { CommonProps } from "../../core/types";
@@ -25,6 +25,30 @@ export function Drawer(props: DrawerProps) {
     "children",
   ]);
 
+  const [mounted, setMounted] = createSignal(false);
+  const [closing, setClosing] = createSignal(false);
+
+  createEffect(
+    on(
+      () => local.open,
+      (open) => {
+        if (open) {
+          setClosing(false);
+          setMounted(true);
+        } else if (mounted()) {
+          setClosing(true);
+        }
+      },
+    ),
+  );
+
+  function handleAnimationEnd() {
+    if (closing()) {
+      setMounted(false);
+      setClosing(false);
+    }
+  }
+
   const [containerRef, setContainerRef] = createSignal<HTMLElement | undefined>(
     undefined,
   );
@@ -42,12 +66,15 @@ export function Drawer(props: DrawerProps) {
   }
 
   return (
-    <Show when={local.open}>
+    <Show when={mounted()}>
       <Portal>
         <div
-          class="soui-drawer-backdrop"
+          class={cls(
+            "soui-drawer-backdrop",
+            closing() && "soui-drawer-backdrop--closing",
+          )}
           onClick={handleBackdropClick}
-          {...others}
+          onAnimationEnd={handleAnimationEnd}
         >
           <div
             ref={setContainerRef}
@@ -55,11 +82,13 @@ export function Drawer(props: DrawerProps) {
               "soui-drawer",
               `soui-drawer--${local.side ?? "right"}`,
               `soui-drawer--${local.size ?? "md"}`,
+              closing() && "soui-drawer--closing",
               local.class,
             )}
             role="dialog"
             aria-modal="true"
             data-density={local.density}
+            {...others}
           >
             {local.children}
           </div>

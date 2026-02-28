@@ -1,10 +1,22 @@
-import { splitProps, Show, createSignal, onCleanup } from "solid-js";
+import {
+  splitProps,
+  Show,
+  createSignal,
+  createEffect,
+  createContext,
+  useContext,
+  on,
+} from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import type { CommonProps } from "../../core/types";
 import { cls } from "../../core/utils";
 import { createFocusTrap } from "../../primitives/createFocusTrap";
 import "./Dialog.css";
+
+let dialogCounter = 0;
+
+const DialogContext = createContext<string>();
 
 export interface DialogProps extends CommonProps {
   open: boolean;
@@ -38,6 +50,33 @@ export function Dialog(props: DialogProps) {
     "children",
   ]);
 
+  dialogCounter += 1;
+  const titleId = `soui-dialog-title-${dialogCounter}`;
+
+  const [mounted, setMounted] = createSignal(false);
+  const [closing, setClosing] = createSignal(false);
+
+  createEffect(
+    on(
+      () => local.open,
+      (open) => {
+        if (open) {
+          setClosing(false);
+          setMounted(true);
+        } else if (mounted()) {
+          setClosing(true);
+        }
+      },
+    ),
+  );
+
+  function handleAnimationEnd() {
+    if (closing()) {
+      setMounted(false);
+      setClosing(false);
+    }
+  }
+
   const [containerRef, setContainerRef] = createSignal<HTMLElement | undefined>(
     undefined,
   );
@@ -55,27 +94,35 @@ export function Dialog(props: DialogProps) {
   }
 
   return (
-    <Show when={local.open}>
+    <Show when={mounted()}>
       <Portal>
-        <div
-          class="soui-dialog-backdrop"
-          onClick={handleBackdropClick}
-          {...others}
-        >
+        <DialogContext.Provider value={titleId}>
           <div
-            ref={setContainerRef}
             class={cls(
-              "soui-dialog",
-              `soui-dialog--${local.size ?? "md"}`,
-              local.class,
+              "soui-dialog-backdrop",
+              closing() && "soui-dialog-backdrop--closing",
             )}
-            role="dialog"
-            aria-modal="true"
-            data-density={local.density}
+            onClick={handleBackdropClick}
+            onAnimationEnd={handleAnimationEnd}
           >
-            {local.children}
+            <div
+              ref={setContainerRef}
+              class={cls(
+                "soui-dialog",
+                `soui-dialog--${local.size ?? "md"}`,
+                closing() && "soui-dialog--closing",
+                local.class,
+              )}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
+              data-density={local.density}
+              {...others}
+            >
+              {local.children}
+            </div>
           </div>
-        </div>
+        </DialogContext.Provider>
       </Portal>
     </Show>
   );
@@ -83,9 +130,10 @@ export function Dialog(props: DialogProps) {
 
 export function DialogHeader(props: DialogHeaderProps) {
   const [local, others] = splitProps(props, ["class", "children"]);
+  const titleId = useContext(DialogContext);
 
   return (
-    <div class={cls("soui-dialog__header", local.class)} {...others}>
+    <div id={titleId} class={cls("soui-dialog__header", local.class)} {...others}>
       {local.children}
     </div>
   );

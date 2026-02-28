@@ -6,6 +6,11 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  animation: soui-dialog-backdrop-in 0.2s ease-out;
+}
+
+.soui-dialog-backdrop--closing {
+  animation: soui-dialog-backdrop-out 0.15s ease-in forwards;
 }
 
 .soui-dialog {
@@ -17,6 +22,11 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: soui-dialog-in 0.2s ease-out;
+}
+
+.soui-dialog--closing {
+  animation: soui-dialog-out 0.15s ease-in forwards;
 }
 
 /* --- Sizes --- */
@@ -61,4 +71,38 @@
   justify-content: flex-end;
   gap: var(--soui-space-2);
   flex-shrink: 0;
+}
+
+/* --- Animations --- */
+
+@keyframes soui-dialog-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes soui-dialog-backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes soui-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes soui-dialog-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
