@@ -10,8 +10,8 @@ export interface SolidoutConfig {
   alias: string;
   /** Base path that the alias maps to (e.g. "src" if @ → src/) */
   aliasBase: string;
-  /** CSS filename placed in core/ (default: "solidout.css") */
-  cssFilename: string;
+  /** CSS file path relative to project root (e.g. "src/styles/solidout.css") */
+  cssPath: string;
   /** Components to install */
   components: string[];
 }
@@ -20,7 +20,7 @@ export const defaultConfig: SolidoutConfig = {
   componentDir: "src/components/ui",
   alias: "",
   aliasBase: "src",
-  cssFilename: "solidout.css",
+  cssPath: "src/styles/solidout.css",
   components: [],
 };
 

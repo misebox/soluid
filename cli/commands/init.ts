@@ -1,9 +1,12 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as readline from "node:readline";
+import { fileURLToPath } from "node:url";
 import { CONFIG_FILENAME, findConfigPath, saveConfig } from "../config.js";
 import type { SolidoutConfig } from "../config.js";
 import { allComponentNames } from "../registry.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function prompt(question: string, defaultValue: string): Promise<string> {
 	const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -25,6 +28,11 @@ function confirm(question: string): Promise<boolean> {
 	});
 }
 
+function readBundledCSS(): string {
+	const cssSource = path.resolve(__dirname, "../../src/core/solidout.css");
+	return fs.readFileSync(cssSource, "utf-8");
+}
+
 export async function init(cwd: string): Promise<void> {
 	const configPath = findConfigPath(cwd);
 
@@ -44,7 +52,7 @@ export async function init(cwd: string): Promise<void> {
 	}
 
 	const componentDir = await prompt("Component directory?", "src/components/ui");
-	const cssFilename = await prompt("CSS filename?", "solidout.css");
+	const cssPath = await prompt("CSS path?", "src/styles/solidout.css");
 
 	const allNames = allComponentNames();
 
@@ -52,29 +60,22 @@ export async function init(cwd: string): Promise<void> {
 		componentDir,
 		alias: "",
 		aliasBase: "src",
-		cssFilename,
+		cssPath,
 		components: allNames,
 	};
 
 	saveConfig(cwd, config);
 
-	const cssDir = path.join(cwd, componentDir, "core");
-	fs.mkdirSync(cssDir, { recursive: true });
-	const cssPath = path.join(cssDir, cssFilename);
-	if (!fs.existsSync(cssPath)) {
-		fs.writeFileSync(cssPath, "", "utf-8");
-	}
-
-	const cssImportPath = `./${path.posix.join(
-		path.posix.relative("src", componentDir),
-		"core",
-		cssFilename,
-	)}`;
+	const cssContent = readBundledCSS();
+	const cssFullPath = path.join(cwd, cssPath);
+	fs.mkdirSync(path.dirname(cssFullPath), { recursive: true });
+	fs.writeFileSync(cssFullPath, cssContent, "utf-8");
 
 	console.log(`\nCreated ${CONFIG_FILENAME} with ${allNames.length} components.`);
+	console.log(`Created ${cssPath}`);
 	console.log("");
 	console.log("Next steps:");
-	console.log("  1. Run: npx solidout add");
+	console.log("  1. Run: npx solidout install");
 	console.log("  2. Import CSS in your entry point:");
-	console.log(`     import "${cssImportPath}";`);
+	console.log(`     import "./${cssPath.replace(/^src\//, "")}";`);
 }

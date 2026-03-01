@@ -9,7 +9,8 @@
     "solidout": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/core/solidout.css"
   ],
   "scripts": {
     "dev": "vite",
