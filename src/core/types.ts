@@ -42,19 +42,6 @@ export interface ColorDefinition {
   base: string;
 }
 
-export interface DateFormatConfig {
-  displayFormat: string;
-  /** date-fns Locale object */
-  locale?: Record<string, unknown>;
-}
-
-export interface ThemeConfig {
-  density?: Density;
-  theme?: "light" | "dark";
-  dateFormat?: DateFormatConfig;
-  colors?: ColorDefinition[];
-}
-
 // --- Utility types ---
 
 export type DataAttributes = Record<`data-${string}`, string | undefined>;

@@ -1,17 +1,13 @@
 // Core
-export { createTheme, SolidoutProvider, useSolidout } from "./core";
+export { createTheme } from "./core";
 export type {
   ButtonVariant,
   ColorDefinition,
   CommonProps,
-  DateFormatConfig,
   Density,
   FeedbackVariant,
   InteractiveProps,
   Size,
-  SolidoutContextValue,
-  SolidoutProviderProps,
-  ThemeConfig,
   Variant,
   VariantProps,
 } from "./core";

@@ -1,6 +1,6 @@
-import { createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import type { Density } from "../core/types";
-import "../core/tokens.css";
+import "../core/solidout.css";
 import "./catalog.css";
 
 import { Card, CardBody, CardFooter, CardHeader } from "../components/data/Card";
@@ -31,7 +31,6 @@ import { Stack } from "../components/layout/Stack";
 import { Breadcrumb, BreadcrumbItem } from "../components/navigation/Breadcrumb";
 import { Pagination } from "../components/navigation/Pagination";
 import { Tab, TabList, TabPanel, Tabs } from "../components/navigation/Tabs";
-import { SolidoutProvider } from "../core/SolidoutProvider";
 
 export function App() {
   const [density, setDensity] = createSignal<Density>("normal");
@@ -83,8 +82,12 @@ export function App() {
     { key: "age" as const, header: "Age", align: "end" as const, sortable: true },
   ];
 
+  createEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme());
+    document.documentElement.setAttribute("data-density", density());
+  });
+
   return (
-    <SolidoutProvider config={{ density: density(), theme: theme() }}>
       <div class="catalog">
         <h1>solidout Component Catalog</h1>
         <p class="catalog-subtitle">SolidJS Opinionated UI - Business-focused component library</p>
@@ -442,6 +445,5 @@ export function App() {
           />
         </section>
       </div>
-    </SolidoutProvider>
   );
 }

@@ -181,7 +181,7 @@
 
 /* --- Root container --- */
 
-[data-so] {
+body {
   background-color: var(--so-bg);
   color: var(--so-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -190,7 +190,7 @@
 
 /* --- Focus ring --- */
 
-:where([data-so]) :focus-visible {
+:focus-visible {
   outline: 2px solid var(--so-ring);
   outline-offset: 2px;
 }
@@ -198,9 +198,9 @@
 /* --- Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
-  :where([data-so]) *,
-  :where([data-so]) *::before,
-  :where([data-so]) *::after {
+  *,
+  *::before,
+  *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }

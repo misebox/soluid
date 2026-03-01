@@ -8,7 +8,7 @@ export interface RegistryEntry {
 }
 
 /**
- * Core is always installed. It provides types, utils, tokens, context, provider, and theme.
+ * Core is always installed. It provides types, utils, CSS tokens, and theme.
  */
 export const registry: Record<string, RegistryEntry> = {
   // --- Core (always installed) ---
@@ -18,14 +18,11 @@ export const registry: Record<string, RegistryEntry> = {
     files: [
       "core/types.ts",
       "core/utils.ts",
-      "core/tokens.css",
-      "core/context.ts",
-      "core/SolidoutProvider.tsx",
+      "core/solidout.css",
       "core/theme.ts",
     ],
     dependencies: [],
-    npmDependencies: ["date-fns"],
-    description: "Type definitions, CSS tokens, theme provider, utilities",
+    description: "Type definitions, CSS tokens, theme utilities",
   },
 
   // --- Primitives ---
