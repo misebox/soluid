@@ -1,24 +1,24 @@
-# solidout
+# soluid
 
 SolidJS component toolkit. Copy components into your project and own the code directly.
 
 ## Install
 
 ```sh
-npm install -D solidout
+npm install -D soluid
 ```
 
 ## CLI
 
 ```sh
-npx solidout init     # creates solidout.config.json
-npx solidout add      # copies components into your project
-npx solidout list     # shows available components
+npx soluid init     # creates soluid.config.json
+npx soluid add      # copies components into your project
+npx soluid list     # shows available components
 ```
 
 ## Config
 
-`solidout.config.json`
+`soluid.config.json`
 
 ```json
 {
@@ -31,11 +31,11 @@ npx solidout list     # shows available components
 
 ## Setup
 
-Import solidout.css in your app's entry point:
+Import soluid.css in your app's entry point:
 
 ```tsx
 // src/index.tsx
-import "./components/ui/core/solidout.css";
+import "./components/ui/core/soluid.css";
 ```
 
 Theme/density switching:

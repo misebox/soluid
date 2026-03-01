@@ -1,12 +1,12 @@
 {
-  "name": "solidout",
+  "name": "soluid",
   "version": "0.1.1",
   "componentsVersion": "0.1.1",
   "type": "module",
   "description": "SolidJS Opinionated UI - copy-paste component toolkit",
   "license": "MIT",
   "bin": {
-    "solidout": "./dist/index.js"
+    "soluid": "./dist/index.js"
   },
   "files": [
     "dist"

@@ -2,7 +2,7 @@ import * as path from "node:path";
 import type { SolidoutConfig } from "./config.js";
 
 /**
- * Rewrite internal solidout imports in a template file.
+ * Rewrite internal soluid imports in a template file.
  *
  * Template files use relative imports like:
  *   import { cls } from "../../core/utils"

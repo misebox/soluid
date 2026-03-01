@@ -1,6 +1,6 @@
 import { createEffect, createMemo, createSignal } from "solid-js";
 import type { Density } from "../core/types";
-import "../core/solidout.css";
+import "../core/soluid.css";
 import "./catalog.css";
 
 import { Card, CardBody, CardFooter, CardHeader } from "../components/data/Card";
@@ -89,7 +89,7 @@ export function App() {
 
   return (
       <div class="catalog">
-        <h1>solidout Component Catalog</h1>
+        <h1>soluid Component Catalog</h1>
         <p class="catalog-subtitle">SolidJS Opinionated UI - Business-focused component library</p>
 
         {/* Global Controls */}

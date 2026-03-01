@@ -18,7 +18,7 @@ export const registry: Record<string, RegistryEntry> = {
     files: [
       "core/types.ts",
       "core/utils.ts",
-      "core/solidout.css",
+      "core/soluid.css",
       "core/theme.ts",
     ],
     dependencies: [],

@@ -92,14 +92,14 @@ function checkContrast(
   const baseFgRatio = contrastRatio(roles.base, roles.fg);
   if (baseFgRatio < 4.5) {
     warnings.push(
-      `[solidout] Color "${name}": base/fg contrast ratio ${baseFgRatio.toFixed(2)} < 4.5:1`,
+      `[soluid] Color "${name}": base/fg contrast ratio ${baseFgRatio.toFixed(2)} < 4.5:1`,
     );
   }
 
   const subtleRatio = contrastRatio(roles.subtle, roles["subtle-fg"]);
   if (subtleRatio < 4.5) {
     warnings.push(
-      `[solidout] Color "${name}": subtle/subtle-fg contrast ratio ${subtleRatio.toFixed(2)} < 4.5:1`,
+      `[soluid] Color "${name}": subtle/subtle-fg contrast ratio ${subtleRatio.toFixed(2)} < 4.5:1`,
     );
   }
 }
