@@ -7,17 +7,17 @@ export type { SolidoutContextValue } from "./context";
 export { createTheme } from "./theme";
 
 export type {
-  Density,
-  Size,
-  Variant,
   ButtonVariant,
-  FeedbackVariant,
-  CommonProps,
-  InteractiveProps,
-  VariantProps,
   ColorDefinition,
-  DateFormatConfig,
-  ThemeConfig,
+  CommonProps,
   DataAttributes,
+  DateFormatConfig,
+  Density,
+  FeedbackVariant,
   HTMLProps,
+  InteractiveProps,
+  Size,
+  ThemeConfig,
+  Variant,
+  VariantProps,
 } from "./types";

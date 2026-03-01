@@ -14,7 +14,7 @@ export { NumberInput } from "./NumberInput";
 export type { NumberInputProps } from "./NumberInput";
 
 export { Select } from "./Select";
-export type { SelectProps, SelectOption } from "./Select";
+export type { SelectOption, SelectProps } from "./Select";
 
 export { Checkbox } from "./Checkbox";
 export type { CheckboxProps } from "./Checkbox";

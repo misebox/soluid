@@ -1,5 +1,5 @@
-export { Dialog, DialogHeader, DialogBody, DialogFooter } from "./Dialog";
-export type { DialogProps, DialogHeaderProps, DialogBodyProps, DialogFooterProps } from "./Dialog";
+export { Dialog, DialogBody, DialogFooter, DialogHeader } from "./Dialog";
+export type { DialogBodyProps, DialogFooterProps, DialogHeaderProps, DialogProps } from "./Dialog";
 
 export { Drawer } from "./Drawer";
 export type { DrawerProps } from "./Drawer";

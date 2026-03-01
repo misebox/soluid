@@ -1,5 +1,5 @@
-import { createStore, produce } from "solid-js/store";
 import { debounce } from "@solid-primitives/scheduled";
+import { createStore, produce } from "solid-js/store";
 import type { FeedbackVariant } from "../core/types";
 
 const EXIT_DURATION = 150;

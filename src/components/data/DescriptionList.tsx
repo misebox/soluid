@@ -1,4 +1,4 @@
-import { splitProps, For } from "solid-js";
+import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "../../core/types";
 import { cls } from "../../core/utils";

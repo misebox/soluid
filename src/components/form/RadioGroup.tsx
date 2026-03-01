@@ -1,4 +1,4 @@
-import { splitProps, Show, createUniqueId } from "solid-js";
+import { createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "../../core/types";
 import { cls } from "../../core/utils";

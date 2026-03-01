@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as readline from "node:readline";
-import { saveConfig, findConfigPath, CONFIG_FILENAME } from "../config.js";
+import { CONFIG_FILENAME, findConfigPath, saveConfig } from "../config.js";
 import type { SolidoutConfig } from "../config.js";
 import { allComponentNames } from "../registry.js";
 
@@ -49,7 +49,7 @@ export async function init(cwd: string): Promise<void> {
   console.log("Next steps:");
   console.log(`  1. Edit ${CONFIG_FILENAME} to configure:`);
   console.log("     - componentDir: where to install components");
-  console.log('     - alias: import alias (e.g. "@") or "" for relative paths');
+  console.log("     - alias: import alias (e.g. \"@\") or \"\" for relative paths");
   console.log("     - aliasBase: directory the alias maps to (e.g. \"src\")");
   console.log("     - components: remove items you don't need");
   console.log("  2. Run: npx solidout add");

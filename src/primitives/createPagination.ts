@@ -1,4 +1,4 @@
-import { createSignal, createMemo } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import type { Accessor } from "solid-js";
 
 export interface PaginationOptions {
@@ -55,9 +55,7 @@ export function createPagination(options: PaginationOptions): PaginationReturn {
   const canPrev = createMemo(() => page() > 1);
 
   const startIndex = createMemo(() => (page() - 1) * pageSize());
-  const endIndex = createMemo(() =>
-    Math.min(startIndex() + pageSize(), options.totalItems()),
-  );
+  const endIndex = createMemo(() => Math.min(startIndex() + pageSize(), options.totalItems()));
 
   return {
     page,

@@ -31,8 +31,7 @@ export interface InteractiveProps extends CommonProps {
   size?: Size;
 }
 
-export interface VariantProps<V extends string = Variant>
-  extends InteractiveProps {
+export interface VariantProps<V extends string = Variant> extends InteractiveProps {
   variant?: V;
 }
 
@@ -60,5 +59,4 @@ export interface ThemeConfig {
 
 export type DataAttributes = Record<`data-${string}`, string | undefined>;
 
-export type HTMLProps<T extends HTMLElement = HTMLElement> =
-  JSX.HTMLAttributes<T>;
+export type HTMLProps<T extends HTMLElement = HTMLElement> = JSX.HTMLAttributes<T>;

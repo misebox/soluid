@@ -1,10 +1,5 @@
-import {
-  splitProps,
-  createContext,
-  useContext,
-  Show,
-} from "solid-js";
-import type { JSX, Accessor } from "solid-js";
+import { createContext, Show, splitProps, useContext } from "solid-js";
+import type { Accessor, JSX } from "solid-js";
 import type { CommonProps } from "../../core/types";
 import { cls } from "../../core/utils";
 import "./Tabs.css";

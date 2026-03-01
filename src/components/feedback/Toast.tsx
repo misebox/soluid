@@ -1,8 +1,8 @@
-import { splitProps, For } from "solid-js";
+import { For, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 import { cls } from "../../core/utils";
 import { createToast } from "../../primitives/createToast";
-import type { ToastReturn, ToastInput } from "../../primitives/createToast";
+import type { ToastInput, ToastReturn } from "../../primitives/createToast";
 import "./Toast.css";
 
 export interface ToastContainerProps {

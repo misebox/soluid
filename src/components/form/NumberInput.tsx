@@ -97,9 +97,7 @@ function NumberInputInner(props: {
         disabled={local.disabled}
         required={local.required}
         aria-invalid={ctx?.hasError || undefined}
-        aria-describedby={
-          ctx?.hasError ? ctx.errorId : ctx?.hintId
-        }
+        aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={handleInput}
       />
       <button

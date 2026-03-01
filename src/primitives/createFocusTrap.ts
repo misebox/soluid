@@ -1,15 +1,15 @@
-import { onMount, onCleanup } from "solid-js";
-import type { Accessor } from "solid-js";
 import { createActiveElement } from "@solid-primitives/active-element";
 import { makeEventListener } from "@solid-primitives/event-listener";
+import { onCleanup, onMount } from "solid-js";
+import type { Accessor } from "solid-js";
 
 const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'button:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[tabindex]:not([tabindex=\"-1\"])",
 ].join(", ");
 
 export interface FocusTrapOptions {

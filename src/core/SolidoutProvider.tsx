@@ -1,8 +1,8 @@
-import { splitProps, createEffect, onCleanup } from "solid-js";
+import { createEffect, onCleanup, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { SolidoutContext } from "./context";
 import { createTheme } from "./theme";
-import type { ThemeConfig, Density } from "./types";
+import type { Density, ThemeConfig } from "./types";
 
 export interface SolidoutProviderProps {
   config?: ThemeConfig;

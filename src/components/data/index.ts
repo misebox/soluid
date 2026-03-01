@@ -1,5 +1,5 @@
-export { Card, CardHeader, CardBody, CardFooter } from "./Card";
-export type { CardProps, CardHeaderProps, CardBodyProps, CardFooterProps } from "./Card";
+export { Card, CardBody, CardFooter, CardHeader } from "./Card";
+export type { CardBodyProps, CardFooterProps, CardHeaderProps, CardProps } from "./Card";
 
 export { DescriptionList } from "./DescriptionList";
 export type { DescriptionListProps } from "./DescriptionList";
@@ -11,4 +11,4 @@ export { EmptyState } from "./EmptyState";
 export type { EmptyStateProps } from "./EmptyState";
 
 export { Table } from "./Table";
-export type { TableProps, Column } from "./Table";
+export type { Column, TableProps } from "./Table";

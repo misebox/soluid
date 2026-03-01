@@ -1,6 +1,6 @@
-import { splitProps, Show } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { VariantProps, ButtonVariant } from "../../core/types";
+import type { ButtonVariant, VariantProps } from "../../core/types";
 import { cls } from "../../core/utils";
 import "./Button.css";
 

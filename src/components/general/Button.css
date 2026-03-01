@@ -113,7 +113,9 @@
 }
 
 @keyframes so-button-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .so-button--loading.so-button--primary .so-button__spinner,

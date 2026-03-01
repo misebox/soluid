@@ -1,16 +1,12 @@
 import * as fs from "node:fs";
-import * as path from "node:path";
 import { createRequire } from "node:module";
-import { createGunzip } from "node:zlib";
+import * as path from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
+import { createGunzip } from "node:zlib";
 import { Parser, type ReadEntry } from "tar";
-import { loadConfig, CONFIG_FILENAME } from "../config.js";
-import {
-  registry,
-  resolveDependencies,
-  collectNpmDeps,
-} from "../registry.js";
+import { CONFIG_FILENAME, loadConfig } from "../config.js";
+import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
 
 const RELEASE_URL = "https://github.com/misebox/solidout/releases/download";

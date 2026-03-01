@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { init } from "./commands/init.js";
 import { add } from "./commands/add.js";
+import { init } from "./commands/init.js";
 import { list } from "./commands/list.js";
 
 const args = process.argv.slice(2);
@@ -19,8 +19,8 @@ switch (command) {
     const filter = args.includes("--installed")
       ? "installed" as const
       : args.includes("--not-installed")
-        ? "not-installed" as const
-        : "all" as const;
+      ? "not-installed" as const
+      : "all" as const;
     list(cwd, filter);
     break;
   }

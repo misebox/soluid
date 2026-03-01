@@ -1,4 +1,4 @@
-import { splitProps, For } from "solid-js";
+import { For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "../../core/types";
 import { cls } from "../../core/utils";
@@ -60,9 +60,7 @@ function SelectInput<T extends string = string>(props: {
         disabled={local.disabled}
         required={local.required}
         aria-invalid={ctx?.hasError || undefined}
-        aria-describedby={
-          ctx?.hasError ? ctx.errorId : ctx?.hintId
-        }
+        aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onChange={handleChange}
       >
         {local.placeholder && (
@@ -78,8 +76,19 @@ function SelectInput<T extends string = string>(props: {
           )}
         </For>
       </select>
-      <svg class="so-select__arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <svg
+        class="so-select__arrow"
+        viewBox="0 0 12 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2.5 4.5L6 8l3.5-3.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
     </div>
   );

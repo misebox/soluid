@@ -21,20 +21,23 @@ export function rewriteImports(
   const importRegex =
     /((?:import|export)\s+(?:type\s+)?(?:\{[^}]*\}|[\w*]+(?:\s*,\s*\{[^}]*\})?)\s+from\s+["'])(\.[^"']+)(["'])/g;
 
-  return content.replace(importRegex, (_match, prefix: string, importPath: string, suffix: string) => {
-    // Resolve the import path relative to the file's location within the template tree
-    const fileDir = path.dirname(filePath);
-    const resolvedInTemplate = path.normalize(path.join(fileDir, importPath));
+  return content.replace(
+    importRegex,
+    (_match, prefix: string, importPath: string, suffix: string) => {
+      // Resolve the import path relative to the file's location within the template tree
+      const fileDir = path.dirname(filePath);
+      const resolvedInTemplate = path.normalize(path.join(fileDir, importPath));
 
-    // Now create the correct import path for the user's project
-    const newImportPath = buildImportPath(
-      resolvedInTemplate,
-      fileDir,
-      config,
-    );
+      // Now create the correct import path for the user's project
+      const newImportPath = buildImportPath(
+        resolvedInTemplate,
+        fileDir,
+        config,
+      );
 
-    return `${prefix}${newImportPath}${suffix}`;
-  });
+      return `${prefix}${newImportPath}${suffix}`;
+    },
+  );
 }
 
 function buildImportPath(

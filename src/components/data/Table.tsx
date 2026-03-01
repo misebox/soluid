@@ -1,4 +1,4 @@
-import { splitProps, For, Show, createMemo } from "solid-js";
+import { createMemo, For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "../../core/types";
 import { cls } from "../../core/utils";
@@ -49,14 +49,14 @@ export function Table<T extends Record<string, unknown>>(
 
   function handleSort(key: string): void {
     if (!local.onSort) return;
-    const nextDirection =
-      local.sortKey === key && local.sortDirection === "asc" ? "desc" : "asc";
+    const nextDirection = local.sortKey === key && local.sortDirection === "asc" ? "desc" : "asc";
     local.onSort(key, nextDirection);
   }
 
   const allSelected = createMemo(() => {
-    if (!local.selectable || !local.selectedKeys || local.data.length === 0)
+    if (!local.selectable || !local.selectedKeys || local.data.length === 0) {
       return false;
+    }
     return local.data.every(
       (row, i) => local.selectedKeys?.has(getRowKey(row, i)),
     );
@@ -111,13 +111,11 @@ export function Table<T extends Record<string, unknown>>(
                     col.align && `so-table__cell--${col.align}`,
                   )}
                   style={{ width: col.width }}
-                  aria-sort={
-                    local.sortKey === col.key
-                      ? local.sortDirection === "asc"
-                        ? "ascending"
-                        : "descending"
-                      : undefined
-                  }
+                  aria-sort={local.sortKey === col.key
+                    ? local.sortDirection === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : undefined}
                 >
                   <Show
                     when={col.sortable}
@@ -132,8 +130,8 @@ export function Table<T extends Record<string, unknown>>(
                       <span
                         class={cls(
                           "so-table__sort-icon",
-                          local.sortKey === col.key &&
-                            `so-table__sort-icon--${local.sortDirection}`,
+                          local.sortKey === col.key
+                            && `so-table__sort-icon--${local.sortDirection}`,
                         )}
                         aria-hidden="true"
                       />
@@ -152,8 +150,8 @@ export function Table<T extends Record<string, unknown>>(
                 <tr
                   class={cls(
                     "so-table__row",
-                    local.selectedKeys?.has(key()) &&
-                      "so-table__row--selected",
+                    local.selectedKeys?.has(key())
+                      && "so-table__row--selected",
                   )}
                 >
                   <Show when={local.selectable}>

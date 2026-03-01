@@ -1,4 +1,4 @@
-import { splitProps, Show } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps, FeedbackVariant } from "../../core/types";
 import { cls } from "../../core/utils";

@@ -3,14 +3,34 @@
   flex-direction: column;
 }
 
-.so-stack--gap-1 { gap: var(--so-space-1); }
-.so-stack--gap-2 { gap: var(--so-space-2); }
-.so-stack--gap-3 { gap: var(--so-space-3); }
-.so-stack--gap-4 { gap: var(--so-space-4); }
-.so-stack--gap-5 { gap: var(--so-space-5); }
-.so-stack--gap-6 { gap: var(--so-space-6); }
+.so-stack--gap-1 {
+  gap: var(--so-space-1);
+}
+.so-stack--gap-2 {
+  gap: var(--so-space-2);
+}
+.so-stack--gap-3 {
+  gap: var(--so-space-3);
+}
+.so-stack--gap-4 {
+  gap: var(--so-space-4);
+}
+.so-stack--gap-5 {
+  gap: var(--so-space-5);
+}
+.so-stack--gap-6 {
+  gap: var(--so-space-6);
+}
 
-.so-stack--align-start { align-items: flex-start; }
-.so-stack--align-center { align-items: center; }
-.so-stack--align-end { align-items: flex-end; }
-.so-stack--align-stretch { align-items: stretch; }
+.so-stack--align-start {
+  align-items: flex-start;
+}
+.so-stack--align-center {
+  align-items: center;
+}
+.so-stack--align-end {
+  align-items: flex-end;
+}
+.so-stack--align-stretch {
+  align-items: stretch;
+}
