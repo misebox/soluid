@@ -11,9 +11,11 @@ npm install -D soluid
 ## CLI
 
 ```sh
-npx soluid init     # creates soluid.config.json
-npx soluid add      # copies components into your project
-npx soluid list     # shows available components
+npx soluid init                # create soluid.config.json interactively
+npx soluid install             # install components and CSS
+npx soluid add <component...>  # add components to config
+npx soluid remove <comp...>    # remove components from config
+npx soluid list                # list available components
 ```
 
 ## Config
@@ -23,19 +25,20 @@ npx soluid list     # shows available components
 ```json
 {
   "componentDir": "src/components/ui",
-  "alias": "@",
+  "alias": "",
   "aliasBase": "src",
+  "cssPath": "src/styles/soluid.css",
   "components": ["Button", "TextField", "Dialog"]
 }
 ```
 
 ## Setup
 
-Import soluid.css in your app's entry point:
+Import CSS in your app's entry point:
 
 ```tsx
 // src/index.tsx
-import "./components/ui/core/soluid.css";
+import "./styles/soluid.css";
 ```
 
 Theme/density switching:
