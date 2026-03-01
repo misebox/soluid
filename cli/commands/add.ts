@@ -1,10 +1,10 @@
-import { CONFIG_FILENAME, loadConfig, saveConfig } from "../config.js";
+import { CONFIG_FILENAME, PROJECT_NAME, loadConfig, saveConfig } from "../config.js";
 import { registry } from "../registry.js";
 
 export function add(cwd: string, names: string[]): void {
 	const config = loadConfig(cwd);
 	if (config === null) {
-		console.error(`${CONFIG_FILENAME} not found. Run: npx solidout init`);
+		console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init`);
 		process.exit(1);
 		return;
 	}
@@ -32,5 +32,5 @@ export function add(cwd: string, names: string[]): void {
 
 	saveConfig(cwd, config);
 	console.log(`Added: ${added.join(", ")}`);
-	console.log(`\nRun: npx solidout install`);
+	console.log(`\nRun: npx ${PROJECT_NAME} install`);
 }

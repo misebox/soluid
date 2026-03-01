@@ -1,9 +1,9 @@
-import { CONFIG_FILENAME, loadConfig, saveConfig } from "../config.js";
+import { CONFIG_FILENAME, PROJECT_NAME, loadConfig, saveConfig } from "../config.js";
 
 export function remove(cwd: string, names: string[]): void {
 	const config = loadConfig(cwd);
 	if (config === null) {
-		console.error(`${CONFIG_FILENAME} not found. Run: npx solidout init`);
+		console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init`);
 		process.exit(1);
 		return;
 	}
@@ -26,5 +26,5 @@ export function remove(cwd: string, names: string[]): void {
 
 	saveConfig(cwd, config);
 	console.log(`Removed: ${removed.join(", ")}`);
-	console.log(`\nRun: npx solidout install`);
+	console.log(`\nRun: npx ${PROJECT_NAME} install`);
 }

@@ -5,11 +5,11 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { Parser, type ReadEntry } from "tar";
-import { CONFIG_FILENAME, loadConfig } from "../config.js";
+import { CONFIG_FILENAME, DEFAULT_CSS_FILENAME, PROJECT_NAME, loadConfig } from "../config.js";
 import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
 
-const RELEASE_URL = "https://github.com/misebox/solidout/releases/download";
+const RELEASE_URL = "https://github.com/misebox/soluid/releases/download";
 
 function getVersion(): string {
   const require = createRequire(import.meta.url);
@@ -71,7 +71,7 @@ async function fetchAndExtract(
 export async function install(cwd: string): Promise<void> {
   const config = loadConfig(cwd);
   if (config === null) {
-    console.error(`${CONFIG_FILENAME} not found. Run: npx solidout init\n`);
+    console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init\n`);
     process.exit(1);
     return;
   }
@@ -112,7 +112,7 @@ export async function install(cwd: string): Promise<void> {
         continue;
       }
 
-      const destPath = file === "core/solidout.css"
+      const destPath = file === `core/${DEFAULT_CSS_FILENAME}`
         ? path.resolve(cwd, config.cssPath)
         : path.join(targetRoot, file);
       const destDir = path.dirname(destPath);

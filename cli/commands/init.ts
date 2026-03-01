@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as readline from "node:readline";
-import { CONFIG_FILENAME, findConfigPath, saveConfig } from "../config.js";
+import { CONFIG_FILENAME, DEFAULT_CSS_FILENAME, PROJECT_NAME, findConfigPath, saveConfig } from "../config.js";
 import type { SolidoutConfig } from "../config.js";
 import { allComponentNames } from "../registry.js";
 
@@ -44,7 +44,7 @@ export async function init(cwd: string): Promise<void> {
 	}
 
 	const componentDir = await prompt("Component directory?", "src/components/ui");
-	const cssPath = await prompt("CSS path?", "src/styles/solidout.css");
+	const cssPath = await prompt("CSS path?", `src/styles/${DEFAULT_CSS_FILENAME}`);
 
 	const allNames = allComponentNames();
 
@@ -61,7 +61,7 @@ export async function init(cwd: string): Promise<void> {
 	console.log(`\nCreated ${CONFIG_FILENAME} with ${allNames.length} components.`);
 	console.log("");
 	console.log("Next steps:");
-	console.log("  1. Run: npx solidout install");
+	console.log(`  1. Run: npx ${PROJECT_NAME} install`);
 	console.log("  2. Import CSS in your entry point:");
 	console.log(`     import "./${cssPath.replace(/^src\//, "")}";`);
 }
