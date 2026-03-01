@@ -1,6 +1,6 @@
 {
   "name": "soluid",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "componentsVersion": "0.1.0",
   "type": "module",
   "description": "SolidJS Opinionated UI - copy-paste component toolkit",
