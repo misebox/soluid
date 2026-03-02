@@ -12,7 +12,7 @@ npm install -D soluid
 
 ```sh
 npx soluid init                # create soluid.config.json interactively
-npx soluid install             # install components and CSS
+npx soluid install             # download and install components + CSS
 npx soluid add <component...>  # add components to config
 npx soluid remove <comp...>    # remove components from config
 npx soluid list                # list available components
@@ -32,16 +32,18 @@ npx soluid list                # list available components
 }
 ```
 
+`cssPath` receives all component CSS concatenated into a single file.
+
 ## Setup
 
-Import CSS in your app's entry point:
+Import CSS in your app entry point:
 
 ```tsx
 // src/index.tsx
 import "./styles/soluid.css";
 ```
 
-Theme/density switching:
+Theme and density switching:
 
 ```tsx
 document.documentElement.setAttribute("data-theme", "dark");
@@ -60,6 +62,16 @@ document.documentElement.setAttribute("data-density", "dense");
 | Navigation | Tabs, Breadcrumb, Pagination, Menu |
 | Utility | VisuallyHidden, Popover |
 
-## Primitives (5)
+## Core Utilities
 
-`createDisclosure`, `createFocusTrap`, `createToggle`, `createToast`, `createPagination`
+`createFocusTrap`, `createToast`, `createToggle`
+
+Installed automatically as dependencies when any component that requires them is added.
+
+## Dev
+
+```sh
+bun run dev
+```
+
+Starts the component catalog for local preview.
