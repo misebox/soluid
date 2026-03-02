@@ -21,6 +21,9 @@
     "lint:fix": "oxlint --fix src/ cli/"
   },
   "devDependencies": {
+    "@solid-primitives/active-element": "^2.1.5",
+    "@solid-primitives/event-listener": "^2.4.5",
+    "@solid-primitives/scheduled": "^1.5.3",
     "@types/node": "^20.19.34",
     "dprint": "^0.52.0",
     "oxlint": "^1.50.0",
