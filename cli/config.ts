@@ -12,10 +12,6 @@ export interface SoluidConfig {
   componentsVersion: string;
   /** Directory to install components into, relative to project root */
   componentDir: string;
-  /** Import alias (e.g. "@", "~") or empty string for relative paths */
-  alias: string;
-  /** Base path that the alias maps to (e.g. "src" if @ → src/) */
-  aliasBase: string;
   /** CSS file path relative to project root (e.g. "src/styles/soluid.css") */
   cssPath: string;
   /** Components to install */

@@ -21,8 +21,6 @@ npx soluid list                # list available components
 ```json
 {
   "componentDir": "src/components/ui",
-  "alias": "",
-  "aliasBase": "src",
   "cssPath": "src/styles/soluid.css",
   "components": ["Button", "TextField", "Dialog"]
 }

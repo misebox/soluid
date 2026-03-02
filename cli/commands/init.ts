@@ -54,8 +54,6 @@ export async function init(cwd: string): Promise<void> {
 	const config: SoluidConfig = {
 		componentsVersion,
 		componentDir,
-		alias: "",
-		aliasBase: "src",
 		cssPath,
 		components: allNames,
 	};

@@ -131,7 +131,7 @@ export async function install(cwd: string): Promise<void> {
 
       let output = content;
       if (file.endsWith(".ts") || file.endsWith(".tsx")) {
-        output = rewriteImports(content, localPath, config);
+        output = rewriteImports(content, localPath);
       }
 
       fs.writeFileSync(destPath, output, "utf-8");
