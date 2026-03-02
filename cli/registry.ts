@@ -1,14 +1,15 @@
 export interface RegistryEntry {
   name: string;
-  category: "core" | "primitives" | "components";
-  files: string[]; // paths relative to templates/
+  category: "core" | "components";
+  files: string[]; // paths relative to archive root (e.g. "soluid/Button.tsx")
   dependencies: string[]; // other registry entry names
   npmDependencies?: string[]; // npm packages to install
   description: string;
 }
 
 /**
- * Core is always installed. It provides types, utils, CSS tokens, and theme.
+ * Core is always installed. It provides types, utils, CSS tokens, theme,
+ * and primitive utilities (createFocusTrap, createToast, createToggle).
  */
 export const registry: Record<string, RegistryEntry> = {
   // --- Core (always installed) ---
@@ -16,83 +17,49 @@ export const registry: Record<string, RegistryEntry> = {
     name: "core",
     category: "core",
     files: [
-      "core/types.ts",
-      "core/utils.ts",
-      "core/soluid.css",
-      "core/theme.ts",
+      "soluid/core/types.ts",
+      "soluid/core/utils.ts",
+      "soluid/core/soluid.css",
+      "soluid/core/theme.ts",
+      "soluid/core/createFocusTrap.ts",
+      "soluid/core/createToast.ts",
+      "soluid/core/createToggle.ts",
     ],
     dependencies: [],
-    description: "Type definitions, CSS tokens, theme utilities",
-  },
-
-  // --- Primitives ---
-  "createDisclosure": {
-    name: "createDisclosure",
-    category: "primitives",
-    files: ["primitives/createDisclosure.ts"],
-    dependencies: ["core"],
-    description: "Open/close state management with a11y",
-  },
-  "createFocusTrap": {
-    name: "createFocusTrap",
-    category: "primitives",
-    files: ["primitives/createFocusTrap.ts"],
-    dependencies: ["core"],
     npmDependencies: [
       "@solid-primitives/active-element",
       "@solid-primitives/event-listener",
+      "@solid-primitives/scheduled",
     ],
-    description: "Trap focus within a container element",
-  },
-  "createToggle": {
-    name: "createToggle",
-    category: "primitives",
-    files: ["primitives/createToggle.ts"],
-    dependencies: ["core"],
-    description: "On/off toggle state with a11y",
-  },
-  "createToast": {
-    name: "createToast",
-    category: "primitives",
-    files: ["primitives/createToast.ts"],
-    dependencies: ["core"],
-    npmDependencies: ["@solid-primitives/scheduled"],
-    description: "Toast notification queue management",
-  },
-  "createPagination": {
-    name: "createPagination",
-    category: "primitives",
-    files: ["primitives/createPagination.ts"],
-    dependencies: ["core"],
-    description: "Page state management",
+    description: "Type definitions, CSS tokens, theme utilities, primitives",
   },
 
   // --- Layout ---
   Stack: {
     name: "Stack",
     category: "components",
-    files: ["components/layout/Stack.tsx", "components/layout/Stack.css"],
+    files: ["soluid/Stack.tsx", "soluid/Stack.css"],
     dependencies: ["core"],
     description: "Vertical flex layout with gap",
   },
   HStack: {
     name: "HStack",
     category: "components",
-    files: ["components/layout/HStack.tsx", "components/layout/HStack.css"],
+    files: ["soluid/HStack.tsx", "soluid/HStack.css"],
     dependencies: ["core"],
     description: "Horizontal flex layout with gap",
   },
   Divider: {
     name: "Divider",
     category: "components",
-    files: ["components/layout/Divider.tsx", "components/layout/Divider.css"],
+    files: ["soluid/Divider.tsx", "soluid/Divider.css"],
     dependencies: ["core"],
     description: "Horizontal/vertical separator",
   },
   Spacer: {
     name: "Spacer",
     category: "components",
-    files: ["components/layout/Spacer.tsx", "components/layout/Spacer.css"],
+    files: ["soluid/Spacer.tsx", "soluid/Spacer.css"],
     dependencies: ["core"],
     description: "Flex spacer",
   },
@@ -101,40 +68,37 @@ export const registry: Record<string, RegistryEntry> = {
   Button: {
     name: "Button",
     category: "components",
-    files: ["components/general/Button.tsx", "components/general/Button.css"],
+    files: ["soluid/Button.tsx", "soluid/Button.css"],
     dependencies: ["core"],
     description: "Primary, neutral, danger button with icon and loading",
   },
   IconButton: {
     name: "IconButton",
     category: "components",
-    files: [
-      "components/general/IconButton.tsx",
-      "components/general/IconButton.css",
-    ],
+    files: ["soluid/IconButton.tsx", "soluid/IconButton.css"],
     dependencies: ["core"],
     description: "Icon-only button with aria-label",
   },
   Badge: {
     name: "Badge",
     category: "components",
-    files: ["components/general/Badge.tsx", "components/general/Badge.css"],
+    files: ["soluid/Badge.tsx", "soluid/Badge.css"],
     dependencies: ["core"],
     description: "Status label",
   },
   Tag: {
     name: "Tag",
     category: "components",
-    files: ["components/general/Tag.tsx", "components/general/Tag.css"],
+    files: ["soluid/Tag.tsx", "soluid/Tag.css"],
     dependencies: ["core"],
     description: "Removable label for filters",
   },
   Tooltip: {
     name: "Tooltip",
     category: "components",
-    files: ["components/general/Tooltip.tsx"],
+    files: ["soluid/Tooltip.tsx", "soluid/Tooltip.css"],
     dependencies: ["core"],
-    description: "Tooltip (placeholder)",
+    description: "Tooltip",
   },
 
   // --- Form ---
@@ -142,9 +106,9 @@ export const registry: Record<string, RegistryEntry> = {
     name: "FormField",
     category: "components",
     files: [
-      "components/form/FormField.tsx",
-      "components/form/FormField.css",
-      "components/form/FormFieldContext.ts",
+      "soluid/FormField.tsx",
+      "soluid/FormField.css",
+      "soluid/FormFieldContext.ts",
     ],
     dependencies: ["core"],
     description: "Label + error/hint wrapper for form inputs",
@@ -152,40 +116,28 @@ export const registry: Record<string, RegistryEntry> = {
   TextField: {
     name: "TextField",
     category: "components",
-    files: [
-      "components/form/TextField.tsx",
-      "components/form/TextField.css",
-    ],
+    files: ["soluid/TextField.tsx", "soluid/TextField.css"],
     dependencies: ["core", "FormField"],
     description: "Text input with label/error/hint",
   },
   TextArea: {
     name: "TextArea",
     category: "components",
-    files: [
-      "components/form/TextArea.tsx",
-      "components/form/TextArea.css",
-    ],
+    files: ["soluid/TextArea.tsx", "soluid/TextArea.css"],
     dependencies: ["core", "FormField"],
     description: "Multiline text input",
   },
   NumberInput: {
     name: "NumberInput",
     category: "components",
-    files: [
-      "components/form/NumberInput.tsx",
-      "components/form/NumberInput.css",
-    ],
+    files: ["soluid/NumberInput.tsx", "soluid/NumberInput.css"],
     dependencies: ["core", "FormField"],
     description: "Number input with stepper buttons",
   },
   Select: {
     name: "Select",
     category: "components",
-    files: [
-      "components/form/Select.tsx",
-      "components/form/Select.css",
-    ],
+    files: ["soluid/Select.tsx", "soluid/Select.css"],
     dependencies: ["core", "FormField"],
     description: "Native select dropdown",
   },
@@ -193,9 +145,9 @@ export const registry: Record<string, RegistryEntry> = {
     name: "Checkbox",
     category: "components",
     files: [
-      "components/form/Checkbox.tsx",
-      "components/form/Checkbox.css",
-      "components/form/CheckboxGroupContext.ts",
+      "soluid/Checkbox.tsx",
+      "soluid/Checkbox.css",
+      "soluid/CheckboxGroupContext.ts",
     ],
     dependencies: ["core"],
     description: "Checkbox with indeterminate support",
@@ -203,10 +155,7 @@ export const registry: Record<string, RegistryEntry> = {
   CheckboxGroup: {
     name: "CheckboxGroup",
     category: "components",
-    files: [
-      "components/form/CheckboxGroup.tsx",
-      "components/form/CheckboxGroup.css",
-    ],
+    files: ["soluid/CheckboxGroup.tsx", "soluid/CheckboxGroup.css"],
     dependencies: ["core", "Checkbox"],
     description: "Checkbox group with shared state",
   },
@@ -214,11 +163,11 @@ export const registry: Record<string, RegistryEntry> = {
     name: "RadioGroup",
     category: "components",
     files: [
-      "components/form/RadioGroup.tsx",
-      "components/form/RadioGroup.css",
-      "components/form/RadioGroupContext.ts",
-      "components/form/RadioButton.tsx",
-      "components/form/RadioButton.css",
+      "soluid/RadioGroup.tsx",
+      "soluid/RadioGroup.css",
+      "soluid/RadioGroupContext.ts",
+      "soluid/RadioButton.tsx",
+      "soluid/RadioButton.css",
     ],
     dependencies: ["core"],
     description: "Radio button group",
@@ -226,11 +175,8 @@ export const registry: Record<string, RegistryEntry> = {
   Switch: {
     name: "Switch",
     category: "components",
-    files: [
-      "components/form/Switch.tsx",
-      "components/form/Switch.css",
-    ],
-    dependencies: ["core", "createToggle"],
+    files: ["soluid/Switch.tsx", "soluid/Switch.css"],
+    dependencies: ["core"],
     description: "Toggle switch",
   },
 
@@ -238,41 +184,35 @@ export const registry: Record<string, RegistryEntry> = {
   Table: {
     name: "Table",
     category: "components",
-    files: ["components/data/Table.tsx", "components/data/Table.css"],
+    files: ["soluid/Table.tsx", "soluid/Table.css"],
     dependencies: ["core"],
     description: "Data table with sort, pagination, row selection",
   },
   Card: {
     name: "Card",
     category: "components",
-    files: ["components/data/Card.tsx", "components/data/Card.css"],
+    files: ["soluid/Card.tsx", "soluid/Card.css"],
     dependencies: ["core"],
     description: "Content card with header/body/footer",
   },
   DescriptionList: {
     name: "DescriptionList",
     category: "components",
-    files: [
-      "components/data/DescriptionList.tsx",
-      "components/data/DescriptionList.css",
-    ],
+    files: ["soluid/DescriptionList.tsx", "soluid/DescriptionList.css"],
     dependencies: ["core"],
     description: "Key-value display",
   },
   Skeleton: {
     name: "Skeleton",
     category: "components",
-    files: ["components/data/Skeleton.tsx", "components/data/Skeleton.css"],
+    files: ["soluid/Skeleton.tsx", "soluid/Skeleton.css"],
     dependencies: ["core"],
     description: "Loading placeholder",
   },
   EmptyState: {
     name: "EmptyState",
     category: "components",
-    files: [
-      "components/data/EmptyState.tsx",
-      "components/data/EmptyState.css",
-    ],
+    files: ["soluid/EmptyState.tsx", "soluid/EmptyState.css"],
     dependencies: ["core"],
     description: "Empty data display with action",
   },
@@ -281,48 +221,42 @@ export const registry: Record<string, RegistryEntry> = {
   Dialog: {
     name: "Dialog",
     category: "components",
-    files: ["components/feedback/Dialog.tsx", "components/feedback/Dialog.css"],
-    dependencies: ["core", "createFocusTrap"],
+    files: ["soluid/Dialog.tsx", "soluid/Dialog.css"],
+    dependencies: ["core"],
     description: "Modal dialog with focus trap",
   },
   Drawer: {
     name: "Drawer",
     category: "components",
-    files: ["components/feedback/Drawer.tsx", "components/feedback/Drawer.css"],
-    dependencies: ["core", "createFocusTrap"],
+    files: ["soluid/Drawer.tsx", "soluid/Drawer.css"],
+    dependencies: ["core"],
     description: "Side panel with focus trap",
   },
   Alert: {
     name: "Alert",
     category: "components",
-    files: ["components/feedback/Alert.tsx", "components/feedback/Alert.css"],
+    files: ["soluid/Alert.tsx", "soluid/Alert.css"],
     dependencies: ["core"],
     description: "Inline notification",
   },
   Toast: {
     name: "Toast",
     category: "components",
-    files: ["components/feedback/Toast.tsx", "components/feedback/Toast.css"],
-    dependencies: ["core", "createToast"],
+    files: ["soluid/Toast.tsx", "soluid/Toast.css"],
+    dependencies: ["core"],
     description: "Toast notification with queue",
   },
   Progress: {
     name: "Progress",
     category: "components",
-    files: [
-      "components/feedback/Progress.tsx",
-      "components/feedback/Progress.css",
-    ],
+    files: ["soluid/Progress.tsx", "soluid/Progress.css"],
     dependencies: ["core"],
     description: "Progress bar",
   },
   Spinner: {
     name: "Spinner",
     category: "components",
-    files: [
-      "components/feedback/Spinner.tsx",
-      "components/feedback/Spinner.css",
-    ],
+    files: ["soluid/Spinner.tsx", "soluid/Spinner.css"],
     dependencies: ["core"],
     description: "Loading spinner",
   },
@@ -331,34 +265,28 @@ export const registry: Record<string, RegistryEntry> = {
   Tabs: {
     name: "Tabs",
     category: "components",
-    files: ["components/navigation/Tabs.tsx", "components/navigation/Tabs.css"],
+    files: ["soluid/Tabs.tsx", "soluid/Tabs.css"],
     dependencies: ["core"],
     description: "Tab navigation",
   },
   Breadcrumb: {
     name: "Breadcrumb",
     category: "components",
-    files: [
-      "components/navigation/Breadcrumb.tsx",
-      "components/navigation/Breadcrumb.css",
-    ],
+    files: ["soluid/Breadcrumb.tsx", "soluid/Breadcrumb.css"],
     dependencies: ["core"],
     description: "Breadcrumb navigation",
   },
   Pagination: {
     name: "Pagination",
     category: "components",
-    files: [
-      "components/navigation/Pagination.tsx",
-      "components/navigation/Pagination.css",
-    ],
+    files: ["soluid/Pagination.tsx", "soluid/Pagination.css"],
     dependencies: ["core"],
     description: "Page navigation",
   },
   Menu: {
     name: "Menu",
     category: "components",
-    files: ["components/navigation/Menu.tsx"],
+    files: ["soluid/Menu.tsx"],
     dependencies: ["core"],
     description: "Dropdown menu (placeholder)",
   },
@@ -367,17 +295,14 @@ export const registry: Record<string, RegistryEntry> = {
   VisuallyHidden: {
     name: "VisuallyHidden",
     category: "components",
-    files: [
-      "components/utility/VisuallyHidden.tsx",
-      "components/utility/VisuallyHidden.css",
-    ],
+    files: ["soluid/VisuallyHidden.tsx", "soluid/VisuallyHidden.css"],
     dependencies: [],
     description: "Screen reader only content",
   },
   Popover: {
     name: "Popover",
     category: "components",
-    files: ["components/utility/Popover.tsx"],
+    files: ["soluid/Popover.tsx"],
     dependencies: ["core"],
     description: "Floating element (placeholder)",
   },

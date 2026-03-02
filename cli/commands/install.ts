@@ -4,9 +4,11 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { Parser, type ReadEntry } from "tar";
-import { CONFIG_FILENAME, DEFAULT_CSS_FILENAME, PROJECT_NAME, RELEASE_URL, loadConfig } from "../config.js";
+import { CONFIG_FILENAME, PROJECT_NAME, RELEASE_URL, loadConfig } from "../config.js";
 import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
+
+const ARCHIVE_PREFIX = "soluid/";
 
 function checkRateLimit(res: Response): void {
   const remaining = res.headers.get("X-RateLimit-Remaining");
@@ -60,6 +62,14 @@ async function fetchAndExtract(
   return files;
 }
 
+/** Strip the "soluid/" prefix from an archive path for local placement. */
+function stripPrefix(archivePath: string): string {
+  if (archivePath.startsWith(ARCHIVE_PREFIX)) {
+    return archivePath.slice(ARCHIVE_PREFIX.length);
+  }
+  return archivePath;
+}
+
 export async function install(cwd: string): Promise<void> {
   const config = loadConfig(cwd);
   if (config === null) {
@@ -92,6 +102,7 @@ export async function install(cwd: string): Promise<void> {
   const targetRoot = path.resolve(cwd, config.componentDir);
 
   let copiedCount = 0;
+  const cssChunks: string[] = [];
 
   for (const name of resolved) {
     const entry = registry[name];
@@ -104,15 +115,23 @@ export async function install(cwd: string): Promise<void> {
         continue;
       }
 
-      const destPath = file === `core/${DEFAULT_CSS_FILENAME}`
-        ? path.resolve(cwd, config.cssPath)
-        : path.join(targetRoot, file);
+      const localPath = stripPrefix(file);
+
+      // CSS files: accumulate for concatenation instead of writing individually
+      if (file.endsWith(".css")) {
+        cssChunks.push(`/* ${localPath} */\n${content}`);
+        copiedCount++;
+        continue;
+      }
+
+      // TS/TSX files: strip prefix and write to componentDir
+      const destPath = path.join(targetRoot, localPath);
       const destDir = path.dirname(destPath);
       fs.mkdirSync(destDir, { recursive: true });
 
       let output = content;
       if (file.endsWith(".ts") || file.endsWith(".tsx")) {
-        output = rewriteImports(content, file, config);
+        output = rewriteImports(content, localPath, config);
       }
 
       fs.writeFileSync(destPath, output, "utf-8");
@@ -120,6 +139,15 @@ export async function install(cwd: string): Promise<void> {
     }
 
     console.log(`  + ${name}`);
+  }
+
+  // Write concatenated CSS to cssPath
+  if (cssChunks.length > 0) {
+    const cssDestPath = path.resolve(cwd, config.cssPath);
+    const cssDestDir = path.dirname(cssDestPath);
+    fs.mkdirSync(cssDestDir, { recursive: true });
+    fs.writeFileSync(cssDestPath, cssChunks.join("\n\n") + "\n", "utf-8");
+    console.log(`\nCSS written to ${config.cssPath}`);
   }
 
   console.log(`\nCopied ${copiedCount} files to ${config.componentDir}/`);

@@ -16,7 +16,12 @@ export function list(cwd: string, filter: Filter): void {
     for (const name of allNames) {
       const entry = registry[name];
       if (!entry) continue;
-      const allExist = entry.files.every((file) => fs.existsSync(path.join(targetRoot, file)));
+      const allExist = entry.files
+        .filter((f) => !f.endsWith(".css"))
+        .every((file) => {
+          const local = file.startsWith("soluid/") ? file.slice("soluid/".length) : file;
+          return fs.existsSync(path.join(targetRoot, local));
+        });
       if (allExist) installed.add(name);
     }
   }
@@ -30,7 +35,7 @@ export function list(cwd: string, filter: Filter): void {
     if (filter === "installed" && !installed.has(name)) continue;
     if (filter === "not-installed" && installed.has(name)) continue;
 
-    const cat = entry.category === "primitives" ? "Primitives" : capitalize(entry.category);
+    const cat = capitalize(entry.category);
     if (!categories.has(cat)) categories.set(cat, []);
     const list = categories.get(cat);
     const status = installed.has(name) ? " [installed]" : "";

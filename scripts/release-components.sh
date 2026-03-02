@@ -35,8 +35,8 @@ else
   echo "Bumping: ${CURRENT} -> ${NEW}"
 fi
 
-# Create tarball from src/
-tar -czf components.tar.gz -C src .
+# Create tarball from src/components/ui (includes soluid/ folder)
+tar -czf components.tar.gz -C src/components/ui .
 echo "Created components.tar.gz"
 
 # Tag and push

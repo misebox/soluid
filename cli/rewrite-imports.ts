@@ -5,16 +5,15 @@ import type { SoluidConfig } from "./config.js";
  * Rewrite internal soluid imports in a template file.
  *
  * Template files use relative imports like:
- *   import { cls } from "../../core/utils"
+ *   import { cls } from "./core/utils"
  *   import { FormField } from "./FormField"
- *   import { createFocusTrap } from "../../primitives/createFocusTrap"
  *
  * These need to be rewritten to point to the correct location
  * in the user's project, using either an alias or relative paths.
  */
 export function rewriteImports(
   content: string,
-  filePath: string, // path of this file relative to componentDir (e.g. "components/form/TextField.tsx")
+  filePath: string, // path of this file relative to componentDir (e.g. "Button.tsx", "core/types.ts")
   config: SoluidConfig,
 ): string {
   // Match import statements with relative paths (starting with . or ..)
