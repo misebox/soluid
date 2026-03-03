@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Verify npm login before doing any work
+if ! npm whoami >/dev/null 2>&1; then
+  echo "Not logged in to npm. Run: npm login" >&2
+  exit 1
+fi
+
 BUMP="${1:-}"
 CURRENT=$(node -p "require('./package.json').version")
 
 if [ -z "$BUMP" ]; then
-  # No argument: release current version if tag doesn't exist
   NEW="$CURRENT"
   TAG="v${NEW}"
-  if git rev-parse "$TAG" >/dev/null 2>&1; then
-    echo "Tag ${TAG} already exists. Specify patch|minor|major to bump." >&2
-    exit 1
-  fi
   echo "Releasing version: ${NEW}"
 else
   # Validate bump type
@@ -47,9 +48,13 @@ fi
 # Build CLI
 bun run build:cli
 
-# Tag and push
-git tag "$TAG"
-git push origin HEAD --tags
+# Tag and push (skip if tag already exists)
+if git rev-parse "$TAG" >/dev/null 2>&1; then
+  echo "Tag ${TAG} already exists, skipping tag/push"
+else
+  git tag "$TAG"
+  git push origin HEAD --tags
+fi
 
 # Publish to npm
 npm publish
