@@ -1,5 +1,7 @@
+import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import * as readline from "node:readline";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
@@ -9,6 +11,30 @@ import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
 
 const ARCHIVE_PREFIX = "soluid/";
+
+function confirm(question: string): Promise<boolean> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase() === "y");
+    });
+  });
+}
+
+function detectInstallCommand(cwd: string): { lockfile: string | null; command: string[] } {
+  const lockfiles: Record<string, string[]> = {
+    "bun.lockb": ["bun", "add"],
+    "bun.lock": ["bun", "add"],
+    "pnpm-lock.yaml": ["pnpm", "add"],
+    "yarn.lock": ["yarn", "add"],
+    "package-lock.json": ["npm", "install"],
+  };
+  for (const [lockfile, command] of Object.entries(lockfiles)) {
+    if (fs.existsSync(path.join(cwd, lockfile))) return { lockfile, command };
+  }
+  return { lockfile: null, command: ["npm", "install"] };
+}
 
 function checkRateLimit(res: Response): void {
   const remaining = res.headers.get("X-RateLimit-Remaining");
@@ -167,8 +193,18 @@ export async function install(cwd: string): Promise<void> {
   console.log(`\nCopied ${copiedCount} files to ${config.componentDir}/`);
 
   if (npmDeps.length > 0) {
-    console.log("\nRequired npm packages:");
-    console.log(`  npm install ${npmDeps.join(" ")}`);
+    const { lockfile, command } = detectInstallCommand(cwd);
+    if (lockfile) {
+      console.log(`\nFound ${lockfile}`);
+    }
+    const cmd = [...command, ...npmDeps].join(" ");
+    console.log(`Required packages: ${npmDeps.join(", ")}`);
+    const ok = await confirm(`Run \`${cmd}\`? [y/N] `);
+    if (ok) {
+      execSync(cmd, { stdio: "inherit", cwd });
+    } else {
+      console.log(`  ${cmd}`);
+    }
   }
 
   console.log("\nDone. Components are now in your project — edit freely.");
