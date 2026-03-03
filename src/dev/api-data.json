@@ -1,0 +1,1601 @@
+[
+  {
+    "name": "AlertProps",
+    "description": "Inline notification",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "variant",
+        "type": "FeedbackVariant",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "onDismiss",
+        "type": "(() => void)",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "BadgeProps",
+    "description": "Status label",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "variant",
+        "type": "Variant",
+        "optional": true
+      },
+      {
+        "name": "fill",
+        "type": "\"subtle\" | \"solid\"",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "BreadcrumbItemProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "current",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "BreadcrumbProps",
+    "description": "Breadcrumb navigation",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ButtonProps",
+    "description": "Primary, neutral, danger button with icon and loading",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "iconLeft",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "iconRight",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "variant",
+        "type": "ButtonVariant",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "CardBodyProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "CardFooterProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "CardHeaderProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "CardProps",
+    "description": "Content card with header/body/footer",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "variant",
+        "type": "\"outlined\" | \"elevated\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "CheckboxGroupProps",
+    "description": "Checkbox group with shared state",
+    "dependencies": [
+      "core",
+      "Checkbox"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string[]",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string[]) => void)",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "CheckboxProps",
+    "description": "Checkbox with indeterminate support",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "checked",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((checked: boolean) => void)",
+        "optional": true
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DescriptionListProps",
+    "description": "Key-value display",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "items",
+        "type": "{ term: string; description: JSX.Element; }[]",
+        "optional": false
+      },
+      {
+        "name": "columns",
+        "type": "1 | 2",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DialogBodyProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "DialogFooterProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "DialogHeaderProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "DialogProps",
+    "description": "Modal dialog with focus trap",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DividerProps",
+    "description": "Horizontal/vertical separator",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DrawerProps",
+    "description": "Side panel with focus trap",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "side",
+        "type": "\"left\" | \"right\"",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "EmptyStateProps",
+    "description": "Empty data display with action",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "icon",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "action",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "FormFieldProps",
+    "description": "Label + error/hint wrapper for form inputs",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "HStackProps",
+    "description": "Horizontal flex layout with gap",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "gap",
+        "type": "1 | 2 | 3 | 4 | 5 | 6",
+        "optional": true
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
+        "optional": true
+      },
+      {
+        "name": "wrap",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "IconButtonProps",
+    "description": "Icon-only button with aria-label",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "icon",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "variant",
+        "type": "ButtonVariant",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "MenuProps",
+    "description": "Dropdown menu (placeholder)",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "NumberInputProps",
+    "description": "Number input with stepper buttons",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "onInput",
+        "type": "((value: number) => void)",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "PaginationProps",
+    "description": "Page navigation",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "page",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "onChange",
+        "type": "(page: number) => void",
+        "optional": false
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "PopoverProps",
+    "description": "Floating element (placeholder)",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ProgressProps",
+    "description": "Progress bar",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "variant",
+        "type": "FeedbackVariant",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "RadioButtonProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "RadioGroupProps",
+    "description": "Radio button group",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "SelectProps",
+    "description": "Native select dropdown",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "T",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: T) => void)",
+        "optional": true
+      },
+      {
+        "name": "options",
+        "type": "SelectOption<T>[]",
+        "optional": false
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "SkeletonProps",
+    "description": "Loading placeholder",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "variant",
+        "type": "\"text\" | \"circle\" | \"rect\"",
+        "optional": true
+      },
+      {
+        "name": "width",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "height",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "SpinnerProps",
+    "description": "Loading spinner",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\"",
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "\"primary\" | \"neutral\"",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "StackProps",
+    "description": "Vertical flex layout with gap",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "gap",
+        "type": "1 | 2 | 3 | 4 | 5 | 6",
+        "optional": true
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "SwitchProps",
+    "description": "Toggle switch",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "checked",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((checked: boolean) => void)",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TableProps",
+    "description": "Data table with sort, pagination, row selection",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "columns",
+        "type": "Column<T>[]",
+        "optional": false
+      },
+      {
+        "name": "data",
+        "type": "T[]",
+        "optional": false
+      },
+      {
+        "name": "sortKey",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "sortDirection",
+        "type": "\"asc\" | \"desc\"",
+        "optional": true
+      },
+      {
+        "name": "onSort",
+        "type": "((key: string, direction: \"asc\" | \"desc\") => void)",
+        "optional": true
+      },
+      {
+        "name": "selectable",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "selectedKeys",
+        "type": "Set<string>",
+        "optional": true
+      },
+      {
+        "name": "onSelect",
+        "type": "((keys: Set<string>) => void)",
+        "optional": true
+      },
+      {
+        "name": "rowKey",
+        "type": "((row: T) => string)",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TabListProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "TabPanelProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "TabProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "TabsProps",
+    "description": "Tab navigation",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "optional": false
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TagProps",
+    "description": "Removable label for filters",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "variant",
+        "type": "Variant",
+        "optional": true
+      },
+      {
+        "name": "fill",
+        "type": "\"subtle\" | \"solid\"",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "onRemove",
+        "type": "(() => void)",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TextAreaProps",
+    "description": "Multiline text input",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onInput",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "rows",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TextFieldProps",
+    "description": "Text input with label/error/hint",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onInput",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "type",
+        "type": "\"text\" | \"email\" | \"password\" | \"url\" | \"tel\"",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ToastContainerProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "position",
+        "type": "\"top-right\" | \"top-center\" | \"bottom-right\" | \"bottom-center\"",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TooltipProps",
+    "description": "Tooltip",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "content",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "placement",
+        "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "VisuallyHiddenProps",
+    "description": "Screen reader only content",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  }
+]
