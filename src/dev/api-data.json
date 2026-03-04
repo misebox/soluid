@@ -1,5 +1,61 @@
 [
   {
+    "name": "AccordionItemProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "AccordionProps",
+    "description": "Collapsible content sections",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "AlertProps",
     "description": "Inline notification",
     "dependencies": [
@@ -19,6 +75,50 @@
       {
         "name": "onDismiss",
         "type": "(() => void)",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "AvatarProps",
+    "description": "User avatar with image and initials fallback",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "src",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "alt",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "Variant",
         "optional": true
       },
       {
@@ -281,6 +381,16 @@
         "optional": true
       },
       {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
         "name": "children",
         "type": "JSX.Element",
         "optional": false
@@ -336,6 +446,16 @@
       },
       {
         "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
         "type": "string",
         "optional": true
       },
@@ -500,6 +620,23 @@
     ]
   },
   {
+    "name": "DrawerHeaderProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
     "name": "DrawerProps",
     "description": "Side panel with focus trap",
     "dependencies": [
@@ -644,6 +781,11 @@
         "optional": true
       },
       {
+        "name": "justify",
+        "type": "\"start\" | \"center\" | \"end\" | \"between\" | \"around\"",
+        "optional": true
+      },
+      {
         "name": "wrap",
         "type": "boolean",
         "optional": true
@@ -710,12 +852,59 @@
     ]
   },
   {
+    "name": "MenuItemProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "onSelect",
+        "type": "(() => void)",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
     "name": "MenuProps",
-    "description": "Dropdown menu (placeholder)",
+    "description": "Dropdown menu with keyboard navigation",
     "dependencies": [
       "core"
     ],
     "props": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "optional": false
+      },
+      {
+        "name": "placement",
+        "type": "Placement",
+        "optional": true
+      },
+      {
+        "name": "trigger",
+        "type": "JSX.Element",
+        "optional": false
+      },
       {
         "name": "children",
         "type": "JSX.Element",
@@ -729,6 +918,18 @@
       {
         "name": "density",
         "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "MenuSeparatorProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
         "optional": true
       }
     ]
@@ -836,6 +1037,16 @@
         "optional": true
       },
       {
+        "name": "showPages",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "maxVisible",
+        "type": "number",
+        "optional": true
+      },
+      {
         "name": "class",
         "type": "string",
         "optional": true
@@ -849,13 +1060,33 @@
   },
   {
     "name": "PopoverProps",
-    "description": "Floating element (placeholder)",
+    "description": "Floating element with trigger and panel",
     "dependencies": [
       "core"
     ],
     "props": [
       {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "optional": false
+      },
+      {
+        "name": "placement",
+        "type": "Placement",
+        "optional": true
+      },
+      {
         "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "content",
         "type": "JSX.Element",
         "optional": false
       },
@@ -966,6 +1197,16 @@
       },
       {
         "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
         "type": "string",
         "optional": true
       },
@@ -1137,6 +1378,11 @@
         "optional": true
       },
       {
+        "name": "justify",
+        "type": "\"start\" | \"center\" | \"end\" | \"between\" | \"around\"",
+        "optional": true
+      },
+      {
         "name": "children",
         "type": "JSX.Element",
         "optional": false
@@ -1182,6 +1428,16 @@
       },
       {
         "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
         "type": "string",
         "optional": true
       },
@@ -1439,11 +1695,6 @@
         "optional": true
       },
       {
-        "name": "disabled",
-        "type": "boolean",
-        "optional": true
-      },
-      {
         "name": "label",
         "type": "string",
         "optional": false
@@ -1461,6 +1712,16 @@
       {
         "name": "required",
         "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
         "optional": true
       },
       {

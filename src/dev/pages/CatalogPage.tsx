@@ -1,8 +1,11 @@
 import { createMemo, createSignal } from "solid-js";
 
+import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
+import { Avatar } from "../../components/ui/soluid/Avatar";
 import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/soluid/Card";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
+import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
 import { Skeleton } from "../../components/ui/soluid/Skeleton";
 import { Table } from "../../components/ui/soluid/Table";
 import { Alert } from "../../components/ui/soluid/Alert";
@@ -41,6 +44,8 @@ export function CatalogPage() {
   const [selectValue, setSelectValue] = createSignal("");
   const [sortKey, setSortKey] = createSignal<string>("");
   const [sortDir, setSortDir] = createSignal<"asc" | "desc">("asc");
+  const [menuOpen, setMenuOpen] = createSignal(false);
+  const [page2, setPage2] = createSignal(3);
 
   const tableData = [
     { id: "1", name: "Tanaka Taro", email: "tanaka@example.com", role: "Admin", age: 32 },
@@ -142,6 +147,14 @@ export function CatalogPage() {
           <Tag variant="primary" onRemove={() => {}}>Removable</Tag>
           <Tag variant="success">Status: OK</Tag>
           <Tag variant="danger" onRemove={() => {}}>Error</Tag>
+        </div>
+
+        <h3>Avatar</h3>
+        <div class="catalog-row">
+          <Avatar name="Tanaka Taro" size="sm" variant="primary" />
+          <Avatar name="Suzuki Hanako" size="md" variant="success" />
+          <Avatar name="Sato Jiro" size="lg" variant="danger" />
+          <Avatar size="md" variant="neutral" />
         </div>
       </section>
 
@@ -307,6 +320,19 @@ export function CatalogPage() {
           description="There are no items to display yet."
           action={<Button variant="primary" size="sm">Create New</Button>}
         />
+
+        <h3>Accordion</h3>
+        <Accordion>
+          <AccordionItem title="What is soluid?" open>
+            A SolidJS component toolkit. Copy components into your project and own the code directly.
+          </AccordionItem>
+          <AccordionItem title="How do I install components?">
+            Run <code>npx soluid install</code> to download and install components + CSS.
+          </AccordionItem>
+          <AccordionItem title="Disabled item" disabled>
+            This content is not accessible.
+          </AccordionItem>
+        </Accordion>
       </section>
 
       {/* Feedback */}
@@ -390,11 +416,32 @@ export function CatalogPage() {
         </Breadcrumb>
 
         <h3>Pagination</h3>
-        <Pagination
-          page={page()}
-          totalPages={10}
-          onChange={setPage}
-        />
+        <Stack gap={3}>
+          <Pagination
+            page={page()}
+            totalPages={10}
+            onChange={setPage}
+          />
+          <Pagination
+            page={page2()}
+            totalPages={20}
+            onChange={setPage2}
+            showPages
+            maxVisible={7}
+          />
+        </Stack>
+
+        <h3>Menu</h3>
+        <Menu
+          open={menuOpen()}
+          onOpenChange={setMenuOpen}
+          trigger={<>Actions ▾</>}
+        >
+          <MenuItem onSelect={() => setMenuOpen(false)}>Edit</MenuItem>
+          <MenuItem onSelect={() => setMenuOpen(false)}>Duplicate</MenuItem>
+          <MenuSeparator />
+          <MenuItem onSelect={() => setMenuOpen(false)}>Delete</MenuItem>
+        </Menu>
       </section>
     </div>
   );

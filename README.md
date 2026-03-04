@@ -46,14 +46,14 @@ document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.setAttribute("data-density", "dense");
 ```
 
-## Components (32)
+## Components (34)
 
 | Category | Components |
 |---|---|
 | Layout | Stack, HStack, Divider, Spacer |
-| General | Button, IconButton, Badge, Tag, Tooltip |
+| General | Button, IconButton, Badge, Tag, Tooltip, Avatar |
 | Form | FormField, TextField, TextArea, NumberInput, Select, Checkbox, CheckboxGroup, RadioGroup, Switch |
-| Data | Table, Card, DescriptionList, Skeleton, EmptyState |
+| Data | Table, Card, DescriptionList, Skeleton, EmptyState, Accordion |
 | Feedback | Dialog, Drawer, Alert, Toast, Progress, Spinner |
 | Navigation | Tabs, Breadcrumb, Pagination, Menu |
 | Utility | VisuallyHidden, Popover |

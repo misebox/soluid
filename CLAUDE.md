@@ -1,5 +1,4 @@
-SolidJS コンポーネントをユーザーのプロジェクトにコピーする CLI ツールキット。
-コンポーネントソース (`src/components/ui/soluid/`) と CLI (`cli/`) の両方を含む。
+主役はコンポーネント。CLIはインストーラ。Webサイトは紹介用。
 
 ## Workflow Orchestration
 

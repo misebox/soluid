@@ -2,9 +2,9 @@ import { A } from "@solidjs/router";
 
 const categories = [
   { name: "Layout", components: "Stack, HStack, Divider, Spacer" },
-  { name: "General", components: "Button, IconButton, Badge, Tag, Tooltip" },
+  { name: "General", components: "Button, IconButton, Badge, Tag, Tooltip, Avatar" },
   { name: "Form", components: "TextField, TextArea, NumberInput, Select, Checkbox, RadioGroup, Switch" },
-  { name: "Data Display", components: "Table, Card, DescriptionList, Skeleton, EmptyState" },
+  { name: "Data Display", components: "Table, Card, DescriptionList, Skeleton, EmptyState, Accordion" },
   { name: "Feedback", components: "Dialog, Drawer, Alert, Toast, Progress, Spinner" },
   { name: "Navigation", components: "Tabs, Breadcrumb, Pagination, Menu" },
 ];

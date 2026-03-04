@@ -286,9 +286,10 @@ export const registry: Record<string, RegistryEntry> = {
   Menu: {
     name: "Menu",
     category: "components",
-    files: ["soluid/Menu.tsx"],
+    files: ["soluid/Menu.tsx", "soluid/Menu.css"],
     dependencies: ["core"],
-    description: "Dropdown menu (placeholder)",
+    npmDependencies: ["@floating-ui/dom"],
+    description: "Dropdown menu with keyboard navigation",
   },
 
   // --- Utility ---
@@ -302,9 +303,24 @@ export const registry: Record<string, RegistryEntry> = {
   Popover: {
     name: "Popover",
     category: "components",
-    files: ["soluid/Popover.tsx"],
+    files: ["soluid/Popover.tsx", "soluid/Popover.css"],
     dependencies: ["core"],
-    description: "Floating element (placeholder)",
+    npmDependencies: ["@floating-ui/dom"],
+    description: "Floating element with trigger and panel",
+  },
+  Accordion: {
+    name: "Accordion",
+    category: "components",
+    files: ["soluid/Accordion.tsx", "soluid/Accordion.css"],
+    dependencies: ["core"],
+    description: "Collapsible content sections",
+  },
+  Avatar: {
+    name: "Avatar",
+    category: "components",
+    files: ["soluid/Avatar.tsx", "soluid/Avatar.css"],
+    dependencies: ["core"],
+    description: "User avatar with image and initials fallback",
   },
 };
 
