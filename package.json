@@ -22,9 +22,11 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite --open /soluid",
+    "dev": "npm run precatalog && vite --open /soluid",
+    "generate:css": "npx tsx scripts/generate-css-imports.ts",
     "generate:api": "npx tsx scripts/generate-api-data.ts",
-    "build:catalog": "vite build --config vite.config.catalog.ts",
+    "precatalog": "npm run generate:css && npm run generate:api",
+    "build:catalog": "npm run precatalog && vite build --config vite.config.catalog.ts",
     "build:cli": "tsc -p cli/tsconfig.json",
     "prepare": "npm run build:cli",
     "typecheck": "tsc --noEmit",
