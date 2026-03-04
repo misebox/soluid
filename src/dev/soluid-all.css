@@ -1,5 +1,7 @@
 @import "../components/ui/soluid/core/soluid.css";
+@import "../components/ui/soluid/Accordion.css";
 @import "../components/ui/soluid/Alert.css";
+@import "../components/ui/soluid/Avatar.css";
 @import "../components/ui/soluid/Badge.css";
 @import "../components/ui/soluid/Breadcrumb.css";
 @import "../components/ui/soluid/Button.css";
@@ -14,8 +16,10 @@
 @import "../components/ui/soluid/FormField.css";
 @import "../components/ui/soluid/HStack.css";
 @import "../components/ui/soluid/IconButton.css";
+@import "../components/ui/soluid/Menu.css";
 @import "../components/ui/soluid/NumberInput.css";
 @import "../components/ui/soluid/Pagination.css";
+@import "../components/ui/soluid/Popover.css";
 @import "../components/ui/soluid/Progress.css";
 @import "../components/ui/soluid/RadioButton.css";
 @import "../components/ui/soluid/RadioGroup.css";
