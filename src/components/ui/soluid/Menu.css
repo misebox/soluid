@@ -1,0 +1,75 @@
+.so-menu-anchor {
+  display: inline-flex;
+  position: relative;
+}
+
+.so-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.so-menu {
+  position: absolute;
+  z-index: 1000;
+  background-color: var(--so-bg);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: var(--so-space-1) 0;
+  min-width: 160px;
+  animation: so-menu-in 0.15s ease-out;
+}
+
+@keyframes so-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- MenuItem --- */
+
+.so-menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--so-space-2) var(--so-space-3);
+  font-size: var(--so-font-size-md);
+  color: var(--so-text);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.1s;
+  outline: none;
+}
+
+.so-menu-item:hover,
+.so-menu-item:focus {
+  background-color: var(--so-color-neutral-subtle);
+}
+
+.so-menu-item--disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-menu-item--disabled:hover,
+.so-menu-item--disabled:focus {
+  background-color: transparent;
+}
+
+/* --- MenuSeparator --- */
+
+.so-menu-separator {
+  height: 1px;
+  background-color: var(--so-border);
+  margin: var(--so-space-1) 0;
+}
