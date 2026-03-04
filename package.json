@@ -22,7 +22,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open /soluid",
     "generate:api": "npx tsx scripts/generate-api-data.ts",
     "build:catalog": "vite build --config vite.config.catalog.ts",
     "build:cli": "tsc -p cli/tsconfig.json",

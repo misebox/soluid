@@ -18,6 +18,7 @@ export function Layout(props: ParentProps) {
       <header class="site-header">
         <A href="/" class="site-logo">soluid</A>
         <nav class="site-nav">
+          <A href="/getting-started" class="site-nav-link" activeClass="active">Getting Started</A>
           <A href="/catalog" class="site-nav-link" activeClass="active">Catalog</A>
           <A href="/api" class="site-nav-link" activeClass="active">API</A>
         </nav>

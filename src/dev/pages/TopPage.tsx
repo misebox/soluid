@@ -18,7 +18,7 @@ export function TopPage() {
           SolidJS Opinionated UI — copy-paste component toolkit for business apps.
         </p>
         <pre class="top-install">
-          <code>npx soluid init</code>
+          <code>bunx soluid init</code>
         </pre>
       </section>
 
@@ -50,6 +50,7 @@ export function TopPage() {
           ))}
         </div>
         <div class="top-links">
+          <A href="/getting-started" class="top-link">Getting Started</A>
           <A href="/catalog" class="top-link">Browse Catalog</A>
           <A href="/api" class="top-link">API Reference</A>
         </div>

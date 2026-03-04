@@ -204,6 +204,46 @@
   opacity: 0.85;
 }
 
+/* ===== Getting Started Page ===== */
+.gs-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--so-space-5);
+}
+
+.gs-page h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--so-text);
+  margin-bottom: var(--so-space-4);
+}
+
+.gs-page p {
+  font-size: var(--so-font-size-md);
+  color: var(--so-text);
+  line-height: 1.6;
+  margin-bottom: var(--so-space-2);
+}
+
+.gs-page p code {
+  font-size: var(--so-font-size-sm);
+  background: var(--so-bg-subtle);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.gs-code {
+  background: var(--so-bg-subtle);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  padding: var(--so-space-3);
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text);
+  overflow-x: auto;
+  margin-bottom: var(--so-space-2);
+  line-height: 1.5;
+}
+
 /* ===== API Page ===== */
 .api-page {
   max-width: 960px;
