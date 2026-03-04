@@ -63,6 +63,8 @@ export function AccordionItem(props: AccordionItemProps) {
         <span class="so-accordion-item__title">{local.title}</span>
         <svg
           class="so-accordion-item__chevron"
+          width="16"
+          height="16"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
