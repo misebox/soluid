@@ -97,6 +97,7 @@ export function Popover(props: PopoverProps) {
         type="button"
         class="so-popover-trigger"
         aria-expanded={local.open}
+        aria-haspopup="dialog"
         aria-controls={local.open ? panelId : undefined}
         onClick={handleTriggerClick}
       >

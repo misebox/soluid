@@ -6,6 +6,7 @@ export interface ProgressProps extends CommonProps {
   value: number;
   variant?: FeedbackVariant;
   size?: "sm" | "md";
+  "aria-label"?: string;
 }
 
 export function Progress(props: ProgressProps) {
@@ -15,6 +16,7 @@ export function Progress(props: ProgressProps) {
     "value",
     "variant",
     "size",
+    "aria-label",
   ]);
 
   const clampedValue = () => Math.max(0, Math.min(100, local.value));
@@ -31,6 +33,7 @@ export function Progress(props: ProgressProps) {
       aria-valuenow={clampedValue()}
       aria-valuemin={0}
       aria-valuemax={100}
+      aria-label={local["aria-label"]}
       data-density={local.density}
       {...others}
     >

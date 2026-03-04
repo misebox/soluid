@@ -109,6 +109,7 @@ export function Table<T extends Record<string, unknown>>(
                     "so-table__header",
                     col.align && `so-table__cell--${col.align}`,
                   )}
+                  scope="col"
                   style={{ width: col.width }}
                   aria-sort={local.sortKey === col.key
                     ? local.sortDirection === "asc"
