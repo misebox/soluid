@@ -4,8 +4,7 @@
   "components": ["Button", "TextField", "Dialog"]
 }`;function da(){const[t,e]=T("bunx"),n=r=>`${t()} soluid ${r}`;return(()=>{var r=ca();return d(r,c(_e,{gap:4,align:"center",get children(){return[Qo(),c(Br,{get value(){return t()},onChange:i=>e(i),get children(){return c(_e,{gap:3,get children(){return[c(ut,{value:"bunx",label:"bunx"}),c(ut,{value:"npx",label:"npx"})]}})}})]}}),null),d(r,c(De,{gap:4,get children(){return[c(qe,{title:"1. Initialize",get children(){return[Zo(),c(Ee,{get children(){return n("init")}}),ea()]}}),c(qe,{title:"2. Edit Config",get children(){return[ta(),c(Ee,{children:ua}),na(),ra(),c(Ee,{get children(){return`${n("add Checkbox Switch Tabs")}
 ${n("remove Switch")}`}})]}}),c(qe,{title:"3. Install",get children(){return[ia(),c(Ee,{get children(){return n("install")}}),oa()]}}),c(qe,{title:"4. Import CSS",get children(){return[aa(),c(Ee,{children:`// src/index.tsx
-import "./styles/soluid.css";`})]}}),c(qe,{title:"5. Use Components",get children(){return[sa(),c(Ee,{children:`import { Button } from "./components/ui/soluid/Button";
-import { TextField } from "./components/ui/soluid/TextField";
+import "./styles/soluid.css";`})]}}),c(qe,{title:"5. Use Components",get children(){return[sa(),c(Ee,{children:`import { Button, TextField } from "./components/ui";
 
 function App() {
   return (

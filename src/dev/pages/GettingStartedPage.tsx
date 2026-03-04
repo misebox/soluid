@@ -87,8 +87,7 @@ import "./styles/soluid.css";`}</CodeBlock>
 
         <Step title="5. Use Components">
           <p>Import and use directly — you own the code:</p>
-          <CodeBlock>{`import { Button } from "./components/ui/soluid/Button";
-import { TextField } from "./components/ui/soluid/TextField";
+          <CodeBlock>{`import { Button, TextField } from "./components/ui";
 
 function App() {
   return (
