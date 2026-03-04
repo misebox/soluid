@@ -124,3 +124,12 @@
     transform: translateX(-100%);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .so-drawer-backdrop,
+  .so-drawer-backdrop--closing,
+  .so-drawer,
+  .so-drawer--closing {
+    animation: none;
+  }
+}

@@ -52,7 +52,7 @@
 }
 
 .so-menu-item:hover,
-.so-menu-item:focus {
+.so-menu-item:focus-visible {
   background-color: var(--so-color-neutral-subtle);
 }
 
@@ -62,8 +62,14 @@
 }
 
 .so-menu-item--disabled:hover,
-.so-menu-item--disabled:focus {
+.so-menu-item--disabled:focus-visible {
   background-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .so-menu {
+    animation: none;
+  }
 }
 
 /* --- MenuSeparator --- */

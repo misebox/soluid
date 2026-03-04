@@ -118,6 +118,12 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .so-button__spinner::after {
+    animation: none;
+  }
+}
+
 .so-button--loading.so-button--primary .so-button__spinner,
 .so-button--loading.so-button--danger .so-button__spinner {
   color: var(--so-color-primary-fg);

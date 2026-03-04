@@ -121,3 +121,10 @@
     transform: translateY(-8px);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .so-toast,
+  .so-toast--dismissing {
+    animation: none;
+  }
+}

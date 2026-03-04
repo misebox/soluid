@@ -29,3 +29,9 @@
     opacity: 0.4;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .so-skeleton {
+    animation: none;
+  }
+}

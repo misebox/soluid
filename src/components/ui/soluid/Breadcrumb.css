@@ -30,6 +30,12 @@
   text-decoration: underline;
 }
 
+.so-breadcrumb__item a:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .so-breadcrumb__item--current {
   color: var(--so-text);
   font-weight: 500;

@@ -114,3 +114,12 @@
     transform: scale(0.95);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .so-dialog-backdrop,
+  .so-dialog-backdrop--closing,
+  .so-dialog,
+  .so-dialog--closing {
+    animation: none;
+  }
+}
