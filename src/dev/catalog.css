@@ -252,6 +252,18 @@
   line-height: 1.5;
 }
 
+/* ===== Catalog API Link ===== */
+.catalog-api-link {
+  color: var(--so-text);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.catalog-api-link:hover {
+  color: var(--so-primary);
+  text-decoration: underline;
+}
+
 /* ===== API Page ===== */
 .api-page {
   max-width: 960px;
@@ -259,9 +271,63 @@
   padding: var(--so-space-5);
 }
 
-.api-search {
-  max-width: 400px;
+.api-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--so-space-3);
   margin-bottom: var(--so-space-3);
+}
+
+.api-index {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--so-space-1);
+}
+
+.api-index-badge {
+  text-decoration: none;
+}
+
+.api-index-badge:hover .so-badge {
+  background: var(--so-primary-subtle);
+  color: var(--so-primary);
+}
+
+.api-search {
+  position: relative;
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.api-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--so-text-muted);
+  pointer-events: none;
+}
+
+.api-search-input {
+  width: 100%;
+  padding: var(--so-space-2) var(--so-space-2) var(--so-space-2) 34px;
+  font-size: var(--so-font-size-sm);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background: var(--so-bg);
+  color: var(--so-text);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.api-search-input:focus {
+  border-color: var(--so-primary);
+  box-shadow: 0 0 0 2px var(--so-primary-subtle);
+}
+
+.api-search-input::placeholder {
+  color: var(--so-text-muted);
 }
 
 .api-count {

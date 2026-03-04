@@ -1,4 +1,5 @@
 import { createMemo, createSignal } from "solid-js";
+import { A } from "@solidjs/router";
 
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Avatar } from "../../components/ui/soluid/Avatar";
@@ -82,13 +83,19 @@ export function CatalogPage() {
     { key: "age" as const, header: "Age", align: "end" as const, sortable: true },
   ];
 
+  const apiLink = (name: string, label?: string) => (
+    <h3>
+      <A href={`/api#${name}`} class="catalog-api-link">{label ?? name}</A>
+    </h3>
+  );
+
   return (
     <div class="catalog">
       {/* Layout */}
       <section class="catalog-section">
         <h2>Layout</h2>
 
-        <h3>Stack / HStack</h3>
+        {apiLink("Stack", "Stack / HStack")}
         <HStack gap={3}>
           <Stack gap={2}>
             <Badge variant="neutral">Item 1</Badge>
@@ -103,7 +110,7 @@ export function CatalogPage() {
           </HStack>
         </HStack>
 
-        <h3>Divider</h3>
+        {apiLink("Divider")}
         <Divider />
       </section>
 
@@ -111,7 +118,7 @@ export function CatalogPage() {
       <section class="catalog-section">
         <h2>General</h2>
 
-        <h3>Button</h3>
+        {apiLink("Button")}
         <div class="catalog-row">
           <Button variant="primary">Primary</Button>
           <Button variant="neutral">Neutral</Button>
@@ -125,14 +132,14 @@ export function CatalogPage() {
           <Button variant="primary" size="lg">Large</Button>
         </div>
 
-        <h3>IconButton</h3>
+        {apiLink("IconButton")}
         <div class="catalog-row">
           <IconButton variant="primary" aria-label="Add" icon={<span>+</span>} />
           <IconButton variant="neutral" aria-label="Settings" icon={<span>*</span>} />
           <IconButton variant="danger" aria-label="Delete" icon={<span>x</span>} />
         </div>
 
-        <h3>Badge</h3>
+        {apiLink("Badge")}
         <div class="catalog-row">
           <Badge variant="primary">Primary</Badge>
           <Badge variant="neutral">Neutral</Badge>
@@ -142,14 +149,14 @@ export function CatalogPage() {
           <Badge variant="info">Info</Badge>
         </div>
 
-        <h3>Tag</h3>
+        {apiLink("Tag")}
         <div class="catalog-row">
           <Tag variant="primary" onRemove={() => {}}>Removable</Tag>
           <Tag variant="success">Status: OK</Tag>
           <Tag variant="danger" onRemove={() => {}}>Error</Tag>
         </div>
 
-        <h3>Avatar</h3>
+        {apiLink("Avatar")}
         <div class="catalog-row">
           <Avatar name="Tanaka Taro" size="sm" variant="primary" />
           <Avatar name="Suzuki Hanako" size="md" variant="success" />
@@ -164,7 +171,7 @@ export function CatalogPage() {
 
         <div class="catalog-grid">
           <div>
-            <h3>TextField</h3>
+            {apiLink("TextField")}
             <Stack gap={3}>
               <TextField
                 label="Name"
@@ -187,7 +194,7 @@ export function CatalogPage() {
           </div>
 
           <div>
-            <h3>TextArea</h3>
+            {apiLink("TextArea")}
             <TextArea
               label="Description"
               placeholder="Enter description..."
@@ -198,7 +205,7 @@ export function CatalogPage() {
 
         <div class="catalog-grid">
           <div>
-            <h3>NumberInput</h3>
+            {apiLink("NumberInput")}
             <NumberInput
               label="Quantity"
               value={numberValue()}
@@ -210,7 +217,7 @@ export function CatalogPage() {
           </div>
 
           <div>
-            <h3>Select</h3>
+            {apiLink("Select")}
             <Select
               label="Role"
               placeholder="Select a role"
@@ -225,7 +232,7 @@ export function CatalogPage() {
           </div>
         </div>
 
-        <h3>Checkbox</h3>
+        {apiLink("Checkbox")}
         <div class="catalog-row">
           <Checkbox
             checked={checkboxChecked()}
@@ -236,7 +243,7 @@ export function CatalogPage() {
           <Checkbox disabled label="Disabled" />
         </div>
 
-        <h3>RadioGroup</h3>
+        {apiLink("RadioGroup")}
         <RadioGroup
           value={radioValue()}
           onChange={setRadioValue}
@@ -249,7 +256,7 @@ export function CatalogPage() {
           </HStack>
         </RadioGroup>
 
-        <h3>Switch</h3>
+        {apiLink("Switch")}
         <div class="catalog-row">
           <Switch
             checked={switchOn()}
@@ -264,7 +271,7 @@ export function CatalogPage() {
       <section class="catalog-section">
         <h2>Data Display</h2>
 
-        <h3>Table</h3>
+        {apiLink("Table")}
         <div class="catalog-block">
           <Table
             columns={tableColumns}
@@ -276,7 +283,7 @@ export function CatalogPage() {
           />
         </div>
 
-        <h3>Card</h3>
+        {apiLink("Card")}
         <div class="catalog-grid">
           <Card>
             <CardHeader>Card Title</CardHeader>
@@ -305,7 +312,7 @@ export function CatalogPage() {
           </Card>
         </div>
 
-        <h3>Skeleton</h3>
+        {apiLink("Skeleton")}
         <div class="catalog-row">
           <Skeleton variant="circle" width="40px" height="40px" />
           <Stack gap={2}>
@@ -314,14 +321,14 @@ export function CatalogPage() {
           </Stack>
         </div>
 
-        <h3>EmptyState</h3>
+        {apiLink("EmptyState")}
         <EmptyState
           title="No data"
           description="There are no items to display yet."
           action={<Button variant="primary" size="sm">Create New</Button>}
         />
 
-        <h3>Accordion</h3>
+        {apiLink("Accordion")}
         <Accordion>
           <AccordionItem title="What is soluid?" open>
             A SolidJS component toolkit. Copy components into your project and own the code directly.
@@ -339,7 +346,7 @@ export function CatalogPage() {
       <section class="catalog-section">
         <h2>Feedback</h2>
 
-        <h3>Alert</h3>
+        {apiLink("Alert")}
         <Stack gap={2}>
           <Alert variant="info">Informational message.</Alert>
           <Alert variant="success">Operation completed successfully.</Alert>
@@ -349,14 +356,14 @@ export function CatalogPage() {
           </Alert>
         </Stack>
 
-        <h3>Progress</h3>
+        {apiLink("Progress")}
         <Stack gap={2}>
           <Progress value={30} variant="info" />
           <Progress value={65} variant="success" />
           <Progress value={90} variant="warning" />
         </Stack>
 
-        <h3>Spinner</h3>
+        {apiLink("Spinner")}
         <div class="catalog-row">
           <Spinner size="sm" />
           <Spinner size="md" />
@@ -364,7 +371,7 @@ export function CatalogPage() {
           <Spinner size="md" variant="primary" />
         </div>
 
-        <h3>Dialog</h3>
+        {apiLink("Dialog")}
         <Button variant="primary" onClick={() => setDialogOpen(true)}>
           Open Dialog
         </Button>
@@ -390,7 +397,7 @@ export function CatalogPage() {
       <section class="catalog-section">
         <h2>Navigation</h2>
 
-        <h3>Tabs</h3>
+        {apiLink("Tabs")}
         <Tabs value={activeTab()} onChange={setActiveTab}>
           <TabList>
             <Tab value="tab1">Overview</Tab>
@@ -408,14 +415,14 @@ export function CatalogPage() {
           </TabPanel>
         </Tabs>
 
-        <h3>Breadcrumb</h3>
+        {apiLink("Breadcrumb")}
         <Breadcrumb>
           <BreadcrumbItem href="#">Home</BreadcrumbItem>
           <BreadcrumbItem href="#">Users</BreadcrumbItem>
           <BreadcrumbItem current>Tanaka Taro</BreadcrumbItem>
         </Breadcrumb>
 
-        <h3>Pagination</h3>
+        {apiLink("Pagination")}
         <Stack gap={3}>
           <Pagination
             page={page()}
@@ -431,7 +438,7 @@ export function CatalogPage() {
           />
         </Stack>
 
-        <h3>Menu</h3>
+        {apiLink("Menu")}
         <Menu
           open={menuOpen()}
           onOpenChange={setMenuOpen}
