@@ -51,3 +51,60 @@
   padding: 0 var(--so-space-4);
   font-size: var(--so-font-size-md);
 }
+
+/* --- Page number buttons --- */
+
+.so-pagination__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--so-radius);
+  background: transparent;
+  color: var(--so-text);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  min-width: 2em;
+}
+
+.so-pagination__page:hover {
+  background-color: var(--so-color-neutral-subtle);
+}
+
+.so-pagination__page--active {
+  background-color: var(--so-color-primary-base);
+  color: var(--so-color-primary-fg);
+  border-color: var(--so-color-primary-base);
+}
+
+.so-pagination__page--active:hover {
+  background-color: var(--so-color-primary-base);
+}
+
+.so-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--so-text-muted);
+  min-width: 1.5em;
+  user-select: none;
+}
+
+/* --- Page sizes --- */
+
+.so-pagination--sm .so-pagination__page {
+  height: var(--so-control-height-sm);
+  padding: 0 var(--so-space-1);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-pagination--sm .so-pagination__ellipsis {
+  font-size: var(--so-font-size-sm);
+}
+
+.so-pagination--md .so-pagination__page {
+  height: var(--so-control-height-md);
+  padding: 0 var(--so-space-2);
+  font-size: var(--so-font-size-md);
+}
