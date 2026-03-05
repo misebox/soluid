@@ -22,7 +22,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "bun run precatalog && vite --open /soluid/",
+    "dev": "bun run precatalog && vite --open /soluid/ --base /soluid",
     "generate:css": "bunx tsx scripts/generate-css-imports.ts",
     "generate:api": "bunx tsx scripts/generate-api-data.ts",
     "precatalog": "bun run generate:css && bun run generate:api",
