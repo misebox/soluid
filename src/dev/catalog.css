@@ -55,6 +55,17 @@
   flex: 1;
 }
 
+.github-link {
+  display: flex;
+  align-items: center;
+  color: var(--so-text-muted);
+  transition: color 0.15s;
+}
+
+.github-link:hover {
+  color: var(--so-text);
+}
+
 /* ===== Components Page ===== */
 .components-page {
   display: flex;
