@@ -63,6 +63,382 @@ export const SUB_COMPONENTS: Record<string, string[]> = {
   Toast:         ["ToastContainer"],
 };
 
+/* ---------- Descriptions ---------- */
+
+export const DESCRIPTIONS: Record<string, string> = {
+  Stack:           "Vertical/horizontal flex container for stacking elements with consistent spacing.",
+  Divider:         "Visual separator line between content sections.",
+  Spacer:          "Flexible space that fills available room in flex containers.",
+  Button:          "Clickable action trigger with variant, size, loading, and disabled states.",
+  IconButton:      "Compact button containing only an icon with an accessible label.",
+  Badge:           "Small colored label for status, category, or count display.",
+  Tag:             "Removable label for categorization or filtering.",
+  Avatar:          "Circular user representation showing initials or image.",
+  Tooltip:         "Popup hint shown on hover with configurable placement.",
+  TextField:       "Single-line text input with label, hint, and validation support.",
+  TextArea:        "Multi-line text input with label and hint.",
+  NumberInput:     "Numeric input with increment/decrement controls and min/max bounds.",
+  Select:          "Dropdown selector for choosing from a list of options.",
+  Checkbox:        "Toggle control for boolean values, supports indeterminate state.",
+  CheckboxGroup:   "Group of checkboxes sharing a single array value.",
+  RadioGroup:      "Exclusive selection from a set of radio options.",
+  Switch:          "Toggle switch for on/off states.",
+  Table:           "Data grid with sortable columns, custom renderers, and row selection.",
+  Card:            "Bordered container with header, body, and footer slots.",
+  DescriptionList: "Key-value pair display in a definition list layout.",
+  Skeleton:        "Placeholder animation for loading states (text, circle, rect).",
+  EmptyState:      "Message displayed when no data is available, with optional action.",
+  Accordion:       "Collapsible content sections with open/disabled states.",
+  Alert:           "Contextual feedback message with variant and optional dismiss.",
+  Progress:        "Visual indicator of completion percentage with variant colors.",
+  Spinner:         "Animated loading indicator in multiple sizes.",
+  Dialog:          "Modal overlay for focused interactions with header, body, footer.",
+  Drawer:          "Slide-in panel from the screen edge with configurable side and size.",
+  Toast:           "Temporary notification popup managed via useToast() hook.",
+  Tabs:            "Content organization with switchable tab panels.",
+  Breadcrumb:      "Hierarchical navigation path showing the current location.",
+  Pagination:      "Page navigation control with optional page number display.",
+  Popover:         "Floating content panel triggered by click on a child element.",
+  Menu:            "Dropdown action list with items and separators.",
+};
+
+/* ---------- Code examples ---------- */
+
+export const CODE_EXAMPLES: Record<string, string> = {
+  Stack: `import { Stack } from "./soluid/Stack";
+import { HStack } from "./soluid/HStack";
+
+<Stack gap={2}>
+  <div>Item 1</div>
+  <div>Item 2</div>
+</Stack>
+
+<HStack gap={3}>
+  <div>Left</div>
+  <div>Right</div>
+</HStack>`,
+
+  Divider: `import { Divider } from "./soluid/Divider";
+
+<Divider />
+<Divider orientation="vertical" />`,
+
+  Spacer: `import { Spacer } from "./soluid/Spacer";
+
+<HStack>
+  <span>Left</span>
+  <Spacer />
+  <span>Right</span>
+</HStack>`,
+
+  Button: `import { Button } from "./soluid/Button";
+
+<Button variant="primary" onClick={handleClick}>
+  Save
+</Button>
+<Button variant="danger" size="sm" disabled>
+  Delete
+</Button>
+<Button variant="neutral" loading>
+  Sending...
+</Button>`,
+
+  IconButton: `import { IconButton } from "./soluid/IconButton";
+
+<IconButton
+  variant="primary"
+  aria-label="Add item"
+  icon={<PlusIcon />}
+  onClick={handleAdd}
+/>`,
+
+  Badge: `import { Badge } from "./soluid/Badge";
+
+<Badge variant="success">Active</Badge>
+<Badge variant="danger" size="sm">3</Badge>`,
+
+  Tag: `import { Tag } from "./soluid/Tag";
+
+<Tag variant="primary" onRemove={handleRemove}>
+  TypeScript
+</Tag>
+<Tag variant="neutral">Read-only</Tag>`,
+
+  Avatar: `import { Avatar } from "./soluid/Avatar";
+
+<Avatar name="Tanaka Taro" size="md" variant="primary" />
+<Avatar size="lg" variant="neutral" />`,
+
+  Tooltip: `import { Tooltip } from "./soluid/Tooltip";
+
+<Tooltip content="Save changes" placement="bottom">
+  <Button variant="primary">Save</Button>
+</Tooltip>`,
+
+  TextField: `import { TextField } from "./soluid/TextField";
+
+const [name, setName] = createSignal("");
+
+<TextField
+  label="Name"
+  placeholder="Enter your name"
+  value={name()}
+  onInput={setName}
+  required
+/>
+<TextField label="Email" error="Invalid email" />`,
+
+  TextArea: `import { TextArea } from "./soluid/TextArea";
+
+<TextArea
+  label="Description"
+  placeholder="Enter description..."
+  hint="Max 500 characters"
+/>`,
+
+  NumberInput: `import { NumberInput } from "./soluid/NumberInput";
+
+const [qty, setQty] = createSignal(1);
+
+<NumberInput
+  label="Quantity"
+  value={qty()}
+  onInput={setQty}
+  min={0}
+  max={100}
+  step={1}
+/>`,
+
+  Select: `import { Select } from "./soluid/Select";
+
+const [role, setRole] = createSignal("");
+
+<Select
+  label="Role"
+  placeholder="Select a role"
+  value={role()}
+  onChange={setRole}
+  options={[
+    { value: "admin", label: "Admin" },
+    { value: "editor", label: "Editor" },
+  ]}
+/>`,
+
+  Checkbox: `import { Checkbox } from "./soluid/Checkbox";
+
+const [agreed, setAgreed] = createSignal(false);
+
+<Checkbox
+  checked={agreed()}
+  onChange={setAgreed}
+  label="Accept terms"
+/>`,
+
+  CheckboxGroup: `import { CheckboxGroup } from "./soluid/CheckboxGroup";
+import { Checkbox } from "./soluid/Checkbox";
+
+const [selected, setSelected] = createSignal(["email"]);
+
+<CheckboxGroup
+  value={selected()}
+  onChange={setSelected}
+  label="Notifications"
+>
+  <Checkbox value="email" label="Email" />
+  <Checkbox value="sms" label="SMS" />
+</CheckboxGroup>`,
+
+  RadioGroup: `import { RadioGroup } from "./soluid/RadioGroup";
+import { RadioButton } from "./soluid/RadioButton";
+
+const [value, setValue] = createSignal("a");
+
+<RadioGroup value={value()} onChange={setValue} label="Option">
+  <RadioButton value="a" label="Option A" />
+  <RadioButton value="b" label="Option B" />
+</RadioGroup>`,
+
+  Switch: `import { Switch } from "./soluid/Switch";
+
+const [on, setOn] = createSignal(false);
+
+<Switch
+  checked={on()}
+  onChange={setOn}
+  label="Enable notifications"
+/>`,
+
+  Table: `import { Table } from "./soluid/Table";
+
+const columns = [
+  { key: "name", header: "Name", sortable: true },
+  { key: "email", header: "Email" },
+];
+
+<Table
+  columns={columns}
+  data={rows}
+  rowKey={(row) => row.id}
+/>`,
+
+  Card: `import { Card, CardHeader, CardBody, CardFooter } from "./soluid/Card";
+
+<Card>
+  <CardHeader>Title</CardHeader>
+  <CardBody>Content goes here.</CardBody>
+  <CardFooter>
+    <Button variant="primary" size="sm">Action</Button>
+  </CardFooter>
+</Card>`,
+
+  DescriptionList: `import { DescriptionList } from "./soluid/DescriptionList";
+
+<DescriptionList
+  items={[
+    { term: "Name", description: "Tanaka Taro" },
+    { term: "Role", description: "Admin" },
+  ]}
+/>`,
+
+  Skeleton: `import { Skeleton } from "./soluid/Skeleton";
+
+<Skeleton variant="text" width="200px" />
+<Skeleton variant="circle" width="40px" height="40px" />
+<Skeleton variant="rect" width="100%" height="120px" />`,
+
+  EmptyState: `import { EmptyState } from "./soluid/EmptyState";
+
+<EmptyState
+  title="No results"
+  description="Try a different search term."
+  action={<Button variant="primary">Reset</Button>}
+/>`,
+
+  Accordion: `import { Accordion, AccordionItem } from "./soluid/Accordion";
+
+<Accordion>
+  <AccordionItem title="Section 1" open>
+    Content for section 1.
+  </AccordionItem>
+  <AccordionItem title="Section 2">
+    Content for section 2.
+  </AccordionItem>
+</Accordion>`,
+
+  Alert: `import { Alert } from "./soluid/Alert";
+
+<Alert variant="info">Update available.</Alert>
+<Alert variant="danger" onDismiss={handleDismiss}>
+  Something went wrong.
+</Alert>`,
+
+  Progress: `import { Progress } from "./soluid/Progress";
+
+<Progress value={65} variant="success" />`,
+
+  Spinner: `import { Spinner } from "./soluid/Spinner";
+
+<Spinner size="md" />
+<Spinner size="lg" variant="primary" />`,
+
+  Dialog: `import { Dialog, DialogHeader, DialogBody, DialogFooter } from "./soluid/Dialog";
+
+const [open, setOpen] = createSignal(false);
+
+<Button onClick={() => setOpen(true)}>Open</Button>
+<Dialog open={open()} onClose={() => setOpen(false)}>
+  <DialogHeader>Confirm</DialogHeader>
+  <DialogBody>Are you sure?</DialogBody>
+  <DialogFooter>
+    <Button variant="primary" onClick={() => setOpen(false)}>
+      OK
+    </Button>
+  </DialogFooter>
+</Dialog>`,
+
+  Drawer: `import { Drawer, DrawerHeader } from "./soluid/Drawer";
+
+const [open, setOpen] = createSignal(false);
+
+<Button onClick={() => setOpen(true)}>Open Drawer</Button>
+<Drawer open={open()} onClose={() => setOpen(false)} side="right">
+  <DrawerHeader>Settings</DrawerHeader>
+  <div>Drawer content here.</div>
+</Drawer>`,
+
+  Toast: `import { ToastContainer, useToast } from "./soluid/Toast";
+
+const toast = useToast();
+
+<Button onClick={() => toast.add({
+  message: "Saved!",
+  variant: "success",
+})}>
+  Save
+</Button>
+<ToastContainer position="top-right" />`,
+
+  Tabs: `import { Tabs, TabList, Tab, TabPanel } from "./soluid/Tabs";
+
+const [tab, setTab] = createSignal("overview");
+
+<Tabs value={tab()} onChange={setTab}>
+  <TabList>
+    <Tab value="overview">Overview</Tab>
+    <Tab value="details">Details</Tab>
+  </TabList>
+  <TabPanel value="overview">Overview content</TabPanel>
+  <TabPanel value="details">Details content</TabPanel>
+</Tabs>`,
+
+  Breadcrumb: `import { Breadcrumb, BreadcrumbItem } from "./soluid/Breadcrumb";
+
+<Breadcrumb>
+  <BreadcrumbItem href="/">Home</BreadcrumbItem>
+  <BreadcrumbItem href="/users">Users</BreadcrumbItem>
+  <BreadcrumbItem current>Profile</BreadcrumbItem>
+</Breadcrumb>`,
+
+  Pagination: `import { Pagination } from "./soluid/Pagination";
+
+const [page, setPage] = createSignal(1);
+
+<Pagination
+  page={page()}
+  totalPages={10}
+  onChange={setPage}
+  showPages
+  maxVisible={7}
+/>`,
+
+  Popover: `import { Popover } from "./soluid/Popover";
+
+const [open, setOpen] = createSignal(false);
+
+<Popover
+  open={open()}
+  onOpenChange={setOpen}
+  content={<p>Popover content here</p>}
+>
+  Click to open
+</Popover>`,
+
+  Menu: `import { Menu, MenuItem, MenuSeparator } from "./soluid/Menu";
+
+const [open, setOpen] = createSignal(false);
+
+<Menu
+  open={open()}
+  onOpenChange={setOpen}
+  trigger={<Button>Actions</Button>}
+>
+  <MenuItem onSelect={() => {}}>Edit</MenuItem>
+  <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
+  <MenuSeparator />
+  <MenuItem onSelect={() => {}}>Delete</MenuItem>
+</Menu>`,
+};
+
 /* ---------- Demo functions ---------- */
 
 function StackDemo(): JSX.Element {

@@ -179,8 +179,37 @@
   scroll-margin-top: 16px;
 }
 
+.component-card-name {
+  font-size: var(--so-font-size-lg);
+  font-weight: 600;
+}
+
+.component-card-desc {
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text-muted);
+  margin-top: var(--so-space-1);
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
 .component-demo {
   padding: var(--so-space-3) 0;
+}
+
+.component-code {
+  padding: var(--so-space-2) 0;
+}
+
+.code-block {
+  background: var(--so-bg-subtle);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  padding: var(--so-space-3);
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text);
+  overflow-x: auto;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .component-api {

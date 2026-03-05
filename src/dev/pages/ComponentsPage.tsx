@@ -3,7 +3,7 @@ import apiData from "../api-data.json";
 import { Badge } from "../../components/ui/soluid/Badge";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
-import { CATEGORIES, DEMOS, SUB_COMPONENTS } from "./componentDemos";
+import { CATEGORIES, CODE_EXAMPLES, DEMOS, DESCRIPTIONS, SUB_COMPONENTS } from "./componentDemos";
 
 /* ---------- Types ---------- */
 
@@ -149,21 +149,38 @@ function ComponentCard(props: { name: string }) {
   const [tab, setTab] = createSignal("demo");
   const apis = createMemo(() => propsFor(props.name));
   const demo = () => DEMOS[props.name];
+  const description = () => DESCRIPTIONS[props.name];
+  const codeExample = () => CODE_EXAMPLES[props.name];
 
   return (
     <div id={`component-${props.name}`} class="component-card-anchor">
       <Card>
-        <CardHeader>{props.name}</CardHeader>
+        <CardHeader>
+          <div>
+            <span class="component-card-name">{props.name}</span>
+            <Show when={description()}>
+              {(desc) => <p class="component-card-desc">{desc()}</p>}
+            </Show>
+          </div>
+        </CardHeader>
         <CardBody>
           <Tabs value={tab()} onChange={setTab}>
             <TabList>
               <Tab value="demo">Demo</Tab>
+              <Tab value="code">Code</Tab>
               <Tab value="api">API</Tab>
             </TabList>
             <TabPanel value="demo">
               <div class="component-demo">
                 <Show when={demo()} fallback={<p>No demo available.</p>}>
                   {(fn) => fn()()}
+                </Show>
+              </div>
+            </TabPanel>
+            <TabPanel value="code">
+              <div class="component-code">
+                <Show when={codeExample()} fallback={<p>No code example.</p>}>
+                  {(code) => <pre class="code-block"><code>{code()}</code></pre>}
                 </Show>
               </div>
             </TabPanel>
