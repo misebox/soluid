@@ -1,6 +1,6 @@
 {
   "name": "soluid",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "description": "CLI that installs SolidJS UI components directly into your project — own the code, no runtime dependency",
   "license": "MIT",
