@@ -1,59 +1,43 @@
-主役はコンポーネント。CLIはインストーラ。Webサイトは紹介用。
+## Project Overview
 
-## Workflow Orchestration
+Components are the product. CLI is the installer. Website is for showcase.
 
-### 1. Default Plan Node
-- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
-- If something goes sideways, STOP and re-plan immediately - don't keep pushing
-- Use plan mode for verification steps, not just building
-- Write detailed specs upfront to reduce ambiguity
+Read README.md for structure and usage.
 
-### 2. Subagent Strategy
-- Use subagents liberally to keep main context window clean
-- Offload research, exploration, and parallel analysis to subagents
-- For complex problems, throw more compute at it via subagents
-- One task per subagent for focused execution
+## Rules
 
-### 3. Self-Improvement Loop
-- After ANY correction from the user: update 'tasks/lessons.md' with the pattern
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these lessons until mistake rate drops
-- Review lessons at session start for relevant project
+- No CSS imports in component `.tsx` files (CSS is concatenated at install time)
+- No barrel exports (`index.ts`) inside `soluid/`
+- Registry categories are `"core"` and `"components"` only
 
-### 4. Verification Before Done
-- Never mark a task complete without proving it works
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
-- Run tests, check logs, demonstrate correctness
 
-### 5. Demand Elegance (Balanced)
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple, obvious fixes - don't over-engineer
-- Challenge your own work before presenting it
+## localhub ワークフロー
 
-### 6. Autonomous Bug Fixing
-- When given a bug report: just fix it. Don't ask for hand-holding
-- Point at logs, errors, failing tests - then resolve them
-- Zero context switching required from the user
-- Fix failing CI tests without being told how
+### 基本ルール
+- Issue/Review の操作は `lh` コマンドを使う。`.localhub/` 内のファイルを直接読み書きしない
+- `lh` コマンドの出力を読んで、次のアクションを判断する
+- `git push` はユーザーの明示的な指示がある場合のみ
 
-## Task Management
+### Issue フロー
+1. `lh issue create "タイトル" --body "説明"` で Issue 作成 + ブランチ切り替え
+2. 修正作業
+3. `lh review start --issue N` でレビュー開始
+4. レビュー結果を確認
+5. ユーザーの指示で `lh issue close N`
 
-1. **Plan First**: Write plan to tasks/todo.md with checkable items
-2. **Verify Plan**: Check in before starting implementation
-3. **Track Progress**; Mark items complete as you go
-4. **Explain Changes**: High-level summary at each step
-5. **Document Results**: Add review section to 'tasks/todo.md'
-6. **Capture Lessons**: Update 'tasks/lessons.md' after corrections
+### 自律作業サイクル
+1. `lh issue list` で未着手の issue を確認
+2. issue を選んで `lh issue show <id>` で内容把握
+3. 実装 → テスト → `lh review start --issue N`
+4. レビュー OK なら `lh issue close N`
+5. 3回行き詰まったら `lh issue block <id> "理由"` → 次の issue へ
+6. 進捗は `lh issue comment <id> "状況"` で記録
 
-## Core Principles
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+### レビューフロー
+1. `lh review start` でレビュー開始 (diff 保存)
+2. `lh review add <id> security "指摘内容"` で各視点の指摘を追加
+3. `lh review verdict <id> approve` で完了
 
-## soluid 固有ルール
-- プロジェクト概要・構造は README.md を読むこと
-- コンポーネント `.tsx` に CSS import を書かない（install時に結合される）
-- `soluid/` 内に barrel export (`index.ts`) を作らない
-- レジストリのカテゴリは `"core"` と `"components"` の2種のみ
+### メモリ
+- 学んだパターンは `lh memory add "パターン" --context "文脈"` で記録
+- タスク開始前に `lh memory search "キーワード"` で過去のパターンを確認
