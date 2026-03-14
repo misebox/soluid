@@ -2,7 +2,7 @@
   "name": "soluid",
   "version": "0.1.6",
   "type": "module",
-  "description": "SolidJS Opinionated UI - copy-paste component toolkit",
+  "description": "CLI that installs SolidJS UI components directly into your project — own the code, no runtime dependency",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,9 +11,17 @@
   "homepage": "https://github.com/misebox/soluid",
   "keywords": [
     "solidjs",
-    "ui",
-    "components",
-    "cli"
+    "solid-js",
+    "ui-components",
+    "component-library",
+    "cli",
+    "code-generation",
+    "design-system",
+    "typescript",
+    "css-variables",
+    "theming",
+    "accessible",
+    "shadcn"
   ],
   "bin": {
     "soluid": "./dist/index.js"

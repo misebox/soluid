@@ -1,3 +1,14 @@
+/* ===== Site-only CSS Variables ===== */
+:root {
+  --site-font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  --site-font-size-xs: 12px;
+  --site-font-size-xl: 24px;
+  --site-font-size-2xl: 28px;
+  --site-font-size-3xl: 36px;
+  --site-space-8: 48px;
+  --site-space-10: 64px;
+}
+
 /* ===== Site Layout ===== */
 .site {
   min-height: 100vh;
@@ -131,7 +142,7 @@
 }
 
 .sidebar-category-label {
-  font-size: var(--so-font-size-xs);
+  font-size: var(--site-font-size-xs);
   font-weight: 600;
   color: var(--so-text-muted);
   text-transform: uppercase;
@@ -184,7 +195,7 @@
 }
 
 .components-category {
-  margin-bottom: var(--so-space-6);
+  margin-bottom: var(--site-space-8);
 }
 
 .components-category h2 {
@@ -215,7 +226,10 @@
 }
 
 .component-demo {
-  padding: var(--so-space-3) 0;
+  padding: var(--so-space-4);
+  border: 1px dashed var(--so-border);
+  border-radius: var(--so-radius);
+  background: var(--so-bg-subtle);
 }
 
 .component-code {
@@ -227,6 +241,7 @@
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   padding: var(--so-space-3);
+  font-family: var(--site-font-mono);
   font-size: var(--so-font-size-sm);
   color: var(--so-text);
   overflow-x: auto;
@@ -274,11 +289,11 @@
 
 .top-hero {
   text-align: center;
-  padding: var(--so-space-6) 0;
+  padding: var(--site-space-8) 0;
 }
 
 .top-hero h1 {
-  font-size: 48px;
+  font-size: var(--site-font-size-3xl);
   font-weight: 700;
   color: var(--so-primary);
   margin-bottom: var(--so-space-3);
@@ -296,12 +311,13 @@
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   padding: var(--so-space-2) var(--so-space-4);
+  font-family: var(--site-font-mono);
   font-size: var(--so-font-size-md);
   color: var(--so-text);
 }
 
 .top-features {
-  margin-bottom: var(--so-space-6);
+  margin-bottom: var(--site-space-8);
 }
 
 .top-feature-grid {
@@ -334,11 +350,11 @@
 }
 
 .top-categories {
-  margin-bottom: var(--so-space-6);
+  margin-bottom: var(--site-space-8);
 }
 
 .top-categories h2 {
-  font-size: 20px;
+  font-size: var(--site-font-size-xl);
   font-weight: 600;
   color: var(--so-text);
   margin-bottom: var(--so-space-3);
@@ -375,7 +391,7 @@
 }
 
 .gs-page h1 {
-  font-size: 28px;
+  font-size: var(--site-font-size-2xl);
   font-weight: 700;
   color: var(--so-text);
 }
@@ -389,6 +405,7 @@
 
 .gs-page p code,
 .gs-page li code {
+  font-family: var(--site-font-mono);
   font-size: var(--so-font-size-sm);
   background: var(--so-bg-subtle);
   padding: 1px 4px;
@@ -408,6 +425,7 @@
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   padding: var(--so-space-3);
+  font-family: var(--site-font-mono);
   font-size: var(--so-font-size-sm);
   color: var(--so-text);
   overflow-x: auto;
@@ -426,7 +444,7 @@
 .api-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--so-font-size-sm);
+  font-size: var(--so-font-size-md);
 }
 
 .api-table th {
@@ -444,6 +462,7 @@
 }
 
 .api-table code {
+  font-family: var(--site-font-mono);
   font-size: var(--so-font-size-sm);
   background: var(--so-bg-subtle);
   padding: 1px 4px;
@@ -452,5 +471,44 @@
 
 .api-table-desc {
   color: var(--so-text-muted);
-  font-size: var(--so-font-size-xs);
+  font-size: var(--site-font-size-xs);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .components-sidebar {
+    display: none;
+  }
+
+  .site-header {
+    flex-wrap: wrap;
+  }
+
+  .top-hero h1 {
+    font-size: var(--site-font-size-xl);
+  }
+
+  .top-hero {
+    padding: var(--so-space-6) 0;
+  }
+
+  .top-features,
+  .top-categories,
+  .components-category {
+    margin-bottom: var(--so-space-6);
+  }
+
+  .components-content {
+    padding: var(--so-space-3);
+  }
+
+  .top-page,
+  .gs-page {
+    padding: var(--so-space-3);
+  }
+
+  .api-table {
+    display: block;
+    overflow-x: auto;
+  }
 }
