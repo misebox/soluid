@@ -3,7 +3,9 @@ import apiData from "../api-data.json";
 import { Badge } from "../../components/ui/soluid/Badge";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
-import { CATEGORIES, CODE_EXAMPLES, DEMOS, DESCRIPTIONS, SUB_COMPONENTS } from "./componentDemos";
+import { CATEGORIES, CODE_EXAMPLES, DEMOS, SUB_COMPONENTS } from "./componentDemos";
+import { lang } from "../lang";
+import { t } from "../locales";
 
 /* ---------- Types ---------- */
 
@@ -81,7 +83,7 @@ export function ComponentsPage() {
           <input
             type="text"
             class="sidebar-search-input"
-            placeholder="Search..."
+            placeholder={t(lang(), "ui.search")}
             value={filter()}
             onInput={(e) => setFilter(e.currentTarget.value)}
           />
@@ -90,7 +92,7 @@ export function ComponentsPage() {
           <For each={filtered()}>
             {(cat) => (
               <div class="sidebar-category">
-                <div class="sidebar-category-label">{cat.label}</div>
+                <div class="sidebar-category-label">{t(lang(), cat.labelKey)}</div>
                 <For each={cat.components}>
                   {(name) => (
                     <a
@@ -129,7 +131,7 @@ export function ComponentsPage() {
         <For each={filtered()}>
           {(cat) => (
             <section class="components-category">
-              <h2>{cat.label}</h2>
+              <h2>{t(lang(), cat.labelKey)}</h2>
               <For each={cat.components}>
                 {(name) => (
                   <ComponentCard name={name} />
@@ -149,7 +151,7 @@ function ComponentCard(props: { name: string }) {
   const [tab, setTab] = createSignal("demo");
   const apis = createMemo(() => propsFor(props.name));
   const demo = () => DEMOS[props.name];
-  const description = () => DESCRIPTIONS[props.name];
+  const description = () => t(lang(), `desc.${props.name}`);
   const codeExample = () => CODE_EXAMPLES[props.name];
 
   return (
@@ -166,27 +168,27 @@ function ComponentCard(props: { name: string }) {
         <CardBody>
           <Tabs value={tab()} onChange={setTab}>
             <TabList>
-              <Tab value="demo">Demo</Tab>
-              <Tab value="code">Code</Tab>
-              <Tab value="api">API</Tab>
+              <Tab value="demo">{t(lang(), "ui.tabDemo")}</Tab>
+              <Tab value="code">{t(lang(), "ui.tabCode")}</Tab>
+              <Tab value="api">{t(lang(), "ui.tabApi")}</Tab>
             </TabList>
             <TabPanel value="demo">
               <div class="component-demo">
-                <Show when={demo()} fallback={<p>No demo available.</p>}>
+                <Show when={demo()} fallback={<p>{t(lang(), "ui.noDemo")}</p>}>
                   {(fn) => fn()()}
                 </Show>
               </div>
             </TabPanel>
             <TabPanel value="code">
               <div class="component-code">
-                <Show when={codeExample()} fallback={<p>No code example.</p>}>
+                <Show when={codeExample()} fallback={<p>{t(lang(), "ui.noCode")}</p>}>
                   {(code) => <pre class="code-block"><code>{code()}</code></pre>}
                 </Show>
               </div>
             </TabPanel>
             <TabPanel value="api">
               <div class="component-api">
-                <Show when={apis().length > 0} fallback={<p>No API data.</p>}>
+                <Show when={apis().length > 0} fallback={<p>{t(lang(), "ui.noApi")}</p>}>
                   <For each={apis()}>
                     {(comp) => {
                       const name = comp.name.replace(/Props$/, "");
@@ -195,8 +197,8 @@ function ComponentCard(props: { name: string }) {
                           <Show when={apis().length > 1}>
                             <h4 class="api-sub-name">{name}</h4>
                           </Show>
-                          <Show when={comp.description}>
-                            <p class="api-description">{comp.description}</p>
+                          <Show when={t(lang(), `apiDesc.${comp.name}`)}>
+                            {(desc) => <p class="api-description">{desc()}</p>}
                           </Show>
                           <table class="api-table">
                             <thead>
@@ -204,6 +206,7 @@ function ComponentCard(props: { name: string }) {
                                 <th>Prop</th>
                                 <th>Type</th>
                                 <th>Required</th>
+                                <th>Description</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -213,6 +216,7 @@ function ComponentCard(props: { name: string }) {
                                     <td><code>{prop.name}</code></td>
                                     <td><code>{prop.type}</code></td>
                                     <td>{prop.optional ? "" : "Yes"}</td>
+                                    <td class="api-table-desc">{(() => t(lang(), `${comp.name}.${prop.name}`))()}</td>
                                   </tr>
                                 )}
                               </For>

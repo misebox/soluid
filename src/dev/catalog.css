@@ -48,7 +48,18 @@
 
 .site-controls {
   display: flex;
+  align-items: center;
   gap: var(--so-space-2);
+}
+
+.lang-select {
+  padding: var(--so-space-1) var(--so-space-2);
+  font-size: var(--so-font-size-sm);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background: var(--so-bg);
+  color: var(--so-text);
+  cursor: pointer;
 }
 
 .site-main {
@@ -437,4 +448,9 @@
   background: var(--so-bg-subtle);
   padding: 1px 4px;
   border-radius: 3px;
+}
+
+.api-table-desc {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-xs);
 }

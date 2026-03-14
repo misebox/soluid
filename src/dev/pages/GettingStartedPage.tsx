@@ -5,6 +5,8 @@ import { HStack } from "../../components/ui/soluid/HStack";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
 import { RadioButton } from "../../components/ui/soluid/RadioButton";
+import { lang } from "../lang";
+import { t } from "../locales";
 
 type Runner = "bunx" | "npx";
 
@@ -14,12 +16,26 @@ function CodeBlock(props: { children: string }) {
   );
 }
 
-function Step(props: { title: string; children: JSX.Element }) {
+function Step(props: { titleKey: string; children: JSX.Element }) {
   return (
     <Card>
-      <CardHeader>{props.title}</CardHeader>
+      <CardHeader>{t(lang(), props.titleKey)}</CardHeader>
       <CardBody>{props.children}</CardBody>
     </Card>
+  );
+}
+
+/** Replace `{code}` placeholder with inline <code> element */
+function TextWithCode(props: { textKey: string; code: string }) {
+  const text = () => t(lang(), props.textKey);
+  return (
+    <p>
+      {(() => {
+        const parts = text().split("{code}");
+        if (parts.length === 1) return parts[0];
+        return <>{parts[0]}<code>{props.code}</code>{parts[1]}</>;
+      })()}
+    </p>
   );
 }
 
@@ -37,7 +53,7 @@ export function GettingStartedPage() {
   return (
     <div class="gs-page">
       <HStack gap={4} align="center">
-        <h1>Getting Started</h1>
+        <h1>{t(lang(), "gs.title")}</h1>
         <RadioGroup value={runner()} onChange={(v) => setRunner(v as Runner)}>
           <HStack gap={3}>
             <RadioButton value="bunx" label="bunx" />
@@ -47,46 +63,39 @@ export function GettingStartedPage() {
       </HStack>
 
       <Stack gap={4}>
-        <Step title="1. Initialize">
-          <p>Run the init command to create a config file in your SolidJS project:</p>
+        <Step titleKey="gs.step1.title">
+          <p>{t(lang(), "gs.step1.p1")}</p>
           <CodeBlock>{cmd("init")}</CodeBlock>
-          <p>
-            This creates <code>soluid.config.json</code> interactively.
-          </p>
+          <TextWithCode textKey="gs.step1.p2" code="soluid.config.json" />
         </Step>
 
-        <Step title="2. Edit Config">
-          <p>Open <code>soluid.config.json</code> and adjust paths and components as needed:</p>
+        <Step titleKey="gs.step2.title">
+          <TextWithCode textKey="gs.step2.p1" code="soluid.config.json" />
           <CodeBlock>{CONFIG_EXAMPLE}</CodeBlock>
           <ul class="gs-list">
-            <li><code>componentDir</code> — directory where component files are copied</li>
-            <li><code>cssPath</code> — output path for the concatenated CSS file</li>
-            <li><code>components</code> — list of components to install</li>
+            <li><code>componentDir</code> — {t(lang(), "gs.step2.componentDir")}</li>
+            <li><code>cssPath</code> — {t(lang(), "gs.step2.cssPath")}</li>
+            <li><code>components</code> — {t(lang(), "gs.step2.components")}</li>
           </ul>
-          <p>
-            You can also add or remove components via CLI:
-          </p>
+          <p>{t(lang(), "gs.step2.p2")}</p>
           <CodeBlock>{`${cmd("add Checkbox Switch Tabs")}
 ${cmd("remove Switch")}`}</CodeBlock>
         </Step>
 
-        <Step title="3. Install">
-          <p>Download component source files and generate CSS:</p>
+        <Step titleKey="gs.step3.title">
+          <p>{t(lang(), "gs.step3.p1")}</p>
           <CodeBlock>{cmd("install")}</CodeBlock>
-          <p>
-            Components are copied to your project directory.
-            All CSS is concatenated into a single file at <code>cssPath</code>.
-          </p>
+          <TextWithCode textKey="gs.step3.p2" code="cssPath" />
         </Step>
 
-        <Step title="4. Import CSS">
-          <p>Add the CSS import to your app entry point:</p>
+        <Step titleKey="gs.step4.title">
+          <p>{t(lang(), "gs.step4.p1")}</p>
           <CodeBlock>{`// src/index.tsx
 import "./styles/soluid.css";`}</CodeBlock>
         </Step>
 
-        <Step title="5. Use Components">
-          <p>Import and use directly — you own the code:</p>
+        <Step titleKey="gs.step5.title">
+          <p>{t(lang(), "gs.step5.p1")}</p>
           <CodeBlock>{`import { Button, TextField } from "./components/ui";
 
 function App() {
@@ -99,13 +108,13 @@ function App() {
 }`}</CodeBlock>
         </Step>
 
-        <Step title="Theming">
-          <p>Switch between light/dark themes and density variants via data attributes:</p>
+        <Step titleKey="gs.theme.title">
+          <p>{t(lang(), "gs.theme.p1")}</p>
           <CodeBlock>{`document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.setAttribute("data-density", "dense");`}</CodeBlock>
         </Step>
 
-        <Step title="Other Commands">
+        <Step titleKey="gs.other.title">
           <CodeBlock>{`${cmd("list")}                # list available components
 ${cmd("add <component...>")}  # add components to config
 ${cmd("remove <comp...>")}    # remove from config

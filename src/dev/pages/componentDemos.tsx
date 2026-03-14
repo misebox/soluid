@@ -40,12 +40,12 @@ import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 /* ---------- Categories ---------- */
 
 export const CATEGORIES = [
-  { slug: "layout",     label: "Layout",       components: ["Stack", "Divider", "Spacer"] },
-  { slug: "general",    label: "General",       components: ["Button", "IconButton", "Badge", "Tag", "Avatar", "Tooltip"] },
-  { slug: "form",       label: "Form",          components: ["TextField", "TextArea", "NumberInput", "Select", "Checkbox", "CheckboxGroup", "RadioGroup", "Switch"] },
-  { slug: "data",       label: "Data Display",  components: ["Table", "Card", "DescriptionList", "Skeleton", "EmptyState", "Accordion"] },
-  { slug: "feedback",   label: "Feedback",      components: ["Alert", "Progress", "Spinner", "Dialog", "Drawer", "Toast"] },
-  { slug: "navigation", label: "Navigation",    components: ["Tabs", "Breadcrumb", "Pagination", "Popover", "Menu"] },
+  { slug: "layout",     labelKey: "cat.layout",      components: ["Stack", "Divider", "Spacer"] },
+  { slug: "general",    labelKey: "cat.general",      components: ["Button", "IconButton", "Badge", "Tag", "Avatar", "Tooltip"] },
+  { slug: "form",       labelKey: "cat.form",         components: ["TextField", "TextArea", "NumberInput", "Select", "Checkbox", "CheckboxGroup", "RadioGroup", "Switch"] },
+  { slug: "data",       labelKey: "cat.data",         components: ["Table", "Card", "DescriptionList", "Skeleton", "EmptyState", "Accordion"] },
+  { slug: "feedback",   labelKey: "cat.feedback",     components: ["Alert", "Progress", "Spinner", "Dialog", "Drawer", "Toast"] },
+  { slug: "navigation", labelKey: "cat.navigation",   components: ["Tabs", "Breadcrumb", "Pagination", "Popover", "Menu"] },
 ];
 
 /* ---------- Sub-component groups for API tab ---------- */
@@ -61,45 +61,6 @@ export const SUB_COMPONENTS: Record<string, string[]> = {
   RadioGroup:    ["RadioGroup", "RadioButton"],
   Menu:          ["Menu", "MenuItem", "MenuSeparator"],
   Toast:         ["ToastContainer"],
-};
-
-/* ---------- Descriptions ---------- */
-
-export const DESCRIPTIONS: Record<string, string> = {
-  Stack:           "Vertical/horizontal flex container for stacking elements with consistent spacing.",
-  Divider:         "Visual separator line between content sections.",
-  Spacer:          "Flexible space that fills available room in flex containers.",
-  Button:          "Clickable action trigger with variant, size, loading, and disabled states.",
-  IconButton:      "Compact button containing only an icon with an accessible label.",
-  Badge:           "Small colored label for status, category, or count display.",
-  Tag:             "Removable label for categorization or filtering.",
-  Avatar:          "Circular user representation showing initials or image.",
-  Tooltip:         "Popup hint shown on hover with configurable placement.",
-  TextField:       "Single-line text input with label, hint, and validation support.",
-  TextArea:        "Multi-line text input with label and hint.",
-  NumberInput:     "Numeric input with increment/decrement controls and min/max bounds.",
-  Select:          "Dropdown selector for choosing from a list of options.",
-  Checkbox:        "Toggle control for boolean values, supports indeterminate state.",
-  CheckboxGroup:   "Group of checkboxes sharing a single array value.",
-  RadioGroup:      "Exclusive selection from a set of radio options.",
-  Switch:          "Toggle switch for on/off states.",
-  Table:           "Data grid with sortable columns, custom renderers, and row selection.",
-  Card:            "Bordered container with header, body, and footer slots.",
-  DescriptionList: "Key-value pair display in a definition list layout.",
-  Skeleton:        "Placeholder animation for loading states (text, circle, rect).",
-  EmptyState:      "Message displayed when no data is available, with optional action.",
-  Accordion:       "Collapsible content sections with open/disabled states.",
-  Alert:           "Contextual feedback message with variant and optional dismiss.",
-  Progress:        "Visual indicator of completion percentage with variant colors.",
-  Spinner:         "Animated loading indicator in multiple sizes.",
-  Dialog:          "Modal overlay for focused interactions with header, body, footer.",
-  Drawer:          "Slide-in panel from the screen edge with configurable side and size.",
-  Toast:           "Temporary notification popup managed via useToast() hook.",
-  Tabs:            "Content organization with switchable tab panels.",
-  Breadcrumb:      "Hierarchical navigation path showing the current location.",
-  Pagination:      "Page navigation control with optional page number display.",
-  Popover:         "Floating content panel triggered by click on a child element.",
-  Menu:            "Dropdown action list with items and separators.",
 };
 
 /* ---------- Code examples ---------- */

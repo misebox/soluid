@@ -3,6 +3,8 @@ import { A } from "@solidjs/router";
 import type { Density } from "../components/ui/soluid/core/types";
 import { Button } from "../components/ui/soluid/Button";
 import { Spacer } from "../components/ui/soluid/Spacer";
+import { type Lang, lang, setLang } from "./lang";
+import { t } from "./locales";
 
 export function Layout(props: ParentProps) {
   const [density, setDensity] = createSignal<Density>("normal");
@@ -11,6 +13,7 @@ export function Layout(props: ParentProps) {
   createEffect(() => {
     document.documentElement.setAttribute("data-theme", theme());
     document.documentElement.setAttribute("data-density", density());
+    document.documentElement.setAttribute("lang", lang());
   });
 
   return (
@@ -18,8 +21,8 @@ export function Layout(props: ParentProps) {
       <header class="site-header">
         <A href="/" class="site-logo">soluid</A>
         <nav class="site-nav">
-          <A href="/getting-started" class="site-nav-link" activeClass="active">Getting Started</A>
-          <A href="/components" class="site-nav-link" activeClass="active">Components</A>
+          <A href="/getting-started" class="site-nav-link" activeClass="active">{t(lang(), "nav.gettingStarted")}</A>
+          <A href="/components" class="site-nav-link" activeClass="active">{t(lang(), "nav.components")}</A>
         </nav>
         <Spacer />
         <div class="site-controls">
@@ -37,6 +40,14 @@ export function Layout(props: ParentProps) {
           >
             Dense
           </Button>
+          <select
+            class="lang-select"
+            value={lang()}
+            onChange={(e) => setLang(e.currentTarget.value as Lang)}
+          >
+            <option value="en">EN</option>
+            <option value="ja">JA</option>
+          </select>
           <Button
             variant={theme() === "light" ? "primary" : "neutral"}
             size="sm"
