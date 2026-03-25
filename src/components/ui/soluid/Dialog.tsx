@@ -1,7 +1,7 @@
-import { createContext, createEffect, createSignal, on, Show, splitProps, useContext } from "solid-js";
+import { createContext, Show, splitProps, useContext } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { createFocusTrap } from "./core/createFocusTrap";
+import { createOverlay } from "./core/createOverlay";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -37,68 +37,26 @@ export function Dialog(props: DialogProps) {
   dialogCounter += 1;
   const titleId = `so-dialog-title-${dialogCounter}`;
 
-  const [mounted, setMounted] = createSignal(false);
-  const [closing, setClosing] = createSignal(false);
-  let closingTimer: ReturnType<typeof setTimeout> | undefined;
-
-  createEffect(
-    on(
-      () => local.open,
-      (open) => {
-        if (open) {
-          clearTimeout(closingTimer);
-          setClosing(false);
-          setMounted(true);
-        } else if (mounted()) {
-          setClosing(true);
-          closingTimer = setTimeout(() => {
-            if (closing()) {
-              setMounted(false);
-              setClosing(false);
-            }
-          }, 200);
-        }
-      },
-    ),
-  );
-
-  function handleAnimationEnd() {
-    clearTimeout(closingTimer);
-    if (closing()) {
-      setMounted(false);
-      setClosing(false);
-    }
-  }
-
-  const [containerRef, setContainerRef] = createSignal<HTMLElement | undefined>(undefined);
-
-  createFocusTrap({
-    container: containerRef,
-    isActive: () => local.open,
+  const overlay = createOverlay({
+    isOpen: () => local.open,
     onClose: () => local.onClose(),
   });
 
-  function handleBackdropClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget) {
-      local.onClose();
-    }
-  }
-
   return (
-    <Show when={mounted()}>
+    <Show when={overlay.mounted()}>
       <Portal>
         <DialogContext.Provider value={titleId}>
           <div
-            class={cls("so-dialog-backdrop", closing() && "so-dialog-backdrop--closing")}
-            on:click={handleBackdropClick}
-            onAnimationEnd={handleAnimationEnd}
+            class={cls("so-dialog-backdrop", overlay.closing() && "so-dialog-backdrop--closing")}
+            on:click={overlay.handleBackdropClick}
+            onAnimationEnd={overlay.handleAnimationEnd}
           >
             <div
-              ref={setContainerRef}
+              ref={overlay.setContainerRef}
               class={cls(
                 "so-dialog",
                 `so-dialog--${local.size ?? "md"}`,
-                closing() && "so-dialog--closing",
+                overlay.closing() && "so-dialog--closing",
                 local.class,
               )}
               role="dialog"

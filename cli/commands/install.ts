@@ -1,33 +1,16 @@
 import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import * as readline from "node:readline";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { Parser, type ReadEntry } from "tar";
-import {
-  CONFIG_FILENAME,
-  fetchLatestComponentsVersion,
-  loadConfig,
-  PROJECT_NAME,
-  RELEASE_URL,
-  saveConfig,
-} from "../config.js";
+import { fetchVersionOrExit, RELEASE_URL, requireConfig, saveConfig } from "../config.js";
+import { confirm } from "../prompt.js";
 import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
 
 const ARCHIVE_PREFIX = "soluid/";
-
-function confirm(question: string): Promise<boolean> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      rl.close();
-      resolve(answer.trim().toLowerCase() === "y");
-    });
-  });
-}
 
 function detectInstallCommand(cwd: string): { lockfile: string | null; command: string[] } {
   const lockfiles: Record<string, string[]> = {
@@ -87,7 +70,6 @@ async function fetchAndExtract(version: string): Promise<Map<string, string>> {
   return files;
 }
 
-/** Strip the "soluid/" prefix from an archive path for local placement. */
 function stripPrefix(archivePath: string): string {
   if (archivePath.startsWith(ARCHIVE_PREFIX)) {
     return archivePath.slice(ARCHIVE_PREFIX.length);
@@ -95,63 +77,14 @@ function stripPrefix(archivePath: string): string {
   return archivePath;
 }
 
-interface InstallOptions {
-  interactive?: boolean;
+interface WriteResult {
+  addedCount: number;
+  updatedCount: number;
+  cssChunks: string[];
+  installedModules: string[];
 }
 
-export async function install(cwd: string, options: InstallOptions = {}): Promise<void> {
-  const interactive = options.interactive !== false;
-  const config = loadConfig(cwd);
-  if (config === null) {
-    console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init\n`);
-    process.exit(1);
-    return;
-  }
-
-  if (config.components.length === 0) {
-    console.error("No components specified in config.");
-    process.exit(1);
-    return;
-  }
-
-  const invalid = config.components.filter((name) => !registry[name]);
-  if (invalid.length > 0) {
-    console.error(`Unknown components: ${invalid.join(", ")}`);
-    process.exit(1);
-    return;
-  }
-
-  const resolved = resolveDependencies(["core", ...config.components]);
-  const npmDeps = collectNpmDeps(resolved);
-
-  console.log(`Installing ${resolved.length} items (including dependencies):`);
-
-  let version = config.componentsVersion;
-  if (!version) {
-    console.log("No componentsVersion in config, fetching latest...");
-    try {
-      version = await fetchLatestComponentsVersion();
-    } catch (e) {
-      console.error(`Failed to fetch version: ${e instanceof Error ? e.message : e}`);
-      process.exit(1);
-      return;
-    }
-    config.componentsVersion = version;
-    saveConfig(cwd, config);
-    console.log(`Using components v${version}`);
-  }
-
-  let archive: Map<string, string>;
-  try {
-    archive = await fetchAndExtract(version);
-  } catch (e) {
-    console.error(`Failed to fetch components: ${e instanceof Error ? e.message : e}`);
-    process.exit(1);
-    return;
-  }
-
-  const targetRoot = path.resolve(cwd, config.componentDir);
-
+function writeComponentFiles(archive: Map<string, string>, resolved: string[], targetRoot: string): WriteResult {
   let addedCount = 0;
   let updatedCount = 0;
   const cssChunks: string[] = [];
@@ -172,13 +105,11 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
       const localPath = stripPrefix(file);
 
-      // CSS files: accumulate for concatenation instead of writing individually
       if (file.endsWith(".css")) {
         cssChunks.push(`/* ${localPath} */\n${content}`);
         continue;
       }
 
-      // TS/TSX files: strip prefix and write to componentDir
       const destPath = path.join(targetRoot, localPath);
       const destDir = path.dirname(destPath);
 
@@ -188,7 +119,6 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
         installedModules.push(localPath);
       }
 
-      // Check if file already exists with same content
       const isNew = !fs.existsSync(destPath);
       if (!isNew) {
         const existing = fs.readFileSync(destPath, "utf-8");
@@ -214,7 +144,10 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
     }
   }
 
-  // Generate barrel index.ts (core first, then components)
+  return { addedCount, updatedCount, cssChunks, installedModules };
+}
+
+function generateBarrelIndex(installedModules: string[], targetRoot: string): void {
   const coreModules = installedModules.filter((p) => p.startsWith("core/"));
   const componentModules = installedModules.filter((p) => !p.startsWith("core/"));
   const indexLines = [
@@ -223,19 +156,102 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
     "",
   ];
   fs.writeFileSync(path.join(targetRoot, "index.ts"), indexLines.join("\n"), "utf-8");
+}
 
-  // Write concatenated CSS to cssPath
-  if (cssChunks.length > 0) {
-    const cssDestPath = path.resolve(cwd, config.cssPath);
-    const cssContent = cssChunks.join("\n\n") + "\n";
-    const cssUnchanged = fs.existsSync(cssDestPath) && fs.readFileSync(cssDestPath, "utf-8") === cssContent;
-    if (!cssUnchanged) {
-      const cssDestDir = path.dirname(cssDestPath);
-      fs.mkdirSync(cssDestDir, { recursive: true });
-      fs.writeFileSync(cssDestPath, cssContent, "utf-8");
-      console.log(`\nCSS written to ${config.cssPath}`);
-    }
+function writeConcatenatedCss(cssChunks: string[], cssPath: string, cwd: string): void {
+  if (cssChunks.length === 0) return;
+
+  const cssDestPath = path.resolve(cwd, cssPath);
+  const cssContent = cssChunks.join("\n\n") + "\n";
+  const cssUnchanged = fs.existsSync(cssDestPath) && fs.readFileSync(cssDestPath, "utf-8") === cssContent;
+  if (!cssUnchanged) {
+    const cssDestDir = path.dirname(cssDestPath);
+    fs.mkdirSync(cssDestDir, { recursive: true });
+    fs.writeFileSync(cssDestPath, cssContent, "utf-8");
+    console.log(`\nCSS written to ${cssPath}`);
   }
+}
+
+async function installNpmDependencies(npmDeps: string[], cwd: string, interactive: boolean): Promise<void> {
+  const pkgJsonPath = path.join(cwd, "package.json");
+  let installedPkgs: Set<string> = new Set();
+  if (fs.existsSync(pkgJsonPath)) {
+    const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, "utf-8"));
+    const allDeps = { ...pkgJson.dependencies, ...pkgJson.devDependencies };
+    installedPkgs = new Set(Object.keys(allDeps));
+  }
+  const missingDeps = npmDeps.filter((d) => !installedPkgs.has(d));
+  if (missingDeps.length === 0) return;
+
+  const { lockfile, command } = detectInstallCommand(cwd);
+  if (lockfile) {
+    console.log(`\nFound ${lockfile}`);
+  }
+  const cmd = [...command, ...missingDeps].join(" ");
+  console.log(`Required packages: ${missingDeps.join(", ")}`);
+
+  if (interactive) {
+    const ok = await confirm(`Run \`${cmd}\`? [y/N] `);
+    if (ok) {
+      execSync(cmd, { stdio: "inherit", cwd });
+    } else {
+      console.log(`  ${cmd}`);
+    }
+  } else {
+    console.log(`Running: ${cmd}`);
+    execSync(cmd, { stdio: "inherit", cwd });
+  }
+}
+
+interface InstallOptions {
+  interactive?: boolean;
+}
+
+export async function install(cwd: string, options: InstallOptions = {}): Promise<void> {
+  const interactive = options.interactive !== false;
+  const config = requireConfig(cwd);
+
+  if (config.components.length === 0) {
+    console.error("No components specified in config.");
+    process.exit(1);
+    return;
+  }
+
+  const invalid = config.components.filter((name) => !registry[name]);
+  if (invalid.length > 0) {
+    console.error(`Unknown components: ${invalid.join(", ")}`);
+    process.exit(1);
+    return;
+  }
+
+  const resolved = resolveDependencies(["core", ...config.components]);
+  const npmDeps = collectNpmDeps(resolved);
+
+  console.log(`Installing ${resolved.length} items (including dependencies):`);
+
+  let version = config.componentsVersion;
+  if (!version) {
+    console.log("No componentsVersion in config, fetching latest...");
+    version = await fetchVersionOrExit();
+    config.componentsVersion = version;
+    saveConfig(cwd, config);
+    console.log(`Using components v${version}`);
+  }
+
+  let archive: Map<string, string>;
+  try {
+    archive = await fetchAndExtract(version);
+  } catch (e) {
+    console.error(`Failed to fetch components: ${e instanceof Error ? e.message : e}`);
+    process.exit(1);
+    return;
+  }
+
+  const targetRoot = path.resolve(cwd, config.componentDir);
+  const { addedCount, updatedCount, cssChunks, installedModules } = writeComponentFiles(archive, resolved, targetRoot);
+
+  generateBarrelIndex(installedModules, targetRoot);
+  writeConcatenatedCss(cssChunks, config.cssPath, cwd);
 
   if (addedCount === 0 && updatedCount === 0) {
     console.log("\nAll components are up to date.");
@@ -247,38 +263,7 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   }
 
   if (npmDeps.length > 0) {
-    // Filter out packages already in package.json
-    const pkgJsonPath = path.join(cwd, "package.json");
-    let installedPkgs: Set<string> = new Set();
-    if (fs.existsSync(pkgJsonPath)) {
-      const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, "utf-8"));
-      const allDeps = {
-        ...pkgJson.dependencies,
-        ...pkgJson.devDependencies,
-      };
-      installedPkgs = new Set(Object.keys(allDeps));
-    }
-    const missingDeps = npmDeps.filter((d) => !installedPkgs.has(d));
-
-    if (missingDeps.length > 0) {
-      const { lockfile, command } = detectInstallCommand(cwd);
-      if (lockfile) {
-        console.log(`\nFound ${lockfile}`);
-      }
-      const cmd = [...command, ...missingDeps].join(" ");
-      console.log(`Required packages: ${missingDeps.join(", ")}`);
-      if (interactive) {
-        const ok = await confirm(`Run \`${cmd}\`? [y/N] `);
-        if (ok) {
-          execSync(cmd, { stdio: "inherit", cwd });
-        } else {
-          console.log(`  ${cmd}`);
-        }
-      } else {
-        console.log(`Running: ${cmd}`);
-        execSync(cmd, { stdio: "inherit", cwd });
-      }
-    }
+    await installNpmDependencies(npmDeps, cwd, interactive);
   }
 
   console.log("\nDone. Components are now in your project — edit freely.");

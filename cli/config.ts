@@ -48,3 +48,21 @@ export async function fetchLatestComponentsVersion(): Promise<string> {
   }
   throw new Error("No components release found");
 }
+
+export function requireConfig(cwd: string): SoluidConfig {
+  const config = loadConfig(cwd);
+  if (config === null) {
+    console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init`);
+    process.exit(1);
+  }
+  return config;
+}
+
+export async function fetchVersionOrExit(): Promise<string> {
+  try {
+    return await fetchLatestComponentsVersion();
+  } catch (e) {
+    console.error(`Failed to fetch version: ${e instanceof Error ? e.message : e}`);
+    process.exit(1);
+  }
+}

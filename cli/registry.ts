@@ -24,6 +24,7 @@ export const registry: Record<string, RegistryEntry> = {
       "soluid/core/createFocusTrap.ts",
       "soluid/core/createToast.ts",
       "soluid/core/createToggle.ts",
+      "soluid/core/createOverlay.ts",
     ],
     dependencies: [],
     npmDependencies: [

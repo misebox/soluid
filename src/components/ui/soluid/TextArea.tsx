@@ -50,7 +50,7 @@ export function TextAreaInput(props: {
 }
 
 export function TextArea(props: TextAreaProps) {
-  const [local, fieldProps] = splitProps(props, [
+  const [local] = splitProps(props, [
     "value",
     "onInput",
     "placeholder",

@@ -50,7 +50,7 @@ export function TextFieldInput(props: {
 }
 
 export function TextField(props: TextFieldProps) {
-  const [local, fieldProps] = splitProps(props, [
+  const [local] = splitProps(props, [
     "value",
     "onInput",
     "placeholder",

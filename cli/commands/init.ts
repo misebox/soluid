@@ -1,36 +1,16 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import * as readline from "node:readline";
 import {
   CONFIG_FILENAME,
   DEFAULT_CSS_FILENAME,
-  fetchLatestComponentsVersion,
+  fetchVersionOrExit,
   findConfigPath,
   PROJECT_NAME,
   saveConfig,
 } from "../config.js";
 import type { SoluidConfig } from "../config.js";
+import { confirm, prompt } from "../prompt.js";
 import { allComponentNames } from "../registry.js";
-
-function prompt(question: string, defaultValue: string): Promise<string> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question(`${question} (${defaultValue}) `, (answer) => {
-      rl.close();
-      resolve(answer.trim() || defaultValue);
-    });
-  });
-}
-
-function confirm(question: string): Promise<boolean> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      rl.close();
-      resolve(answer.trim().toLowerCase() === "y");
-    });
-  });
-}
 
 interface InitOptions {
   interactive?: boolean;
@@ -56,14 +36,7 @@ export async function init(cwd: string, options: InitOptions = {}): Promise<void
   }
 
   console.log("Fetching latest components version...");
-  let componentsVersion: string;
-  try {
-    componentsVersion = await fetchLatestComponentsVersion();
-  } catch (e) {
-    console.error(`Failed to fetch version: ${e instanceof Error ? e.message : e}`);
-    process.exit(1);
-    return;
-  }
+  const componentsVersion = await fetchVersionOrExit();
 
   const componentDir = interactive ? await prompt("Component directory?", "src/components/ui") : "src/components/ui";
   const cssPath = interactive
