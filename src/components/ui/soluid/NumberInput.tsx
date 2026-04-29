@@ -52,11 +52,21 @@ function NumberInputInner(props: {
     local.onInput?.(next);
   }
 
+  // Pass the raw parsed value through while typing. Clamping mid-input
+  // prevents users from typing values that pass through min on the way
+  // (e.g. typing "100" with min=64 would get stuck at 64 after the "1").
   const handleInput: JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
     const parsed = parseFloat(e.currentTarget.value);
     if (!Number.isNaN(parsed)) {
-      local.onInput?.(clamp(parsed));
+      local.onInput?.(parsed);
     }
+  };
+
+  const handleBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
+    const parsed = parseFloat(e.currentTarget.value);
+    if (Number.isNaN(parsed)) return;
+    const clamped = clamp(parsed);
+    if (clamped !== parsed) local.onInput?.(clamped);
   };
 
   return (
@@ -84,6 +94,7 @@ function NumberInputInner(props: {
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={handleInput}
+        onBlur={handleBlur}
       />
       <button
         type="button"
