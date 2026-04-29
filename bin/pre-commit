@@ -10,6 +10,5 @@ bun run lint
 echo "[pre-commit] test"
 bun run test
 
-echo "[pre-commit] fmt"
-bun run fmt
-git add -u
+echo "[pre-commit] fmt:check"
+bun run fmt:check
