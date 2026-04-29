@@ -7,6 +7,9 @@ export const DEFAULT_CSS_FILENAME = `${PROJECT_NAME}.css`;
 export const GITHUB_REPO = "misebox/soluid";
 export const RELEASE_URL = `https://github.com/${GITHUB_REPO}/releases/download`;
 
+/** Allowed override keys for the `colors` field. */
+export type ColorOverrideKey = "primary" | "neutral" | "danger" | "success" | "warning" | "info";
+
 export interface SoluidConfig {
   /** Components version to install */
   componentsVersion?: string;
@@ -16,7 +19,22 @@ export interface SoluidConfig {
   cssPath: string;
   /** Components to install */
   components: string[];
+  /**
+   * Optional color overrides. Each key sets the corresponding `--so-color-{key}-base`.
+   * Derived shades (hover/active/subtle/border) are recomputed automatically via color-mix.
+   * Light/dark themes are handled automatically; no separate dark values are needed.
+   */
+  colors?: Partial<Record<ColorOverrideKey, string>>;
 }
+
+export const COLOR_OVERRIDE_KEYS: readonly ColorOverrideKey[] = [
+  "primary",
+  "neutral",
+  "danger",
+  "success",
+  "warning",
+  "info",
+];
 
 export function findConfigPath(cwd: string): string {
   return path.join(cwd, CONFIG_FILENAME);
@@ -53,6 +71,15 @@ export function requireConfig(cwd: string): SoluidConfig {
   const config = loadConfig(cwd);
   if (config === null) {
     console.error(`${CONFIG_FILENAME} not found. Run: npx ${PROJECT_NAME} init`);
+    process.exit(1);
+  }
+  const missing: string[] = [];
+  if (typeof config.componentDir !== "string" || config.componentDir.length === 0) missing.push("componentDir");
+  if (typeof config.cssPath !== "string" || config.cssPath.length === 0) missing.push("cssPath");
+  if (!Array.isArray(config.components)) missing.push("components");
+  if (missing.length > 0) {
+    console.error(`${CONFIG_FILENAME} is missing required field(s): ${missing.join(", ")}`);
+    console.error(`Re-run: npx ${PROJECT_NAME} init  (or add the field(s) manually)`);
     process.exit(1);
   }
   return config;

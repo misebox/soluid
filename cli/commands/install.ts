@@ -5,7 +5,15 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { Parser, type ReadEntry } from "tar";
-import { fetchVersionOrExit, RELEASE_URL, requireConfig, saveConfig } from "../config.js";
+import {
+  COLOR_OVERRIDE_KEYS,
+  type ColorOverrideKey,
+  fetchVersionOrExit,
+  RELEASE_URL,
+  requireConfig,
+  saveConfig,
+  type SoluidConfig,
+} from "../config.js";
 import { confirm } from "../prompt.js";
 import { collectNpmDeps, registry, resolveDependencies } from "../registry.js";
 import { rewriteImports } from "../rewrite-imports.js";
@@ -161,11 +169,25 @@ function generateBarrelIndex(installedModules: string[], targetRoot: string): vo
   fs.writeFileSync(path.join(targetRoot, "index.ts"), indexLines.join("\n"), "utf-8");
 }
 
-function writeConcatenatedCss(cssChunks: string[], cssPath: string, cwd: string): void {
+function buildColorOverrideBlock(colors: SoluidConfig["colors"]): string {
+  if (!colors) return "";
+  const lines: string[] = [];
+  for (const key of COLOR_OVERRIDE_KEYS) {
+    const value = colors[key as ColorOverrideKey];
+    if (typeof value === "string" && value.length > 0) {
+      lines.push(`  --so-color-${key}-base: ${value};`);
+    }
+  }
+  if (lines.length === 0) return "";
+  return ["", "/* === user overrides (from soluid.config.json) === */", ":root {", ...lines, "}", ""].join("\n");
+}
+
+function writeConcatenatedCss(cssChunks: string[], cssPath: string, cwd: string, config: SoluidConfig): void {
   if (cssChunks.length === 0) return;
 
   const cssDestPath = path.resolve(cwd, cssPath);
-  const cssContent = cssChunks.join("\n\n") + "\n";
+  const overrideBlock = buildColorOverrideBlock(config.colors);
+  const cssContent = cssChunks.join("\n\n") + "\n" + overrideBlock;
   const cssUnchanged = fs.existsSync(cssDestPath) && fs.readFileSync(cssDestPath, "utf-8") === cssContent;
   if (!cssUnchanged) {
     const cssDestDir = path.dirname(cssDestPath);
@@ -254,7 +276,7 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   const { addedCount, updatedCount, cssChunks, installedModules } = writeComponentFiles(archive, resolved, targetRoot);
 
   generateBarrelIndex(installedModules, targetRoot);
-  writeConcatenatedCss(cssChunks, config.cssPath, cwd);
+  writeConcatenatedCss(cssChunks, config.cssPath, cwd, config);
 
   if (addedCount === 0 && updatedCount === 0) {
     console.log("\nAll components are up to date.");

@@ -1,5 +1,14 @@
 /* ============================================
    soluid design tokens
+
+   Color system:
+   - Each semantic color (primary/neutral/danger/success/warning/info)
+     is defined by a single --*-base value.
+   - hover/active/subtle/subtle-fg/border/fg are derived via color-mix()
+     against --so-text and --so-bg, so dark mode "just works" by
+     swapping --so-bg and --so-text.
+   - To customize: override any --*-base in your own CSS, or set them
+     via soluid.config.json `colors` field.
    ============================================ */
 
 /* --- Density: normal (default) --- */
@@ -53,136 +62,90 @@
   --so-radius: 4px;
 }
 
-/* --- Semantic colors (light) --- */
+/* --- Global tokens (light) --- */
 
 :root {
-  /* primary */
-  --so-color-primary-base: #3b82f6;
-  --so-color-primary-fg: #ffffff;
-  --so-color-primary-subtle: #eff6ff;
-  --so-color-primary-subtle-fg: #1e40af;
-  --so-color-primary-border: #93c5fd;
-  --so-color-primary-hover: #2563eb;
-  --so-color-primary-active: #1d4ed8;
-
-  /* neutral */
-  --so-color-neutral-base: #6b7280;
-  --so-color-neutral-fg: #ffffff;
-  --so-color-neutral-subtle: #f3f4f6;
-  --so-color-neutral-subtle-fg: #374151;
-  --so-color-neutral-border: #d1d5db;
-  --so-color-neutral-hover: #4b5563;
-  --so-color-neutral-active: #374151;
-
-  /* danger */
-  --so-color-danger-base: #ef4444;
-  --so-color-danger-fg: #ffffff;
-  --so-color-danger-subtle: #fef2f2;
-  --so-color-danger-subtle-fg: #991b1b;
-  --so-color-danger-border: #fca5a5;
-  --so-color-danger-hover: #dc2626;
-  --so-color-danger-active: #b91c1c;
-
-  /* success */
-  --so-color-success-base: #22c55e;
-  --so-color-success-fg: #ffffff;
-  --so-color-success-subtle: #f0fdf4;
-  --so-color-success-subtle-fg: #166534;
-  --so-color-success-border: #86efac;
-  --so-color-success-hover: #16a34a;
-  --so-color-success-active: #15803d;
-
-  /* warning */
-  --so-color-warning-base: #f59e0b;
-  --so-color-warning-fg: #ffffff;
-  --so-color-warning-subtle: #fffbeb;
-  --so-color-warning-subtle-fg: #92400e;
-  --so-color-warning-border: #fcd34d;
-  --so-color-warning-hover: #d97706;
-  --so-color-warning-active: #b45309;
-
-  /* info */
-  --so-color-info-base: #06b6d4;
-  --so-color-info-fg: #ffffff;
-  --so-color-info-subtle: #ecfeff;
-  --so-color-info-subtle-fg: #155e75;
-  --so-color-info-border: #67e8f9;
-  --so-color-info-hover: #0891b2;
-  --so-color-info-active: #0e7490;
-
-  /* global tokens */
   --so-bg: #ffffff;
   --so-bg-subtle: #f8f9fa;
   --so-text: #111827;
   --so-text-muted: #6b7280;
   --so-border: #e5e7eb;
+
+  /* Semantic color bases. Override these to recolor the entire system. */
+  --so-color-primary-base: #3b82f6;
+  --so-color-neutral-base: #6b7280;
+  --so-color-danger-base: #ef4444;
+  --so-color-success-base: #22c55e;
+  --so-color-warning-base: #f59e0b;
+  --so-color-info-base: #06b6d4;
+
   --so-ring: var(--so-color-primary-base);
 }
 
-/* --- Dark mode --- */
+/* --- Global tokens (dark) ---
+   Only swap bg/text/border. Color bases stay the same; derived shades
+   auto-adapt because they mix against --so-bg and --so-text. */
 
 [data-theme="dark"] {
-  /* primary — same hue, keep base usable, white fg */
-  --so-color-primary-base: #3b82f6;
-  --so-color-primary-fg: #ffffff;
-  --so-color-primary-subtle: #172554;
-  --so-color-primary-subtle-fg: #93c5fd;
-  --so-color-primary-border: #1d4ed8;
-  --so-color-primary-hover: #2563eb;
-  --so-color-primary-active: #1d4ed8;
-
-  /* neutral — muted gray, white fg */
-  --so-color-neutral-base: #4b5563;
-  --so-color-neutral-fg: #ffffff;
-  --so-color-neutral-subtle: #1f2937;
-  --so-color-neutral-subtle-fg: #d1d5db;
-  --so-color-neutral-border: #374151;
-  --so-color-neutral-hover: #374151;
-  --so-color-neutral-active: #1f2937;
-
-  /* danger */
-  --so-color-danger-base: #dc2626;
-  --so-color-danger-fg: #ffffff;
-  --so-color-danger-subtle: #450a0a;
-  --so-color-danger-subtle-fg: #fca5a5;
-  --so-color-danger-border: #991b1b;
-  --so-color-danger-hover: #b91c1c;
-  --so-color-danger-active: #991b1b;
-
-  /* success */
-  --so-color-success-base: #16a34a;
-  --so-color-success-fg: #ffffff;
-  --so-color-success-subtle: #052e16;
-  --so-color-success-subtle-fg: #86efac;
-  --so-color-success-border: #15803d;
-  --so-color-success-hover: #15803d;
-  --so-color-success-active: #166534;
-
-  /* warning */
-  --so-color-warning-base: #d97706;
-  --so-color-warning-fg: #ffffff;
-  --so-color-warning-subtle: #451a03;
-  --so-color-warning-subtle-fg: #fcd34d;
-  --so-color-warning-border: #b45309;
-  --so-color-warning-hover: #b45309;
-  --so-color-warning-active: #92400e;
-
-  /* info */
-  --so-color-info-base: #0891b2;
-  --so-color-info-fg: #ffffff;
-  --so-color-info-subtle: #083344;
-  --so-color-info-subtle-fg: #67e8f9;
-  --so-color-info-border: #0e7490;
-  --so-color-info-hover: #0e7490;
-  --so-color-info-active: #155e75;
-
-  /* global tokens */
   --so-bg: #0f172a;
   --so-bg-subtle: #1e293b;
   --so-text: #f1f5f9;
   --so-text-muted: #94a3b8;
   --so-border: #334155;
-  --so-ring: var(--so-color-primary-base);
+}
+
+/* --- Derived semantic colors ---
+   Defined once at :root scope; they reference --so-bg / --so-text which
+   change per theme, so the derived values follow automatically. */
+
+:root {
+  /* primary */
+  --so-color-primary-fg: #ffffff;
+  --so-color-primary-hover: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 14%);
+  --so-color-primary-active: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 26%);
+  --so-color-primary-subtle: color-mix(in oklch, var(--so-color-primary-base) 14%, var(--so-bg));
+  --so-color-primary-subtle-fg: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 35%);
+  --so-color-primary-border: color-mix(in oklch, var(--so-color-primary-base) 50%, var(--so-bg));
+
+  /* neutral */
+  --so-color-neutral-fg: #ffffff;
+  --so-color-neutral-hover: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 14%);
+  --so-color-neutral-active: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 26%);
+  --so-color-neutral-subtle: color-mix(in oklch, var(--so-color-neutral-base) 10%, var(--so-bg));
+  --so-color-neutral-subtle-fg: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 40%);
+  --so-color-neutral-border: color-mix(in oklch, var(--so-color-neutral-base) 35%, var(--so-bg));
+
+  /* danger */
+  --so-color-danger-fg: #ffffff;
+  --so-color-danger-hover: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 14%);
+  --so-color-danger-active: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 26%);
+  --so-color-danger-subtle: color-mix(in oklch, var(--so-color-danger-base) 14%, var(--so-bg));
+  --so-color-danger-subtle-fg: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 35%);
+  --so-color-danger-border: color-mix(in oklch, var(--so-color-danger-base) 50%, var(--so-bg));
+
+  /* success */
+  --so-color-success-fg: #ffffff;
+  --so-color-success-hover: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 14%);
+  --so-color-success-active: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 26%);
+  --so-color-success-subtle: color-mix(in oklch, var(--so-color-success-base) 14%, var(--so-bg));
+  --so-color-success-subtle-fg: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 35%);
+  --so-color-success-border: color-mix(in oklch, var(--so-color-success-base) 50%, var(--so-bg));
+
+  /* warning */
+  --so-color-warning-fg: #ffffff;
+  --so-color-warning-hover: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 14%);
+  --so-color-warning-active: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 26%);
+  --so-color-warning-subtle: color-mix(in oklch, var(--so-color-warning-base) 14%, var(--so-bg));
+  --so-color-warning-subtle-fg: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 35%);
+  --so-color-warning-border: color-mix(in oklch, var(--so-color-warning-base) 50%, var(--so-bg));
+
+  /* info */
+  --so-color-info-fg: #ffffff;
+  --so-color-info-hover: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 14%);
+  --so-color-info-active: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 26%);
+  --so-color-info-subtle: color-mix(in oklch, var(--so-color-info-base) 14%, var(--so-bg));
+  --so-color-info-subtle-fg: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 35%);
+  --so-color-info-border: color-mix(in oklch, var(--so-color-info-base) 50%, var(--so-bg));
 }
 
 /* --- Root container --- */
