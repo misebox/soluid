@@ -35,6 +35,11 @@
   opacity: 1;
 }
 
+.so-alert__dismiss:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: -1px;
+}
+
 /* --- Variants --- */
 
 .so-alert--info {

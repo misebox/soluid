@@ -27,3 +27,9 @@
 .so-description-list--2col .so-description-list__detail {
   margin-bottom: var(--so-space-4);
 }
+
+@media (max-width: 640px) {
+  .so-description-list--2col {
+    grid-template-columns: 1fr;
+  }
+}

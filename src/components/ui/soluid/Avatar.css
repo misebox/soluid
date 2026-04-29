@@ -29,7 +29,7 @@
 .so-avatar--sm {
   width: 28px;
   height: 28px;
-  font-size: var(--so-font-size-xs, 10px);
+  font-size: var(--so-font-size-xs);
 }
 
 .so-avatar--md {

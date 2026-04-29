@@ -19,6 +19,7 @@
   box-shadow: var(--so-shadow-lg);
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 

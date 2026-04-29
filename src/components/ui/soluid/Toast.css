@@ -70,6 +70,11 @@
   opacity: 1;
 }
 
+.so-toast__dismiss:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: -1px;
+}
+
 /* --- Variants --- */
 
 .so-toast--info {

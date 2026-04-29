@@ -107,3 +107,8 @@
 .so-tag__remove:hover {
   opacity: 1;
 }
+
+.so-tag__remove:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: -1px;
+}
