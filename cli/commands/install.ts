@@ -23,6 +23,9 @@ function detectInstallCommand(cwd: string): { lockfile: string | null; command: 
   for (const [lockfile, command] of Object.entries(lockfiles)) {
     if (fs.existsSync(path.join(cwd, lockfile))) return { lockfile, command };
   }
+  if (fs.existsSync(path.join(cwd, "bunfig.toml"))) {
+    return { lockfile: "bunfig.toml", command: ["bun", "add"] };
+  }
   return { lockfile: null, command: ["npm", "install"] };
 }
 
