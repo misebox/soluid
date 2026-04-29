@@ -48,6 +48,7 @@ export function Dialog(props: DialogProps) {
         <DialogContext.Provider value={titleId}>
           <div
             class={cls("so-dialog-backdrop", overlay.closing() && "so-dialog-backdrop--closing")}
+            on:mousedown={overlay.handleBackdropMouseDown}
             on:click={overlay.handleBackdropClick}
             onAnimationEnd={overlay.handleAnimationEnd}
           >

@@ -13,6 +13,7 @@ interface OverlayReturn {
   handleAnimationEnd: () => void;
   containerRef: Accessor<HTMLElement | undefined>;
   setContainerRef: (el: HTMLElement | undefined) => void;
+  handleBackdropMouseDown: (e: MouseEvent) => void;
   handleBackdropClick: (e: MouseEvent) => void;
 }
 
@@ -55,11 +56,29 @@ export function createOverlay(options: CreateOverlayOptions): OverlayReturn {
     onClose: options.onClose,
   });
 
-  function handleBackdropClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget) {
-      options.onClose();
-    }
+  // Track whether the press started on the backdrop itself. Without this,
+  // selecting text inside an input and releasing over the backdrop would
+  // fire a click whose target is the backdrop, closing the overlay.
+  let mouseDownOnBackdrop = false;
+
+  function handleBackdropMouseDown(e: MouseEvent): void {
+    mouseDownOnBackdrop = e.target === e.currentTarget;
   }
 
-  return { mounted, closing, handleAnimationEnd, containerRef, setContainerRef, handleBackdropClick };
+  function handleBackdropClick(e: MouseEvent): void {
+    if (e.target === e.currentTarget && mouseDownOnBackdrop) {
+      options.onClose();
+    }
+    mouseDownOnBackdrop = false;
+  }
+
+  return {
+    mounted,
+    closing,
+    handleAnimationEnd,
+    containerRef,
+    setContainerRef,
+    handleBackdropMouseDown,
+    handleBackdropClick,
+  };
 }

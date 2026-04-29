@@ -39,6 +39,7 @@ export function Drawer(props: DrawerProps) {
         <DrawerContext.Provider value={titleId}>
           <div
             class={cls("so-drawer-backdrop", overlay.closing() && "so-drawer-backdrop--closing")}
+            on:mousedown={overlay.handleBackdropMouseDown}
             on:click={overlay.handleBackdropClick}
             onAnimationEnd={overlay.handleAnimationEnd}
           >
