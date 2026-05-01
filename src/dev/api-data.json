@@ -1066,11 +1066,16 @@
       {
         "name": "value",
         "type": "number",
-        "optional": false
+        "optional": true
       },
       {
         "name": "variant",
         "type": "FeedbackVariant",
+        "optional": true
+      },
+      {
+        "name": "segments",
+        "type": "ProgressSegment[]",
         "optional": true
       },
       {

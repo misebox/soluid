@@ -19,7 +19,7 @@
   transition: width 0.3s ease;
 }
 
-/* --- Variants --- */
+/* --- Single-bar variants (variant on container colors the child bar) --- */
 
 .so-progress--info .so-progress__bar {
   background-color: var(--so-color-info-base);
@@ -34,5 +34,34 @@
 }
 
 .so-progress--danger .so-progress__bar {
+  background-color: var(--so-color-danger-base);
+}
+
+/* --- Multi-segment mode --- */
+
+.so-progress--multi {
+  display: flex;
+}
+
+.so-progress--multi .so-progress__bar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-radius: 0;
+  transition: flex-basis 0.3s ease;
+}
+
+.so-progress__bar--info {
+  background-color: var(--so-color-info-base);
+}
+
+.so-progress__bar--success {
+  background-color: var(--so-color-success-base);
+}
+
+.so-progress__bar--warning {
+  background-color: var(--so-color-warning-base);
+}
+
+.so-progress__bar--danger {
   background-color: var(--so-color-danger-base);
 }

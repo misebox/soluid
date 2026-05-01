@@ -315,7 +315,15 @@ const columns = [
 
   Progress: `import { Progress } from "./soluid/Progress";
 
-<Progress value={65} variant="success" />`,
+<Progress value={65} variant="success" />
+
+<Progress
+  segments={[
+    { value: 40, variant: "success" },
+    { value: 20, variant: "info" },
+    { value: 15, variant: "danger" },
+  ]}
+/>`,
 
   Spinner: `import { Spinner } from "./soluid/Spinner";
 
@@ -797,6 +805,13 @@ function ProgressDemo(): JSX.Element {
       <Progress value={30} variant="info" />
       <Progress value={65} variant="success" />
       <Progress value={90} variant="warning" />
+      <Progress
+        segments={[
+          { value: 40, variant: "success" },
+          { value: 20, variant: "info" },
+          { value: 15, variant: "danger" },
+        ]}
+      />
     </Stack>
   );
 }
