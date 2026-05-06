@@ -9,7 +9,7 @@ CLI that installs SolidJS UI components directly into your project. Own the code
 
 ## Features
 
-- **34 components** — layout, form, data display, feedback, navigation
+- **Rich component set** — layout, form, data display, feedback, navigation
 - **CLI-driven install** — `bunx soluid install`, no manual copy-paste
 - **Own the code** — components live in your repo, fully customizable
 - **No runtime dependency** — zero JS added to your bundle
@@ -58,23 +58,9 @@ document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.setAttribute("data-density", "dense");
 ```
 
-## Components (34)
+## Components
 
-| Category   | Components                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------ |
-| Layout     | Stack, HStack, Divider, Spacer                                                                   |
-| General    | Button, IconButton, Badge, Tag, Tooltip, Avatar                                                  |
-| Form       | FormField, TextField, TextArea, NumberInput, Select, Checkbox, CheckboxGroup, RadioGroup, Switch |
-| Data       | Table, Card, DescriptionList, Skeleton, EmptyState, Accordion                                    |
-| Feedback   | Dialog, Drawer, Alert, Toast, Progress, Spinner                                                  |
-| Navigation | Tabs, Breadcrumb, Pagination, Menu                                                               |
-| Utility    | VisuallyHidden, Popover                                                                          |
-
-## Core Utilities
-
-`createFocusTrap`, `createToast`, `createToggle`
-
-Installed automatically as dependencies when any component that requires them is added.
+See the full list with live demos at [misebox.github.io/soluid](https://misebox.github.io/soluid/).
 
 ## Development
 
