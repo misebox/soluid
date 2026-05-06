@@ -42,9 +42,9 @@
     "fmt": "oxfmt src/ cli/ scripts/",
     "fmt:check": "oxfmt --check src/ cli/ scripts/",
     "lint": "oxlint src/ cli/",
-    "fix": "oxlint --fix src/ cli/ && oxfmt src/ cli/ scripts/",
+    "lint:fix": "oxlint --fix src/ cli/ && oxfmt src/ cli/ scripts/",
     "verify": "concurrently -n lint,fmt,test,build \"bun run lint\" \"bun run fmt:check\" \"bun run test\" \"bun run build:cli\"",
-    "ready": "bun run fix && bun run verify && bun run build:catalog && bun run fmt",
+    "ready": "bun run lint:fix && bun run verify && bun run build:catalog && bun run fmt",
     "push:check": "sh bin/check-build-freshness.sh"
   },
   "devDependencies": {
