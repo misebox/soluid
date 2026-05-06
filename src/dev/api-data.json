@@ -628,7 +628,7 @@
       },
       {
         "name": "side",
-        "type": "\"left\" | \"right\"",
+        "type": "\"right\" | \"left\"",
         "optional": true
       },
       {
@@ -744,12 +744,12 @@
       },
       {
         "name": "align",
-        "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
+        "type": "\"start\" | \"end\" | \"center\" | \"stretch\"",
         "optional": true
       },
       {
         "name": "justify",
-        "type": "\"start\" | \"center\" | \"end\" | \"between\" | \"around\"",
+        "type": "\"start\" | \"end\" | \"center\" | \"between\" | \"around\"",
         "optional": true
       },
       {
@@ -1327,12 +1327,12 @@
       },
       {
         "name": "align",
-        "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
+        "type": "\"start\" | \"end\" | \"center\" | \"stretch\"",
         "optional": true
       },
       {
         "name": "justify",
-        "type": "\"start\" | \"center\" | \"end\" | \"between\" | \"around\"",
+        "type": "\"start\" | \"end\" | \"center\" | \"between\" | \"around\"",
         "optional": true
       },
       {
@@ -1769,7 +1769,7 @@
       },
       {
         "name": "placement",
-        "type": "\"left\" | \"right\" | \"top\" | \"bottom\"",
+        "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
         "optional": true
       },
       {
