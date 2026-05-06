@@ -12,7 +12,7 @@ export interface RadioButtonProps extends CommonProps {
 }
 
 export function RadioButton(props: RadioButtonProps) {
-  const [local, others] = splitProps(props, ["class", "value", "label", "disabled", "children"]);
+  const [local, _others] = splitProps(props, ["class", "value", "label", "disabled", "children"]);
 
   const group = useRadioGroup();
 

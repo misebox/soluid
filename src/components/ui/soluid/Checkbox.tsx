@@ -18,7 +18,7 @@ export interface CheckboxProps extends CommonProps {
 }
 
 export function Checkbox(props: CheckboxProps) {
-  const [local, others] = splitProps(props, [
+  const [local, _others] = splitProps(props, [
     "class",
     "checked",
     "onChange",

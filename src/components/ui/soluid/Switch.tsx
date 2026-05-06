@@ -16,7 +16,7 @@ export interface SwitchProps extends CommonProps {
 }
 
 export function Switch(props: SwitchProps) {
-  const [local, others] = splitProps(props, [
+  const [local, _others] = splitProps(props, [
     "class",
     "checked",
     "onChange",
