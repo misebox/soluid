@@ -41,7 +41,7 @@ else
   fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
   "
 
-  git add package.json package-lock.json
+  git add package.json bun.lock
   git commit -m "Release ${TAG}"
 fi
 

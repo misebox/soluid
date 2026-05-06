@@ -15,7 +15,6 @@
         "@solidjs/router": "^0.15.4",
         "@types/node": "^20.19.34",
         "concurrently": "^9.2.1",
-        "dprint": "^0.52.0",
         "oxfmt": "^0.41.0",
         "oxlint": "^1.50.0",
         "solid-js": "^1.9.0",
@@ -62,28 +61,6 @@
     "@babel/traverse": ["@babel/traverse@7.29.0", "", { "dependencies": { "@babel/code-frame": "^7.29.0", "@babel/generator": "^7.29.0", "@babel/helper-globals": "^7.28.0", "@babel/parser": "^7.29.0", "@babel/template": "^7.28.6", "@babel/types": "^7.29.0", "debug": "^4.3.1" } }, "sha512-4HPiQr0X7+waHfyXPZpWPfWL/J7dcN1mx9gL6WdQVMbPnF3+ZhSMs8tCxN7oHddJE9fhNE7+lxdnlyemKfJRuA=="],
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
-
-    "@dprint/darwin-arm64": ["@dprint/darwin-arm64@0.52.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-HHpmHCeFw1V9qUU0pJrz7LihrMgQJ5DOejfI3GRCJOd2ue3Api3/ZrzNSIqUbnx/j0RT5c7zxZR5aTE0RHwRFQ=="],
-
-    "@dprint/darwin-x64": ["@dprint/darwin-x64@0.52.0", "", { "os": "darwin", "cpu": "x64" }, "sha512-ZuoYH/hyzFhwwFUmykkm1QvLk9u7zxpKL6M8r1fY+lINucujIoGZxW1PjRbbIXaST6nDLbQB21P7LyNncAByOg=="],
-
-    "@dprint/linux-arm64-glibc": ["@dprint/linux-arm64-glibc@0.52.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-waghQcB32CLMuCxnVRQktc7U1S2qsL4spUmvCMyu4ufhZqXf4rQn07L1NcSmQOap40q9Db8ZBmLHfHm1Kab6uA=="],
-
-    "@dprint/linux-arm64-musl": ["@dprint/linux-arm64-musl@0.52.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-8ml2DmF8i7eEou1G5nqgMMhRir89Fsd9cMLZRPZN/FSw6Nc3vAhk2MqZIrYk2DGfoWts7jis6XvEu3/TwMP8fw=="],
-
-    "@dprint/linux-loong64-glibc": ["@dprint/linux-loong64-glibc@0.52.0", "", { "os": "linux", "cpu": "none" }, "sha512-tKj7Bwtcf/zNa1onoshYfQ8CaYz0N6BRYKsovop1H1d2dsRBYAKkR/FvTaPRJp1+Sx7Lc0RjRllFezkhLMRxPw=="],
-
-    "@dprint/linux-loong64-musl": ["@dprint/linux-loong64-musl@0.52.0", "", { "os": "linux", "cpu": "none" }, "sha512-8X+ICN/Pc4B+Zog2UXNDJph5uKLf0VVUItYEQbdbwqsWGzPa27Kqri5ainlFzaDs5TFkJHQKQlphg+TLyxBQ7A=="],
-
-    "@dprint/linux-riscv64-glibc": ["@dprint/linux-riscv64-glibc@0.52.0", "", { "os": "linux", "cpu": "none" }, "sha512-uQb2VqSnznfZHhrAKLxpjXMc7/c3AYepllVUhcGCdrTVp1fb7inHEilT2wSXUjOipBbfPG33cZWRzAgc5/Effg=="],
-
-    "@dprint/linux-x64-glibc": ["@dprint/linux-x64-glibc@0.52.0", "", { "os": "linux", "cpu": "x64" }, "sha512-Yh3fZYUcHmII+swTUh0qgf0lEPrz4+7v3tq+vqXR8/xa3Sx8QH5MQJsJDw8Ll1mmKX5HrkBNxA5rC1lIDuFn9g=="],
-
-    "@dprint/linux-x64-musl": ["@dprint/linux-x64-musl@0.52.0", "", { "os": "linux", "cpu": "x64" }, "sha512-zdcgL6+PRjyZ4HVll9DuIn2ZnnxKuU0cwXtpfUZNdy+xRh1+OedUY5aZQRDN4163vkLxV9znXQT/TS0+giph1g=="],
-
-    "@dprint/win32-arm64": ["@dprint/win32-arm64@0.52.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-rQGhSbl2pcnU4Tl3xXJSPRi1smfIIf7XhVwzNOG7vcSExfcK8yYrrCS3z4VImYKqhI1kvv6gSfnIligtoyaX/g=="],
-
-    "@dprint/win32-x64": ["@dprint/win32-x64@0.52.0", "", { "os": "win32", "cpu": "x64" }, "sha512-Bi4kW6z9eVtRdNSztSvjjYET4SQzX/OYqsexVyppxv24m5RNOG1h+c9F5MFJpYy9LqQBAKHOQfkzQwPrdgNOXQ=="],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.25.12", "", { "os": "aix", "cpu": "ppc64" }, "sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA=="],
 
@@ -358,8 +335,6 @@
     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
 
     "debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
-
-    "dprint": ["dprint@0.52.0", "", { "optionalDependencies": { "@dprint/darwin-arm64": "0.52.0", "@dprint/darwin-x64": "0.52.0", "@dprint/linux-arm64-glibc": "0.52.0", "@dprint/linux-arm64-musl": "0.52.0", "@dprint/linux-loong64-glibc": "0.52.0", "@dprint/linux-loong64-musl": "0.52.0", "@dprint/linux-riscv64-glibc": "0.52.0", "@dprint/linux-x64-glibc": "0.52.0", "@dprint/linux-x64-musl": "0.52.0", "@dprint/win32-arm64": "0.52.0", "@dprint/win32-x64": "0.52.0" }, "bin": "bin.js" }, "sha512-qXf3B6/G4E6SJKngfo7a0z1ja21o/JJ55cF8xyhyIqvJGrpJ96vhXLr37RrbWBWIj8eV+hquBkCAV6jCwenQYA=="],
 
     "electron-to-chromium": ["electron-to-chromium@1.5.302", "", {}, "sha512-sM6HAN2LyK82IyPBpznDRqlTQAtuSaO+ShzFiWTvoMJLHyZ+Y39r8VMfHzwbU8MVBzQ4Wdn85+wlZl2TLGIlwg=="],
 
