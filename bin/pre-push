@@ -7,5 +7,8 @@ bun run build:cli
 echo "[pre-push] check-build-freshness"
 sh bin/check-build-freshness.sh
 
-echo "[pre-push] check-version-drift"
-bash scripts/check-version-drift.sh && echo "No unreleased changes." || echo "WARNING: Unreleased changes detected (see above)."
+echo "[pre-push] check-cli-drift"
+bash scripts/check-cli-drift.sh || echo "NOTE: run scripts/release-cli.sh when ready."
+
+echo "[pre-push] check-components-drift"
+bash scripts/check-components-drift.sh || echo "NOTE: run scripts/release-components.sh when ready."

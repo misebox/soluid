@@ -45,7 +45,8 @@
     "lint:fix": "oxlint --fix src/ cli/ && oxfmt src/ cli/ scripts/",
     "verify": "concurrently -n lint,fmt,test,build \"bun run lint\" \"bun run fmt:check\" \"bun run test\" \"bun run build:cli\"",
     "ready": "bun run lint:fix && bun run verify && bun run build:catalog && bun run fmt",
-    "push:check": "sh bin/check-build-freshness.sh"
+    "push:check": "sh bin/check-build-freshness.sh",
+    "check-drift": "bash scripts/check-cli-drift.sh; bash scripts/check-components-drift.sh"
   },
   "devDependencies": {
     "@floating-ui/dom": "^1.7.5",
