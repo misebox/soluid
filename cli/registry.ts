@@ -471,6 +471,51 @@ export const registry: Record<string, RegistryEntry> = {
     npmDependencies: ["@floating-ui/dom"],
     description: "Right-click menu anchored to the pointer",
   },
+  Calendar: {
+    name: "Calendar",
+    category: "components",
+    files: ["soluid/Calendar.tsx", "soluid/Calendar.css"],
+    dependencies: ["core"],
+    description: "Month grid with keyboard navigation",
+  },
+  DatePicker: {
+    name: "DatePicker",
+    category: "components",
+    files: ["soluid/DatePicker.tsx", "soluid/DatePicker.css"],
+    dependencies: ["core", "FormField", "Calendar"],
+    npmDependencies: ["@floating-ui/dom"],
+    description: "Date field backed by a calendar popover",
+  },
+  TimePicker: {
+    name: "TimePicker",
+    category: "components",
+    files: ["soluid/TimePicker.tsx", "soluid/TimePicker.css"],
+    dependencies: ["core", "FormField"],
+    npmDependencies: ["@floating-ui/dom"],
+    description: "Time field backed by a stepped listbox",
+  },
+  ColorPicker: {
+    name: "ColorPicker",
+    category: "components",
+    files: ["soluid/ColorPicker.tsx", "soluid/ColorPicker.css"],
+    dependencies: ["core", "FormField"],
+    npmDependencies: ["@floating-ui/dom"],
+    description: "Swatch palette with a hex field and native picker",
+  },
+  CommandPalette: {
+    name: "CommandPalette",
+    category: "components",
+    files: ["soluid/CommandPalette.tsx", "soluid/CommandPalette.css"],
+    dependencies: ["core"],
+    description: "Searchable command list in a modal overlay",
+  },
+  Carousel: {
+    name: "Carousel",
+    category: "components",
+    files: ["soluid/Carousel.tsx", "soluid/Carousel.css"],
+    dependencies: ["core"],
+    description: "Scroll-snapping slides with dots and arrows",
+  },
 };
 
 /** Resolve all dependencies recursively for a list of component names. */

@@ -65,10 +65,14 @@ export type { TooltipProps } from "./components/ui/soluid/Tooltip";
 // Form
 export { Checkbox } from "./components/ui/soluid/Checkbox";
 export type { CheckboxProps } from "./components/ui/soluid/Checkbox";
+export { ColorPicker, ColorPickerControl } from "./components/ui/soluid/ColorPicker";
+export type { ColorPickerControlProps, ColorPickerProps } from "./components/ui/soluid/ColorPicker";
 export { Combobox, ComboboxControl } from "./components/ui/soluid/Combobox";
 export type { ComboboxControlProps, ComboboxOption, ComboboxProps } from "./components/ui/soluid/Combobox";
 export { CheckboxGroup } from "./components/ui/soluid/CheckboxGroup";
 export type { CheckboxGroupProps } from "./components/ui/soluid/CheckboxGroup";
+export { DatePicker, DatePickerControl } from "./components/ui/soluid/DatePicker";
+export type { DatePickerControlProps, DatePickerProps } from "./components/ui/soluid/DatePicker";
 export { FileUpload } from "./components/ui/soluid/FileUpload";
 export type { FileUploadProps } from "./components/ui/soluid/FileUpload";
 export { FormField } from "./components/ui/soluid/FormField";
@@ -97,9 +101,15 @@ export { TextArea, TextAreaInput } from "./components/ui/soluid/TextArea";
 export type { TextAreaInputProps, TextAreaProps } from "./components/ui/soluid/TextArea";
 export { TextField, TextFieldInput } from "./components/ui/soluid/TextField";
 export type { TextFieldInputProps, TextFieldProps } from "./components/ui/soluid/TextField";
+export { TimePicker, TimePickerControl } from "./components/ui/soluid/TimePicker";
+export type { TimePickerControlProps, TimePickerProps } from "./components/ui/soluid/TimePicker";
 
 // Data Display
 export { Accordion, AccordionItem } from "./components/ui/soluid/Accordion";
+export { Calendar } from "./components/ui/soluid/Calendar";
+export type { CalendarProps } from "./components/ui/soluid/Calendar";
+export { Carousel } from "./components/ui/soluid/Carousel";
+export type { CarouselProps } from "./components/ui/soluid/Carousel";
 export type { AccordionItemProps, AccordionProps } from "./components/ui/soluid/Accordion";
 export { Card, CardBody, CardFooter, CardHeader } from "./components/ui/soluid/Card";
 export type { CardBodyProps, CardFooterProps, CardHeaderProps, CardProps } from "./components/ui/soluid/Card";
@@ -137,6 +147,8 @@ export type { ToastContainerProps } from "./components/ui/soluid/Toast";
 // Navigation
 export { Breadcrumb, BreadcrumbItem } from "./components/ui/soluid/Breadcrumb";
 export type { BreadcrumbItemProps, BreadcrumbProps } from "./components/ui/soluid/Breadcrumb";
+export { CommandPalette } from "./components/ui/soluid/CommandPalette";
+export type { Command, CommandPaletteProps } from "./components/ui/soluid/CommandPalette";
 export { ContextMenu } from "./components/ui/soluid/ContextMenu";
 export type { ContextMenuProps } from "./components/ui/soluid/ContextMenu";
 export { Menu, MenuItem, MenuSeparator } from "./components/ui/soluid/Menu";

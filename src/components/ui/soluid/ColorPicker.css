@@ -1,0 +1,129 @@
+.so-color-picker {
+  position: relative;
+  display: inline-flex;
+}
+
+.so-color-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--so-space-2);
+  padding: 0 var(--so-space-2);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.so-color-picker__trigger:disabled {
+  background-color: var(--so-bg-subtle);
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Chequerboard shows through partially transparent colours. */
+.so-color-picker__preview {
+  width: 1.15em;
+  height: 1.15em;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.so-color-picker__hex {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  text-transform: lowercase;
+}
+
+/* --- Sizes --- */
+
+.so-color-picker--sm .so-color-picker__trigger {
+  height: var(--so-control-height-sm);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-color-picker--md .so-color-picker__trigger {
+  height: var(--so-control-height-md);
+  font-size: var(--so-font-size-md);
+}
+
+.so-color-picker--lg .so-color-picker__trigger {
+  height: var(--so-control-height-lg);
+  font-size: var(--so-font-size-lg);
+}
+
+/* --- Panel --- */
+
+.so-color-picker__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-3);
+  width: 15rem;
+  padding: var(--so-space-3);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  box-shadow: var(--so-shadow-md);
+}
+
+.so-color-picker__swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--so-space-2);
+}
+
+.so-color-picker__swatch {
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--so-radius);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.so-color-picker__swatch--selected {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.15),
+    0 0 0 2px var(--so-bg),
+    0 0 0 4px var(--so-color-primary-base);
+}
+
+.so-color-picker__field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--so-space-2);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-color-picker__field-label {
+  color: var(--so-text-muted);
+}
+
+.so-color-picker__native {
+  width: 2.5rem;
+  height: var(--so-control-height-sm);
+  padding: 0;
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background: none;
+  cursor: pointer;
+}
+
+.so-color-picker__hex-input {
+  width: 7rem;
+  height: var(--so-control-height-sm);
+  padding: 0 var(--so-space-2);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--so-font-size-sm);
+}

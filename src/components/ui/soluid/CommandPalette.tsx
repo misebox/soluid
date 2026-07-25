@@ -1,0 +1,243 @@
+import { createEffect, createMemo, createSignal, createUniqueId, For, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
+import { Portal } from "solid-js/web";
+import { createOverlay } from "./core/createOverlay";
+import type { CommonProps } from "./core/types";
+import { cls } from "./core/utils";
+
+export interface Command {
+  id: string;
+  label: string;
+  /** Optional heading the command is filed under */
+  group?: string;
+  /** Extra words the query should match, e.g. synonyms */
+  keywords?: string;
+  /** Shortcut shown on the right, e.g. "⌘K" */
+  shortcut?: string;
+  icon?: JSX.Element;
+  disabled?: boolean;
+}
+
+export interface CommandPaletteProps extends CommonProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  commands: Command[];
+  onSelect: (command: Command) => void;
+  placeholder?: string;
+  /** Shown when nothing matches (default: "No results") */
+  emptyLabel?: string;
+  /** Accessible label for the dialog */
+  label?: string;
+  /** Overrides the default case-insensitive match over label and keywords */
+  filter?: (command: Command, query: string) => boolean;
+}
+
+function defaultFilter(command: Command, query: string): boolean {
+  const haystack = `${command.label} ${command.keywords ?? ""}`.toLowerCase();
+  return haystack.includes(query.toLowerCase());
+}
+
+export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onSelect">) {
+  const [local, others] = splitProps(props, [
+    "class",
+    "density",
+    "open",
+    "onOpenChange",
+    "commands",
+    "onSelect",
+    "placeholder",
+    "emptyLabel",
+    "label",
+    "filter",
+  ]);
+
+  const baseId = createUniqueId();
+  const listId = `so-command-list-${baseId}`;
+  const optionId = (index: number) => `so-command-option-${baseId}-${index}`;
+
+  const [query, setQuery] = createSignal("");
+  const [active, setActive] = createSignal(0);
+  let inputRef: HTMLInputElement | undefined;
+
+  const matches = createMemo(() => {
+    const q = query().trim();
+    if (q === "") return local.commands;
+    const match = local.filter ?? defaultFilter;
+    return local.commands.filter((command) => match(command, q));
+  });
+
+  /** Flat list with group headings folded in, so indices stay simple. */
+  const rows = createMemo(() => {
+    const result: ({ kind: "group"; label: string } | { kind: "command"; command: Command; index: number })[] = [];
+    let index = 0;
+    let currentGroup: string | undefined;
+    for (const command of matches()) {
+      if (command.group && command.group !== currentGroup) {
+        currentGroup = command.group;
+        result.push({ kind: "group", label: command.group });
+      }
+      result.push({ kind: "command", command, index });
+      index += 1;
+    }
+    return result;
+  });
+
+  const selectable = () => matches().filter((command) => !command.disabled);
+
+  function move(offset: number): void {
+    const list = matches();
+    if (list.length === 0) return;
+    let next = active();
+    for (let i = 0; i < list.length; i++) {
+      next = (next + offset + list.length) % list.length;
+      if (!list[next].disabled) break;
+    }
+    setActive(next);
+  }
+
+  function run(command: Command | undefined): void {
+    if (!command || command.disabled) return;
+    local.onSelect(command);
+    local.onOpenChange(false);
+  }
+
+  function handleKeyDown(e: KeyboardEvent): void {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      move(1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      move(-1);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setActive(matches().length - 1);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      run(matches()[active()]);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      local.onOpenChange(false);
+    }
+  }
+
+  // Escape, the focus trap and restoring focus on close all come from the
+  // same primitive Dialog uses.
+  const overlay = createOverlay({
+    isOpen: () => local.open,
+    onClose: () => local.onOpenChange(false),
+  });
+
+  // Every opening starts from a clean query with the field focused.
+  createEffect(() => {
+    if (!local.open) return;
+    setQuery("");
+    setActive(0);
+    queueMicrotask(() => inputRef?.focus());
+  });
+
+  // Keep the highlighted command in view as the arrow keys walk the list.
+  createEffect(() => {
+    if (!local.open) return;
+    const index = active();
+    queueMicrotask(() => document.getElementById(optionId(index))?.scrollIntoView({ block: "nearest" }));
+  });
+
+  return (
+    <Show when={overlay.mounted()}>
+      <Portal>
+        <div
+          class={cls("so-command-backdrop", local.class)}
+          data-density={local.density}
+          on:mousedown={overlay.handleBackdropMouseDown}
+          on:click={overlay.handleBackdropClick}
+          {...others}
+        >
+          <div
+            ref={overlay.setContainerRef}
+            class="so-command"
+            role="dialog"
+            aria-modal="true"
+            aria-label={local.label}
+          >
+            <div class="so-command__search">
+              <svg class="so-command__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5" />
+                <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              <input
+                ref={inputRef}
+                class="so-command__input"
+                type="text"
+                role="combobox"
+                autocomplete="off"
+                placeholder={local.placeholder}
+                value={query()}
+                aria-expanded={true}
+                aria-controls={listId}
+                aria-activedescendant={optionId(active())}
+                aria-autocomplete="list"
+                onInput={(e) => {
+                  setQuery(e.currentTarget.value);
+                  setActive(0);
+                }}
+                onKeyDown={handleKeyDown}
+              />
+            </div>
+
+            <Show
+              when={selectable().length > 0}
+              fallback={<p class="so-command__empty">{local.emptyLabel ?? "No results"}</p>}
+            >
+              <ul id={listId} class="so-command__list" role="listbox" aria-label={local.label}>
+                <For each={rows()}>
+                  {(row) => (
+                    <Show
+                      when={row.kind === "command" ? row : undefined}
+                      fallback={
+                        <li class="so-command__group" role="presentation">
+                          {row.kind === "group" ? row.label : ""}
+                        </li>
+                      }
+                    >
+                      {(item) => (
+                        <li
+                          id={optionId(item().index)}
+                          class={cls(
+                            "so-command__option",
+                            item().index === active() && "so-command__option--active",
+                            item().command.disabled && "so-command__option--disabled",
+                          )}
+                          role="option"
+                          aria-selected={item().index === active()}
+                          aria-disabled={item().command.disabled || undefined}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            run(item().command);
+                          }}
+                          onMouseEnter={() => !item().command.disabled && setActive(item().index)}
+                        >
+                          <Show when={item().command.icon}>
+                            <span class="so-command__option-icon" aria-hidden="true">
+                              {item().command.icon}
+                            </span>
+                          </Show>
+                          <span class="so-command__option-label">{item().command.label}</span>
+                          <Show when={item().command.shortcut}>
+                            <kbd class="so-command__shortcut">{item().command.shortcut}</kbd>
+                          </Show>
+                        </li>
+                      )}
+                    </Show>
+                  )}
+                </For>
+              </ul>
+            </Show>
+          </div>
+        </div>
+      </Portal>
+    </Show>
+  );
+}

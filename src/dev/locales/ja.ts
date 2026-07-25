@@ -81,6 +81,34 @@ export const ja: Record<string, string> = {
   "ButtonGroupProps.class": "追加のCSSクラス",
   "ButtonGroupProps.density": "コンポーネントの密度",
 
+  // CalendarProps
+  "CalendarProps.value": "選択中の日 (YYYY-MM-DD)",
+  "CalendarProps.onChange": "日が選択されたときのコールバック",
+  "CalendarProps.month": "表示中の月 (YYYY-MM)。省略時はカレンダーが管理",
+  "CalendarProps.onMonthChange": "表示月が変わったときのコールバック",
+  "CalendarProps.min": "選択可能な最も古い日（含む）",
+  "CalendarProps.max": "選択可能な最も新しい日（含む）",
+  "CalendarProps.weekStartsOn": "週の先頭列: 0 日曜、1 月曜",
+  "CalendarProps.locale": "月名・曜日名に使う BCP 47 タグ",
+  "CalendarProps.label": "グリッドのアクセシブルラベル",
+  "CalendarProps.previousLabel": "前月ボタンのアクセシブルラベル",
+  "CalendarProps.nextLabel": "翌月ボタンのアクセシブルラベル",
+  "CalendarProps.class": "追加のCSSクラス",
+  "CalendarProps.density": "コンポーネントの密度",
+
+  // CarouselProps
+  "CarouselProps.index": "表示中のスライドのインデックス",
+  "CarouselProps.onIndexChange": "スワイプを含め、スライドが変わったときのコールバック",
+  "CarouselProps.loop": "端で反対側へ循環させる",
+  "CarouselProps.hideDots": "ドットインジケーターを隠す",
+  "CarouselProps.label": "カルーセル領域のアクセシブルラベル",
+  "CarouselProps.previousLabel": "前スライドボタンのアクセシブルラベル",
+  "CarouselProps.nextLabel": "次スライドボタンのアクセシブルラベル",
+  "CarouselProps.dotLabel": "スライドとドットのアクセシブルラベルを生成する関数",
+  "CarouselProps.children": "1スライドにつき1要素",
+  "CarouselProps.class": "追加のCSSクラス",
+  "CarouselProps.density": "コンポーネントの密度",
+
   // CardBodyProps
   "CardBodyProps.class": "追加CSSクラス",
   "CardBodyProps.children": "カード本文の内容",
@@ -132,6 +160,32 @@ export const ja: Record<string, string> = {
   "CollapsibleProps.class": "追加のCSSクラス",
   "CollapsibleProps.density": "コンポーネントの密度",
 
+  // ColorPickerControlProps
+  "ColorPickerControlProps.value": "選択中の色 (#rrggbb)",
+  "ColorPickerControlProps.onChange": "色が変わったときのコールバック",
+  "ColorPickerControlProps.swatches": "パネルに並べるプリセット色",
+  "ColorPickerControlProps.required": "入力を必須にする",
+  "ColorPickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "ColorPickerControlProps.panelLabel": "パネルのアクセシブルラベル",
+  "ColorPickerControlProps.swatchLabel": "プリセット色のアクセシブルラベルを生成する関数",
+  "ColorPickerControlProps.customLabel": "ネイティブカラー入力のラベル",
+  "ColorPickerControlProps.hexLabel": "HEX入力欄のラベル",
+
+  // ColorPickerProps
+  "ColorPickerProps.label": "フィールドラベル",
+  "ColorPickerProps.error": "エラーメッセージ",
+  "ColorPickerProps.hint": "ヒントテキスト",
+
+  // CommandPaletteProps
+  "CommandPaletteProps.open": "パレットの表示状態",
+  "CommandPaletteProps.onOpenChange": "パレットの開閉時のコールバック",
+  "CommandPaletteProps.commands": "表示順に並べたコマンド",
+  "CommandPaletteProps.onSelect": "選択されたコマンドを受け取るコールバック",
+  "CommandPaletteProps.placeholder": "検索欄のプレースホルダー",
+  "CommandPaletteProps.emptyLabel": "一致するものがないときに表示するテキスト",
+  "CommandPaletteProps.label": "ダイアログのアクセシブルラベル",
+  "CommandPaletteProps.filter": "label と keywords に対する既定の一致判定を上書きする関数",
+
   // ComboboxControlProps
   "ComboboxControlProps.value": "現在選択されている値",
   "ComboboxControlProps.onChange": "候補が選択されたときのコールバック",
@@ -160,6 +214,25 @@ export const ja: Record<string, string> = {
   "ContainerProps.children": "ページコンテンツ",
   "ContainerProps.class": "追加のCSSクラス",
   "ContainerProps.density": "コンポーネントの密度",
+
+  // DatePickerControlProps
+  "DatePickerControlProps.value": "選択中の日 (YYYY-MM-DD)",
+  "DatePickerControlProps.onChange": "日が選択されたときのコールバック",
+  "DatePickerControlProps.min": "選択可能な最も古い日（含む）",
+  "DatePickerControlProps.max": "選択可能な最も新しい日（含む）",
+  "DatePickerControlProps.weekStartsOn": "週の先頭列: 0 日曜、1 月曜",
+  "DatePickerControlProps.locale": "月名・曜日名に使う BCP 47 タグ",
+  "DatePickerControlProps.placeholder": "未選択時に表示するテキスト",
+  "DatePickerControlProps.required": "入力を必須にする",
+  "DatePickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "DatePickerControlProps.name": "フォーム項目名",
+  "DatePickerControlProps.format": "フィールド表示用に値を整形する関数",
+  "DatePickerControlProps.openLabel": "カレンダーポップオーバーのアクセシブルラベル",
+
+  // DatePickerProps
+  "DatePickerProps.label": "フィールドラベル",
+  "DatePickerProps.error": "エラーメッセージ",
+  "DatePickerProps.hint": "ヒントテキスト",
 
   // DescriptionListProps
   "DescriptionListProps.items": "{ term, description } ペアの配列",
@@ -594,6 +667,23 @@ export const ja: Record<string, string> = {
   "ToastContainerProps.position": "トーストの表示位置",
   "ToastContainerProps.dismissLabel": "各トーストの閉じるボタンのアクセシブルラベル",
 
+  // TimePickerControlProps
+  "TimePickerControlProps.value": "選択中の時刻 (24時間制の HH:MM)",
+  "TimePickerControlProps.onChange": "時刻が選択されたときのコールバック",
+  "TimePickerControlProps.step": "候補として並べる時刻の刻み（分）",
+  "TimePickerControlProps.min": "候補の最も早い時刻（含む）",
+  "TimePickerControlProps.max": "候補の最も遅い時刻（含む）",
+  "TimePickerControlProps.placeholder": "未選択時に表示するテキスト",
+  "TimePickerControlProps.required": "入力を必須にする",
+  "TimePickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "TimePickerControlProps.format": "表示用に時刻を整形する関数",
+  "TimePickerControlProps.listLabel": "時刻候補リストのアクセシブルラベル",
+
+  // TimePickerProps
+  "TimePickerProps.label": "フィールドラベル",
+  "TimePickerProps.error": "エラーメッセージ",
+  "TimePickerProps.hint": "ヒントテキスト",
+
   // TimelineProps
   "TimelineProps.items": "タイムライン項目の配列",
   "TimelineProps.class": "追加のCSSクラス",
@@ -683,6 +773,12 @@ export const ja: Record<string, string> = {
   "desc.Tree": "キーボード操作に完全対応した階層リスト。",
   "desc.Steps": "複数ステップのフローの進捗インジケーター。",
   "desc.ContextMenu": "ポインタ位置に表示される右クリックメニュー。",
+  "desc.Calendar": "キーボード操作に完全対応した月グリッド。",
+  "desc.DatePicker": "カレンダーのポップオーバーを持つ日付フィールド。",
+  "desc.TimePicker": "一定刻みの時刻リストを持つ時刻フィールド。",
+  "desc.ColorPicker": "HEX入力とネイティブピッカーを備えた色見本パレット。",
+  "desc.CommandPalette": "モーダル上で検索できるコマンド一覧。",
+  "desc.Carousel": "矢印とドット付きのスクロールスナップ式スライド。",
   "desc.Divider": "コンテンツ間の視覚的な区切り線。",
   "desc.Spacer": "フレックスコンテナ内の余白を埋める伸縮スペース。",
   "desc.Button": "バリアント、サイズ、ローディング、無効状態を持つクリック可能なボタン。",

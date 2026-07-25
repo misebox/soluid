@@ -81,6 +81,34 @@ export const en: Record<string, string> = {
   "ButtonGroupProps.class": "Additional CSS class",
   "ButtonGroupProps.density": "Component density",
 
+  // CalendarProps
+  "CalendarProps.value": "Selected day as YYYY-MM-DD",
+  "CalendarProps.onChange": "Callback when a day is chosen",
+  "CalendarProps.month": "Visible month as YYYY-MM; omit to let the calendar manage it",
+  "CalendarProps.onMonthChange": "Callback when the visible month changes",
+  "CalendarProps.min": "Earliest selectable day, inclusive",
+  "CalendarProps.max": "Latest selectable day, inclusive",
+  "CalendarProps.weekStartsOn": "First column of the week: 0 Sunday, 1 Monday",
+  "CalendarProps.locale": "BCP 47 tag for month and weekday names",
+  "CalendarProps.label": "Accessible label for the grid",
+  "CalendarProps.previousLabel": "Accessible label for the previous-month button",
+  "CalendarProps.nextLabel": "Accessible label for the next-month button",
+  "CalendarProps.class": "Additional CSS class",
+  "CalendarProps.density": "Component density",
+
+  // CarouselProps
+  "CarouselProps.index": "Index of the visible slide",
+  "CarouselProps.onIndexChange": "Callback when the slide changes, including on swipe",
+  "CarouselProps.loop": "Wrap around at either end",
+  "CarouselProps.hideDots": "Hide the dot indicators",
+  "CarouselProps.label": "Accessible label for the carousel region",
+  "CarouselProps.previousLabel": "Accessible label for the previous-slide button",
+  "CarouselProps.nextLabel": "Accessible label for the next-slide button",
+  "CarouselProps.dotLabel": "Builds the accessible label for a slide and its dot",
+  "CarouselProps.children": "One element per slide",
+  "CarouselProps.class": "Additional CSS class",
+  "CarouselProps.density": "Component density",
+
   // CardBodyProps
   "CardBodyProps.class": "Additional CSS class",
   "CardBodyProps.children": "Card body content",
@@ -132,6 +160,32 @@ export const en: Record<string, string> = {
   "CollapsibleProps.class": "Additional CSS class",
   "CollapsibleProps.density": "Component density",
 
+  // ColorPickerControlProps
+  "ColorPickerControlProps.value": "Selected colour as #rrggbb",
+  "ColorPickerControlProps.onChange": "Callback when the colour changes",
+  "ColorPickerControlProps.swatches": "Preset colours offered in the panel",
+  "ColorPickerControlProps.required": "Mark the field as required",
+  "ColorPickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "ColorPickerControlProps.panelLabel": "Accessible label for the panel",
+  "ColorPickerControlProps.swatchLabel": "Builds the accessible label for a preset",
+  "ColorPickerControlProps.customLabel": "Label for the native colour input",
+  "ColorPickerControlProps.hexLabel": "Label for the hex text field",
+
+  // ColorPickerProps
+  "ColorPickerProps.label": "Field label",
+  "ColorPickerProps.error": "Error message",
+  "ColorPickerProps.hint": "Hint text",
+
+  // CommandPaletteProps
+  "CommandPaletteProps.open": "Whether the palette is visible",
+  "CommandPaletteProps.onOpenChange": "Callback when the palette opens or closes",
+  "CommandPaletteProps.commands": "Commands to offer, in display order",
+  "CommandPaletteProps.onSelect": "Callback with the chosen command",
+  "CommandPaletteProps.placeholder": "Placeholder for the search field",
+  "CommandPaletteProps.emptyLabel": "Text shown when nothing matches",
+  "CommandPaletteProps.label": "Accessible label for the dialog",
+  "CommandPaletteProps.filter": "Overrides the default match over label and keywords",
+
   // ComboboxControlProps
   "ComboboxControlProps.value": "Currently selected value",
   "ComboboxControlProps.onChange": "Callback when an option is chosen",
@@ -160,6 +214,25 @@ export const en: Record<string, string> = {
   "ContainerProps.children": "Page content",
   "ContainerProps.class": "Additional CSS class",
   "ContainerProps.density": "Component density",
+
+  // DatePickerControlProps
+  "DatePickerControlProps.value": "Selected day as YYYY-MM-DD",
+  "DatePickerControlProps.onChange": "Callback when a day is chosen",
+  "DatePickerControlProps.min": "Earliest selectable day, inclusive",
+  "DatePickerControlProps.max": "Latest selectable day, inclusive",
+  "DatePickerControlProps.weekStartsOn": "First column of the week: 0 Sunday, 1 Monday",
+  "DatePickerControlProps.locale": "BCP 47 tag for month and weekday names",
+  "DatePickerControlProps.placeholder": "Text shown while nothing is selected",
+  "DatePickerControlProps.required": "Mark the field as required",
+  "DatePickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "DatePickerControlProps.name": "Form field name",
+  "DatePickerControlProps.format": "Formats the value for the field",
+  "DatePickerControlProps.openLabel": "Accessible label for the calendar popover",
+
+  // DatePickerProps
+  "DatePickerProps.label": "Field label",
+  "DatePickerProps.error": "Error message",
+  "DatePickerProps.hint": "Hint text",
 
   // DescriptionListProps
   "DescriptionListProps.items": "Array of { term, description } pairs",
@@ -594,6 +667,23 @@ export const en: Record<string, string> = {
   "ToastContainerProps.position": "Toast position on screen",
   "ToastContainerProps.dismissLabel": "Accessible label for each toast's dismiss button",
 
+  // TimePickerControlProps
+  "TimePickerControlProps.value": "Selected time as HH:MM on a 24-hour clock",
+  "TimePickerControlProps.onChange": "Callback when a time is chosen",
+  "TimePickerControlProps.step": "Minutes between offered times",
+  "TimePickerControlProps.min": "Earliest offered time, inclusive",
+  "TimePickerControlProps.max": "Latest offered time, inclusive",
+  "TimePickerControlProps.placeholder": "Text shown while nothing is selected",
+  "TimePickerControlProps.required": "Mark the field as required",
+  "TimePickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "TimePickerControlProps.format": "Formats a time for display",
+  "TimePickerControlProps.listLabel": "Accessible label for the list of times",
+
+  // TimePickerProps
+  "TimePickerProps.label": "Field label",
+  "TimePickerProps.error": "Error message",
+  "TimePickerProps.hint": "Hint text",
+
   // TimelineProps
   "TimelineProps.items": "Array of timeline entries",
   "TimelineProps.class": "Additional CSS class",
@@ -682,6 +772,12 @@ export const en: Record<string, string> = {
   "desc.Tree": "Hierarchical list with full keyboard navigation.",
   "desc.Steps": "Progress indicator for a multi-step flow.",
   "desc.ContextMenu": "Right-click menu anchored to the pointer position.",
+  "desc.Calendar": "Month grid with full keyboard navigation.",
+  "desc.DatePicker": "Date field backed by a calendar popover.",
+  "desc.TimePicker": "Time field backed by a stepped list of times.",
+  "desc.ColorPicker": "Swatch palette with a hex field and the native picker.",
+  "desc.CommandPalette": "Searchable command list in a modal overlay.",
+  "desc.Carousel": "Scroll-snapping slides with arrows and dots.",
   "desc.Divider": "Visual separator line between content sections.",
   "desc.Spacer": "Flexible space that fills available room in flex containers.",
   "desc.Button": "Clickable action trigger with variant, size, loading, and disabled states.",

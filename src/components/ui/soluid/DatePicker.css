@@ -1,0 +1,71 @@
+.so-date-picker {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.so-date-picker__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-2);
+  width: 100%;
+  padding: 0 var(--so-space-2);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.so-date-picker__trigger:disabled {
+  background-color: var(--so-bg-subtle);
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-date-picker__value {
+  flex: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.so-date-picker__placeholder {
+  flex: 1;
+  color: var(--so-text-muted);
+}
+
+.so-date-picker__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--so-text-muted);
+}
+
+/* --- Sizes --- */
+
+.so-date-picker--sm .so-date-picker__trigger {
+  height: var(--so-control-height-sm);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-date-picker--md .so-date-picker__trigger {
+  height: var(--so-control-height-md);
+  font-size: var(--so-font-size-md);
+}
+
+.so-date-picker--lg .so-date-picker__trigger {
+  height: var(--so-control-height-lg);
+  font-size: var(--so-font-size-lg);
+}
+
+/* --- Panel (portalled, positioned by floating-ui) --- */
+
+.so-date-picker__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: var(--so-shadow-md);
+  border-radius: var(--so-radius);
+}

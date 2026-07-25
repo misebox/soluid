@@ -1,0 +1,98 @@
+.so-carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-2);
+}
+
+/* Scroll snapping keeps native swipe and momentum on touch devices. */
+.so-carousel__viewport {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: var(--so-radius);
+}
+
+.so-carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.so-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+/* --- Navigation --- */
+
+.so-carousel__nav {
+  position: absolute;
+  top: calc(50% - 1.25rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--so-border);
+  border-radius: 50%;
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  box-shadow: var(--so-shadow-sm);
+  cursor: pointer;
+}
+
+.so-carousel__nav:hover:not(:disabled) {
+  background-color: var(--so-bg-subtle);
+}
+
+.so-carousel__nav:disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-carousel__nav svg {
+  width: 16px;
+  height: 16px;
+}
+
+.so-carousel__nav--prev {
+  left: var(--so-space-2);
+}
+
+.so-carousel__nav--next {
+  right: var(--so-space-2);
+}
+
+/* --- Dots --- */
+
+.so-carousel__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--so-space-1);
+}
+
+.so-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--so-border);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    width 0.15s;
+}
+
+.so-carousel__dot:hover {
+  background-color: var(--so-color-neutral-base);
+}
+
+.so-carousel__dot--active {
+  width: 20px;
+  border-radius: 4px;
+  background-color: var(--so-color-primary-base);
+}

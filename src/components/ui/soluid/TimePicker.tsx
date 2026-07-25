@@ -1,0 +1,256 @@
+import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
+import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
+import { Portal } from "solid-js/web";
+import type { InteractiveProps } from "./core/types";
+import { cls } from "./core/utils";
+import { FormField } from "./FormField";
+import { useFormField } from "./FormFieldContext";
+
+/** Times are `HH:MM` on a 24-hour clock, matching `<input type="time">`. */
+export interface TimePickerControlProps extends InteractiveProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  /** Minutes between offered times (default: 30) */
+  step?: number;
+  /** Earliest and latest offered time, inclusive */
+  min?: string;
+  max?: string;
+  placeholder?: string;
+  required?: boolean;
+  id?: string;
+  /** Formats an option for display; defaults to the raw `HH:MM` */
+  format?: (value: string) => string;
+  /** Accessible label for the list of times */
+  listLabel?: string;
+}
+
+export interface TimePickerProps extends TimePickerControlProps {
+  label?: string;
+  error?: string;
+  hint?: string;
+}
+
+function toMinutes(time: string): number {
+  const [hours, minutes] = time.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function toTime(minutes: number): string {
+  return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+}
+
+export function TimePickerControl(props: TimePickerControlProps) {
+  const [local, others] = splitProps(props, [
+    "value",
+    "onChange",
+    "step",
+    "min",
+    "max",
+    "placeholder",
+    "size",
+    "class",
+    "density",
+    "id",
+    "disabled",
+    "format",
+    "listLabel",
+  ]);
+
+  const ctx = useFormField();
+  const baseId = createUniqueId();
+  const listId = `so-time-picker-list-${baseId}`;
+  const optionId = (index: number) => `so-time-picker-option-${baseId}-${index}`;
+
+  const [open, setOpen] = createSignal(false);
+  const [active, setActive] = createSignal(0);
+
+  let triggerRef: HTMLButtonElement | undefined;
+  const [listRef, setListRef] = createSignal<HTMLUListElement | undefined>(undefined);
+
+  const options = createMemo(() => {
+    const step = Math.max(1, local.step ?? 30);
+    const from = toMinutes(local.min ?? "00:00");
+    const to = toMinutes(local.max ?? "23:59");
+    const times: string[] = [];
+    for (let minutes = from; minutes <= to; minutes += step) times.push(toTime(minutes));
+    return times;
+  });
+
+  const display = () => (local.value ? (local.format?.(local.value) ?? local.value) : "");
+
+  function openList(): void {
+    if (local.disabled) return;
+    const index = options().indexOf(local.value ?? "");
+    setActive(index >= 0 ? index : 0);
+    setOpen(true);
+  }
+
+  function close(): void {
+    setOpen(false);
+    triggerRef?.focus();
+  }
+
+  function commit(index: number): void {
+    const time = options()[index];
+    if (!time) return;
+    local.onChange?.(time);
+    close();
+  }
+
+  function handleKeyDown(e: KeyboardEvent): void {
+    if (!open()) {
+      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openList();
+      }
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive((i) => Math.min(options().length - 1, i + 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive((i) => Math.max(0, i - 1));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setActive(options().length - 1);
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      commit(active());
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      close();
+    }
+  }
+
+  function updatePosition(): void {
+    const list = listRef();
+    if (!triggerRef || !list) return;
+    computePosition(triggerRef, list, {
+      placement: "bottom-start",
+      middleware: [
+        offset(4),
+        flip(),
+        shift({ padding: 8 }),
+        size({
+          apply({ rects, elements }) {
+            elements.floating.style.width = `${rects.reference.width}px`;
+          },
+        }),
+      ],
+    }).then(({ x, y }) => {
+      list.style.left = `${x}px`;
+      list.style.top = `${y}px`;
+    });
+  }
+
+  createEffect(() => {
+    const list = listRef();
+    if (!open() || !triggerRef || !list) return;
+    onCleanup(autoUpdate(triggerRef, list, updatePosition));
+  });
+
+  // Keep the highlighted time in view as the arrow keys walk the list.
+  createEffect(() => {
+    if (!open()) return;
+    const index = active();
+    queueMicrotask(() => document.getElementById(optionId(index))?.scrollIntoView({ block: "nearest" }));
+  });
+
+  function handleClickOutside(e: MouseEvent): void {
+    const target = e.target as Node;
+    if (triggerRef?.contains(target)) return;
+    if (listRef()?.contains(target)) return;
+    setOpen(false);
+  }
+
+  createEffect(() => {
+    if (!open()) return;
+    document.addEventListener("mousedown", handleClickOutside);
+    onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
+  });
+
+  return (
+    <div class={cls("so-time-picker", `so-time-picker--${local.size ?? "md"}`, local.class)}>
+      <button
+        {...others}
+        ref={triggerRef}
+        type="button"
+        id={ctx?.id ?? local.id}
+        class="so-time-picker__trigger"
+        disabled={local.disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open()}
+        aria-controls={open() ? listId : undefined}
+        aria-activedescendant={open() ? optionId(active()) : undefined}
+        aria-invalid={ctx?.hasError || undefined}
+        aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
+        onClick={() => (open() ? close() : openList())}
+        onKeyDown={handleKeyDown}
+      >
+        <Show when={display()} fallback={<span class="so-time-picker__placeholder">{local.placeholder}</span>}>
+          {(text) => <span class="so-time-picker__value">{text()}</span>}
+        </Show>
+        <svg class="so-time-picker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke-width="1.6" />
+          <path d="M12 7v5l3 2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <Show when={open()}>
+        <Portal>
+          <ul ref={setListRef} id={listId} class="so-time-picker__list" role="listbox" aria-label={local.listLabel}>
+            <For each={options()}>
+              {(time, i) => (
+                <li
+                  id={optionId(i())}
+                  class={cls("so-time-picker__option", i() === active() && "so-time-picker__option--active")}
+                  role="option"
+                  aria-selected={time === local.value}
+                  // mousedown beats the trigger's blur, so the click is not lost.
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    commit(i());
+                  }}
+                  onMouseEnter={() => setActive(i())}
+                >
+                  {local.format?.(time) ?? time}
+                </li>
+              )}
+            </For>
+          </ul>
+        </Portal>
+      </Show>
+    </div>
+  );
+}
+
+export function TimePicker(props: TimePickerProps) {
+  const [field, control] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
+
+  return (
+    <Show
+      when={field.label}
+      fallback={
+        <TimePickerControl {...control} required={field.required} class={field.class} density={field.density} />
+      }
+    >
+      {(label) => (
+        <FormField
+          label={label()}
+          error={field.error}
+          hint={field.hint}
+          required={field.required}
+          class={field.class}
+          density={field.density}
+        >
+          <TimePickerControl {...control} required={field.required} />
+        </FormField>
+      )}
+    </Show>
+  );
+}

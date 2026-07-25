@@ -1,4 +1,4 @@
-import { createMemo, createSignal, type JSX } from "solid-js";
+import { createMemo, createSignal, For, type JSX } from "solid-js";
 
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Alert } from "../../components/ui/soluid/Alert";
@@ -12,10 +12,16 @@ import { ButtonGroup } from "../../components/ui/soluid/ButtonGroup";
 import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/soluid/Card";
 import { Checkbox } from "../../components/ui/soluid/Checkbox";
 import { CheckboxGroup } from "../../components/ui/soluid/CheckboxGroup";
+import { Calendar } from "../../components/ui/soluid/Calendar";
+import { Carousel } from "../../components/ui/soluid/Carousel";
 import { Collapsible } from "../../components/ui/soluid/Collapsible";
+import { ColorPicker } from "../../components/ui/soluid/ColorPicker";
 import { Combobox } from "../../components/ui/soluid/Combobox";
+import type { Command } from "../../components/ui/soluid/CommandPalette";
+import { CommandPalette } from "../../components/ui/soluid/CommandPalette";
 import { Container } from "../../components/ui/soluid/Container";
 import { ContextMenu } from "../../components/ui/soluid/ContextMenu";
+import { DatePicker } from "../../components/ui/soluid/DatePicker";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
@@ -56,6 +62,7 @@ import { Text } from "../../components/ui/soluid/Text";
 import { TextArea } from "../../components/ui/soluid/TextArea";
 import { TextField, TextFieldInput } from "../../components/ui/soluid/TextField";
 import { Timeline } from "../../components/ui/soluid/Timeline";
+import { TimePicker } from "../../components/ui/soluid/TimePicker";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
 import { Tree } from "../../components/ui/soluid/Tree";
@@ -99,6 +106,9 @@ export const CATEGORIES = [
       "SearchField",
       "Select",
       "Combobox",
+      "DatePicker",
+      "TimePicker",
+      "ColorPicker",
       "SegmentedControl",
       "Checkbox",
       "CheckboxGroup",
@@ -120,6 +130,8 @@ export const CATEGORIES = [
       "DescriptionList",
       "Timeline",
       "Tree",
+      "Calendar",
+      "Carousel",
       "Skeleton",
       "EmptyState",
       "Accordion",
@@ -134,7 +146,7 @@ export const CATEGORIES = [
   {
     slug: "navigation",
     labelKey: "cat.navigation",
-    components: ["Tabs", "Breadcrumb", "Steps", "Pagination", "Popover", "Menu", "ContextMenu"],
+    components: ["Tabs", "Breadcrumb", "Steps", "Pagination", "Popover", "Menu", "ContextMenu", "CommandPalette"],
   },
 ];
 
@@ -431,6 +443,73 @@ const [files, setFiles] = createSignal<File[]>([]);
   files={files()}
   onSelect={(added) => setFiles((prev) => [...prev, ...added])}
   onRemove={(_, i) => setFiles((prev) => prev.filter((_, j) => j !== i))}
+/>`,
+
+  DatePicker: `import { DatePicker } from "./soluid/DatePicker";
+
+const [date, setDate] = createSignal("");
+
+<DatePicker
+  label="納期"
+  placeholder="日付を選択"
+  value={date()}
+  onChange={setDate}
+  min="2026-01-01"
+  locale="ja-JP"
+/>`,
+
+  TimePicker: `import { TimePicker } from "./soluid/TimePicker";
+
+const [time, setTime] = createSignal("");
+
+// Offers 09:00 through 18:00 in 30 minute steps
+<TimePicker
+  label="開始時刻"
+  placeholder="時刻を選択"
+  value={time()}
+  onChange={setTime}
+  min="09:00"
+  max="18:00"
+  step={30}
+/>`,
+
+  ColorPicker: `import { ColorPicker } from "./soluid/ColorPicker";
+
+const [color, setColor] = createSignal("#3b82f6");
+
+<ColorPicker label="ブランドカラー" value={color()} onChange={setColor} />`,
+
+  Calendar: `import { Calendar } from "./soluid/Calendar";
+
+const [day, setDay] = createSignal("2026-07-25");
+
+// Dates are plain YYYY-MM-DD strings, computed in UTC
+<Calendar value={day()} onChange={setDay} locale="ja-JP" weekStartsOn={1} />`,
+
+  Carousel: `import { Carousel } from "./soluid/Carousel";
+
+const [slide, setSlide] = createSignal(0);
+
+<Carousel index={slide()} onIndexChange={setSlide} label="製品写真" loop>
+  <img src="/a.jpg" alt="正面" />
+  <img src="/b.jpg" alt="背面" />
+  <img src="/c.jpg" alt="側面" />
+</Carousel>`,
+
+  CommandPalette: `import { CommandPalette } from "./soluid/CommandPalette";
+
+const [open, setOpen] = createSignal(false);
+
+<CommandPalette
+  open={open()}
+  onOpenChange={setOpen}
+  placeholder="コマンドを検索"
+  commands={[
+    { id: "new", label: "新規作成", group: "ファイル", shortcut: "⌘N" },
+    { id: "open", label: "開く", group: "ファイル", shortcut: "⌘O" },
+    { id: "theme", label: "テーマを切り替え", group: "表示" },
+  ]}
+  onSelect={(command) => run(command.id)}
 />`,
 
   SegmentedControl: `import { SegmentedControl } from "./soluid/SegmentedControl";
@@ -1117,6 +1196,137 @@ function FileUploadDemo(): JSX.Element {
   );
 }
 
+function DatePickerDemo(): JSX.Element {
+  const [date, setDate] = createSignal("");
+  return (
+    <Stack gap={3}>
+      <DatePicker
+        label="納期"
+        placeholder="日付を選択"
+        value={date()}
+        onChange={setDate}
+        locale="ja-JP"
+        weekStartsOn={1}
+        hint="カレンダーは矢印キーで移動できます"
+      />
+      <Text size="sm" tone="muted">
+        {date() ? `選択: ${date()}` : "未選択"}
+      </Text>
+    </Stack>
+  );
+}
+
+function TimePickerDemo(): JSX.Element {
+  const [time, setTime] = createSignal("");
+  return (
+    <TimePicker
+      label="開始時刻"
+      placeholder="時刻を選択"
+      value={time()}
+      onChange={setTime}
+      min="09:00"
+      max="18:00"
+      step={30}
+      listLabel="時刻の候補"
+    />
+  );
+}
+
+function ColorPickerDemo(): JSX.Element {
+  const [color, setColor] = createSignal("#3b82f6");
+  return (
+    <Stack gap={3}>
+      <ColorPicker
+        label="ブランドカラー"
+        value={color()}
+        onChange={setColor}
+        panelLabel="色を選択"
+        customLabel="カスタム"
+        hexLabel="HEX"
+      />
+      <div
+        style={{
+          height: "48px",
+          "border-radius": "var(--so-radius)",
+          "background-color": color(),
+        }}
+      />
+    </Stack>
+  );
+}
+
+function CalendarDemo(): JSX.Element {
+  const [day, setDay] = createSignal("2026-07-25");
+  return (
+    <Stack gap={3}>
+      <Calendar value={day()} onChange={setDay} locale="ja-JP" weekStartsOn={1} label="日付" />
+      <Text size="sm" tone="muted">
+        選択: {day()}
+      </Text>
+    </Stack>
+  );
+}
+
+function CarouselDemo(): JSX.Element {
+  const [slide, setSlide] = createSignal(0);
+  const tones = ["primary", "success", "warning"];
+  return (
+    <Carousel index={slide()} onIndexChange={setSlide} label="サンプルスライド" loop>
+      <For each={tones}>
+        {(tone, i) => (
+          <div
+            style={{
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "center",
+              height: "160px",
+              "border-radius": "var(--so-radius)",
+              "background-color": `var(--so-color-${tone}-subtle)`,
+              color: `var(--so-color-${tone}-subtle-fg)`,
+              "font-size": "var(--so-font-size-lg)",
+              "font-weight": "600",
+            }}
+          >
+            スライド {i() + 1}
+          </div>
+        )}
+      </For>
+    </Carousel>
+  );
+}
+
+function CommandPaletteDemo(): JSX.Element {
+  const [open, setOpen] = createSignal(false);
+  const [last, setLast] = createSignal("");
+  const commands: Command[] = [
+    { id: "new", label: "新規作成", group: "ファイル", shortcut: "⌘N" },
+    { id: "open", label: "開く", group: "ファイル", shortcut: "⌘O", keywords: "file load" },
+    { id: "save", label: "保存", group: "ファイル", shortcut: "⌘S" },
+    { id: "theme", label: "テーマを切り替え", group: "表示" },
+    { id: "density", label: "密度を切り替え", group: "表示" },
+    { id: "archive", label: "アーカイブ（無効）", group: "その他", disabled: true },
+  ];
+  return (
+    <Stack gap={3}>
+      <Button variant="neutral" onClick={() => setOpen(true)}>
+        コマンドパレットを開く
+      </Button>
+      <Text size="sm" tone="muted">
+        {last() ? `実行: ${last()}` : "未実行"}
+      </Text>
+      <CommandPalette
+        open={open()}
+        onOpenChange={setOpen}
+        commands={commands}
+        placeholder="コマンドを検索"
+        emptyLabel="該当するコマンドがありません"
+        label="コマンドパレット"
+        onSelect={(command) => setLast(command.label)}
+      />
+    </Stack>
+  );
+}
+
 function SegmentedControlDemo(): JSX.Element {
   const [range, setRange] = createSignal("7d");
   return (
@@ -1708,6 +1918,12 @@ export const DEMOS: Record<string, () => JSX.Element> = {
   FormField: FormFieldDemo,
   SearchField: SearchFieldDemo,
   Combobox: ComboboxDemo,
+  DatePicker: DatePickerDemo,
+  TimePicker: TimePickerDemo,
+  ColorPicker: ColorPickerDemo,
+  Calendar: CalendarDemo,
+  Carousel: CarouselDemo,
+  CommandPalette: CommandPaletteDemo,
   SegmentedControl: SegmentedControlDemo,
   Slider: SliderDemo,
   Rating: RatingDemo,

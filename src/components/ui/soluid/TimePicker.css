@@ -1,0 +1,96 @@
+.so-time-picker {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.so-time-picker__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-2);
+  width: 100%;
+  padding: 0 var(--so-space-2);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.so-time-picker__trigger:disabled {
+  background-color: var(--so-bg-subtle);
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-time-picker__value {
+  flex: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.so-time-picker__placeholder {
+  flex: 1;
+  color: var(--so-text-muted);
+}
+
+.so-time-picker__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--so-text-muted);
+}
+
+/* --- Sizes --- */
+
+.so-time-picker--sm .so-time-picker__trigger {
+  height: var(--so-control-height-sm);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-time-picker--md .so-time-picker__trigger {
+  height: var(--so-control-height-md);
+  font-size: var(--so-font-size-md);
+}
+
+.so-time-picker--lg .so-time-picker__trigger {
+  height: var(--so-control-height-lg);
+  font-size: var(--so-font-size-lg);
+}
+
+/* --- Listbox (portalled, positioned by floating-ui) --- */
+
+.so-time-picker__list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  max-height: 14rem;
+  margin: 0;
+  padding: var(--so-space-1);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  box-shadow: var(--so-shadow-md);
+  list-style: none;
+  overflow-y: auto;
+}
+
+.so-time-picker__option {
+  padding: var(--so-space-1) var(--so-space-2);
+  border-radius: var(--so-radius);
+  color: var(--so-text);
+  font-size: var(--so-font-size-md);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.so-time-picker__option--active {
+  background-color: var(--so-color-primary-subtle);
+  color: var(--so-color-primary-subtle-fg);
+}
+
+.so-time-picker__option[aria-selected="true"] {
+  font-weight: 600;
+}

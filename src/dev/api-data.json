@@ -396,6 +396,80 @@
     ]
   },
   {
+    "name": "CalendarProps",
+    "description": "Month grid with keyboard navigation",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "month",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onMonthChange",
+        "type": "((month: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "weekStartsOn",
+        "type": "0 | 1",
+        "optional": true
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "previousLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "nextLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "CardBodyProps",
     "description": "",
     "dependencies": [],
@@ -456,6 +530,70 @@
       {
         "name": "variant",
         "type": "\"outlined\" | \"elevated\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "CarouselProps",
+    "description": "Scroll-snapping slides with dots and arrows",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "index",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "onIndexChange",
+        "type": "(index: number) => void",
+        "optional": false
+      },
+      {
+        "name": "loop",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "hideDots",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "previousLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "nextLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "dotLabel",
+        "type": "((position: number, total: number) => string)",
         "optional": true
       },
       {
@@ -3079,6 +3217,168 @@
     ]
   },
   {
+    "name": "ColorPickerControlProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "swatches",
+        "type": "string[]",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "panelLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "swatchLabel",
+        "type": "((color: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "customLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hexLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ColorPickerProps",
+    "description": "Swatch palette with a hex field and native picker",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "swatches",
+        "type": "string[]",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "panelLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "swatchLabel",
+        "type": "((color: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "customLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hexLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "ComboboxControlProps",
     "description": "",
     "dependencies": [],
@@ -3232,6 +3532,65 @@
     ]
   },
   {
+    "name": "CommandPaletteProps",
+    "description": "Searchable command list in a modal overlay",
+    "dependencies": [
+      "core"
+    ],
+    "props": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "optional": false
+      },
+      {
+        "name": "commands",
+        "type": "Command[]",
+        "optional": false
+      },
+      {
+        "name": "onSelect",
+        "type": "(command: Command) => void",
+        "optional": false
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "filter",
+        "type": "((command: Command, query: string) => boolean)",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "ContainerProps",
     "description": "Centered page wrapper with a max width",
     "dependencies": [
@@ -3287,6 +3646,199 @@
         "name": "children",
         "type": "JSX.Element",
         "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DatePickerControlProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "weekStartsOn",
+        "type": "0 | 1",
+        "optional": true
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "format",
+        "type": "((value: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "openLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "DatePickerProps",
+    "description": "Date field backed by a calendar popover",
+    "dependencies": [
+      "core",
+      "FormField",
+      "Calendar"
+    ],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "weekStartsOn",
+        "type": "0 | 1",
+        "optional": true
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "format",
+        "type": "((value: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "openLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
       },
       {
         "name": "class",
@@ -34086,6 +34638,178 @@
         "name": "items",
         "type": "TimelineItem[]",
         "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TimePickerControlProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "format",
+        "type": "((value: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "listLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TimePickerProps",
+    "description": "Time field backed by a stepped listbox",
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "onChange",
+        "type": "((value: string) => void)",
+        "optional": true
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "format",
+        "type": "((value: string) => string)",
+        "optional": true
+      },
+      {
+        "name": "listLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
       },
       {
         "name": "class",
