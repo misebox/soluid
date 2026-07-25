@@ -621,6 +621,7 @@ export const ja: Record<string, string> = {
   // ===== Navigation =====
   "nav.gettingStarted": "はじめに",
   "nav.components": "コンポーネント",
+  "nav.samples": "サンプル",
   "nav.browseComponents": "コンポーネント一覧",
 
   // ===== Top Page =====
@@ -633,6 +634,21 @@ export const ja: Record<string, string> = {
   "top.featureThemeable": "テーマ対応",
   "top.featureThemeableDesc": "CSSカスタムプロパティによるライト/ダークテーマと密度バリアント。",
   "top.componentsHeading": "コンポーネント",
+  "top.samplesHeading": "サンプルアプリ",
+  "top.samplesLead":
+    "断片ではなく、コンポーネントを組み合わせた画面まるごと。それぞれ通しで読める実際のアプリケーションです。",
+  "top.samplesSource": "ソースを見る",
+  "action.close": "閉じる",
+
+  // ===== Sample apps =====
+  "sample.dashboard": "ダッシュボード",
+  "sample.dashboardDesc": "指標・グラフ・アクティビティのタイムラインと、並べ替え可能な注文テーブル。",
+  "sample.settings": "設定",
+  "sample.settingsDesc": "長い設定フォーム。入力欄、スライダー、ファイルアップロード、ワンタイムコード。",
+  "sample.mail": "メール",
+  "sample.mailDesc": "フォルダツリー、右クリック操作つきの検索可能な一覧、本文ペイン。",
+  "sample.shop": "ショップ",
+  "sample.shopDesc": "絞り込み付き商品グリッド、評価、カートのドロワー、注文フロー。",
 
   // ===== Category labels =====
   "cat.layout": "レイアウト",

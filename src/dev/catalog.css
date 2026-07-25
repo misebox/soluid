@@ -38,12 +38,16 @@
 }
 
 .site-nav-link {
+  font-family: inherit;
   font-size: var(--so-font-size-sm);
   font-weight: 500;
   color: var(--so-text-muted);
   text-decoration: none;
   padding: var(--so-space-1) var(--so-space-2);
+  border: none;
+  background: none;
   border-radius: var(--so-radius);
+  cursor: pointer;
   transition:
     background 0.15s,
     color 0.15s;
@@ -598,4 +602,65 @@
 .demo-outline {
   border: 1px dashed var(--so-border);
   border-radius: var(--so-radius);
+}
+
+/* ---------- Samples dialog ---------- */
+
+.sample-dialog-lead {
+  margin: 0 0 var(--so-space-3);
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text-muted);
+}
+
+.sample-dialog-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sample-dialog-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--so-space-3);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+}
+
+.sample-dialog-item:hover {
+  border-color: var(--so-color-primary-border);
+}
+
+.sample-dialog-link {
+  font-size: var(--so-font-size-md);
+  font-weight: 600;
+  color: var(--so-color-primary-subtle-fg);
+  text-decoration: none;
+}
+
+.sample-dialog-link:hover {
+  text-decoration: underline;
+}
+
+.sample-dialog-desc {
+  margin: 0;
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text-muted);
+  line-height: 1.5;
+}
+
+.sample-dialog-source {
+  align-self: flex-start;
+  margin-top: var(--so-space-1);
+  font-size: var(--so-font-size-xs);
+  color: var(--so-text-muted);
+  text-decoration: none;
+}
+
+.sample-dialog-source:hover {
+  color: var(--so-text);
+  text-decoration: underline;
 }

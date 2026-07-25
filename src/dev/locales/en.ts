@@ -621,6 +621,7 @@ export const en: Record<string, string> = {
   // ===== Navigation =====
   "nav.gettingStarted": "Getting Started",
   "nav.components": "Components",
+  "nav.samples": "Samples",
   "nav.browseComponents": "Browse Components",
 
   // ===== Top Page =====
@@ -632,6 +633,21 @@ export const en: Record<string, string> = {
   "top.featureThemeable": "Themeable",
   "top.featureThemeableDesc": "CSS custom properties with light/dark themes and density variants.",
   "top.componentsHeading": "Components",
+  "top.samplesHeading": "Sample Apps",
+  "top.samplesLead":
+    "Whole screens built from the components, not isolated snippets. Each one is a real application you can read end to end.",
+  "top.samplesSource": "View source",
+  "action.close": "Close",
+
+  // ===== Sample apps =====
+  "sample.dashboard": "Dashboard",
+  "sample.dashboardDesc": "Metrics, charts, an activity timeline and a sortable order table.",
+  "sample.settings": "Settings",
+  "sample.settingsDesc": "A long settings form: fields, sliders, file upload and a one-time code.",
+  "sample.mail": "Mail",
+  "sample.mailDesc": "A folder tree, searchable list with right-click actions, and a reading pane.",
+  "sample.shop": "Shop",
+  "sample.shopDesc": "Product grid with filtering, ratings, a cart drawer and a checkout flow.",
 
   // ===== Category labels =====
   "cat.layout": "Layout",
