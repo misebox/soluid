@@ -35,6 +35,7 @@
     "generate:api": "bunx tsx scripts/generate-api-data.ts",
     "precatalog": "bun run generate:css && bun run generate:api",
     "build:catalog": "bun run precatalog && vite build --config vite.config.catalog.ts",
+    "build:samples": "vite build --config vite.config.samples.ts",
     "build:cli": "tsc -p cli/tsconfig.json",
     "prepare": "bun run build:cli",
     "test": "vitest run",
