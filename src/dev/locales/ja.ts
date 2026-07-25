@@ -132,6 +132,28 @@ export const ja: Record<string, string> = {
   "CollapsibleProps.class": "追加のCSSクラス",
   "CollapsibleProps.density": "コンポーネントの密度",
 
+  // ComboboxControlProps
+  "ComboboxControlProps.value": "現在選択されている値",
+  "ComboboxControlProps.onChange": "候補が選択されたときのコールバック",
+  "ComboboxControlProps.options": "選択可能なオプションの配列",
+  "ComboboxControlProps.placeholder": "未選択時に表示されるプレースホルダー",
+  "ComboboxControlProps.required": "入力を必須にする",
+  "ComboboxControlProps.id": "FormField の外で使う場合の input の id",
+  "ComboboxControlProps.emptyLabel": "検索結果が0件のときに表示するテキスト",
+  "ComboboxControlProps.filter": "既定の大文字小文字を無視した部分一致を上書きする関数",
+
+  // ComboboxProps
+  "ComboboxProps.label": "フィールドラベル",
+  "ComboboxProps.error": "エラーメッセージ",
+  "ComboboxProps.hint": "ヒントテキスト",
+
+  // ContextMenuProps
+  "ContextMenuProps.content": "MenuItem と MenuSeparator で構成するメニュー本体",
+  "ContextMenuProps.label": "メニューのアクセシブルラベル",
+  "ContextMenuProps.children": "右クリックに反応する領域",
+  "ContextMenuProps.class": "追加のCSSクラス",
+  "ContextMenuProps.density": "コンポーネントの密度",
+
   // ContainerProps
   "ContainerProps.size": "コンテンツの最大幅",
   "ContainerProps.padded": "コンテナ内側に左右パディングを適用",
@@ -190,6 +212,19 @@ export const ja: Record<string, string> = {
   "EmptyStateProps.action": "アクション要素 (例: ボタン)",
   "EmptyStateProps.class": "追加CSSクラス",
   "EmptyStateProps.density": "コンポーネントの密度",
+
+  // FileUploadProps
+  "FileUploadProps.onSelect": "ドロップまたは選択で追加されたファイルのコールバック",
+  "FileUploadProps.accept": "file input に渡す accept 属性",
+  "FileUploadProps.multiple": "複数ファイルの選択を許可",
+  "FileUploadProps.disabled": "ドロップゾーンと選択を無効化",
+  "FileUploadProps.label": "ドロップゾーン内に表示する説明",
+  "FileUploadProps.hint": "説明の下に表示する補足テキスト",
+  "FileUploadProps.files": "ドロップゾーンの下に一覧表示するファイル",
+  "FileUploadProps.onRemove": "一覧のファイルが削除されたときのコールバック",
+  "FileUploadProps.removeLabel": "削除ボタンのアクセシブルラベルを生成する関数",
+  "FileUploadProps.class": "追加のCSSクラス",
+  "FileUploadProps.density": "コンポーネントの密度",
 
   // FormFieldProps
   "FormFieldProps.label": "フィールドラベル",
@@ -297,6 +332,19 @@ export const ja: Record<string, string> = {
   "PaginationProps.class": "追加CSSクラス",
   "PaginationProps.density": "コンポーネントの密度",
 
+  // PinInputProps
+  "PinInputProps.value": "1マス1要素の配列。空マスは空文字列",
+  "PinInputProps.onChange": "いずれかのマスが変化したときのコールバック",
+  "PinInputProps.length": "マスの数",
+  "PinInputProps.type": "受け付ける文字種: numeric または alphanumeric",
+  "PinInputProps.mask": "入力文字をドットで表示",
+  "PinInputProps.disabled": "全てのマスを無効化",
+  "PinInputProps.label": "グループのアクセシブルラベル",
+  "PinInputProps.itemLabel": "各マスのアクセシブルラベルを生成する関数",
+  "PinInputProps.onComplete": "全マスが埋まったときに連結値で呼ばれる",
+  "PinInputProps.class": "追加のCSSクラス",
+  "PinInputProps.density": "コンポーネントの密度",
+
   // PopoverProps
   "PopoverProps.open": "ポップオーバーの表示状態",
   "PopoverProps.onOpenChange": "表示状態変更時のコールバック",
@@ -333,6 +381,28 @@ export const ja: Record<string, string> = {
   "RadioGroupProps.children": "RadioButton要素",
   "RadioGroupProps.class": "追加CSSクラス",
   "RadioGroupProps.density": "コンポーネントの密度",
+
+  // RatingProps
+  "RatingProps.value": "現在の評価。0 は未評価",
+  "RatingProps.onChange": "評価が選択されたときのコールバック",
+  "RatingProps.max": "項目数",
+  "RatingProps.readOnly": "操作不可の静的な表示にする",
+  "RatingProps.disabled": "操作を無効化",
+  "RatingProps.size": "項目のサイズ",
+  "RatingProps.label": "グループのアクセシブルラベル",
+  "RatingProps.itemLabel": "各項目のアクセシブルラベルを生成する関数",
+  "RatingProps.class": "追加のCSSクラス",
+  "RatingProps.density": "コンポーネントの密度",
+
+  // SearchFieldProps
+  "SearchFieldProps.value": "現在の検索文字列",
+  "SearchFieldProps.onInput": "入力のたびに呼ばれるコールバック",
+  "SearchFieldProps.onSearch": "Enter が押されたときのコールバック",
+  "SearchFieldProps.onClear": "クリアボタンが押されたときのコールバック",
+  "SearchFieldProps.clearLabel": "クリアボタンのアクセシブルラベル",
+  "SearchFieldProps.label": "フィールドラベル",
+  "SearchFieldProps.error": "エラーメッセージ",
+  "SearchFieldProps.hint": "ヒントテキスト",
 
   // SegmentedControlProps
   "SegmentedControlProps.value": "現在選択されている値",
@@ -389,6 +459,20 @@ export const ja: Record<string, string> = {
   "StackProps.class": "追加CSSクラス",
   "StackProps.density": "コンポーネントの密度",
 
+  // SliderInputProps
+  "SliderInputProps.value": "現在の値",
+  "SliderInputProps.onInput": "つまみを動かしたときのコールバック",
+  "SliderInputProps.min": "最小値",
+  "SliderInputProps.max": "最大値",
+  "SliderInputProps.step": "値の刻み幅",
+  "SliderInputProps.showValue": "トラックの横に現在値を表示",
+  "SliderInputProps.formatValue": "表示と aria-valuetext 用に値を整形する関数",
+
+  // SliderProps
+  "SliderProps.label": "フィールドラベル",
+  "SliderProps.error": "エラーメッセージ",
+  "SliderProps.hint": "ヒントテキスト",
+
   // StatProps
   "StatProps.label": "指標の名称",
   "StatProps.value": "指標の値",
@@ -398,6 +482,15 @@ export const ja: Record<string, string> = {
   "StatProps.icon": "指標の横に表示する装飾アイコン",
   "StatProps.class": "追加のCSSクラス",
   "StatProps.density": "コンポーネントの密度",
+
+  // StepsProps
+  "StepsProps.steps": "{ label, description } の配列",
+  "StepsProps.current": "アクティブなステップの0始まりインデックス",
+  "StepsProps.orientation": "ステップを水平・垂直どちらに並べるか",
+  "StepsProps.label": "ステップ一覧のアクセシブルラベル",
+  "StepsProps.completedLabel": "完了済みステップに読み上げられるテキスト",
+  "StepsProps.class": "追加のCSSクラス",
+  "StepsProps.density": "コンポーネントの密度",
 
   // SwitchProps
   "SwitchProps.checked": "スイッチのON状態",
@@ -501,6 +594,21 @@ export const ja: Record<string, string> = {
   "ToastContainerProps.position": "トーストの表示位置",
   "ToastContainerProps.dismissLabel": "各トーストの閉じるボタンのアクセシブルラベル",
 
+  // TimelineProps
+  "TimelineProps.items": "タイムライン項目の配列",
+  "TimelineProps.class": "追加のCSSクラス",
+  "TimelineProps.density": "コンポーネントの密度",
+
+  // TreeProps
+  "TreeProps.nodes": "ツリーのルートノード",
+  "TreeProps.expanded": "展開中のブランチの id",
+  "TreeProps.onExpandedChange": "ブランチの開閉時のコールバック",
+  "TreeProps.selected": "選択中のノードの id",
+  "TreeProps.onSelect": "ノードが選択されたときのコールバック",
+  "TreeProps.label": "ツリーのアクセシブルラベル",
+  "TreeProps.class": "追加のCSSクラス",
+  "TreeProps.density": "コンポーネントの密度",
+
   // TooltipProps
   "TooltipProps.content": "ツールチップのテキスト",
   "TooltipProps.placement": "ツールチップの配置",
@@ -548,6 +656,16 @@ export const ja: Record<string, string> = {
   "desc.SegmentedControl": "矢印キー操作に対応した少数選択肢からの排他選択。",
   "desc.Stat": "ラベル・値・増減インジケーターを持つ指標表示。",
   "desc.Collapsible": "開閉状態を呼び出し側が持つ制御された開閉セクション。",
+  "desc.SearchField": "検索アイコンとクリアボタン付きのテキスト入力。",
+  "desc.Combobox": "リストボックスのポップアップを持つ絞り込み可能な単一選択。",
+  "desc.Slider": "書式指定可能な値表示を持つレンジ入力。",
+  "desc.Rating": "操作可能・読み取り専用の両方に対応した星評価。",
+  "desc.PinInput": "貼り付けと矢印キー操作に対応したワンタイムコード入力。",
+  "desc.FileUpload": "選択済みファイル一覧付きのドロップゾーンとファイル選択。",
+  "desc.Timeline": "ステータス色付きの時系列イベント一覧。",
+  "desc.Tree": "キーボード操作に完全対応した階層リスト。",
+  "desc.Steps": "複数ステップのフローの進捗インジケーター。",
+  "desc.ContextMenu": "ポインタ位置に表示される右クリックメニュー。",
   "desc.Divider": "コンテンツ間の視覚的な区切り線。",
   "desc.Spacer": "フレックスコンテナ内の余白を埋める伸縮スペース。",
   "desc.Button": "バリアント、サイズ、ローディング、無効状態を持つクリック可能なボタン。",

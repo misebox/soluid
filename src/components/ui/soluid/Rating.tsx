@@ -1,0 +1,117 @@
+import { For, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
+import type { CommonProps } from "./core/types";
+import { cls } from "./core/utils";
+
+export interface RatingProps extends CommonProps {
+  value: number;
+  onChange?: (value: number) => void;
+  /** Number of items (default: 5) */
+  max?: number;
+  /** Render as a static indicator with no controls */
+  readOnly?: boolean;
+  disabled?: boolean;
+  size?: "sm" | "md" | "lg";
+  /** Accessible label for the group */
+  label?: string;
+  /** Accessible label for each item (default: `{n} of {max}`) */
+  itemLabel?: (value: number, max: number) => string;
+}
+
+function Star(props: { filled: boolean }) {
+  return (
+    <svg class="so-rating__icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M12 2.5l2.9 5.9 6.6.9-4.8 4.6 1.2 6.5L12 17.3 6.1 20.4l1.2-6.5-4.8-4.6 6.6-.9z"
+        fill={props.filled ? "currentColor" : "none"}
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function Rating(props: RatingProps & JSX.HTMLAttributes<HTMLDivElement>) {
+  const [local, others] = splitProps(props, [
+    "class",
+    "density",
+    "value",
+    "onChange",
+    "max",
+    "readOnly",
+    "disabled",
+    "size",
+    "label",
+    "itemLabel",
+  ]);
+
+  const max = () => local.max ?? 5;
+  const items = () => Array.from({ length: max() }, (_, i) => i + 1);
+  const itemLabel = (value: number) => local.itemLabel?.(value, max()) ?? `${value} of ${max()}`;
+
+  function select(value: number): void {
+    if (local.disabled || local.readOnly) return;
+    local.onChange?.(value);
+  }
+
+  function handleKeyDown(e: KeyboardEvent): void {
+    if (local.disabled || local.readOnly) return;
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      select(Math.min(max(), local.value + 1));
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      select(Math.max(0, local.value - 1));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      select(1);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      select(max());
+    }
+  }
+
+  return (
+    <div
+      class={cls("so-rating", `so-rating--${local.size ?? "md"}`, local.disabled && "so-rating--disabled", local.class)}
+      // Read-only ratings are a single image, not a set of controls.
+      role={local.readOnly ? "img" : "radiogroup"}
+      aria-label={local.readOnly ? itemLabel(local.value) : local.label}
+      data-density={local.density}
+      onKeyDown={handleKeyDown}
+      {...others}
+    >
+      <Show
+        when={!local.readOnly}
+        fallback={
+          <For each={items()}>
+            {(item) => (
+              <span class={cls("so-rating__item", item <= local.value && "so-rating__item--filled")}>
+                <Star filled={item <= local.value} />
+              </span>
+            )}
+          </For>
+        }
+      >
+        <For each={items()}>
+          {(item) => (
+            <button
+              type="button"
+              class={cls("so-rating__item", item <= local.value && "so-rating__item--filled")}
+              role="radio"
+              aria-checked={item === local.value}
+              aria-label={itemLabel(item)}
+              disabled={local.disabled}
+              // Only the selected item is a tab stop; arrow keys move within.
+              tabIndex={item === local.value || (local.value === 0 && item === 1) ? 0 : -1}
+              onClick={() => select(item)}
+            >
+              <Star filled={item <= local.value} />
+            </button>
+          )}
+        </For>
+      </Show>
+    </div>
+  );
+}

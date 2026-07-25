@@ -132,6 +132,28 @@ export const en: Record<string, string> = {
   "CollapsibleProps.class": "Additional CSS class",
   "CollapsibleProps.density": "Component density",
 
+  // ComboboxControlProps
+  "ComboboxControlProps.value": "Currently selected value",
+  "ComboboxControlProps.onChange": "Callback when an option is chosen",
+  "ComboboxControlProps.options": "Array of selectable options",
+  "ComboboxControlProps.placeholder": "Placeholder shown when nothing is selected",
+  "ComboboxControlProps.required": "Mark the input as required",
+  "ComboboxControlProps.id": "Id for the input when used outside a FormField",
+  "ComboboxControlProps.emptyLabel": "Text shown when the query matches nothing",
+  "ComboboxControlProps.filter": "Overrides the default case-insensitive substring match",
+
+  // ComboboxProps
+  "ComboboxProps.label": "Field label",
+  "ComboboxProps.error": "Error message",
+  "ComboboxProps.hint": "Hint text",
+
+  // ContextMenuProps
+  "ContextMenuProps.content": "Menu body, composed from MenuItem and MenuSeparator",
+  "ContextMenuProps.label": "Accessible label for the menu",
+  "ContextMenuProps.children": "Region that responds to a right-click",
+  "ContextMenuProps.class": "Additional CSS class",
+  "ContextMenuProps.density": "Component density",
+
   // ContainerProps
   "ContainerProps.size": "Maximum content width",
   "ContainerProps.padded": "Apply horizontal padding inside the container",
@@ -190,6 +212,19 @@ export const en: Record<string, string> = {
   "EmptyStateProps.action": "Action element (e.g. button)",
   "EmptyStateProps.class": "Additional CSS class",
   "EmptyStateProps.density": "Component density",
+
+  // FileUploadProps
+  "FileUploadProps.onSelect": "Callback with the files added by drop or picker",
+  "FileUploadProps.accept": "Accept attribute forwarded to the file input",
+  "FileUploadProps.multiple": "Allow selecting more than one file",
+  "FileUploadProps.disabled": "Disable the drop zone and picker",
+  "FileUploadProps.label": "Instruction shown inside the drop zone",
+  "FileUploadProps.hint": "Secondary text under the instruction",
+  "FileUploadProps.files": "Files listed under the drop zone",
+  "FileUploadProps.onRemove": "Callback when a listed file is removed",
+  "FileUploadProps.removeLabel": "Builds the accessible label for a remove button",
+  "FileUploadProps.class": "Additional CSS class",
+  "FileUploadProps.density": "Component density",
 
   // FormFieldProps
   "FormFieldProps.label": "Field label",
@@ -297,6 +332,19 @@ export const en: Record<string, string> = {
   "PaginationProps.class": "Additional CSS class",
   "PaginationProps.density": "Component density",
 
+  // PinInputProps
+  "PinInputProps.value": "One entry per box, empty string for a blank box",
+  "PinInputProps.onChange": "Callback when any box changes",
+  "PinInputProps.length": "Number of boxes",
+  "PinInputProps.type": "Characters accepted: numeric or alphanumeric",
+  "PinInputProps.mask": "Render entered characters as dots",
+  "PinInputProps.disabled": "Disable every box",
+  "PinInputProps.label": "Accessible label for the group",
+  "PinInputProps.itemLabel": "Builds the accessible label for each box",
+  "PinInputProps.onComplete": "Called with the joined value once every box is filled",
+  "PinInputProps.class": "Additional CSS class",
+  "PinInputProps.density": "Component density",
+
   // PopoverProps
   "PopoverProps.open": "Whether the popover is visible",
   "PopoverProps.onOpenChange": "Callback when open state changes",
@@ -333,6 +381,28 @@ export const en: Record<string, string> = {
   "RadioGroupProps.children": "RadioButton elements",
   "RadioGroupProps.class": "Additional CSS class",
   "RadioGroupProps.density": "Component density",
+
+  // RatingProps
+  "RatingProps.value": "Current rating; 0 means unrated",
+  "RatingProps.onChange": "Callback when a rating is chosen",
+  "RatingProps.max": "Number of items",
+  "RatingProps.readOnly": "Render as a static indicator with no controls",
+  "RatingProps.disabled": "Disable interaction",
+  "RatingProps.size": "Item size",
+  "RatingProps.label": "Accessible label for the group",
+  "RatingProps.itemLabel": "Builds the accessible label for each item",
+  "RatingProps.class": "Additional CSS class",
+  "RatingProps.density": "Component density",
+
+  // SearchFieldProps
+  "SearchFieldProps.value": "Current query text",
+  "SearchFieldProps.onInput": "Callback on every keystroke",
+  "SearchFieldProps.onSearch": "Callback when Enter is pressed",
+  "SearchFieldProps.onClear": "Callback when the clear button is pressed",
+  "SearchFieldProps.clearLabel": "Accessible label for the clear button",
+  "SearchFieldProps.label": "Field label",
+  "SearchFieldProps.error": "Error message",
+  "SearchFieldProps.hint": "Hint text",
 
   // SegmentedControlProps
   "SegmentedControlProps.value": "Currently selected value",
@@ -389,6 +459,20 @@ export const en: Record<string, string> = {
   "StackProps.class": "Additional CSS class",
   "StackProps.density": "Component density",
 
+  // SliderInputProps
+  "SliderInputProps.value": "Current value",
+  "SliderInputProps.onInput": "Callback as the thumb moves",
+  "SliderInputProps.min": "Minimum value",
+  "SliderInputProps.max": "Maximum value",
+  "SliderInputProps.step": "Increment between values",
+  "SliderInputProps.showValue": "Show the current value next to the track",
+  "SliderInputProps.formatValue": "Formats the value for display and aria-valuetext",
+
+  // SliderProps
+  "SliderProps.label": "Field label",
+  "SliderProps.error": "Error message",
+  "SliderProps.hint": "Hint text",
+
   // StatProps
   "StatProps.label": "Name of the metric",
   "StatProps.value": "Metric value",
@@ -398,6 +482,15 @@ export const en: Record<string, string> = {
   "StatProps.icon": "Decorative icon shown beside the metric",
   "StatProps.class": "Additional CSS class",
   "StatProps.density": "Component density",
+
+  // StepsProps
+  "StepsProps.steps": "Array of { label, description } entries",
+  "StepsProps.current": "Zero-based index of the active step",
+  "StepsProps.orientation": "Lay the steps out horizontally or vertically",
+  "StepsProps.label": "Accessible label for the step list",
+  "StepsProps.completedLabel": "Text announced for steps before the current one",
+  "StepsProps.class": "Additional CSS class",
+  "StepsProps.density": "Component density",
 
   // SwitchProps
   "SwitchProps.checked": "Whether the switch is on",
@@ -501,6 +594,21 @@ export const en: Record<string, string> = {
   "ToastContainerProps.position": "Toast position on screen",
   "ToastContainerProps.dismissLabel": "Accessible label for each toast's dismiss button",
 
+  // TimelineProps
+  "TimelineProps.items": "Array of timeline entries",
+  "TimelineProps.class": "Additional CSS class",
+  "TimelineProps.density": "Component density",
+
+  // TreeProps
+  "TreeProps.nodes": "Root nodes of the tree",
+  "TreeProps.expanded": "Ids of the expanded branches",
+  "TreeProps.onExpandedChange": "Callback when a branch opens or closes",
+  "TreeProps.selected": "Id of the selected node",
+  "TreeProps.onSelect": "Callback when a node is activated",
+  "TreeProps.label": "Accessible label for the tree",
+  "TreeProps.class": "Additional CSS class",
+  "TreeProps.density": "Component density",
+
   // TooltipProps
   "TooltipProps.content": "Tooltip text",
   "TooltipProps.placement": "Tooltip placement",
@@ -547,6 +655,16 @@ export const en: Record<string, string> = {
   "desc.SegmentedControl": "Exclusive choice between a few options, with arrow-key navigation.",
   "desc.Stat": "Metric with a label, value and change indicator.",
   "desc.Collapsible": "Controlled disclosure section whose open state lives with the caller.",
+  "desc.SearchField": "Text input with a search icon and a clear button.",
+  "desc.Combobox": "Filterable single-select backed by a listbox popup.",
+  "desc.Slider": "Range input with an optional formatted value readout.",
+  "desc.Rating": "Star rating, interactive or read-only.",
+  "desc.PinInput": "One-time code entry with paste and arrow-key support.",
+  "desc.FileUpload": "Drop zone and file picker with a list of selected files.",
+  "desc.Timeline": "Chronological list of events with status colours.",
+  "desc.Tree": "Hierarchical list with full keyboard navigation.",
+  "desc.Steps": "Progress indicator for a multi-step flow.",
+  "desc.ContextMenu": "Right-click menu anchored to the pointer position.",
   "desc.Divider": "Visual separator line between content sections.",
   "desc.Spacer": "Flexible space that fills available room in flex containers.",
   "desc.Button": "Clickable action trigger with variant, size, loading, and disabled states.",

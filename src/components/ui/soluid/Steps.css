@@ -1,0 +1,121 @@
+.so-steps__list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.so-steps__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--so-space-2);
+  position: relative;
+}
+
+.so-steps__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--so-border);
+  border-radius: 50%;
+  background-color: var(--so-bg);
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.so-steps__check {
+  width: 12px;
+  height: 12px;
+}
+
+.so-steps__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.so-steps__label {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-md);
+  font-weight: 500;
+}
+
+.so-steps__description {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+}
+
+/* --- States --- */
+
+.so-steps__item--complete .so-steps__marker {
+  border-color: var(--so-color-primary-base);
+  background-color: var(--so-color-primary-base);
+  color: var(--so-color-primary-fg);
+}
+
+.so-steps__item--complete .so-steps__label {
+  color: var(--so-text);
+}
+
+.so-steps__item--current .so-steps__marker {
+  border-color: var(--so-color-primary-base);
+  color: var(--so-color-primary-subtle-fg);
+  box-shadow: 0 0 0 3px var(--so-color-primary-subtle);
+}
+
+.so-steps__item--current .so-steps__label {
+  color: var(--so-text);
+  font-weight: 600;
+}
+
+/* --- Horizontal --- */
+
+.so-steps--horizontal .so-steps__list {
+  align-items: flex-start;
+  gap: var(--so-space-2);
+}
+
+.so-steps--horizontal .so-steps__item {
+  flex: 1;
+}
+
+/* Connector line to the next step. */
+.so-steps--horizontal .so-steps__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: calc(100% - var(--so-space-2));
+  width: var(--so-space-2);
+  height: 1px;
+  background-color: var(--so-border);
+}
+
+.so-steps--horizontal .so-steps__item--complete:not(:last-child)::after {
+  background-color: var(--so-color-primary-base);
+}
+
+/* --- Vertical --- */
+
+.so-steps--vertical .so-steps__list {
+  flex-direction: column;
+  gap: var(--so-space-4);
+}
+
+.so-steps--vertical .so-steps__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 12px;
+  width: 1px;
+  height: calc(100% - 28px + var(--so-space-4));
+  background-color: var(--so-border);
+}
+
+.so-steps--vertical .so-steps__item--complete:not(:last-child)::after {
+  background-color: var(--so-color-primary-base);
+}

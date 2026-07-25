@@ -1,0 +1,29 @@
+.so-pin-input {
+  display: inline-flex;
+  gap: var(--so-space-2);
+}
+
+.so-pin-input__box {
+  width: var(--so-control-height-md);
+  height: var(--so-control-height-lg);
+  padding: 0;
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: inherit;
+  font-size: var(--so-font-size-lg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.so-pin-input__box:focus {
+  border-color: var(--so-color-primary-base);
+}
+
+.so-pin-input__box:disabled {
+  background-color: var(--so-bg-subtle);
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}

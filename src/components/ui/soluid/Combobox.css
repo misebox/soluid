@@ -1,0 +1,95 @@
+.so-combobox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.so-combobox__input {
+  width: 100%;
+  padding: 0 var(--so-space-5) 0 var(--so-space-2);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  color: var(--so-text);
+  font-family: inherit;
+}
+
+.so-combobox__input:disabled {
+  background-color: var(--so-bg-subtle);
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-combobox__arrow {
+  position: absolute;
+  right: var(--so-space-2);
+  width: 12px;
+  height: 12px;
+  color: var(--so-text-muted);
+  pointer-events: none;
+}
+
+/* --- Sizes --- */
+
+.so-combobox--sm .so-combobox__input {
+  height: var(--so-control-height-sm);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-combobox--md .so-combobox__input {
+  height: var(--so-control-height-md);
+  font-size: var(--so-font-size-md);
+}
+
+.so-combobox--lg .so-combobox__input {
+  height: var(--so-control-height-lg);
+  font-size: var(--so-font-size-lg);
+}
+
+/* --- Listbox (portalled, positioned by floating-ui) --- */
+
+.so-combobox__list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  max-height: 15rem;
+  margin: 0;
+  padding: var(--so-space-1);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  box-shadow: var(--so-shadow-md);
+  list-style: none;
+  overflow-y: auto;
+}
+
+.so-combobox__option {
+  padding: var(--so-space-1) var(--so-space-2);
+  border-radius: var(--so-radius);
+  color: var(--so-text);
+  font-size: var(--so-font-size-md);
+  cursor: pointer;
+}
+
+.so-combobox__option--active {
+  background-color: var(--so-color-primary-subtle);
+  color: var(--so-color-primary-subtle-fg);
+}
+
+.so-combobox__option[aria-selected="true"] {
+  font-weight: 600;
+}
+
+.so-combobox__option--disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-combobox__empty {
+  padding: var(--so-space-2);
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+  text-align: center;
+}

@@ -13,12 +13,15 @@ import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/solu
 import { Checkbox } from "../../components/ui/soluid/Checkbox";
 import { CheckboxGroup } from "../../components/ui/soluid/CheckboxGroup";
 import { Collapsible } from "../../components/ui/soluid/Collapsible";
+import { Combobox } from "../../components/ui/soluid/Combobox";
 import { Container } from "../../components/ui/soluid/Container";
+import { ContextMenu } from "../../components/ui/soluid/ContextMenu";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
+import { FileUpload } from "../../components/ui/soluid/FileUpload";
 import { FormField } from "../../components/ui/soluid/FormField";
 import { Grid } from "../../components/ui/soluid/Grid";
 import { Heading } from "../../components/ui/soluid/Heading";
@@ -29,17 +32,22 @@ import { Link } from "../../components/ui/soluid/Link";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
 import { NumberInput } from "../../components/ui/soluid/NumberInput";
 import { Pagination } from "../../components/ui/soluid/Pagination";
+import { PinInput } from "../../components/ui/soluid/PinInput";
 import { Popover } from "../../components/ui/soluid/Popover";
 import { Progress } from "../../components/ui/soluid/Progress";
 import { RadioButton } from "../../components/ui/soluid/RadioButton";
 import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
+import { Rating } from "../../components/ui/soluid/Rating";
+import { SearchField } from "../../components/ui/soluid/SearchField";
 import { SegmentedControl } from "../../components/ui/soluid/SegmentedControl";
 import { Select } from "../../components/ui/soluid/Select";
 import { Skeleton } from "../../components/ui/soluid/Skeleton";
+import { Slider } from "../../components/ui/soluid/Slider";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Spinner } from "../../components/ui/soluid/Spinner";
 import { Stack } from "../../components/ui/soluid/Stack";
 import { Stat } from "../../components/ui/soluid/Stat";
+import { Steps } from "../../components/ui/soluid/Steps";
 import { Switch } from "../../components/ui/soluid/Switch";
 import { Table } from "../../components/ui/soluid/Table";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
@@ -47,8 +55,10 @@ import { Tag } from "../../components/ui/soluid/Tag";
 import { Text } from "../../components/ui/soluid/Text";
 import { TextArea } from "../../components/ui/soluid/TextArea";
 import { TextField, TextFieldInput } from "../../components/ui/soluid/TextField";
+import { Timeline } from "../../components/ui/soluid/Timeline";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
+import { Tree } from "../../components/ui/soluid/Tree";
 import { VisuallyHidden } from "../../components/ui/soluid/VisuallyHidden";
 
 /* ---------- Categories ---------- */
@@ -86,18 +96,35 @@ export const CATEGORIES = [
       "TextField",
       "TextArea",
       "NumberInput",
+      "SearchField",
       "Select",
+      "Combobox",
       "SegmentedControl",
       "Checkbox",
       "CheckboxGroup",
       "RadioGroup",
       "Switch",
+      "Slider",
+      "Rating",
+      "PinInput",
+      "FileUpload",
     ],
   },
   {
     slug: "data",
     labelKey: "cat.data",
-    components: ["Table", "Card", "Stat", "DescriptionList", "Skeleton", "EmptyState", "Accordion", "Collapsible"],
+    components: [
+      "Table",
+      "Card",
+      "Stat",
+      "DescriptionList",
+      "Timeline",
+      "Tree",
+      "Skeleton",
+      "EmptyState",
+      "Accordion",
+      "Collapsible",
+    ],
   },
   {
     slug: "feedback",
@@ -107,7 +134,7 @@ export const CATEGORIES = [
   {
     slug: "navigation",
     labelKey: "cat.navigation",
-    components: ["Tabs", "Breadcrumb", "Pagination", "Popover", "Menu"],
+    components: ["Tabs", "Breadcrumb", "Steps", "Pagination", "Popover", "Menu", "ContextMenu"],
   },
 ];
 
@@ -331,6 +358,81 @@ const [role, setRole] = createSignal("");
   ]}
 />`,
 
+  SearchField: `import { SearchField } from "./soluid/SearchField";
+
+const [q, setQ] = createSignal("");
+
+<SearchField
+  value={q()}
+  onInput={setQ}
+  onSearch={(value) => runSearch(value)}
+  placeholder="Search orders"
+/>`,
+
+  Combobox: `import { Combobox } from "./soluid/Combobox";
+
+const [country, setCountry] = createSignal("");
+
+<Combobox
+  label="Country"
+  placeholder="Type to filter"
+  value={country()}
+  onChange={setCountry}
+  options={[
+    { value: "jp", label: "Japan" },
+    { value: "us", label: "United States" },
+    { value: "de", label: "Germany" },
+  ]}
+/>`,
+
+  Slider: `import { Slider } from "./soluid/Slider";
+
+const [volume, setVolume] = createSignal(40);
+
+<Slider
+  label="Volume"
+  value={volume()}
+  onInput={setVolume}
+  min={0}
+  max={100}
+  showValue
+  formatValue={(v) => \`\${v}%\`}
+/>`,
+
+  Rating: `import { Rating } from "./soluid/Rating";
+
+const [score, setScore] = createSignal(3);
+
+<Rating label="Rating" value={score()} onChange={setScore} />
+<Rating value={4} readOnly size="sm" />`,
+
+  PinInput: `import { PinInput } from "./soluid/PinInput";
+
+// One entry per box, so clearing a middle box never shifts the rest
+const [code, setCode] = createSignal<string[]>([]);
+
+<PinInput
+  label="One-time code"
+  value={code()}
+  onChange={setCode}
+  length={6}
+  onComplete={(value) => verify(value)}
+/>`,
+
+  FileUpload: `import { FileUpload } from "./soluid/FileUpload";
+
+const [files, setFiles] = createSignal<File[]>([]);
+
+<FileUpload
+  label="Drop files here or click to browse"
+  hint="PNG or JPG, up to 5 MB"
+  accept="image/*"
+  multiple
+  files={files()}
+  onSelect={(added) => setFiles((prev) => [...prev, ...added])}
+  onRemove={(_, i) => setFiles((prev) => prev.filter((_, j) => j !== i))}
+/>`,
+
   SegmentedControl: `import { SegmentedControl } from "./soluid/SegmentedControl";
 
 const [range, setRange] = createSignal("7d");
@@ -401,6 +503,33 @@ const columns = [
   columns={columns}
   data={rows}
   rowKey={(row) => row.id}
+/>`,
+
+  Timeline: `import { Timeline } from "./soluid/Timeline";
+
+<Timeline
+  items={[
+    { title: "Order placed", timestamp: "10:24", dateTime: "2026-07-25T10:24", variant: "success" },
+    { title: "Payment captured", timestamp: "10:26", dateTime: "2026-07-25T10:26" },
+    { title: "Refund requested", timestamp: "14:02", variant: "warning" },
+  ]}
+/>`,
+
+  Tree: `import { Tree } from "./soluid/Tree";
+
+const [expanded, setExpanded] = createSignal(["src"]);
+const [selected, setSelected] = createSignal<string>();
+
+<Tree
+  label="Files"
+  nodes={[
+    { id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] },
+    { id: "readme", label: "README.md" },
+  ]}
+  expanded={expanded()}
+  onExpandedChange={setExpanded}
+  selected={selected()}
+  onSelect={setSelected}
 />`,
 
   Stat: `import { Stat } from "./soluid/Stat";
@@ -571,6 +700,34 @@ const [open, setOpen] = createSignal(false);
 >
   Click to open
 </Popover>`,
+
+  Steps: `import { Steps } from "./soluid/Steps";
+
+<Steps
+  label="Checkout"
+  current={1}
+  steps={[
+    { label: "Cart", description: "3 items" },
+    { label: "Shipping" },
+    { label: "Payment" },
+  ]}
+/>`,
+
+  ContextMenu: `import { ContextMenu } from "./soluid/ContextMenu";
+import { MenuItem, MenuSeparator } from "./soluid/Menu";
+
+<ContextMenu
+  label="Row actions"
+  content={
+    <>
+      <MenuItem onSelect={handleRename}>Rename</MenuItem>
+      <MenuSeparator />
+      <MenuItem onSelect={handleDelete}>Delete</MenuItem>
+    </>
+  }
+>
+  <div>Right-click anywhere in here</div>
+</ContextMenu>`,
 
   Menu: `import { Menu, MenuItem, MenuSeparator } from "./soluid/Menu";
 
@@ -867,6 +1024,99 @@ function NumberInputDemo(): JSX.Element {
   return <NumberInput label="Quantity" value={value()} onInput={setValue} min={0} max={100} step={1} />;
 }
 
+function SearchFieldDemo(): JSX.Element {
+  const [q, setQ] = createSignal("");
+  const [last, setLast] = createSignal("");
+  return (
+    <Stack gap={3}>
+      <SearchField value={q()} onInput={setQ} onSearch={setLast} placeholder="Search orders" />
+      <Text size="sm" tone="muted">
+        {last() ? `Searched: ${last()}` : "Type and press Enter"}
+      </Text>
+    </Stack>
+  );
+}
+
+function ComboboxDemo(): JSX.Element {
+  const [country, setCountry] = createSignal("");
+  return (
+    <Combobox
+      label="Country"
+      placeholder="Type to filter"
+      value={country()}
+      onChange={setCountry}
+      options={[
+        { value: "jp", label: "Japan" },
+        { value: "us", label: "United States" },
+        { value: "de", label: "Germany" },
+        { value: "fr", label: "France" },
+        { value: "br", label: "Brazil" },
+        { value: "au", label: "Australia (unavailable)", disabled: true },
+      ]}
+    />
+  );
+}
+
+function SliderDemo(): JSX.Element {
+  const [volume, setVolume] = createSignal(40);
+  return (
+    <Stack gap={4}>
+      <Slider
+        label="Volume"
+        value={volume()}
+        onInput={setVolume}
+        min={0}
+        max={100}
+        showValue
+        formatValue={(v) => `${v}%`}
+      />
+      <Slider value={3} onInput={() => {}} min={1} max={5} step={1} size="sm" showValue />
+    </Stack>
+  );
+}
+
+function RatingDemo(): JSX.Element {
+  const [score, setScore] = createSignal(3);
+  return (
+    <Stack gap={3}>
+      <Rating label="Rating" value={score()} onChange={setScore} />
+      <HStack gap={2} align="center">
+        <Rating value={4} readOnly size="sm" />
+        <Text size="sm" tone="muted">
+          Read-only, 4 of 5
+        </Text>
+      </HStack>
+    </Stack>
+  );
+}
+
+function PinInputDemo(): JSX.Element {
+  const [code, setCode] = createSignal<string[]>([]);
+  const [done, setDone] = createSignal("");
+  return (
+    <Stack gap={3}>
+      <PinInput label="One-time code" value={code()} onChange={setCode} length={6} onComplete={setDone} />
+      <Text size="sm" tone="muted">
+        {done() ? `Completed: ${done()}` : "Paste or type a 6-digit code"}
+      </Text>
+    </Stack>
+  );
+}
+
+function FileUploadDemo(): JSX.Element {
+  const [files, setFiles] = createSignal<File[]>([]);
+  return (
+    <FileUpload
+      label="Drop files here or click to browse"
+      hint="Any file type, nothing is uploaded in this demo"
+      multiple
+      files={files()}
+      onSelect={(added) => setFiles((prev) => [...prev, ...added])}
+      onRemove={(_, index) => setFiles((prev) => prev.filter((__, i) => i !== index))}
+    />
+  );
+}
+
 function SegmentedControlDemo(): JSX.Element {
   const [range, setRange] = createSignal("7d");
   return (
@@ -996,6 +1246,63 @@ function TableDemo(): JSX.Element {
         setSortKey(key);
         setSortDir(dir);
       }}
+    />
+  );
+}
+
+function TimelineDemo(): JSX.Element {
+  return (
+    <Timeline
+      items={[
+        {
+          title: "Order placed",
+          description: "3 items, ¥12,400",
+          timestamp: "10:24",
+          dateTime: "2026-07-25T10:24",
+          variant: "success",
+        },
+        { title: "Payment captured", timestamp: "10:26", dateTime: "2026-07-25T10:26" },
+        {
+          title: "Refund requested",
+          description: "Customer changed their mind",
+          timestamp: "14:02",
+          variant: "warning",
+        },
+        { title: "Shipment failed", timestamp: "16:40", variant: "danger" },
+      ]}
+    />
+  );
+}
+
+function TreeDemo(): JSX.Element {
+  const [expanded, setExpanded] = createSignal(["src", "components"]);
+  const [selected, setSelected] = createSignal<string>();
+  return (
+    <Tree
+      label="Files"
+      nodes={[
+        {
+          id: "src",
+          label: "src",
+          children: [
+            {
+              id: "components",
+              label: "components",
+              children: [
+                { id: "button", label: "Button.tsx" },
+                { id: "card", label: "Card.tsx" },
+              ],
+            },
+            { id: "index", label: "index.ts" },
+          ],
+        },
+        { id: "readme", label: "README.md" },
+        { id: "lock", label: "bun.lock", disabled: true },
+      ]}
+      expanded={expanded()}
+      onExpandedChange={setExpanded}
+      selected={selected()}
+      onSelect={setSelected}
     />
   );
 }
@@ -1278,6 +1585,51 @@ function TabsDemo(): JSX.Element {
   );
 }
 
+function StepsDemo(): JSX.Element {
+  const [current, setCurrent] = createSignal(1);
+  const steps = [{ label: "Cart", description: "3 items" }, { label: "Shipping" }, { label: "Payment" }];
+  return (
+    <Stack gap={4}>
+      <Steps label="Checkout" current={current()} steps={steps} />
+      <ButtonGroup label="Step navigation">
+        <Button variant="neutral" onClick={() => setCurrent((c) => Math.max(0, c - 1))}>
+          Back
+        </Button>
+        <Button variant="neutral" onClick={() => setCurrent((c) => Math.min(steps.length - 1, c + 1))}>
+          Next
+        </Button>
+      </ButtonGroup>
+      <Steps label="Checkout, vertical" orientation="vertical" current={current()} steps={steps} />
+    </Stack>
+  );
+}
+
+function ContextMenuDemo(): JSX.Element {
+  const [action, setAction] = createSignal("");
+  return (
+    <Stack gap={3}>
+      <ContextMenu
+        label="Row actions"
+        content={
+          <>
+            <MenuItem onSelect={() => setAction("Rename")}>Rename</MenuItem>
+            <MenuItem onSelect={() => setAction("Duplicate")}>Duplicate</MenuItem>
+            <MenuSeparator />
+            <MenuItem onSelect={() => setAction("Delete")}>Delete</MenuItem>
+          </>
+        }
+      >
+        <div class="demo-outline" style={{ padding: "var(--so-space-5)", "text-align": "center" }}>
+          Right-click (or press the context-menu key) here
+        </div>
+      </ContextMenu>
+      <Text size="sm" tone="muted">
+        {action() ? `Selected: ${action()}` : "No action yet"}
+      </Text>
+    </Stack>
+  );
+}
+
 function BreadcrumbDemo(): JSX.Element {
   return (
     <Breadcrumb>
@@ -1354,8 +1706,18 @@ export const DEMOS: Record<string, () => JSX.Element> = {
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,
   FormField: FormFieldDemo,
+  SearchField: SearchFieldDemo,
+  Combobox: ComboboxDemo,
   SegmentedControl: SegmentedControlDemo,
+  Slider: SliderDemo,
+  Rating: RatingDemo,
+  PinInput: PinInputDemo,
+  FileUpload: FileUploadDemo,
   Stat: StatDemo,
+  Timeline: TimelineDemo,
+  Tree: TreeDemo,
+  Steps: StepsDemo,
+  ContextMenu: ContextMenuDemo,
   Collapsible: CollapsibleDemo,
   TextField: TextFieldDemo,
   TextArea: TextAreaDemo,

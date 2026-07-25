@@ -1,0 +1,121 @@
+.so-file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-2);
+}
+
+.so-file-upload__zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--so-space-1);
+  padding: var(--so-space-5);
+  border: 1px dashed var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+.so-file-upload__zone:hover {
+  border-color: var(--so-color-primary-border);
+}
+
+.so-file-upload__zone--dragging {
+  border-color: var(--so-color-primary-base);
+  background-color: var(--so-color-primary-subtle);
+}
+
+.so-file-upload__zone--disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Kept in the layout so it can receive focus; the ring lands on the zone. */
+.so-file-upload__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.so-file-upload__zone:focus-within {
+  outline: 2px solid var(--so-ring);
+  outline-offset: 2px;
+}
+
+.so-file-upload__icon {
+  width: 24px;
+  height: 24px;
+  color: var(--so-text-muted);
+}
+
+.so-file-upload__label {
+  color: var(--so-text);
+  font-size: var(--so-font-size-md);
+  font-weight: 500;
+}
+
+.so-file-upload__hint {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+}
+
+/* --- Selected files --- */
+
+.so-file-upload__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.so-file-upload__file {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-2);
+  padding: var(--so-space-1) var(--so-space-2);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg-subtle);
+  font-size: var(--so-font-size-sm);
+}
+
+.so-file-upload__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.so-file-upload__size {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.so-file-upload__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--so-space-1);
+  border: none;
+  border-radius: var(--so-radius);
+  background: none;
+  color: var(--so-text-muted);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.so-file-upload__remove:hover {
+  color: var(--so-color-danger-base);
+}

@@ -1,7 +1,7 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 
-export interface VisuallyHiddenProps {
+export interface VisuallyHiddenProps extends Omit<JSX.HTMLAttributes<HTMLSpanElement>, "class"> {
   children: JSX.Element;
 }
 

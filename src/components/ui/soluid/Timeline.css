@@ -1,0 +1,86 @@
+.so-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.so-timeline__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--so-space-3);
+  position: relative;
+}
+
+.so-timeline__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Connector running down to the next entry. */
+.so-timeline__item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 5px;
+  width: 1px;
+  height: calc(100% - 20px + var(--so-space-4));
+  background-color: var(--so-border);
+}
+
+.so-timeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-bottom: var(--so-space-1);
+}
+
+.so-timeline__heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--so-space-2);
+  flex-wrap: wrap;
+}
+
+.so-timeline__title {
+  color: var(--so-text);
+  font-size: var(--so-font-size-md);
+  font-weight: 500;
+}
+
+.so-timeline__timestamp {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-xs);
+}
+
+.so-timeline__description {
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+}
+
+/* --- Variants --- */
+
+.so-timeline__item--info .so-timeline__marker {
+  background-color: var(--so-color-info-base);
+}
+
+.so-timeline__item--success .so-timeline__marker {
+  background-color: var(--so-color-success-base);
+}
+
+.so-timeline__item--warning .so-timeline__marker {
+  background-color: var(--so-color-warning-base);
+}
+
+.so-timeline__item--danger .so-timeline__marker {
+  background-color: var(--so-color-danger-base);
+}

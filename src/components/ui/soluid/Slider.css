@@ -1,0 +1,96 @@
+.so-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-3);
+  width: 100%;
+}
+
+.so-slider__input {
+  /* Overwritten inline by the component with the current fill percentage. */
+  --so-slider-progress: 0%;
+  flex: 1;
+  min-width: 0;
+  height: var(--so-slider-thumb);
+  margin: 0;
+  background: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.so-slider__input:disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.so-slider__value {
+  min-width: 3ch;
+  color: var(--so-text);
+  font-size: var(--so-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+/* --- Track ---
+   The filled portion is painted with a gradient driven by the
+   --so-slider-progress custom property set on the element. */
+
+.so-slider__input::-webkit-slider-runnable-track {
+  height: var(--so-slider-track);
+  border-radius: var(--so-slider-track);
+  background: linear-gradient(
+    to right,
+    var(--so-color-primary-base) var(--so-slider-progress),
+    var(--so-border) var(--so-slider-progress)
+  );
+}
+
+.so-slider__input::-moz-range-track {
+  height: var(--so-slider-track);
+  border-radius: var(--so-slider-track);
+  background-color: var(--so-border);
+}
+
+.so-slider__input::-moz-range-progress {
+  height: var(--so-slider-track);
+  border-radius: var(--so-slider-track);
+  background-color: var(--so-color-primary-base);
+}
+
+/* --- Thumb --- */
+
+.so-slider__input::-webkit-slider-thumb {
+  width: var(--so-slider-thumb);
+  height: var(--so-slider-thumb);
+  margin-top: calc((var(--so-slider-track) - var(--so-slider-thumb)) / 2);
+  border: 2px solid var(--so-bg);
+  border-radius: 50%;
+  background-color: var(--so-color-primary-base);
+  box-shadow: var(--so-shadow-sm);
+  appearance: none;
+}
+
+.so-slider__input::-moz-range-thumb {
+  width: var(--so-slider-thumb);
+  height: var(--so-slider-thumb);
+  border: 2px solid var(--so-bg);
+  border-radius: 50%;
+  background-color: var(--so-color-primary-base);
+  box-shadow: var(--so-shadow-sm);
+}
+
+/* --- Sizes --- */
+
+.so-slider--sm {
+  --so-slider-track: 4px;
+  --so-slider-thumb: 14px;
+}
+
+.so-slider--md {
+  --so-slider-track: 6px;
+  --so-slider-thumb: 18px;
+}
+
+.so-slider--lg {
+  --so-slider-track: 8px;
+  --so-slider-thumb: 22px;
+}

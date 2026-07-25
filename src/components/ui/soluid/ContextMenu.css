@@ -1,0 +1,16 @@
+.so-context-menu-region {
+  display: block;
+}
+
+.so-context-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  min-width: 10rem;
+  padding: var(--so-space-1);
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg);
+  box-shadow: var(--so-shadow-md);
+}
