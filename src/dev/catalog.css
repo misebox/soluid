@@ -604,26 +604,33 @@
   border-radius: var(--so-radius);
 }
 
-/* ---------- Sample apps ---------- */
-
-.top-samples {
-  margin-bottom: var(--site-space-8);
+/* ===== Samples Page ===== */
+.samples-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--so-space-5);
 }
 
-.top-samples h2 {
-  font-size: var(--site-font-size-xl);
-  font-weight: 600;
+.samples-page h1 {
+  font-size: var(--site-font-size-2xl);
+  font-weight: 700;
   color: var(--so-text);
   margin-bottom: var(--so-space-2);
 }
 
-.top-samples-lead {
-  font-size: var(--so-font-size-sm);
+.samples-lead {
+  font-size: var(--so-font-size-md);
   color: var(--so-text-muted);
-  margin-bottom: var(--so-space-3);
+  margin-bottom: var(--so-space-5);
 }
 
-.top-sample-card {
+.samples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--so-space-3);
+}
+
+.samples-card {
   display: flex;
   flex-direction: column;
   gap: var(--so-space-2);
@@ -633,11 +640,16 @@
   background: var(--so-bg);
 }
 
-.top-sample-card h3 {
-  margin: 0;
+.samples-card:hover {
+  border-color: var(--so-color-primary-border);
 }
 
-.top-sample-card p {
+.samples-card h2 {
+  margin: 0;
+  font-size: var(--so-font-size-lg);
+}
+
+.samples-card p {
   flex: 1;
   margin: 0;
   font-size: var(--so-font-size-sm);
@@ -645,33 +657,33 @@
   line-height: 1.5;
 }
 
-.top-sample-open {
+.samples-card-open {
   padding: 0;
   border: none;
   background: none;
   font-family: inherit;
-  font-size: var(--so-font-size-md);
+  font-size: inherit;
   font-weight: 600;
   color: var(--so-color-primary-subtle-fg);
   cursor: pointer;
 }
 
-.top-sample-open:hover {
+.samples-card-open:hover {
   text-decoration: underline;
 }
 
-.top-sample-links {
+.samples-card-links {
   display: flex;
   gap: var(--so-space-3);
 }
 
-.top-sample-links a {
+.samples-card-links a {
   font-size: var(--so-font-size-xs);
   color: var(--so-text-muted);
   text-decoration: none;
 }
 
-.top-sample-links a:hover {
+.samples-card-links a:hover {
   color: var(--so-text);
   text-decoration: underline;
 }

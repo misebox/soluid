@@ -621,6 +621,7 @@ export const en: Record<string, string> = {
   // ===== Navigation =====
   "nav.gettingStarted": "Getting Started",
   "nav.components": "Components",
+  "nav.samples": "Samples",
   "nav.browseComponents": "Browse Components",
 
   // ===== Top Page =====
@@ -632,14 +633,14 @@ export const en: Record<string, string> = {
   "top.featureThemeable": "Themeable",
   "top.featureThemeableDesc": "CSS custom properties with light/dark themes and density variants.",
   "top.componentsHeading": "Components",
-  "top.samplesHeading": "Sample Apps",
-  "top.samplesLead":
-    "Whole screens built from the components, not isolated snippets. Each one is a real application you can read end to end.",
-  "top.samplesSource": "View source",
-  "top.samplesNewTab": "Open in new tab",
   "action.close": "Close",
 
   // ===== Sample apps =====
+  "samples.heading": "Sample Apps",
+  "samples.lead":
+    "Whole screens built from the components, not isolated snippets. Each one is a real application you can read end to end.",
+  "samples.source": "View source",
+  "samples.newTab": "Open in new tab",
   "sample.dashboard": "Dashboard",
   "sample.dashboardDesc": "Metrics, charts, an activity timeline and a sortable order table.",
   "sample.settings": "Settings",

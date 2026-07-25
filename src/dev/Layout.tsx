@@ -58,6 +58,9 @@ export function Layout(props: ParentProps) {
           <A href="/components" class="site-nav-link" activeClass="active">
             {t(lang(), "nav.components")}
           </A>
+          <A href="/samples" class="site-nav-link" activeClass="active">
+            {t(lang(), "nav.samples")}
+          </A>
         </nav>
         <Spacer />
         <div class="site-controls">
