@@ -1,6 +1,6 @@
-import { computePosition, flip, offset, shift } from "@floating-ui/dom";
+import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 import type { Placement } from "@floating-ui/dom";
-import { createEffect, createSignal, createUniqueId, on, onCleanup, Show, splitProps } from "solid-js";
+import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import type { CommonProps } from "./core/types";
@@ -56,19 +56,14 @@ export function Menu(props: MenuProps) {
     });
   }
 
-  createEffect(
-    on(
-      () => local.open,
-      (open) => {
-        if (open) {
-          requestAnimationFrame(() => {
-            updatePosition();
-            focusFirstItem();
-          });
-        }
-      },
-    ),
-  );
+  // Keep the panel anchored for as long as it is open. A one-shot
+  // computePosition would drift on scroll, resize or layout changes.
+  createEffect(() => {
+    const panel = panelRef();
+    if (!local.open || !triggerRef || !panel) return;
+    onCleanup(autoUpdate(triggerRef, panel, updatePosition));
+    requestAnimationFrame(focusFirstItem);
+  });
 
   function focusFirstItem() {
     const panel = panelRef();
@@ -78,8 +73,6 @@ export function Menu(props: MenuProps) {
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (!local.open) return;
-
     if (e.key === "Escape") {
       e.stopPropagation();
       local.onOpenChange(false);
@@ -114,7 +107,6 @@ export function Menu(props: MenuProps) {
   }
 
   function handleClickOutside(e: MouseEvent) {
-    if (!local.open) return;
     const panel = panelRef();
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
@@ -122,19 +114,16 @@ export function Menu(props: MenuProps) {
     local.onOpenChange(false);
   }
 
+  // Registering and unregistering inside the same effect ties the listeners to
+  // the open state and disposes them with the component.
   createEffect(() => {
-    if (local.open) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleKeyDown);
-    } else {
+    if (!local.open) return;
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
-    }
-  });
-
-  onCleanup(() => {
-    document.removeEventListener("mousedown", handleClickOutside);
-    document.removeEventListener("keydown", handleKeyDown);
+    });
   });
 
   function handleTriggerClick() {

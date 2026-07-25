@@ -1,11 +1,14 @@
 import { For, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createToast } from "./core/createToast";
 import type { ToastInput, ToastReturn } from "./core/createToast";
 import { cls } from "./core/utils";
 
-export interface ToastContainerProps {
+export interface ToastContainerProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "children"> {
   position?: "top-right" | "top-center" | "bottom-right" | "bottom-center";
+  /** Accessible label for each toast's dismiss button (default: "Dismiss") */
+  dismissLabel?: string;
 }
 
 // Global toast store
@@ -27,13 +30,14 @@ export function useToast() {
 }
 
 export function ToastContainer(props: ToastContainerProps) {
-  const [local] = splitProps(props, ["position"]);
+  const [local, others] = splitProps(props, ["position", "class", "dismissLabel"]);
   const store = getGlobalToast();
 
   return (
     <Portal>
       <div
-        class={cls("so-toast-container", `so-toast-container--${local.position ?? "top-right"}`)}
+        {...others}
+        class={cls("so-toast-container", `so-toast-container--${local.position ?? "top-right"}`, local.class)}
         aria-live="polite"
         aria-relevant="additions"
       >
@@ -52,7 +56,7 @@ export function ToastContainer(props: ToastContainerProps) {
                 type="button"
                 class="so-toast__dismiss"
                 onClick={() => store.dismiss(toast.id)}
-                aria-label="Dismiss"
+                aria-label={local.dismissLabel ?? "Dismiss"}
               >
                 &times;
               </button>

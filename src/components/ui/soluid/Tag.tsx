@@ -8,11 +8,21 @@ export interface TagProps extends CommonProps {
   fill?: "subtle" | "solid";
   size?: "sm" | "md";
   onRemove?: () => void;
+  /** Accessible label for the remove button (default: "Remove") */
+  removeLabel?: string;
   children: JSX.Element;
 }
 
 export function Tag(props: TagProps & JSX.HTMLAttributes<HTMLSpanElement>) {
-  const [local, others] = splitProps(props, ["class", "variant", "fill", "size", "onRemove", "children"]);
+  const [local, others] = splitProps(props, [
+    "class",
+    "variant",
+    "fill",
+    "size",
+    "onRemove",
+    "removeLabel",
+    "children",
+  ]);
 
   return (
     <span
@@ -27,7 +37,12 @@ export function Tag(props: TagProps & JSX.HTMLAttributes<HTMLSpanElement>) {
     >
       {local.children}
       <Show when={local.onRemove}>
-        <button type="button" class="so-tag__remove" aria-label="Remove" onClick={local.onRemove}>
+        <button
+          type="button"
+          class="so-tag__remove"
+          aria-label={local.removeLabel ?? "Remove"}
+          onClick={local.onRemove}
+        >
           &#x2715;
         </button>
       </Show>

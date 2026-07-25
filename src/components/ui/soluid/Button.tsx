@@ -24,6 +24,9 @@ export function Button(props: ButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonE
 
   return (
     <button
+      // Default to "button" so a Button inside a <form> does not submit it by
+      // accident; `others` still lets callers opt into type="submit".
+      type="button"
       class={cls(
         "so-button",
         `so-button--${local.variant ?? "neutral"}`,
@@ -32,6 +35,7 @@ export function Button(props: ButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonE
         local.class,
       )}
       disabled={local.disabled || local.loading}
+      aria-busy={local.loading || undefined}
       {...others}
     >
       <Show when={local.loading}>

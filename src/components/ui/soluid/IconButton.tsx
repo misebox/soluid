@@ -13,6 +13,8 @@ export function IconButton(props: IconButtonProps & JSX.ButtonHTMLAttributes<HTM
 
   return (
     <button
+      // Default to "button" so an IconButton inside a <form> does not submit it.
+      type="button"
       class={cls(
         "so-icon-button",
         `so-icon-button--${local.variant ?? "neutral"}`,

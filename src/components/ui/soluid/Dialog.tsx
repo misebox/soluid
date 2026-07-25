@@ -1,11 +1,9 @@
-import { createContext, Show, splitProps, useContext } from "solid-js";
+import { createContext, createUniqueId, Show, splitProps, useContext } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createOverlay } from "./core/createOverlay";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
-
-let dialogCounter = 0;
 
 const DialogContext = createContext<string>();
 
@@ -34,8 +32,7 @@ export interface DialogFooterProps {
 export function Dialog(props: DialogProps) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "size", "children"]);
 
-  dialogCounter += 1;
-  const titleId = `so-dialog-title-${dialogCounter}`;
+  const titleId = `so-dialog-title-${createUniqueId()}`;
 
   const overlay = createOverlay({
     isOpen: () => local.open,

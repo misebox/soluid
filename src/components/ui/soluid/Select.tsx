@@ -1,9 +1,15 @@
-import { For, splitProps } from "solid-js";
+import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
+
+/** Native select attributes minus the ones this component owns. */
+type SelectAttributes = Omit<
+  JSX.SelectHTMLAttributes<HTMLSelectElement>,
+  "value" | "onChange" | "size" | "class" | "children"
+>;
 
 export interface SelectOption<T extends string = string> {
   value: T;
@@ -11,27 +17,30 @@ export interface SelectOption<T extends string = string> {
   disabled?: boolean;
 }
 
-export interface SelectProps<T extends string = string> extends InteractiveProps {
+export interface SelectInputProps<T extends string = string> extends InteractiveProps, SelectAttributes {
   value?: T;
   onChange?: (value: T) => void;
   options: SelectOption<T>[];
   placeholder?: string;
+}
+
+export interface SelectProps<T extends string = string> extends SelectInputProps<T> {
   label?: string;
   error?: string;
   hint?: string;
-  required?: boolean;
 }
 
-export function SelectInput<T extends string = string>(props: {
-  value?: T;
-  onChange?: (value: T) => void;
-  options: SelectOption<T>[];
-  placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
-  size?: "sm" | "md" | "lg";
-}) {
-  const [local] = splitProps(props, ["value", "onChange", "options", "placeholder", "disabled", "required", "size"]);
+export function SelectInput<T extends string = string>(props: SelectInputProps<T>) {
+  const [local, others] = splitProps(props, [
+    "value",
+    "onChange",
+    "options",
+    "placeholder",
+    "size",
+    "class",
+    "density",
+    "id",
+  ]);
 
   const ctx = useFormField();
 
@@ -40,22 +49,23 @@ export function SelectInput<T extends string = string>(props: {
   };
 
   return (
-    <div class="so-select__wrapper">
+    <div class={cls("so-select__wrapper", local.class)}>
       <select
-        id={ctx?.id}
+        {...others}
+        id={ctx?.id ?? local.id}
         class={cls("so-select__input", `so-select__input--${local.size ?? "md"}`)}
         value={local.value ?? ""}
-        disabled={local.disabled}
-        required={local.required}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onChange={handleChange}
       >
-        {local.placeholder && (
-          <option value="" disabled>
-            {local.placeholder}
-          </option>
-        )}
+        <Show when={local.placeholder}>
+          {(placeholder) => (
+            <option value="" disabled>
+              {placeholder()}
+            </option>
+          )}
+        </Show>
         <For each={local.options}>
           {(option) => (
             <option value={option.value} disabled={option.disabled}>
@@ -64,7 +74,13 @@ export function SelectInput<T extends string = string>(props: {
           )}
         </For>
       </select>
-      <svg class="so-select__arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        class="so-select__arrow"
+        viewBox="0 0 12 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
         <path
           d="M2.5 4.5L6 8l3.5-3.5"
           stroke="currentColor"
@@ -78,43 +94,25 @@ export function SelectInput<T extends string = string>(props: {
 }
 
 export function Select<T extends string = string>(props: SelectProps<T>) {
-  const [local] = splitProps(props, [
-    "value",
-    "onChange",
-    "options",
-    "placeholder",
-    "disabled",
-    "size",
-    "class",
-    "density",
-  ]);
-
-  const [formProps] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
-
-  const input = (
-    <SelectInput
-      value={local.value}
-      onChange={local.onChange}
-      options={local.options}
-      placeholder={local.placeholder}
-      disabled={local.disabled}
-      required={props.required}
-      size={local.size}
-    />
-  );
-
-  if (!formProps.label) return input;
+  const [field, input] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (
-    <FormField
-      label={formProps.label}
-      error={formProps.error}
-      hint={formProps.hint}
-      required={formProps.required}
-      class={formProps.class}
-      density={formProps.density}
+    <Show
+      when={field.label}
+      fallback={<SelectInput {...input} required={field.required} class={field.class} density={field.density} />}
     >
-      {input}
-    </FormField>
+      {(label) => (
+        <FormField
+          label={label()}
+          error={field.error}
+          hint={field.hint}
+          required={field.required}
+          class={field.class}
+          density={field.density}
+        >
+          <SelectInput {...input} required={field.required} />
+        </FormField>
+      )}
+    </Show>
   );
 }

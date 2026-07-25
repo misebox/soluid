@@ -1,11 +1,9 @@
-import { createContext, Show, splitProps, useContext } from "solid-js";
+import { createContext, createUniqueId, Show, splitProps, useContext } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createOverlay } from "./core/createOverlay";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
-
-let drawerCounter = 0;
 
 const DrawerContext = createContext<string>();
 
@@ -25,8 +23,7 @@ export interface DrawerHeaderProps {
 export function Drawer(props: DrawerProps) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "side", "size", "children"]);
 
-  drawerCounter += 1;
-  const titleId = `so-drawer-title-${drawerCounter}`;
+  const titleId = `so-drawer-title-${createUniqueId()}`;
 
   const overlay = createOverlay({
     isOpen: () => local.open,

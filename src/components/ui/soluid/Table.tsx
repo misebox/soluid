@@ -22,6 +22,10 @@ export interface TableProps<T> extends CommonProps {
   selectedKeys?: Set<string>;
   onSelect?: (keys: Set<string>) => void;
   rowKey?: (row: T) => string;
+  /** Accessible label for the select-all checkbox (default: "Select all rows") */
+  selectAllLabel?: string;
+  /** Accessible label for a row checkbox (default: `Select row {key}`) */
+  selectRowLabel?: (row: T, index: number) => string;
 }
 
 export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
@@ -37,11 +41,17 @@ export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
     "selectedKeys",
     "onSelect",
     "rowKey",
+    "selectAllLabel",
+    "selectRowLabel",
   ]);
 
   function getRowKey(row: T, index: number): string {
     if (local.rowKey) return local.rowKey(row);
     return String(index);
+  }
+
+  function getRowLabel(row: T, index: number): string {
+    return local.selectRowLabel?.(row, index) ?? `Select row ${getRowKey(row, index)}`;
   }
 
   function handleSort(key: string): void {
@@ -80,7 +90,7 @@ export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
 
   return (
     <div class={cls("so-table-wrapper", local.class)} data-density={local.density} {...others}>
-      <table class="so-table" role="table">
+      <table class="so-table">
         <thead>
           <tr class="so-table__row so-table__row--header">
             <Show when={local.selectable}>
@@ -89,7 +99,7 @@ export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
                   type="checkbox"
                   checked={allSelected()}
                   onChange={handleSelectAll}
-                  aria-label="Select all rows"
+                  aria-label={local.selectAllLabel ?? "Select all rows"}
                 />
               </th>
             </Show>
@@ -132,7 +142,7 @@ export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
                         type="checkbox"
                         checked={local.selectedKeys?.has(key()) ?? false}
                         onChange={() => handleSelectRow(key())}
-                        aria-label={`Select row ${key()}`}
+                        aria-label={getRowLabel(row, i())}
                       />
                     </td>
                   </Show>

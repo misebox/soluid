@@ -4,7 +4,13 @@ import { createToggle } from "./core/createToggle";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
-export interface SwitchProps extends CommonProps {
+/** Native button attributes minus the ones this component owns. */
+type SwitchAttributes = Omit<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange" | "type" | "role" | "class" | "children"
+>;
+
+export interface SwitchProps extends CommonProps, SwitchAttributes {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
@@ -16,7 +22,7 @@ export interface SwitchProps extends CommonProps {
 }
 
 export function Switch(props: SwitchProps) {
-  const [local, _others] = splitProps(props, [
+  const [local, others] = splitProps(props, [
     "class",
     "checked",
     "onChange",
@@ -73,6 +79,7 @@ export function Switch(props: SwitchProps) {
         )}
       >
         <button
+          {...others}
           type="button"
           role="switch"
           class="so-switch__track"

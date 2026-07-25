@@ -4,7 +4,13 @@ import { useCheckboxGroup } from "./CheckboxGroupContext";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
-export interface CheckboxProps extends CommonProps {
+/** Native input attributes minus the ones this component owns. */
+type CheckboxAttributes = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "checked" | "onChange" | "value" | "type" | "size" | "class" | "children"
+>;
+
+export interface CheckboxProps extends CommonProps, CheckboxAttributes {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   indeterminate?: boolean;
@@ -18,7 +24,7 @@ export interface CheckboxProps extends CommonProps {
 }
 
 export function Checkbox(props: CheckboxProps) {
-  const [local, _others] = splitProps(props, [
+  const [local, others] = splitProps(props, [
     "class",
     "checked",
     "onChange",
@@ -78,9 +84,11 @@ export function Checkbox(props: CheckboxProps) {
         )}
       >
         <input
+          {...others}
           ref={inputRef}
           type="checkbox"
           class="so-checkbox__input"
+          value={local.value}
           checked={isChecked()}
           disabled={local.disabled}
           onChange={handleChange}

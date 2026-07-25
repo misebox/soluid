@@ -7,10 +7,12 @@ export interface AlertProps extends CommonProps {
   variant?: FeedbackVariant;
   children: JSX.Element;
   onDismiss?: () => void;
+  /** Accessible label for the dismiss button (default: "Dismiss") */
+  dismissLabel?: string;
 }
 
 export function Alert(props: AlertProps) {
-  const [local, others] = splitProps(props, ["class", "density", "variant", "children", "onDismiss"]);
+  const [local, others] = splitProps(props, ["class", "density", "variant", "children", "onDismiss", "dismissLabel"]);
 
   return (
     <div
@@ -21,7 +23,12 @@ export function Alert(props: AlertProps) {
     >
       <div class="so-alert__content">{local.children}</div>
       <Show when={local.onDismiss}>
-        <button type="button" class="so-alert__dismiss" onClick={() => local.onDismiss?.()} aria-label="Dismiss">
+        <button
+          type="button"
+          class="so-alert__dismiss"
+          onClick={() => local.onDismiss?.()}
+          aria-label={local.dismissLabel ?? "Dismiss"}
+        >
           &times;
         </button>
       </Show>

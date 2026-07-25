@@ -11,6 +11,14 @@ export interface PaginationProps extends CommonProps {
   showPages?: boolean;
   /** Max visible page buttons before ellipsis (default: 5) */
   maxVisible?: number;
+  /** Accessible label for the navigation landmark (default: "Pagination") */
+  label?: string;
+  /** Label for the previous-page button. Sets both its text and aria-label. */
+  previousLabel?: string;
+  /** Label for the next-page button. Sets both its text and aria-label. */
+  nextLabel?: string;
+  /** Accessible label for a numbered page button (default: `Page {n}`) */
+  pageLabel?: (page: number) => string;
 }
 
 function buildPageList(current: number, total: number, maxVisible: number): (number | "ellipsis")[] {
@@ -58,14 +66,19 @@ export function Pagination(props: PaginationProps) {
     "size",
     "showPages",
     "maxVisible",
+    "label",
+    "previousLabel",
+    "nextLabel",
+    "pageLabel",
   ]);
 
   const pageList = () => buildPageList(local.page, local.totalPages, local.maxVisible ?? 5);
+  const pageLabel = (page: number) => local.pageLabel?.(page) ?? `Page ${page}`;
 
   return (
     <nav
       class={cls("so-pagination", `so-pagination--${local.size ?? "md"}`, local.class)}
-      aria-label="Pagination"
+      aria-label={local.label ?? "Pagination"}
       data-density={local.density}
       {...others}
     >
@@ -74,9 +87,9 @@ export function Pagination(props: PaginationProps) {
         class="so-pagination__button"
         disabled={local.page <= 1}
         onClick={() => local.onChange(local.page - 1)}
-        aria-label="Previous page"
+        aria-label={local.previousLabel ?? "Previous page"}
       >
-        Prev
+        {local.previousLabel ?? "Prev"}
       </button>
 
       <Show
@@ -100,7 +113,7 @@ export function Pagination(props: PaginationProps) {
               <button
                 type="button"
                 class={cls("so-pagination__page", local.page === item && "so-pagination__page--active")}
-                aria-label={`Page ${item}`}
+                aria-label={pageLabel(item as number)}
                 aria-current={local.page === item ? "page" : undefined}
                 onClick={() => local.onChange(item as number)}
               >
@@ -116,9 +129,9 @@ export function Pagination(props: PaginationProps) {
         class="so-pagination__button"
         disabled={local.page >= local.totalPages}
         onClick={() => local.onChange(local.page + 1)}
-        aria-label="Next page"
+        aria-label={local.nextLabel ?? "Next page"}
       >
-        Next
+        {local.nextLabel ?? "Next"}
       </button>
     </nav>
   );

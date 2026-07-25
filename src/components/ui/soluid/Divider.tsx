@@ -15,7 +15,6 @@ export function Divider(props: DividerProps & JSX.HTMLAttributes<HTMLHRElement>)
   return (
     <hr
       class={cls("so-divider", `so-divider--${orientation()}`, local.class)}
-      role="separator"
       aria-orientation={orientation()}
       {...others}
     />

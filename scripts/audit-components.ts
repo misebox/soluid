@@ -19,7 +19,7 @@ import * as path from "path";
 import * as ts from "typescript";
 import { fileURLToPath } from "url";
 import { registry } from "../cli/registry";
-import { CATEGORIES, CODE_EXAMPLES, DEMOS } from "../src/dev/pages/componentDemos";
+import { CATEGORIES, CODE_EXAMPLES, DEMOS, SUB_COMPONENTS } from "../src/dev/pages/componentDemos";
 import { en } from "../src/dev/locales/en";
 import { ja } from "../src/dev/locales/ja";
 
@@ -100,7 +100,7 @@ function parseComponent(file: string): ComponentSource {
     if (ts.isFunctionDeclaration(node) && node.name && isComponentName(node.name.text)) {
       exportedComponents.push({ name: node.name.text, node });
     }
-    if (ts.isInterfaceDeclaration(node) && node.name.text.endsWith("Props")) {
+    if ((ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) && node.name.text.endsWith("Props")) {
       exportedPropsTypes.push(node.name.text);
     }
   }
@@ -799,14 +799,16 @@ const catalogRules: Rule[] = [
     level: "error",
     summary: "Every installable component appears in the catalog",
     check: () => {
-      const listed = new Set(CATEGORIES.flatMap((c) => c.components));
+      // A component is discoverable either as its own catalog entry or as a
+      // documented sub-component of one (HStack under Stack, and so on).
+      const listed = new Set([...CATEGORIES.flatMap((c) => c.components), ...Object.values(SUB_COMPONENTS).flat()]);
       return Object.values(registry)
         .filter((e) => e.category === "components" && !listed.has(e.name))
         .map((e) => ({
           rule: "catalog/registry-listed",
           level: "error" as const,
           file: "src/dev/pages/componentDemos.tsx",
-          message: `${e.name} is installable but absent from CATEGORIES — users cannot discover it`,
+          message: `${e.name} is installable but absent from the catalog — users cannot discover it`,
         }));
     },
   },

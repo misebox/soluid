@@ -26,10 +26,13 @@ export type { DividerProps } from "./components/ui/soluid/Divider";
 export { HStack } from "./components/ui/soluid/HStack";
 export type { HStackProps } from "./components/ui/soluid/HStack";
 export { Spacer } from "./components/ui/soluid/Spacer";
+export type { SpacerProps } from "./components/ui/soluid/Spacer";
 export { Stack } from "./components/ui/soluid/Stack";
 export type { StackProps } from "./components/ui/soluid/Stack";
 
 // General
+export { Avatar } from "./components/ui/soluid/Avatar";
+export type { AvatarProps } from "./components/ui/soluid/Avatar";
 export { Badge } from "./components/ui/soluid/Badge";
 export type { BadgeProps } from "./components/ui/soluid/Badge";
 export { Button } from "./components/ui/soluid/Button";
@@ -54,18 +57,20 @@ export { RadioButton } from "./components/ui/soluid/RadioButton";
 export type { RadioButtonProps } from "./components/ui/soluid/RadioButton";
 export { RadioGroup } from "./components/ui/soluid/RadioGroup";
 export type { RadioGroupProps } from "./components/ui/soluid/RadioGroup";
-export { Select } from "./components/ui/soluid/Select";
-export type { SelectProps } from "./components/ui/soluid/Select";
+export { Select, SelectInput } from "./components/ui/soluid/Select";
+export type { SelectInputProps, SelectOption, SelectProps } from "./components/ui/soluid/Select";
 export { Switch } from "./components/ui/soluid/Switch";
 export type { SwitchProps } from "./components/ui/soluid/Switch";
-export { TextArea } from "./components/ui/soluid/TextArea";
-export type { TextAreaProps } from "./components/ui/soluid/TextArea";
-export { TextField } from "./components/ui/soluid/TextField";
-export type { TextFieldProps } from "./components/ui/soluid/TextField";
+export { TextArea, TextAreaInput } from "./components/ui/soluid/TextArea";
+export type { TextAreaInputProps, TextAreaProps } from "./components/ui/soluid/TextArea";
+export { TextField, TextFieldInput } from "./components/ui/soluid/TextField";
+export type { TextFieldInputProps, TextFieldProps } from "./components/ui/soluid/TextField";
 
 // Data Display
+export { Accordion, AccordionItem } from "./components/ui/soluid/Accordion";
+export type { AccordionItemProps, AccordionProps } from "./components/ui/soluid/Accordion";
 export { Card, CardBody, CardFooter, CardHeader } from "./components/ui/soluid/Card";
-export type { CardProps } from "./components/ui/soluid/Card";
+export type { CardBodyProps, CardFooterProps, CardHeaderProps, CardProps } from "./components/ui/soluid/Card";
 export { DescriptionList } from "./components/ui/soluid/DescriptionList";
 export type { DescriptionListProps } from "./components/ui/soluid/DescriptionList";
 export { EmptyState } from "./components/ui/soluid/EmptyState";
@@ -79,9 +84,9 @@ export type { Column, TableProps } from "./components/ui/soluid/Table";
 export { Alert } from "./components/ui/soluid/Alert";
 export type { AlertProps } from "./components/ui/soluid/Alert";
 export { Dialog, DialogBody, DialogFooter, DialogHeader } from "./components/ui/soluid/Dialog";
-export type { DialogProps } from "./components/ui/soluid/Dialog";
-export { Drawer } from "./components/ui/soluid/Drawer";
-export type { DrawerProps } from "./components/ui/soluid/Drawer";
+export type { DialogBodyProps, DialogFooterProps, DialogHeaderProps, DialogProps } from "./components/ui/soluid/Dialog";
+export { Drawer, DrawerHeader } from "./components/ui/soluid/Drawer";
+export type { DrawerHeaderProps, DrawerProps } from "./components/ui/soluid/Drawer";
 export { Progress } from "./components/ui/soluid/Progress";
 export type { ProgressProps } from "./components/ui/soluid/Progress";
 export { Spinner } from "./components/ui/soluid/Spinner";
@@ -92,12 +97,12 @@ export type { ToastContainerProps } from "./components/ui/soluid/Toast";
 // Navigation
 export { Breadcrumb, BreadcrumbItem } from "./components/ui/soluid/Breadcrumb";
 export type { BreadcrumbItemProps, BreadcrumbProps } from "./components/ui/soluid/Breadcrumb";
-export { Menu } from "./components/ui/soluid/Menu";
-export type { MenuProps } from "./components/ui/soluid/Menu";
+export { Menu, MenuItem, MenuSeparator } from "./components/ui/soluid/Menu";
+export type { MenuItemProps, MenuProps, MenuSeparatorProps } from "./components/ui/soluid/Menu";
 export { Pagination } from "./components/ui/soluid/Pagination";
 export type { PaginationProps } from "./components/ui/soluid/Pagination";
 export { Tab, TabList, TabPanel, Tabs } from "./components/ui/soluid/Tabs";
-export type { TabsProps } from "./components/ui/soluid/Tabs";
+export type { TabListProps, TabPanelProps, TabProps, TabsProps } from "./components/ui/soluid/Tabs";
 
 // Utility
 export { Popover } from "./components/ui/soluid/Popover";

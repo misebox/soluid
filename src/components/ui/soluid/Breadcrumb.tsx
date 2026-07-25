@@ -4,6 +4,8 @@ import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface BreadcrumbProps extends CommonProps {
+  /** Accessible label for the navigation landmark (default: "Breadcrumb") */
+  label?: string;
   children: JSX.Element;
 }
 
@@ -15,10 +17,15 @@ export interface BreadcrumbItemProps {
 }
 
 export function Breadcrumb(props: BreadcrumbProps) {
-  const [local, others] = splitProps(props, ["class", "density", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "label", "children"]);
 
   return (
-    <nav class={cls("so-breadcrumb", local.class)} aria-label="Breadcrumb" data-density={local.density} {...others}>
+    <nav
+      class={cls("so-breadcrumb", local.class)}
+      aria-label={local.label ?? "Breadcrumb"}
+      data-density={local.density}
+      {...others}
+    >
       <ol class="so-breadcrumb__list">{local.children}</ol>
     </nav>
   );

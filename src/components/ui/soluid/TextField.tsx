@@ -1,31 +1,27 @@
-import { splitProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
-export interface TextFieldProps extends InteractiveProps {
+/** Native input attributes minus the ones this component owns. */
+type InputAttributes = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" | "onInput" | "type" | "size" | "class">;
+
+export interface TextFieldInputProps extends InteractiveProps, InputAttributes {
   value?: string;
   onInput?: (value: string) => void;
-  placeholder?: string;
   type?: "text" | "email" | "password" | "url" | "tel";
+}
+
+export interface TextFieldProps extends TextFieldInputProps {
   label?: string;
   error?: string;
   hint?: string;
-  required?: boolean;
 }
 
-export function TextFieldInput(props: {
-  value?: string;
-  onInput?: (value: string) => void;
-  placeholder?: string;
-  type?: "text" | "email" | "password" | "url" | "tel";
-  disabled?: boolean;
-  required?: boolean;
-  size?: "sm" | "md" | "lg";
-}) {
-  const [local] = splitProps(props, ["value", "onInput", "placeholder", "type", "disabled", "required", "size"]);
+export function TextFieldInput(props: TextFieldInputProps) {
+  const [local, others] = splitProps(props, ["value", "onInput", "type", "size", "class", "density", "id"]);
 
   const ctx = useFormField();
 
@@ -35,13 +31,13 @@ export function TextFieldInput(props: {
 
   return (
     <input
-      id={ctx?.id}
-      class={cls("so-text-field__input", `so-text-field__input--${local.size ?? "md"}`)}
+      {...others}
+      // Inside a FormField the id belongs to the field so <label for> matches;
+      // standalone, the caller's id applies.
+      id={ctx?.id ?? local.id}
+      class={cls("so-text-field__input", `so-text-field__input--${local.size ?? "md"}`, local.class)}
       type={local.type ?? "text"}
       value={local.value ?? ""}
-      placeholder={local.placeholder}
-      disabled={local.disabled}
-      required={local.required}
       aria-invalid={ctx?.hasError || undefined}
       aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
       onInput={handleInput}
@@ -50,43 +46,25 @@ export function TextFieldInput(props: {
 }
 
 export function TextField(props: TextFieldProps) {
-  const [local] = splitProps(props, [
-    "value",
-    "onInput",
-    "placeholder",
-    "type",
-    "disabled",
-    "size",
-    "class",
-    "density",
-  ]);
-
-  const [formProps] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
-
-  const input = (
-    <TextFieldInput
-      value={local.value}
-      onInput={local.onInput}
-      placeholder={local.placeholder}
-      type={local.type}
-      disabled={local.disabled}
-      required={props.required}
-      size={local.size}
-    />
-  );
-
-  if (!formProps.label) return input;
+  const [field, input] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (
-    <FormField
-      label={formProps.label}
-      error={formProps.error}
-      hint={formProps.hint}
-      required={formProps.required}
-      class={formProps.class}
-      density={formProps.density}
+    <Show
+      when={field.label}
+      fallback={<TextFieldInput {...input} required={field.required} class={field.class} density={field.density} />}
     >
-      {input}
-    </FormField>
+      {(label) => (
+        <FormField
+          label={label()}
+          error={field.error}
+          hint={field.hint}
+          required={field.required}
+          class={field.class}
+          density={field.density}
+        >
+          <TextFieldInput {...input} required={field.required} />
+        </FormField>
+      )}
+    </Show>
   );
 }

@@ -5,29 +5,46 @@ import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
-export interface NumberInputProps extends InteractiveProps {
+/** Native input attributes minus the ones this component owns. */
+type NumberAttributes = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "onInput" | "onBlur" | "type" | "size" | "class" | "min" | "max" | "step"
+>;
+
+interface NumberControlProps extends InteractiveProps, NumberAttributes {
   value?: number;
   onInput?: (value: number) => void;
+  /** Runs after the typed value has been clamped into [min, max]. */
+  onBlur?: (event: FocusEvent) => void;
   min?: number;
   max?: number;
   step?: number;
+  decrementLabel?: string;
+  incrementLabel?: string;
+}
+
+export interface NumberInputProps extends NumberControlProps {
   label: string;
   error?: string;
   hint?: string;
-  required?: boolean;
 }
 
-function NumberInputInner(props: {
-  value?: number;
-  onInput?: (value: number) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  disabled?: boolean;
-  required?: boolean;
-  size?: "sm" | "md" | "lg";
-}) {
-  const [local] = splitProps(props, ["value", "onInput", "min", "max", "step", "disabled", "required", "size"]);
+function NumberControl(props: NumberControlProps) {
+  const [local, others] = splitProps(props, [
+    "value",
+    "onInput",
+    "min",
+    "max",
+    "step",
+    "size",
+    "class",
+    "density",
+    "id",
+    "disabled",
+    "onBlur",
+    "decrementLabel",
+    "incrementLabel",
+  ]);
 
   const ctx = useFormField();
 
@@ -40,16 +57,8 @@ function NumberInputInner(props: {
     return result;
   }
 
-  function increment(): void {
-    const current = local.value ?? 0;
-    const next = clamp(current + stepValue());
-    local.onInput?.(next);
-  }
-
-  function decrement(): void {
-    const current = local.value ?? 0;
-    const next = clamp(current - stepValue());
-    local.onInput?.(next);
+  function nudge(direction: 1 | -1): void {
+    local.onInput?.(clamp((local.value ?? 0) + direction * stepValue()));
   }
 
   // Pass the raw parsed value through while typing. Clamping mid-input
@@ -64,25 +73,28 @@ function NumberInputInner(props: {
 
   const handleBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
     const parsed = parseFloat(e.currentTarget.value);
-    if (Number.isNaN(parsed)) return;
-    const clamped = clamp(parsed);
-    if (clamped !== parsed) local.onInput?.(clamped);
+    if (!Number.isNaN(parsed)) {
+      const clamped = clamp(parsed);
+      if (clamped !== parsed) local.onInput?.(clamped);
+    }
+    local.onBlur?.(e);
   };
 
   return (
-    <div class={cls("so-number-input", `so-number-input--${local.size ?? "md"}`)}>
+    <div class={cls("so-number-input", `so-number-input--${local.size ?? "md"}`, local.class)}>
       <button
         type="button"
         class="so-number-input__button so-number-input__button--decrement"
         disabled={local.disabled}
         tabIndex={-1}
-        aria-label="Decrement"
-        onClick={decrement}
+        aria-label={local.decrementLabel ?? "Decrement"}
+        onClick={() => nudge(-1)}
       >
         -
       </button>
       <input
-        id={ctx?.id}
+        {...others}
+        id={ctx?.id ?? local.id}
         class="so-number-input__input"
         type="number"
         value={local.value ?? ""}
@@ -90,7 +102,6 @@ function NumberInputInner(props: {
         max={local.max}
         step={local.step}
         disabled={local.disabled}
-        required={local.required}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={handleInput}
@@ -101,8 +112,8 @@ function NumberInputInner(props: {
         class="so-number-input__button so-number-input__button--increment"
         disabled={local.disabled}
         tabIndex={-1}
-        aria-label="Increment"
-        onClick={increment}
+        aria-label={local.incrementLabel ?? "Increment"}
+        onClick={() => nudge(1)}
       >
         +
       </button>
@@ -111,29 +122,18 @@ function NumberInputInner(props: {
 }
 
 export function NumberInput(props: NumberInputProps) {
-  const [local] = splitProps(props, ["value", "onInput", "min", "max", "step", "disabled", "size", "class", "density"]);
-
-  const [formProps] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
+  const [field, control] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (
     <FormField
-      label={formProps.label}
-      error={formProps.error}
-      hint={formProps.hint}
-      required={formProps.required}
-      class={formProps.class}
-      density={formProps.density}
+      label={field.label}
+      error={field.error}
+      hint={field.hint}
+      required={field.required}
+      class={field.class}
+      density={field.density}
     >
-      <NumberInputInner
-        value={local.value}
-        onInput={local.onInput}
-        min={local.min}
-        max={local.max}
-        step={local.step}
-        disabled={local.disabled}
-        required={props.required}
-        size={local.size}
-      />
+      <NumberControl {...control} required={field.required} />
     </FormField>
   );
 }

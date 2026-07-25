@@ -4,7 +4,13 @@ import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 import { useRadioGroup } from "./RadioGroupContext";
 
-export interface RadioButtonProps extends CommonProps {
+/** Native input attributes minus the ones this component owns. */
+type RadioAttributes = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "checked" | "onChange" | "type" | "size" | "class" | "children"
+>;
+
+export interface RadioButtonProps extends CommonProps, RadioAttributes {
   value: string;
   label?: string;
   disabled?: boolean;
@@ -12,7 +18,7 @@ export interface RadioButtonProps extends CommonProps {
 }
 
 export function RadioButton(props: RadioButtonProps) {
-  const [local, _others] = splitProps(props, ["class", "value", "label", "disabled", "children"]);
+  const [local, others] = splitProps(props, ["class", "value", "label", "disabled", "children"]);
 
   const group = useRadioGroup();
 
@@ -25,9 +31,11 @@ export function RadioButton(props: RadioButtonProps) {
   return (
     <label class={cls("so-radio-button", local.disabled && "so-radio-button--disabled", local.class)}>
       <input
+        {...others}
         type="radio"
         class="so-radio-button__input"
-        name={group?.name}
+        // The group owns the name so the browser treats the buttons as one set.
+        name={group?.name ?? others.name}
         value={local.value}
         checked={isChecked()}
         disabled={local.disabled}

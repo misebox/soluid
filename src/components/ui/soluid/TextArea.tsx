@@ -1,31 +1,26 @@
-import { splitProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
-export interface TextAreaProps extends InteractiveProps {
+/** Native textarea attributes minus the ones this component owns. */
+type TextAreaAttributes = Omit<JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, "value" | "onInput" | "class">;
+
+export interface TextAreaInputProps extends InteractiveProps, TextAreaAttributes {
   value?: string;
   onInput?: (value: string) => void;
-  placeholder?: string;
-  rows?: number;
+}
+
+export interface TextAreaProps extends TextAreaInputProps {
   label?: string;
   error?: string;
   hint?: string;
-  required?: boolean;
 }
 
-export function TextAreaInput(props: {
-  value?: string;
-  onInput?: (value: string) => void;
-  placeholder?: string;
-  rows?: number;
-  disabled?: boolean;
-  required?: boolean;
-  size?: "sm" | "md" | "lg";
-}) {
-  const [local] = splitProps(props, ["value", "onInput", "placeholder", "rows", "disabled", "required", "size"]);
+export function TextAreaInput(props: TextAreaInputProps) {
+  const [local, others] = splitProps(props, ["value", "onInput", "rows", "size", "class", "density", "id"]);
 
   const ctx = useFormField();
 
@@ -35,13 +30,11 @@ export function TextAreaInput(props: {
 
   return (
     <textarea
-      id={ctx?.id}
-      class={cls("so-textarea__input", `so-textarea__input--${local.size ?? "md"}`)}
+      {...others}
+      id={ctx?.id ?? local.id}
+      class={cls("so-textarea__input", `so-textarea__input--${local.size ?? "md"}`, local.class)}
       value={local.value ?? ""}
-      placeholder={local.placeholder}
       rows={local.rows ?? 3}
-      disabled={local.disabled}
-      required={local.required}
       aria-invalid={ctx?.hasError || undefined}
       aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
       onInput={handleInput}
@@ -50,43 +43,25 @@ export function TextAreaInput(props: {
 }
 
 export function TextArea(props: TextAreaProps) {
-  const [local] = splitProps(props, [
-    "value",
-    "onInput",
-    "placeholder",
-    "rows",
-    "disabled",
-    "size",
-    "class",
-    "density",
-  ]);
-
-  const [formProps] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
-
-  const input = (
-    <TextAreaInput
-      value={local.value}
-      onInput={local.onInput}
-      placeholder={local.placeholder}
-      rows={local.rows}
-      disabled={local.disabled}
-      required={props.required}
-      size={local.size}
-    />
-  );
-
-  if (!formProps.label) return input;
+  const [field, input] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (
-    <FormField
-      label={formProps.label}
-      error={formProps.error}
-      hint={formProps.hint}
-      required={formProps.required}
-      class={formProps.class}
-      density={formProps.density}
+    <Show
+      when={field.label}
+      fallback={<TextAreaInput {...input} required={field.required} class={field.class} density={field.density} />}
     >
-      {input}
-    </FormField>
+      {(label) => (
+        <FormField
+          label={label()}
+          error={field.error}
+          hint={field.hint}
+          required={field.required}
+          class={field.class}
+          density={field.density}
+        >
+          <TextAreaInput {...input} required={field.required} />
+        </FormField>
+      )}
+    </Show>
   );
 }
