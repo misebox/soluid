@@ -34,7 +34,7 @@
     "generate:css": "bunx tsx scripts/generate-css-imports.ts",
     "generate:api": "bunx tsx scripts/generate-api-data.ts",
     "precatalog": "bun run generate:css && bun run generate:api",
-    "build:catalog": "bun run precatalog && vite build --config vite.config.catalog.ts",
+    "build:catalog": "bun run precatalog && vite build --config vite.config.catalog.ts && bun run build:samples",
     "build:samples": "vite build --config vite.config.samples.ts",
     "build:cli": "tsc -p cli/tsconfig.json",
     "prepare": "bun run build:cli",

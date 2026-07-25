@@ -29,6 +29,7 @@ const COMPONENT_DIR = path.join(ROOT, "src/components/ui/soluid");
 const CORE_DIR = path.join(COMPONENT_DIR, "core");
 const INDEX_FILE = path.join(ROOT, "src/index.ts");
 const TOKEN_FILE = path.join(CORE_DIR, "soluid.css");
+const BUNDLE_FILE = path.join(ROOT, "src/soluid-all.css");
 
 // ---------------------------------------------------------------- model
 
@@ -753,6 +754,27 @@ const cssRules: Rule[] = [
         }
       }
       return findings;
+    },
+  },
+  {
+    id: "css/bundle-current",
+    level: "error",
+    summary: "src/soluid-all.css imports every component stylesheet",
+    check: () => {
+      // The catalog and the sample apps both render from this generated
+      // aggregate, so a stale copy silently ships unstyled components.
+      const imported = new Set(
+        Array.from(fs.readFileSync(BUNDLE_FILE, "utf8").matchAll(/@import "[^"]*\/([\w.-]+\.css)"/g), (m) => m[1]),
+      );
+      return fs
+        .readdirSync(COMPONENT_DIR)
+        .filter((f) => f.endsWith(".css") && !imported.has(f))
+        .map((f) => ({
+          rule: "css/bundle-current",
+          level: "error" as const,
+          file: relative(BUNDLE_FILE),
+          message: `${f} is missing — run "bun run generate:css" and commit the result`,
+        }));
     },
   },
   {

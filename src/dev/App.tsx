@@ -3,7 +3,7 @@ import { Layout } from "./Layout";
 import { ComponentsPage } from "./pages/ComponentsPage";
 import { GettingStartedPage } from "./pages/GettingStartedPage";
 import { TopPage } from "./pages/TopPage";
-import "./soluid-all.css";
+import "../soluid-all.css";
 import "./catalog.css";
 
 export function App() {
