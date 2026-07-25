@@ -40,7 +40,7 @@ Rule groups:
 | `api/` | Every exported component and props type reaches `src/index.ts` |
 | `solid/` | Reactivity pitfalls: props destructuring, discarded `splitProps` rest, early returns, SSR-unstable ids, uncleaned effect listeners |
 | `a11y/` | Explicit `<button type>`, redundant roles, hardcoded labels, keyboard-unreachable click targets |
-| `css/` | No CSS imports in `.tsx`, `--so-*` tokens defined and used, `so-` class namespacing |
+| `css/` | No CSS imports in `.tsx`, `--so-*` tokens defined and used, `so-` class namespacing, `src/soluid-all.css` lists every component stylesheet |
 | `catalog/` | Every installable component is listed, demoed and described in both locales |
 
 Add a rule by appending to the relevant array in `scripts/audit-components.ts`;
