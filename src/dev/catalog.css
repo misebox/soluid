@@ -604,63 +604,113 @@
   border-radius: var(--so-radius);
 }
 
-/* ---------- Samples dialog ---------- */
+/* ---------- Sample apps ---------- */
 
-.sample-dialog-lead {
-  margin: 0 0 var(--so-space-3);
-  font-size: var(--so-font-size-sm);
-  color: var(--so-text-muted);
+.top-samples {
+  margin-bottom: var(--site-space-8);
 }
 
-.sample-dialog-list {
+.top-samples h2 {
+  font-size: var(--site-font-size-xl);
+  font-weight: 600;
+  color: var(--so-text);
+  margin-bottom: var(--so-space-2);
+}
+
+.top-samples-lead {
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text-muted);
+  margin-bottom: var(--so-space-3);
+}
+
+.top-sample-card {
   display: flex;
   flex-direction: column;
   gap: var(--so-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sample-dialog-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--so-space-3);
+  padding: var(--so-space-4);
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
+  background: var(--so-bg);
 }
 
-.sample-dialog-item:hover {
-  border-color: var(--so-color-primary-border);
+.top-sample-card h3 {
+  margin: 0;
 }
 
-.sample-dialog-link {
-  font-size: var(--so-font-size-md);
-  font-weight: 600;
-  color: var(--so-color-primary-subtle-fg);
-  text-decoration: none;
-}
-
-.sample-dialog-link:hover {
-  text-decoration: underline;
-}
-
-.sample-dialog-desc {
+.top-sample-card p {
+  flex: 1;
   margin: 0;
   font-size: var(--so-font-size-sm);
   color: var(--so-text-muted);
   line-height: 1.5;
 }
 
-.sample-dialog-source {
-  align-self: flex-start;
-  margin-top: var(--so-space-1);
+.top-sample-open {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: var(--so-font-size-md);
+  font-weight: 600;
+  color: var(--so-color-primary-subtle-fg);
+  cursor: pointer;
+}
+
+.top-sample-open:hover {
+  text-decoration: underline;
+}
+
+.top-sample-links {
+  display: flex;
+  gap: var(--so-space-3);
+}
+
+.top-sample-links a {
   font-size: var(--so-font-size-xs);
   color: var(--so-text-muted);
   text-decoration: none;
 }
 
-.sample-dialog-source:hover {
+.top-sample-links a:hover {
+  color: var(--so-text);
+  text-decoration: underline;
+}
+
+/* --- Preview dialog: give the embedded app room to behave like a page --- */
+
+.sample-preview {
+  width: 1100px;
+  max-width: 95vw;
+  height: 85vh;
+  height: 85dvh;
+}
+
+.sample-preview__body {
+  padding: 0;
+  display: flex;
+}
+
+.sample-preview__frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--so-bg);
+}
+
+.sample-preview__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-3);
+  margin-left: auto;
+}
+
+.sample-preview__actions a {
+  font-size: var(--so-font-size-sm);
+  color: var(--so-text-muted);
+  text-decoration: none;
+}
+
+.sample-preview__actions a:hover {
   color: var(--so-text);
   text-decoration: underline;
 }

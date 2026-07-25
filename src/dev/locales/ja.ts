@@ -621,7 +621,6 @@ export const ja: Record<string, string> = {
   // ===== Navigation =====
   "nav.gettingStarted": "はじめに",
   "nav.components": "コンポーネント",
-  "nav.samples": "サンプル",
   "nav.browseComponents": "コンポーネント一覧",
 
   // ===== Top Page =====
@@ -638,6 +637,7 @@ export const ja: Record<string, string> = {
   "top.samplesLead":
     "断片ではなく、コンポーネントを組み合わせた画面まるごと。それぞれ通しで読める実際のアプリケーションです。",
   "top.samplesSource": "ソースを見る",
+  "top.samplesNewTab": "新しいタブで開く",
   "action.close": "閉じる",
 
   // ===== Sample apps =====

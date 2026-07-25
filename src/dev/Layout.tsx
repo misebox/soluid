@@ -1,13 +1,10 @@
 import { A } from "@solidjs/router";
 import { createEffect, createSignal, type ParentProps } from "solid-js";
 import type { Density } from "../components/ui/soluid/core/types";
-import { Button } from "../components/ui/soluid/Button";
-import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../components/ui/soluid/Dialog";
 import { IconButton } from "../components/ui/soluid/IconButton";
 import { Spacer } from "../components/ui/soluid/Spacer";
 import { type Lang, lang, setLang } from "./lang";
 import { t } from "./locales";
-import { SAMPLES, sampleHref, sampleSourceHref } from "./samples";
 
 const SunIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -41,7 +38,6 @@ const DensityDenseIcon = () => (
 export function Layout(props: ParentProps) {
   const [density, setDensity] = createSignal<Density>("normal");
   const [theme, setTheme] = createSignal<"light" | "dark">("light");
-  const [samplesOpen, setSamplesOpen] = createSignal(false);
 
   createEffect(() => {
     document.documentElement.setAttribute("data-theme", theme());
@@ -62,9 +58,6 @@ export function Layout(props: ParentProps) {
           <A href="/components" class="site-nav-link" activeClass="active">
             {t(lang(), "nav.components")}
           </A>
-          <button type="button" class="site-nav-link" onClick={() => setSamplesOpen(true)}>
-            {t(lang(), "nav.samples")}
-          </button>
         </nav>
         <Spacer />
         <div class="site-controls">
@@ -100,38 +93,6 @@ export function Layout(props: ParentProps) {
         </div>
       </header>
       <main class="site-main">{props.children}</main>
-
-      {/* The samples are separate builds, so each entry is a plain anchor that
-          leaves the SPA rather than a router link. */}
-      <Dialog open={samplesOpen()} onClose={() => setSamplesOpen(false)} size="md">
-        <DialogHeader>{t(lang(), "top.samplesHeading")}</DialogHeader>
-        <DialogBody>
-          <p class="sample-dialog-lead">{t(lang(), "top.samplesLead")}</p>
-          <ul class="sample-dialog-list">
-            {SAMPLES.map((sample) => (
-              <li class="sample-dialog-item">
-                <a class="sample-dialog-link" href={sampleHref(sample.slug)}>
-                  {t(lang(), sample.titleKey)}
-                </a>
-                <p class="sample-dialog-desc">{t(lang(), sample.descriptionKey)}</p>
-                <a
-                  class="sample-dialog-source"
-                  href={sampleSourceHref(sample.slug)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t(lang(), "top.samplesSource")}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </DialogBody>
-        <DialogFooter>
-          <Button variant="neutral" onClick={() => setSamplesOpen(false)}>
-            {t(lang(), "action.close")}
-          </Button>
-        </DialogFooter>
-      </Dialog>
     </div>
   );
 }

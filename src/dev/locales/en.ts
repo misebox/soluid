@@ -621,7 +621,6 @@ export const en: Record<string, string> = {
   // ===== Navigation =====
   "nav.gettingStarted": "Getting Started",
   "nav.components": "Components",
-  "nav.samples": "Samples",
   "nav.browseComponents": "Browse Components",
 
   // ===== Top Page =====
@@ -637,6 +636,7 @@ export const en: Record<string, string> = {
   "top.samplesLead":
     "Whole screens built from the components, not isolated snippets. Each one is a real application you can read end to end.",
   "top.samplesSource": "View source",
+  "top.samplesNewTab": "Open in new tab",
   "action.close": "Close",
 
   // ===== Sample apps =====
