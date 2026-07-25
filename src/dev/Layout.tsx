@@ -19,15 +19,19 @@ const MoonIcon = () => (
   </svg>
 );
 
+/* Rows inside a frame, so the icon reads as row spacing rather than as the
+   hamburger menu three bare lines look like. */
 const DensityNormalIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M3 6h18M3 12h18M3 18h18" />
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <rect x="3" y="3" width="18" height="18" rx="2.5" />
+    <path d="M7 9.5h10M7 14.5h10" />
   </svg>
 );
 
 const DensityDenseIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M3 5h18M3 9h18M3 13h18M3 17h18" />
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <rect x="3" y="3" width="18" height="18" rx="2.5" />
+    <path d="M7 8h10M7 12h10M7 16h10" />
   </svg>
 );
 
