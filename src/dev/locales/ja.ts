@@ -19,6 +19,20 @@ export const ja: Record<string, string> = {
   "AlertProps.class": "追加CSSクラス",
   "AlertProps.density": "コンポーネントの密度",
 
+  // AspectRatioProps
+  "AspectRatioProps.ratio": "幅÷高さの比率 (例: 16 / 9)",
+  "AspectRatioProps.children": "確保された領域いっぱいに広がるコンテンツ",
+  "AspectRatioProps.class": "追加のCSSクラス",
+  "AspectRatioProps.density": "コンポーネントの密度",
+
+  // AvatarGroupProps
+  "AvatarGroupProps.max": "+Nチップにまとめる前に表示するアバター数",
+  "AvatarGroupProps.size": "超過チップのサイズ。Avatarのサイズに合わせる",
+  "AvatarGroupProps.overflowLabel": "超過チップのアクセシブルラベルを生成する関数",
+  "AvatarGroupProps.children": "Avatar要素",
+  "AvatarGroupProps.class": "追加のCSSクラス",
+  "AvatarGroupProps.density": "コンポーネントの密度",
+
   // AvatarProps
   "AvatarProps.src": "画像URL",
   "AvatarProps.alt": "画像の代替テキスト",
@@ -58,6 +72,14 @@ export const ja: Record<string, string> = {
   "ButtonProps.size": "ボタンのサイズ",
   "ButtonProps.class": "追加CSSクラス",
   "ButtonProps.density": "コンポーネントの密度",
+
+  // ButtonGroupProps
+  "ButtonGroupProps.orientation": "ボタンを水平・垂直どちらに並べるか",
+  "ButtonGroupProps.attached": "ボタンを1つの視覚的なまとまりに結合",
+  "ButtonGroupProps.label": "アクション群を説明するアクセシブルラベル",
+  "ButtonGroupProps.children": "Button要素",
+  "ButtonGroupProps.class": "追加のCSSクラス",
+  "ButtonGroupProps.density": "コンポーネントの密度",
 
   // CardBodyProps
   "CardBodyProps.class": "追加CSSクラス",
@@ -100,6 +122,22 @@ export const ja: Record<string, string> = {
   "CheckboxProps.children": "カスタムラベル内容",
   "CheckboxProps.class": "追加CSSクラス",
   "CheckboxProps.density": "コンポーネントの密度",
+
+  // CollapsibleProps
+  "CollapsibleProps.open": "パネルが展開されているか",
+  "CollapsibleProps.onOpenChange": "トリガー操作時のコールバック",
+  "CollapsibleProps.title": "トリガーの内容",
+  "CollapsibleProps.disabled": "トリガーを無効化",
+  "CollapsibleProps.children": "展開時に表示されるコンテンツ",
+  "CollapsibleProps.class": "追加のCSSクラス",
+  "CollapsibleProps.density": "コンポーネントの密度",
+
+  // ContainerProps
+  "ContainerProps.size": "コンテンツの最大幅",
+  "ContainerProps.padded": "コンテナ内側に左右パディングを適用",
+  "ContainerProps.children": "ページコンテンツ",
+  "ContainerProps.class": "追加のCSSクラス",
+  "ContainerProps.density": "コンポーネントの密度",
 
   // DescriptionListProps
   "DescriptionListProps.items": "{ term, description } ペアの配列",
@@ -162,6 +200,22 @@ export const ja: Record<string, string> = {
   "FormFieldProps.class": "追加CSSクラス",
   "FormFieldProps.density": "コンポーネントの密度",
 
+  // GridProps
+  "GridProps.columns": "固定カラム数。minItemWidth指定時は無視される",
+  "GridProps.minItemWidth": "レスポンシブ指定。この幅以上のカラムを可能な限り並べる",
+  "GridProps.gap": "セル間の間隔",
+  "GridProps.align": "セルの垂直方向の揃え",
+  "GridProps.children": "グリッドのセル",
+  "GridProps.class": "追加のCSSクラス",
+  "GridProps.density": "コンポーネントの密度",
+
+  // HeadingProps
+  "HeadingProps.level": "文書構造上の見出しレベル (h1〜h6として出力)",
+  "HeadingProps.size": "見た目のサイズ。levelとは独立",
+  "HeadingProps.children": "見出しテキスト",
+  "HeadingProps.class": "追加のCSSクラス",
+  "HeadingProps.density": "コンポーネントの密度",
+
   // HStackProps
   "HStackProps.gap": "間隔レベル (1-6)",
   "HStackProps.align": "交差軸の配置",
@@ -179,6 +233,22 @@ export const ja: Record<string, string> = {
   "IconButtonProps.size": "ボタンのサイズ",
   "IconButtonProps.class": "追加CSSクラス",
   "IconButtonProps.density": "コンポーネントの密度",
+
+  // KbdProps
+  "KbdProps.size": "キーのサイズ",
+  "KbdProps.children": "キーのラベル",
+  "KbdProps.class": "追加のCSSクラス",
+  "KbdProps.density": "コンポーネントの密度",
+
+  // LinkProps
+  "LinkProps.href": "リンク先URL",
+  "LinkProps.external": "新しいタブで開き、対応するrel属性を付与",
+  "LinkProps.externalLabel": "外部リンク時にスクリーンリーダー向けに追加されるテキスト",
+  "LinkProps.underline": "下線の表示条件: always, hover, none",
+  "LinkProps.tone": "カラーロール: primary, neutral, danger",
+  "LinkProps.children": "リンクテキスト",
+  "LinkProps.class": "追加のCSSクラス",
+  "LinkProps.density": "コンポーネントの密度",
 
   // MenuItemProps
   "MenuItemProps.class": "追加CSSクラス",
@@ -264,6 +334,16 @@ export const ja: Record<string, string> = {
   "RadioGroupProps.class": "追加CSSクラス",
   "RadioGroupProps.density": "コンポーネントの密度",
 
+  // SegmentedControlProps
+  "SegmentedControlProps.value": "現在選択されている値",
+  "SegmentedControlProps.onChange": "選択が変更されたときのコールバック",
+  "SegmentedControlProps.options": "選択可能なセグメントの配列",
+  "SegmentedControlProps.size": "コントロールの高さ",
+  "SegmentedControlProps.label": "何を選択しているかを説明するアクセシブルラベル",
+  "SegmentedControlProps.fullWidth": "セグメントを利用可能な幅いっぱいに広げる",
+  "SegmentedControlProps.class": "追加のCSSクラス",
+  "SegmentedControlProps.density": "コンポーネントの密度",
+
   // SelectProps
   "SelectProps.value": "現在選択中の値",
   "SelectProps.onChange": "選択変更時のコールバック",
@@ -308,6 +388,16 @@ export const ja: Record<string, string> = {
   "StackProps.children": "子要素",
   "StackProps.class": "追加CSSクラス",
   "StackProps.density": "コンポーネントの密度",
+
+  // StatProps
+  "StatProps.label": "指標の名称",
+  "StatProps.value": "指標の値",
+  "StatProps.hint": "値の下に表示する補足テキスト",
+  "StatProps.delta": '増減インジケーター (例: "+12.5%")',
+  "StatProps.deltaTone": "増減インジケーターの色",
+  "StatProps.icon": "指標の横に表示する装飾アイコン",
+  "StatProps.class": "追加のCSSクラス",
+  "StatProps.density": "コンポーネントの密度",
 
   // SwitchProps
   "SwitchProps.checked": "スイッチのON状態",
@@ -367,6 +457,17 @@ export const ja: Record<string, string> = {
   "TagProps.children": "タグラベル",
   "TagProps.class": "追加CSSクラス",
   "TagProps.density": "コンポーネントの密度",
+
+  // TextProps
+  "TextProps.as": "出力する要素",
+  "TextProps.size": "フォントサイズ",
+  "TextProps.weight": "フォントの太さ",
+  "TextProps.tone": "カラーロール",
+  "TextProps.align": "テキストの揃え",
+  "TextProps.truncate": "1行に収め、あふれた分を省略記号にする",
+  "TextProps.children": "テキスト内容",
+  "TextProps.class": "追加のCSSクラス",
+  "TextProps.density": "コンポーネントの密度",
 
   // TextAreaProps
   "TextAreaProps.value": "現在のテキスト値",
@@ -435,6 +536,18 @@ export const ja: Record<string, string> = {
 
   // ===== Component descriptions (card heading) =====
   "desc.Stack": "要素を均等な間隔で積み重ねる垂直/水平フレックスコンテナ。",
+  "desc.Grid": "固定カラム数または自動折り返しのレスポンシブカラムを持つ CSS グリッド。",
+  "desc.Container": "最大幅を制限して中央寄せするページラッパー。",
+  "desc.AspectRatio": "コンテンツに対して縦横比を固定する箱。",
+  "desc.ButtonGroup": "隣接するボタンを1つの視覚的なまとまりに結合。",
+  "desc.Heading": "見出しレベルと見た目のサイズを独立して指定できる h1〜h6。",
+  "desc.Text": "サイズ・太さ・トーン・揃え・省略に対応した本文テキスト。",
+  "desc.Link": "外部リンクの処理と読み上げに対応したスタイル付きアンカー。",
+  "desc.Kbd": "キートップ風に表示するキーボードキー。",
+  "desc.AvatarGroup": "重ねて並べ、超過分を +N チップにまとめるアバター群。",
+  "desc.SegmentedControl": "矢印キー操作に対応した少数選択肢からの排他選択。",
+  "desc.Stat": "ラベル・値・増減インジケーターを持つ指標表示。",
+  "desc.Collapsible": "開閉状態を呼び出し側が持つ制御された開閉セクション。",
   "desc.Divider": "コンテンツ間の視覚的な区切り線。",
   "desc.Spacer": "フレックスコンテナ内の余白を埋める伸縮スペース。",
   "desc.Button": "バリアント、サイズ、ローディング、無効状態を持つクリック可能なボタン。",

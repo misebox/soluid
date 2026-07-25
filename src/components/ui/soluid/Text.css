@@ -1,0 +1,79 @@
+.so-text {
+  margin: 0;
+  line-height: var(--so-line-height);
+}
+
+/* --- Sizes --- */
+
+.so-text--xs {
+  font-size: var(--so-font-size-xs);
+}
+.so-text--sm {
+  font-size: var(--so-font-size-sm);
+}
+.so-text--md {
+  font-size: var(--so-font-size-md);
+}
+.so-text--lg {
+  font-size: var(--so-font-size-lg);
+}
+
+/* --- Weights --- */
+
+.so-text--weight-normal {
+  font-weight: 400;
+}
+.so-text--weight-medium {
+  font-weight: 500;
+}
+.so-text--weight-semibold {
+  font-weight: 600;
+}
+.so-text--weight-bold {
+  font-weight: 700;
+}
+
+/* --- Tones --- */
+
+.so-text--tone-default {
+  color: var(--so-text);
+}
+.so-text--tone-muted {
+  color: var(--so-text-muted);
+}
+.so-text--tone-primary {
+  color: var(--so-color-primary-subtle-fg);
+}
+.so-text--tone-danger {
+  color: var(--so-color-danger-subtle-fg);
+}
+.so-text--tone-success {
+  color: var(--so-color-success-subtle-fg);
+}
+.so-text--tone-warning {
+  color: var(--so-color-warning-subtle-fg);
+}
+.so-text--tone-info {
+  color: var(--so-color-info-subtle-fg);
+}
+
+/* --- Alignment --- */
+
+.so-text--align-start {
+  text-align: start;
+}
+.so-text--align-center {
+  text-align: center;
+}
+.so-text--align-end {
+  text-align: end;
+}
+
+/* --- Truncation --- */
+
+.so-text--truncate {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

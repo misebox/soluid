@@ -1,0 +1,31 @@
+.so-heading {
+  margin: 0;
+  color: var(--so-text);
+  font-weight: 600;
+  line-height: var(--so-line-height-tight);
+  text-wrap: balance;
+}
+
+/* --- Sizes --- */
+
+.so-heading--sm {
+  font-size: var(--so-font-size-sm);
+}
+.so-heading--md {
+  font-size: var(--so-font-size-md);
+}
+.so-heading--lg {
+  font-size: var(--so-font-size-lg);
+}
+.so-heading--xl {
+  font-size: var(--so-font-size-xl);
+}
+.so-heading--2xl {
+  font-size: var(--so-font-size-2xl);
+  font-weight: 700;
+}
+.so-heading--3xl {
+  font-size: var(--so-font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}

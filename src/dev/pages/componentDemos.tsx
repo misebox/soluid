@@ -2,21 +2,30 @@ import { createMemo, createSignal, type JSX } from "solid-js";
 
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Alert } from "../../components/ui/soluid/Alert";
+import { AspectRatio } from "../../components/ui/soluid/AspectRatio";
 import { Avatar } from "../../components/ui/soluid/Avatar";
+import { AvatarGroup } from "../../components/ui/soluid/AvatarGroup";
 import { Badge } from "../../components/ui/soluid/Badge";
 import { Breadcrumb, BreadcrumbItem } from "../../components/ui/soluid/Breadcrumb";
 import { Button } from "../../components/ui/soluid/Button";
+import { ButtonGroup } from "../../components/ui/soluid/ButtonGroup";
 import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/soluid/Card";
 import { Checkbox } from "../../components/ui/soluid/Checkbox";
 import { CheckboxGroup } from "../../components/ui/soluid/CheckboxGroup";
+import { Collapsible } from "../../components/ui/soluid/Collapsible";
+import { Container } from "../../components/ui/soluid/Container";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
 import { FormField } from "../../components/ui/soluid/FormField";
+import { Grid } from "../../components/ui/soluid/Grid";
+import { Heading } from "../../components/ui/soluid/Heading";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
+import { Kbd } from "../../components/ui/soluid/Kbd";
+import { Link } from "../../components/ui/soluid/Link";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
 import { NumberInput } from "../../components/ui/soluid/NumberInput";
 import { Pagination } from "../../components/ui/soluid/Pagination";
@@ -24,15 +33,18 @@ import { Popover } from "../../components/ui/soluid/Popover";
 import { Progress } from "../../components/ui/soluid/Progress";
 import { RadioButton } from "../../components/ui/soluid/RadioButton";
 import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
+import { SegmentedControl } from "../../components/ui/soluid/SegmentedControl";
 import { Select } from "../../components/ui/soluid/Select";
 import { Skeleton } from "../../components/ui/soluid/Skeleton";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Spinner } from "../../components/ui/soluid/Spinner";
 import { Stack } from "../../components/ui/soluid/Stack";
+import { Stat } from "../../components/ui/soluid/Stat";
 import { Switch } from "../../components/ui/soluid/Switch";
 import { Table } from "../../components/ui/soluid/Table";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import { Tag } from "../../components/ui/soluid/Tag";
+import { Text } from "../../components/ui/soluid/Text";
 import { TextArea } from "../../components/ui/soluid/TextArea";
 import { TextField, TextFieldInput } from "../../components/ui/soluid/TextField";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
@@ -42,11 +54,29 @@ import { VisuallyHidden } from "../../components/ui/soluid/VisuallyHidden";
 /* ---------- Categories ---------- */
 
 export const CATEGORIES = [
-  { slug: "layout", labelKey: "cat.layout", components: ["Stack", "Divider", "Spacer"] },
+  {
+    slug: "layout",
+    labelKey: "cat.layout",
+    components: ["Stack", "Grid", "Container", "AspectRatio", "Divider", "Spacer"],
+  },
   {
     slug: "general",
     labelKey: "cat.general",
-    components: ["Button", "IconButton", "Badge", "Tag", "Avatar", "Tooltip", "VisuallyHidden"],
+    components: [
+      "Button",
+      "ButtonGroup",
+      "IconButton",
+      "Heading",
+      "Text",
+      "Link",
+      "Kbd",
+      "Badge",
+      "Tag",
+      "Avatar",
+      "AvatarGroup",
+      "Tooltip",
+      "VisuallyHidden",
+    ],
   },
   {
     slug: "form",
@@ -57,6 +87,7 @@ export const CATEGORIES = [
       "TextArea",
       "NumberInput",
       "Select",
+      "SegmentedControl",
       "Checkbox",
       "CheckboxGroup",
       "RadioGroup",
@@ -66,7 +97,7 @@ export const CATEGORIES = [
   {
     slug: "data",
     labelKey: "cat.data",
-    components: ["Table", "Card", "DescriptionList", "Skeleton", "EmptyState", "Accordion"],
+    components: ["Table", "Card", "Stat", "DescriptionList", "Skeleton", "EmptyState", "Accordion", "Collapsible"],
   },
   {
     slug: "feedback",
@@ -111,6 +142,33 @@ import { HStack } from "./soluid/HStack";
   <div>Right</div>
 </HStack>`,
 
+  Grid: `import { Grid } from "./soluid/Grid";
+
+// Fixed columns
+<Grid columns={3} gap={3}>
+  <Card>A</Card>
+  <Card>B</Card>
+  <Card>C</Card>
+</Grid>
+
+// Responsive: as many 16rem columns as fit
+<Grid minItemWidth="16rem" gap={3}>
+  {items.map((item) => <Card>{item.name}</Card>)}
+</Grid>`,
+
+  Container: `import { Container } from "./soluid/Container";
+
+<Container size="md">
+  <Heading level={1}>Settings</Heading>
+  <Text>Everything about your workspace.</Text>
+</Container>`,
+
+  AspectRatio: `import { AspectRatio } from "./soluid/AspectRatio";
+
+<AspectRatio ratio={16 / 9}>
+  <img src="/cover.jpg" alt="Cover" />
+</AspectRatio>`,
+
   Divider: `import { Divider } from "./soluid/Divider";
 
 <Divider />
@@ -135,6 +193,37 @@ import { HStack } from "./soluid/HStack";
 <Button variant="neutral" loading>
   Sending...
 </Button>`,
+
+  ButtonGroup: `import { ButtonGroup } from "./soluid/ButtonGroup";
+
+<ButtonGroup label="Text alignment">
+  <Button variant="neutral">Left</Button>
+  <Button variant="neutral">Center</Button>
+  <Button variant="neutral">Right</Button>
+</ButtonGroup>`,
+
+  Heading: `import { Heading } from "./soluid/Heading";
+
+// level drives the document outline, size drives the look
+<Heading level={1}>Page title</Heading>
+<Heading level={2} size="md">Quiet section heading</Heading>`,
+
+  Text: `import { Text } from "./soluid/Text";
+
+<Text>Body copy.</Text>
+<Text size="sm" tone="muted">Secondary note.</Text>
+<Text as="span" weight="semibold" tone="danger">Overdue</Text>`,
+
+  Link: `import { Link } from "./soluid/Link";
+
+<Link href="/docs">Documentation</Link>
+<Link href="https://solidjs.com" external>
+  SolidJS
+</Link>`,
+
+  Kbd: `import { Kbd } from "./soluid/Kbd";
+
+Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to search.`,
 
   IconButton: `import { IconButton } from "./soluid/IconButton";
 
@@ -161,6 +250,16 @@ import { HStack } from "./soluid/HStack";
 
 <Avatar name="Tanaka Taro" size="md" variant="primary" />
 <Avatar size="lg" variant="neutral" />`,
+
+  AvatarGroup: `import { AvatarGroup } from "./soluid/AvatarGroup";
+
+<AvatarGroup max={3}>
+  <Avatar name="Tanaka Taro" />
+  <Avatar name="Suzuki Hanako" />
+  <Avatar name="Sato Ken" />
+  <Avatar name="Ito Mei" />
+  <Avatar name="Kato Rin" />
+</AvatarGroup>`,
 
   Tooltip: `import { Tooltip } from "./soluid/Tooltip";
 
@@ -232,6 +331,21 @@ const [role, setRole] = createSignal("");
   ]}
 />`,
 
+  SegmentedControl: `import { SegmentedControl } from "./soluid/SegmentedControl";
+
+const [range, setRange] = createSignal("7d");
+
+<SegmentedControl
+  label="Date range"
+  value={range()}
+  onChange={setRange}
+  options={[
+    { value: "24h", label: "24h" },
+    { value: "7d", label: "7 days" },
+    { value: "30d", label: "30 days" },
+  ]}
+/>`,
+
   Checkbox: `import { Checkbox } from "./soluid/Checkbox";
 
 const [agreed, setAgreed] = createSignal(false);
@@ -289,6 +403,16 @@ const columns = [
   rowKey={(row) => row.id}
 />`,
 
+  Stat: `import { Stat } from "./soluid/Stat";
+
+<Stat
+  label="Monthly revenue"
+  value="¥1,284,000"
+  delta="+12.5%"
+  deltaTone="positive"
+  hint="vs. previous month"
+/>`,
+
   Card: `import { Card, CardHeader, CardBody, CardFooter } from "./soluid/Card";
 
 <Card>
@@ -321,6 +445,15 @@ const columns = [
   description="Try a different search term."
   action={<Button variant="primary">Reset</Button>}
 />`,
+
+  Collapsible: `import { Collapsible } from "./soluid/Collapsible";
+
+const [open, setOpen] = createSignal(false);
+
+// Controlled, unlike Accordion which owns its own state
+<Collapsible open={open()} onOpenChange={setOpen} title="Advanced options">
+  <Text size="sm">Anything that should stay out of the way by default.</Text>
+</Collapsible>`,
 
   Accordion: `import { Accordion, AccordionItem } from "./soluid/Accordion";
 
@@ -475,6 +608,47 @@ function StackDemo(): JSX.Element {
   );
 }
 
+function GridDemo(): JSX.Element {
+  return (
+    <Stack gap={4}>
+      <Grid columns={3} gap={2}>
+        <div class="demo-tile">1</div>
+        <div class="demo-tile">2</div>
+        <div class="demo-tile">3</div>
+      </Grid>
+      <Grid minItemWidth="8rem" gap={2}>
+        <div class="demo-tile">auto-fit</div>
+        <div class="demo-tile">auto-fit</div>
+        <div class="demo-tile">auto-fit</div>
+        <div class="demo-tile">auto-fit</div>
+      </Grid>
+    </Stack>
+  );
+}
+
+function ContainerDemo(): JSX.Element {
+  return (
+    <Container size="sm" class="demo-outline">
+      <Text size="sm" tone="muted">
+        Centered, max-width “sm”, with horizontal padding.
+      </Text>
+    </Container>
+  );
+}
+
+function AspectRatioDemo(): JSX.Element {
+  return (
+    <HStack gap={3}>
+      <AspectRatio ratio={16 / 9} class="demo-outline" style={{ width: "180px" }}>
+        <div class="demo-tile">16 / 9</div>
+      </AspectRatio>
+      <AspectRatio ratio={1} class="demo-outline" style={{ width: "100px" }}>
+        <div class="demo-tile">1 / 1</div>
+      </AspectRatio>
+    </HStack>
+  );
+}
+
 function DividerDemo(): JSX.Element {
   return <Divider />;
 }
@@ -555,6 +729,86 @@ function TagDemo(): JSX.Element {
   );
 }
 
+function ButtonGroupDemo(): JSX.Element {
+  return (
+    <Stack gap={3}>
+      <ButtonGroup label="Text alignment">
+        <Button variant="neutral">Left</Button>
+        <Button variant="neutral">Center</Button>
+        <Button variant="neutral">Right</Button>
+      </ButtonGroup>
+      <ButtonGroup label="Row actions" attached={false}>
+        <Button variant="primary">Save</Button>
+        <Button variant="neutral">Cancel</Button>
+      </ButtonGroup>
+    </Stack>
+  );
+}
+
+function HeadingDemo(): JSX.Element {
+  return (
+    <Stack gap={2}>
+      <Heading level={1}>Heading level 1</Heading>
+      <Heading level={2}>Heading level 2</Heading>
+      <Heading level={3}>Heading level 3</Heading>
+      <Heading level={2} size="md">
+        Level 2, sized down to md
+      </Heading>
+    </Stack>
+  );
+}
+
+function TextDemo(): JSX.Element {
+  return (
+    <Stack gap={2}>
+      <Text>Default body text.</Text>
+      <Text size="sm" tone="muted">
+        Small and muted, for secondary information.
+      </Text>
+      <Text weight="semibold" tone="danger">
+        Semibold danger tone.
+      </Text>
+      <Text truncate>
+        Truncated: this sentence keeps going well past the width of its container and gets cut off with an ellipsis.
+      </Text>
+    </Stack>
+  );
+}
+
+function LinkDemo(): JSX.Element {
+  return (
+    <Stack gap={2}>
+      <Link href="#">Internal link</Link>
+      <Link href="https://www.solidjs.com" external>
+        External link
+      </Link>
+      <Link href="#" tone="neutral" underline="always">
+        Neutral, always underlined
+      </Link>
+    </Stack>
+  );
+}
+
+function KbdDemo(): JSX.Element {
+  return (
+    <Text size="sm">
+      Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to search, <Kbd size="sm">Esc</Kbd> to close.
+    </Text>
+  );
+}
+
+function AvatarGroupDemo(): JSX.Element {
+  return (
+    <AvatarGroup max={3}>
+      <Avatar name="Tanaka Taro" variant="primary" />
+      <Avatar name="Suzuki Hanako" variant="success" />
+      <Avatar name="Sato Ken" variant="warning" />
+      <Avatar name="Ito Mei" variant="info" />
+      <Avatar name="Kato Rin" variant="danger" />
+    </AvatarGroup>
+  );
+}
+
 function AvatarDemo(): JSX.Element {
   return (
     <div class="catalog-row">
@@ -611,6 +865,28 @@ function TextAreaDemo(): JSX.Element {
 function NumberInputDemo(): JSX.Element {
   const [value, setValue] = createSignal(0);
   return <NumberInput label="Quantity" value={value()} onInput={setValue} min={0} max={100} step={1} />;
+}
+
+function SegmentedControlDemo(): JSX.Element {
+  const [range, setRange] = createSignal("7d");
+  return (
+    <Stack gap={3}>
+      <SegmentedControl
+        label="Date range"
+        value={range()}
+        onChange={setRange}
+        options={[
+          { value: "24h", label: "24h" },
+          { value: "7d", label: "7 days" },
+          { value: "30d", label: "30 days" },
+          { value: "all", label: "All", disabled: true },
+        ]}
+      />
+      <Text size="sm" tone="muted">
+        Selected: {range()}
+      </Text>
+    </Stack>
+  );
 }
 
 function SelectDemo(): JSX.Element {
@@ -724,6 +1000,16 @@ function TableDemo(): JSX.Element {
   );
 }
 
+function StatDemo(): JSX.Element {
+  return (
+    <Grid minItemWidth="12rem" gap={4}>
+      <Stat label="Monthly revenue" value="¥1,284,000" delta="+12.5%" deltaTone="positive" hint="vs. previous month" />
+      <Stat label="Churn" value="2.4%" delta="-0.3pt" deltaTone="negative" hint="vs. previous month" />
+      <Stat label="Active users" value="8,921" delta="±0" />
+    </Grid>
+  );
+}
+
 function CardDemo(): JSX.Element {
   return (
     <div class="catalog-grid">
@@ -794,6 +1080,17 @@ function EmptyStateDemo(): JSX.Element {
         </Button>
       }
     />
+  );
+}
+
+function CollapsibleDemo(): JSX.Element {
+  const [open, setOpen] = createSignal(false);
+  return (
+    <Collapsible open={open()} onOpenChange={setOpen} title="Advanced options">
+      <Text size="sm" tone="muted">
+        The open state lives with the caller, so it can be driven from a signal, a route or a form.
+      </Text>
+    </Collapsible>
   );
 }
 
@@ -1038,16 +1335,28 @@ function MenuDemo(): JSX.Element {
 
 export const DEMOS: Record<string, () => JSX.Element> = {
   Stack: StackDemo,
+  Grid: GridDemo,
+  Container: ContainerDemo,
+  AspectRatio: AspectRatioDemo,
   Divider: DividerDemo,
   Spacer: SpacerDemo,
   Button: ButtonDemo,
+  ButtonGroup: ButtonGroupDemo,
   IconButton: IconButtonDemo,
+  Heading: HeadingDemo,
+  Text: TextDemo,
+  Link: LinkDemo,
+  Kbd: KbdDemo,
   Badge: BadgeDemo,
   Tag: TagDemo,
   Avatar: AvatarDemo,
+  AvatarGroup: AvatarGroupDemo,
   Tooltip: TooltipDemo,
   VisuallyHidden: VisuallyHiddenDemo,
   FormField: FormFieldDemo,
+  SegmentedControl: SegmentedControlDemo,
+  Stat: StatDemo,
+  Collapsible: CollapsibleDemo,
   TextField: TextFieldDemo,
   TextArea: TextAreaDemo,
   NumberInput: NumberInputDemo,

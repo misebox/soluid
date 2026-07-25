@@ -1,0 +1,19 @@
+.so-avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Overlap neighbours, with a ring in the page background so each stays legible. */
+.so-avatar-group > * {
+  box-shadow: 0 0 0 2px var(--so-bg);
+}
+
+.so-avatar-group > :not(:first-child) {
+  margin-left: calc(var(--so-space-2) * -1);
+}
+
+.so-avatar-group__overflow {
+  background-color: var(--so-color-neutral-subtle);
+  color: var(--so-color-neutral-subtle-fg);
+  font-weight: 600;
+}

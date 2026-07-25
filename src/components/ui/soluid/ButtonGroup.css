@@ -1,0 +1,47 @@
+.so-button-group {
+  display: inline-flex;
+}
+
+.so-button-group--horizontal {
+  flex-direction: row;
+}
+
+.so-button-group--vertical {
+  flex-direction: column;
+}
+
+/* --- Detached: plain spacing --- */
+
+.so-button-group:not(.so-button-group--attached) {
+  gap: var(--so-space-2);
+}
+
+/* --- Attached: collapse the seam between neighbours --- */
+
+.so-button-group--attached.so-button-group--horizontal > :not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.so-button-group--attached.so-button-group--horizontal > :not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.so-button-group--attached.so-button-group--vertical > :not(:first-child) {
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.so-button-group--attached.so-button-group--vertical > :not(:last-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Raise the focused button so its ring is not clipped by its neighbour. */
+.so-button-group--attached > :focus-visible {
+  position: relative;
+  z-index: 1;
+}

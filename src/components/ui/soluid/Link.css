@@ -1,0 +1,58 @@
+.so-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--so-space-1);
+  border-radius: 2px;
+  font-size: inherit;
+  transition: color 0.15s;
+}
+
+.so-link__external-icon {
+  width: 0.85em;
+  height: 0.85em;
+  flex-shrink: 0;
+}
+
+/* --- Underline --- */
+
+.so-link--underline-always {
+  text-decoration: underline;
+}
+
+.so-link--underline-hover {
+  text-decoration: none;
+}
+
+.so-link--underline-hover:hover {
+  text-decoration: underline;
+}
+
+.so-link--underline-none {
+  text-decoration: none;
+}
+
+/* --- Tones --- */
+
+.so-link--primary {
+  color: var(--so-color-primary-subtle-fg);
+}
+
+.so-link--primary:hover {
+  color: var(--so-color-primary-hover);
+}
+
+.so-link--neutral {
+  color: var(--so-text);
+}
+
+.so-link--neutral:hover {
+  color: var(--so-color-neutral-hover);
+}
+
+.so-link--danger {
+  color: var(--so-color-danger-subtle-fg);
+}
+
+.so-link--danger:hover {
+  color: var(--so-color-danger-hover);
+}

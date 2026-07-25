@@ -19,6 +19,20 @@ export const en: Record<string, string> = {
   "AlertProps.class": "Additional CSS class",
   "AlertProps.density": "Component density",
 
+  // AspectRatioProps
+  "AspectRatioProps.ratio": "Width divided by height, e.g. 16 / 9",
+  "AspectRatioProps.children": "Content stretched to fill the reserved box",
+  "AspectRatioProps.class": "Additional CSS class",
+  "AspectRatioProps.density": "Component density",
+
+  // AvatarGroupProps
+  "AvatarGroupProps.max": "Avatars shown before the rest collapse into a +N chip",
+  "AvatarGroupProps.size": "Size of the overflow chip; match the Avatar size",
+  "AvatarGroupProps.overflowLabel": "Builds the accessible label for the overflow chip",
+  "AvatarGroupProps.children": "Avatar elements",
+  "AvatarGroupProps.class": "Additional CSS class",
+  "AvatarGroupProps.density": "Component density",
+
   // AvatarProps
   "AvatarProps.src": "Image URL",
   "AvatarProps.alt": "Alt text for the image",
@@ -58,6 +72,14 @@ export const en: Record<string, string> = {
   "ButtonProps.size": "Button size",
   "ButtonProps.class": "Additional CSS class",
   "ButtonProps.density": "Component density",
+
+  // ButtonGroupProps
+  "ButtonGroupProps.orientation": "Lay the buttons out horizontally or vertically",
+  "ButtonGroupProps.attached": "Join the buttons into one visual unit",
+  "ButtonGroupProps.label": "Accessible label describing the group of actions",
+  "ButtonGroupProps.children": "Button elements",
+  "ButtonGroupProps.class": "Additional CSS class",
+  "ButtonGroupProps.density": "Component density",
 
   // CardBodyProps
   "CardBodyProps.class": "Additional CSS class",
@@ -100,6 +122,22 @@ export const en: Record<string, string> = {
   "CheckboxProps.children": "Custom label content",
   "CheckboxProps.class": "Additional CSS class",
   "CheckboxProps.density": "Component density",
+
+  // CollapsibleProps
+  "CollapsibleProps.open": "Whether the panel is expanded",
+  "CollapsibleProps.onOpenChange": "Callback when the trigger is activated",
+  "CollapsibleProps.title": "Trigger content",
+  "CollapsibleProps.disabled": "Disable the trigger",
+  "CollapsibleProps.children": "Content shown when expanded",
+  "CollapsibleProps.class": "Additional CSS class",
+  "CollapsibleProps.density": "Component density",
+
+  // ContainerProps
+  "ContainerProps.size": "Maximum content width",
+  "ContainerProps.padded": "Apply horizontal padding inside the container",
+  "ContainerProps.children": "Page content",
+  "ContainerProps.class": "Additional CSS class",
+  "ContainerProps.density": "Component density",
 
   // DescriptionListProps
   "DescriptionListProps.items": "Array of { term, description } pairs",
@@ -162,6 +200,22 @@ export const en: Record<string, string> = {
   "FormFieldProps.class": "Additional CSS class",
   "FormFieldProps.density": "Component density",
 
+  // GridProps
+  "GridProps.columns": "Fixed column count; ignored when minItemWidth is set",
+  "GridProps.minItemWidth": "Responsive mode: fit as many columns at least this wide as possible",
+  "GridProps.gap": "Gap between cells",
+  "GridProps.align": "Vertical alignment of cells",
+  "GridProps.children": "Grid cells",
+  "GridProps.class": "Additional CSS class",
+  "GridProps.density": "Component density",
+
+  // HeadingProps
+  "HeadingProps.level": "Document outline level, rendered as h1-h6",
+  "HeadingProps.size": "Visual size, independent of level",
+  "HeadingProps.children": "Heading text",
+  "HeadingProps.class": "Additional CSS class",
+  "HeadingProps.density": "Component density",
+
   // HStackProps
   "HStackProps.gap": "Gap spacing level (1-6)",
   "HStackProps.align": "Cross-axis alignment",
@@ -179,6 +233,22 @@ export const en: Record<string, string> = {
   "IconButtonProps.size": "Button size",
   "IconButtonProps.class": "Additional CSS class",
   "IconButtonProps.density": "Component density",
+
+  // KbdProps
+  "KbdProps.size": "Key size",
+  "KbdProps.children": "Key label",
+  "KbdProps.class": "Additional CSS class",
+  "KbdProps.density": "Component density",
+
+  // LinkProps
+  "LinkProps.href": "Destination URL",
+  "LinkProps.external": "Open in a new tab with the matching rel attribute",
+  "LinkProps.externalLabel": "Text appended for screen readers on external links",
+  "LinkProps.underline": "When to underline: always, hover or none",
+  "LinkProps.tone": "Colour role: primary, neutral or danger",
+  "LinkProps.children": "Link text",
+  "LinkProps.class": "Additional CSS class",
+  "LinkProps.density": "Component density",
 
   // MenuItemProps
   "MenuItemProps.class": "Additional CSS class",
@@ -264,6 +334,16 @@ export const en: Record<string, string> = {
   "RadioGroupProps.class": "Additional CSS class",
   "RadioGroupProps.density": "Component density",
 
+  // SegmentedControlProps
+  "SegmentedControlProps.value": "Currently selected value",
+  "SegmentedControlProps.onChange": "Callback when the selection changes",
+  "SegmentedControlProps.options": "Array of selectable segments",
+  "SegmentedControlProps.size": "Control height",
+  "SegmentedControlProps.label": "Accessible label describing what is being chosen",
+  "SegmentedControlProps.fullWidth": "Stretch the segments to fill the available width",
+  "SegmentedControlProps.class": "Additional CSS class",
+  "SegmentedControlProps.density": "Component density",
+
   // SelectProps
   "SelectProps.value": "Currently selected value",
   "SelectProps.onChange": "Callback when selection changes",
@@ -308,6 +388,16 @@ export const en: Record<string, string> = {
   "StackProps.children": "Child elements",
   "StackProps.class": "Additional CSS class",
   "StackProps.density": "Component density",
+
+  // StatProps
+  "StatProps.label": "Name of the metric",
+  "StatProps.value": "Metric value",
+  "StatProps.hint": "Secondary text under the value",
+  "StatProps.delta": 'Change indicator, e.g. "+12.5%"',
+  "StatProps.deltaTone": "Colour of the change indicator",
+  "StatProps.icon": "Decorative icon shown beside the metric",
+  "StatProps.class": "Additional CSS class",
+  "StatProps.density": "Component density",
 
   // SwitchProps
   "SwitchProps.checked": "Whether the switch is on",
@@ -367,6 +457,17 @@ export const en: Record<string, string> = {
   "TagProps.children": "Tag label",
   "TagProps.class": "Additional CSS class",
   "TagProps.density": "Component density",
+
+  // TextProps
+  "TextProps.as": "Element to render",
+  "TextProps.size": "Font size",
+  "TextProps.weight": "Font weight",
+  "TextProps.tone": "Colour role",
+  "TextProps.align": "Text alignment",
+  "TextProps.truncate": "Clamp to a single line with an ellipsis",
+  "TextProps.children": "Text content",
+  "TextProps.class": "Additional CSS class",
+  "TextProps.density": "Component density",
 
   // TextAreaProps
   "TextAreaProps.value": "Current text value",
@@ -434,6 +535,18 @@ export const en: Record<string, string> = {
 
   // ===== Component descriptions (card heading) =====
   "desc.Stack": "Vertical/horizontal flex container for stacking elements with consistent spacing.",
+  "desc.Grid": "CSS grid with a fixed column count or auto-fitting responsive columns.",
+  "desc.Container": "Centered page wrapper constrained to a maximum width.",
+  "desc.AspectRatio": "Box that reserves a fixed width-to-height ratio for its content.",
+  "desc.ButtonGroup": "Joins adjacent buttons into a single visual unit.",
+  "desc.Heading": "h1-h6 heading whose visual size is independent of its outline level.",
+  "desc.Text": "Body text with size, weight, tone, alignment and truncation.",
+  "desc.Link": "Styled anchor that handles external links and their announcement.",
+  "desc.Kbd": "Keyboard key rendered as a physical keycap.",
+  "desc.AvatarGroup": "Overlapping avatars that collapse into a +N chip.",
+  "desc.SegmentedControl": "Exclusive choice between a few options, with arrow-key navigation.",
+  "desc.Stat": "Metric with a label, value and change indicator.",
+  "desc.Collapsible": "Controlled disclosure section whose open state lives with the caller.",
   "desc.Divider": "Visual separator line between content sections.",
   "desc.Spacer": "Flexible space that fills available room in flex containers.",
   "desc.Button": "Clickable action trigger with variant, size, loading, and disabled states.",

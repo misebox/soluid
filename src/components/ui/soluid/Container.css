@@ -1,0 +1,30 @@
+.so-container {
+  width: 100%;
+  margin-inline: auto;
+}
+
+.so-container--padded {
+  padding-inline: var(--so-space-4);
+}
+
+/* --- Sizes --- */
+
+.so-container--sm {
+  max-width: 640px;
+}
+
+.so-container--md {
+  max-width: 800px;
+}
+
+.so-container--lg {
+  max-width: 1024px;
+}
+
+.so-container--xl {
+  max-width: 1280px;
+}
+
+.so-container--full {
+  max-width: none;
+}

@@ -1,0 +1,12 @@
+.so-aspect-ratio {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Stretch a single media/child to fill the reserved box. */
+.so-aspect-ratio > :only-child {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

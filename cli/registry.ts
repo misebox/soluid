@@ -64,6 +64,27 @@ export const registry: Record<string, RegistryEntry> = {
     dependencies: ["core"],
     description: "Flex spacer",
   },
+  Container: {
+    name: "Container",
+    category: "components",
+    files: ["soluid/Container.tsx", "soluid/Container.css"],
+    dependencies: ["core"],
+    description: "Centered page wrapper with a max width",
+  },
+  Grid: {
+    name: "Grid",
+    category: "components",
+    files: ["soluid/Grid.tsx", "soluid/Grid.css"],
+    dependencies: ["core"],
+    description: "CSS grid with fixed or auto-fitting columns",
+  },
+  AspectRatio: {
+    name: "AspectRatio",
+    category: "components",
+    files: ["soluid/AspectRatio.tsx", "soluid/AspectRatio.css"],
+    dependencies: ["core"],
+    description: "Box that reserves a fixed width-to-height ratio",
+  },
 
   // --- General ---
   Button: {
@@ -314,6 +335,69 @@ export const registry: Record<string, RegistryEntry> = {
     files: ["soluid/Avatar.tsx", "soluid/Avatar.css"],
     dependencies: ["core"],
     description: "User avatar with image and initials fallback",
+  },
+  AvatarGroup: {
+    name: "AvatarGroup",
+    category: "components",
+    files: ["soluid/AvatarGroup.tsx", "soluid/AvatarGroup.css"],
+    dependencies: ["core", "Avatar"],
+    description: "Overlapping avatars with a +N overflow chip",
+  },
+  Text: {
+    name: "Text",
+    category: "components",
+    files: ["soluid/Text.tsx", "soluid/Text.css"],
+    dependencies: ["core"],
+    description: "Body text with size, weight and tone",
+  },
+  Heading: {
+    name: "Heading",
+    category: "components",
+    files: ["soluid/Heading.tsx", "soluid/Heading.css"],
+    dependencies: ["core"],
+    description: "h1-h6 heading with visual size decoupled from level",
+  },
+  Link: {
+    name: "Link",
+    category: "components",
+    files: ["soluid/Link.tsx", "soluid/Link.css"],
+    dependencies: ["core", "VisuallyHidden"],
+    description: "Styled anchor with external-link handling",
+  },
+  Kbd: {
+    name: "Kbd",
+    category: "components",
+    files: ["soluid/Kbd.tsx", "soluid/Kbd.css"],
+    dependencies: ["core"],
+    description: "Keyboard key display",
+  },
+  ButtonGroup: {
+    name: "ButtonGroup",
+    category: "components",
+    files: ["soluid/ButtonGroup.tsx", "soluid/ButtonGroup.css"],
+    dependencies: ["core"],
+    description: "Joins adjacent buttons into one visual unit",
+  },
+  SegmentedControl: {
+    name: "SegmentedControl",
+    category: "components",
+    files: ["soluid/SegmentedControl.tsx", "soluid/SegmentedControl.css"],
+    dependencies: ["core"],
+    description: "Exclusive choice between a few options",
+  },
+  Stat: {
+    name: "Stat",
+    category: "components",
+    files: ["soluid/Stat.tsx", "soluid/Stat.css"],
+    dependencies: ["core"],
+    description: "Metric with label, value and change indicator",
+  },
+  Collapsible: {
+    name: "Collapsible",
+    category: "components",
+    files: ["soluid/Collapsible.tsx", "soluid/Collapsible.css"],
+    dependencies: ["core"],
+    description: "Controlled single disclosure section",
   },
 };
 

@@ -30,8 +30,12 @@
   --so-font-size-sm: 12px;
   --so-font-size-md: 14px;
   --so-font-size-lg: 16px;
+  --so-font-size-xl: 20px;
+  --so-font-size-2xl: 26px;
+  --so-font-size-3xl: 34px;
 
   --so-line-height: 1.5;
+  --so-line-height-tight: 1.25;
   --so-radius: 6px;
   --so-disabled-opacity: 0.5;
 
@@ -58,6 +62,9 @@
   --so-font-size-sm: 11px;
   --so-font-size-md: 12px;
   --so-font-size-lg: 14px;
+  --so-font-size-xl: 17px;
+  --so-font-size-2xl: 22px;
+  --so-font-size-3xl: 28px;
 
   --so-radius: 4px;
 }

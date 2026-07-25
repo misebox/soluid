@@ -579,3 +579,23 @@
     font-size: 11px;
   }
 }
+
+/* ---------- Demo-only helpers ---------- */
+
+.demo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 48px;
+  padding: var(--so-space-2);
+  border-radius: var(--so-radius);
+  background-color: var(--so-color-primary-subtle);
+  color: var(--so-color-primary-subtle-fg);
+  font-size: var(--so-font-size-sm);
+}
+
+.demo-outline {
+  border: 1px dashed var(--so-border);
+  border-radius: var(--so-radius);
+}

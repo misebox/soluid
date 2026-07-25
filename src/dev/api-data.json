@@ -91,6 +91,70 @@
     ]
   },
   {
+    "name": "AspectRatioProps",
+    "description": "Box that reserves a fixed width-to-height ratio",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "ratio",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "AvatarGroupProps",
+    "description": "Overlapping avatars with a +N overflow chip",
+    "dependencies": ["core", "Avatar"],
+    "props": [
+      {
+        "name": "max",
+        "type": "number",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "Size",
+        "optional": true
+      },
+      {
+        "name": "overflowLabel",
+        "type": "((count: number) => string)",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "AvatarProps",
     "description": "User avatar with image and initials fallback",
     "dependencies": ["core"],
@@ -201,6 +265,43 @@
     "description": "Breadcrumb navigation",
     "dependencies": ["core"],
     "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ButtonGroupProps",
+    "description": "Joins adjacent buttons into one visual unit",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "optional": true
+      },
+      {
+        "name": "attached",
+        "type": "boolean",
+        "optional": true
+      },
       {
         "name": "label",
         "type": "string",
@@ -2908,6 +3009,80 @@
     ]
   },
   {
+    "name": "CollapsibleProps",
+    "description": "Controlled single disclosure section",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "open",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "optional": false
+      },
+      {
+        "name": "title",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "ContainerProps",
+    "description": "Centered page wrapper with a max width",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\"",
+        "optional": true
+      },
+      {
+        "name": "padded",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "DescriptionListProps",
     "description": "Key-value display",
     "dependencies": ["core"],
@@ -3183,6 +3358,80 @@
     ]
   },
   {
+    "name": "GridProps",
+    "description": "CSS grid with fixed or auto-fitting columns",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "columns",
+        "type": "1 | 2 | 3 | 4 | 5 | 6 | 12",
+        "optional": true
+      },
+      {
+        "name": "minItemWidth",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "gap",
+        "type": "1 | 2 | 3 | 4 | 5 | 6",
+        "optional": true
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | \"end\" | \"stretch\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "HeadingProps",
+    "description": "h1-h6 heading with visual size decoupled from level",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "level",
+        "type": "HeadingLevel",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"2xl\" | \"3xl\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "HStackProps",
     "description": "Horizontal flex layout with gap",
     "dependencies": ["core"],
@@ -3253,6 +3502,80 @@
         "name": "size",
         "type": "Size",
         "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "KbdProps",
+    "description": "Keyboard key display",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "LinkProps",
+    "description": "Styled anchor with external-link handling",
+    "dependencies": ["core", "VisuallyHidden"],
+    "props": [
+      {
+        "name": "href",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "externalLabel",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "underline",
+        "type": "\"none\" | \"always\" | \"hover\"",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "\"primary\" | \"neutral\" | \"danger\"",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
       },
       {
         "name": "class",
@@ -8540,6 +8863,53 @@
     ]
   },
   {
+    "name": "SegmentedControlProps",
+    "description": "Exclusive choice between a few options",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "value",
+        "type": "T",
+        "optional": false
+      },
+      {
+        "name": "onChange",
+        "type": "(value: T) => void",
+        "optional": false
+      },
+      {
+        "name": "options",
+        "type": "SegmentedControlOption<T>[]",
+        "optional": false
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\"",
+        "optional": true
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
     "name": "SelectInputProps",
     "description": "",
     "dependencies": [],
@@ -13246,6 +13616,53 @@
         "name": "children",
         "type": "JSX.Element",
         "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "StatProps",
+    "description": "Metric with label, value and change indicator",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "value",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "delta",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "deltaTone",
+        "type": "\"neutral\" | \"positive\" | \"negative\"",
+        "optional": true
+      },
+      {
+        "name": "icon",
+        "type": "JSX.Element",
+        "optional": true
       },
       {
         "name": "class",
@@ -25557,6 +25974,58 @@
       {
         "name": "role",
         "type": "\"form\" | \"list\" | \"dialog\" | \"none\" | \"search\" | \"link\" | \"menu\" | \"listbox\" | \"tree\" | \"grid\" | \"alert\" | \"alertdialog\" | \"application\" | \"article\" | \"banner\" | \"button\" | \"cell\" | \"checkbox\" | \"columnheader\" | \"combobox\" | \"complementary\" | \"contentinfo\" | \"definition\" | \"directory\" | \"document\" | \"feed\" | \"figure\" | \"gridcell\" | \"group\" | \"heading\" | \"img\" | \"listitem\" | \"log\" | \"main\" | \"marquee\" | \"math\" | \"menubar\" | \"menuitem\" | \"menuitemcheckbox\" | \"menuitemradio\" | \"meter\" | \"navigation\" | \"note\" | \"option\" | \"presentation\" | \"progressbar\" | \"radio\" | \"radiogroup\" | \"region\" | \"row\" | \"rowgroup\" | \"rowheader\" | \"scrollbar\" | \"searchbox\" | \"separator\" | \"slider\" | \"spinbutton\" | \"status\" | \"switch\" | \"tab\" | \"table\" | \"tablist\" | \"tabpanel\" | \"term\" | \"textbox\" | \"timer\" | \"toolbar\" | \"tooltip\" | \"treegrid\" | \"treeitem\"",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "TextProps",
+    "description": "Body text with size, weight and tone",
+    "dependencies": ["core"],
+    "props": [
+      {
+        "name": "as",
+        "type": "\"p\" | \"span\" | \"div\" | \"small\" | \"label\"",
+        "optional": true
+      },
+      {
+        "name": "size",
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xs\"",
+        "optional": true
+      },
+      {
+        "name": "weight",
+        "type": "\"normal\" | \"medium\" | \"semibold\" | \"bold\"",
+        "optional": true
+      },
+      {
+        "name": "tone",
+        "type": "\"primary\" | \"danger\" | \"success\" | \"warning\" | \"info\" | \"default\" | \"muted\"",
+        "optional": true
+      },
+      {
+        "name": "align",
+        "type": "\"start\" | \"center\" | \"end\"",
+        "optional": true
+      },
+      {
+        "name": "truncate",
+        "type": "boolean",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "density",
+        "type": "Density",
         "optional": true
       }
     ]

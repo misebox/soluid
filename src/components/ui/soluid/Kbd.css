@@ -1,0 +1,27 @@
+.so-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6em;
+  border: 1px solid var(--so-border);
+  border-bottom-width: 2px;
+  border-radius: var(--so-radius);
+  background-color: var(--so-bg-subtle);
+  color: var(--so-text);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* --- Sizes --- */
+
+.so-kbd--sm {
+  padding: 2px var(--so-space-1);
+  font-size: var(--so-font-size-xs);
+}
+
+.so-kbd--md {
+  padding: var(--so-space-1) var(--so-space-2);
+  font-size: var(--so-font-size-sm);
+}
