@@ -7,19 +7,24 @@ import { Button } from "../../components/ui/soluid/Button";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Divider } from "../../components/ui/soluid/Divider";
+import { Grid } from "../../components/ui/soluid/Grid";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
 import { Popover } from "../../components/ui/soluid/Popover";
 import { Progress } from "../../components/ui/soluid/Progress";
+import { SegmentedControl } from "../../components/ui/soluid/SegmentedControl";
 import { Skeleton } from "../../components/ui/soluid/Skeleton";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Spinner } from "../../components/ui/soluid/Spinner";
 import { Stack } from "../../components/ui/soluid/Stack";
+import { Stat } from "../../components/ui/soluid/Stat";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import { Tag } from "../../components/ui/soluid/Tag";
 import type { Column } from "../../components/ui/soluid/Table";
 import { Table } from "../../components/ui/soluid/Table";
+import { Text } from "../../components/ui/soluid/Text";
+import { Timeline } from "../../components/ui/soluid/Timeline";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
 
@@ -53,18 +58,17 @@ const STATUS_LABEL = {
   cancelled: "キャンセル",
 } as const;
 
-function StatCard(props: { label: string; value: string; change: string; positive: boolean }) {
+function MetricCard(props: { label: string; value: string; change: string; positive: boolean }) {
   return (
     <Card>
       <CardBody>
-        <div class="stat-label">{props.label}</div>
-        <div class="stat-value">{props.value}</div>
-        <HStack gap={1} style={{ "margin-top": "8px" }}>
-          <Badge variant={props.positive ? "success" : "danger"} size="sm">
-            {props.positive ? "↑" : "↓"} {props.change}
-          </Badge>
-          <span style={{ "font-size": "12px", color: "var(--so-text-muted)" }}>前月比</span>
-        </HStack>
+        <Stat
+          label={props.label}
+          value={props.value}
+          delta={`${props.positive ? "↑" : "↓"} ${props.change}`}
+          deltaTone={props.positive ? "positive" : "negative"}
+          hint="前月比"
+        />
       </CardBody>
     </Card>
   );
@@ -72,7 +76,7 @@ function StatCard(props: { label: string; value: string; change: string; positiv
 
 function SkeletonCards() {
   return (
-    <div class="sample-grid sample-grid--4">
+    <Grid minItemWidth="12rem" gap={4}>
       <For each={[1, 2, 3, 4]}>
         {() => (
           <Card>
@@ -86,7 +90,7 @@ function SkeletonCards() {
           </Card>
         )}
       </For>
-    </div>
+    </Grid>
   );
 }
 
@@ -95,6 +99,7 @@ export function DashboardApp() {
   const [tab, setTab] = createSignal("overview");
   const [menuOpen, setMenuOpen] = createSignal(false);
   const [popoverOpen, setPopoverOpen] = createSignal(false);
+  const [range, setRange] = createSignal("7d");
   const toast = useToast();
 
   setTimeout(() => setLoading(false), 1500);
@@ -177,12 +182,12 @@ export function DashboardApp() {
       </div>
 
       <Show when={!loading()} fallback={<SkeletonCards />}>
-        <div class="sample-grid sample-grid--4">
-          <StatCard label="売上" value="¥1,284,000" change="12.5%" positive />
-          <StatCard label="注文数" value="324" change="8.2%" positive />
-          <StatCard label="顧客数" value="1,892" change="3.1%" positive />
-          <StatCard label="返品率" value="2.4%" change="0.8%" positive={false} />
-        </div>
+        <Grid minItemWidth="12rem" gap={4}>
+          <MetricCard label="売上" value="¥1,284,000" change="12.5%" positive />
+          <MetricCard label="注文数" value="324" change="8.2%" positive />
+          <MetricCard label="顧客数" value="1,892" change="3.1%" positive />
+          <MetricCard label="返品率" value="2.4%" change="0.8%" positive={false} />
+        </Grid>
       </Show>
 
       <div style={{ height: "24px" }} />
@@ -196,11 +201,13 @@ export function DashboardApp() {
 
         <TabPanel value="overview">
           <div style={{ height: "16px" }} />
-          <div class="sample-grid sample-grid--2">
+          <Grid minItemWidth="20rem" gap={4}>
             <Card>
               <CardHeader>
-                <HStack gap={2}>
-                  <span style={{ "font-weight": "600" }}>月間売上推移</span>
+                <HStack gap={2} align="center">
+                  <Text as="span" weight="semibold">
+                    月間売上推移
+                  </Text>
                   <Spacer />
                   <Popover
                     open={popoverOpen()}
@@ -234,7 +241,9 @@ export function DashboardApp() {
 
             <Card>
               <CardHeader>
-                <span style={{ "font-weight": "600" }}>カテゴリ別売上</span>
+                <Text as="span" weight="semibold">
+                  カテゴリ別売上
+                </Text>
               </CardHeader>
               <CardBody>
                 <Stack gap={3}>
@@ -245,23 +254,81 @@ export function DashboardApp() {
                 </Stack>
               </CardBody>
             </Card>
-          </div>
+
+            <Card>
+              <CardHeader>
+                <Text as="span" weight="semibold">
+                  最近のアクティビティ
+                </Text>
+              </CardHeader>
+              <CardBody>
+                <Timeline
+                  items={[
+                    {
+                      title: "デプロイ完了",
+                      description: "v2.14.0 を本番環境に反映",
+                      timestamp: "14:22",
+                      dateTime: "2026-05-30T14:22",
+                      variant: "success",
+                    },
+                    {
+                      title: "在庫アラート",
+                      description: "ワイヤレスイヤホンの在庫が残り3点",
+                      timestamp: "11:05",
+                      dateTime: "2026-05-30T11:05",
+                      variant: "warning",
+                    },
+                    {
+                      title: "返金処理",
+                      description: "ORD-004 をキャンセル",
+                      timestamp: "09:48",
+                      dateTime: "2026-05-30T09:48",
+                      variant: "danger",
+                    },
+                    {
+                      title: "日次バッチ実行",
+                      timestamp: "03:00",
+                      dateTime: "2026-05-30T03:00",
+                    },
+                  ]}
+                />
+              </CardBody>
+            </Card>
+          </Grid>
         </TabPanel>
 
         <TabPanel value="orders">
           <div style={{ height: "16px" }} />
           <Card>
             <CardHeader>
-              <HStack gap={2}>
-                <span style={{ "font-weight": "600" }}>最近の注文</span>
+              <HStack gap={2} align="center">
+                <Text as="span" weight="semibold">
+                  最近の注文
+                </Text>
                 <Spacer />
+                <SegmentedControl
+                  size="sm"
+                  label="期間"
+                  value={range()}
+                  onChange={setRange}
+                  options={[
+                    { value: "24h", label: "24時間" },
+                    { value: "7d", label: "7日" },
+                    { value: "30d", label: "30日" },
+                  ]}
+                />
                 <Tag variant="primary" size="sm">
                   全 {ORDERS.length} 件
                 </Tag>
               </HStack>
             </CardHeader>
             <CardBody>
-              <Table columns={columns} data={ORDERS} rowKey={(row) => row.id} />
+              <Table
+                columns={columns}
+                data={ORDERS}
+                rowKey={(row) => row.id}
+                selectRowLabel={(row) => `注文 ${row.id} を選択`}
+              />
             </CardBody>
           </Card>
         </TabPanel>
@@ -270,7 +337,9 @@ export function DashboardApp() {
           <div style={{ height: "16px" }} />
           <Card>
             <CardHeader>
-              <span style={{ "font-weight": "600" }}>システム情報</span>
+              <Text as="span" weight="semibold">
+                システム情報
+              </Text>
             </CardHeader>
             <CardBody>
               <DescriptionList
@@ -315,9 +384,11 @@ export function DashboardApp() {
 
       <div style={{ height: "16px" }} />
 
-      <HStack gap={2}>
-        <Spinner size="sm" />
-        <span style={{ "font-size": "12px", color: "var(--so-text-muted)" }}>30秒ごとに自動更新</span>
+      <HStack gap={2} align="center">
+        <Spinner size="sm" label="更新中" />
+        <Text as="span" size="sm" tone="muted">
+          30秒ごとに自動更新
+        </Text>
       </HStack>
     </div>
   );

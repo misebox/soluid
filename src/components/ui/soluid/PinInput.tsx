@@ -30,7 +30,8 @@ export interface PinInputProps extends CommonProps {
   onComplete?: (value: string) => void;
 }
 
-export function PinInput(props: PinInputProps & JSX.HTMLAttributes<HTMLDivElement>) {
+// onChange is omitted because PinInputProps redefines it with the box array.
+export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

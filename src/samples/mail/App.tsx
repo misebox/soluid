@@ -5,6 +5,7 @@ import { Breadcrumb, BreadcrumbItem } from "../../components/ui/soluid/Breadcrum
 import { Button } from "../../components/ui/soluid/Button";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { Checkbox } from "../../components/ui/soluid/Checkbox";
+import { ContextMenu } from "../../components/ui/soluid/ContextMenu";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
@@ -13,6 +14,7 @@ import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
 import { Pagination } from "../../components/ui/soluid/Pagination";
+import { SearchField } from "../../components/ui/soluid/SearchField";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Spinner } from "../../components/ui/soluid/Spinner";
 import { Stack } from "../../components/ui/soluid/Stack";
@@ -21,6 +23,27 @@ import { TextArea } from "../../components/ui/soluid/TextArea";
 import { TextField } from "../../components/ui/soluid/TextField";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
+import type { TreeNode } from "../../components/ui/soluid/Tree";
+import { Tree } from "../../components/ui/soluid/Tree";
+
+const FOLDERS: TreeNode[] = [
+  {
+    id: "inbox",
+    label: "受信トレイ",
+    children: [
+      { id: "inbox-work", label: "仕事" },
+      { id: "inbox-personal", label: "プライベート" },
+    ],
+  },
+  { id: "starred", label: "スター付き" },
+  { id: "sent", label: "送信済み" },
+  {
+    id: "archive",
+    label: "アーカイブ",
+    children: [{ id: "archive-2025", label: "2025年" }],
+  },
+  { id: "trash", label: "ゴミ箱", disabled: true },
+];
 
 interface Mail {
   id: string;
@@ -30,12 +53,14 @@ interface Mail {
   body: string;
   date: string;
   read: boolean;
+  folder: string;
   tags: string[];
 }
 
 const MAILS: Mail[] = [
   {
     id: "1",
+    folder: "inbox-work",
     from: "佐藤花子",
     subject: "プロジェクト進捗報告",
     preview: "今週のスプリントレビューについてご確認ください…",
@@ -46,6 +71,7 @@ const MAILS: Mail[] = [
   },
   {
     id: "2",
+    folder: "inbox-work",
     from: "田中一郎",
     subject: "デザインレビューのお願い",
     preview: "新しいUIコンポーネントのデザインについて…",
@@ -56,6 +82,7 @@ const MAILS: Mail[] = [
   },
   {
     id: "3",
+    folder: "inbox-personal",
     from: "鈴木美咲",
     subject: "ランチのお誘い",
     preview: "来週の水曜日、ランチに行きませんか？…",
@@ -66,6 +93,7 @@ const MAILS: Mail[] = [
   },
   {
     id: "4",
+    folder: "inbox-work",
     from: "システム通知",
     subject: "セキュリティアラート",
     preview: "新しいデバイスからのログインが検出されました…",
@@ -76,6 +104,7 @@ const MAILS: Mail[] = [
   },
   {
     id: "5",
+    folder: "archive-2025",
     from: "高橋健太",
     subject: "コードレビューコメント",
     preview: "PR #142 にコメントを追加しました…",
@@ -86,6 +115,7 @@ const MAILS: Mail[] = [
   },
   {
     id: "6",
+    folder: "inbox-personal",
     from: "伊藤陽子",
     subject: "週報テンプレート更新",
     preview: "週報のテンプレートを更新しましたのでご確認…",
@@ -117,13 +147,27 @@ export function MailApp() {
   const [composeTo, setComposeTo] = createSignal("");
   const [composeSubject, setComposeSubject] = createSignal("");
   const [composeBody, setComposeBody] = createSignal("");
+  const [query, setQuery] = createSignal("");
+  const [folder, setFolder] = createSignal("inbox");
+  const [expandedFolders, setExpandedFolders] = createSignal(["inbox"]);
   const toast = useToast();
 
   const unreadCount = createMemo(() => mails().filter((m) => !m.read).length);
-  const totalPages = createMemo(() => Math.ceil(mails().length / PER_PAGE));
+  const visibleMails = createMemo(() => {
+    const q = query().trim().toLowerCase();
+    const current = folder();
+    return mails().filter((m) => {
+      // Selecting a parent folder includes everything beneath it.
+      const inFolder = m.folder === current || m.folder.startsWith(`${current}-`);
+      if (!inFolder) return false;
+      if (q === "") return true;
+      return [m.from, m.subject, m.preview].some((field) => field.toLowerCase().includes(q));
+    });
+  });
+  const totalPages = createMemo(() => Math.ceil(visibleMails().length / PER_PAGE));
   const pagedMails = createMemo(() => {
     const start = (page() - 1) * PER_PAGE;
-    return mails().slice(start, start + PER_PAGE);
+    return visibleMails().slice(start, start + PER_PAGE);
   });
   const selectedMail = createMemo(() => mails().find((m) => m.id === selectedId()));
 
@@ -219,13 +263,40 @@ export function MailApp() {
       </div>
 
       <div class="sample-grid sample-grid--sidebar">
-        <Stack gap={1}>
+        <Stack gap={3}>
+          <SearchField
+            value={query()}
+            // Narrowing the list can drop the current page out of range.
+            onInput={(value) => {
+              setQuery(value);
+              setPage(1);
+            }}
+            placeholder="メールを検索"
+            clearLabel="検索条件をクリア"
+          />
+
+          <Card>
+            <CardBody>
+              <Tree
+                label="フォルダ"
+                nodes={FOLDERS}
+                expanded={expandedFolders()}
+                onExpandedChange={setExpandedFolders}
+                selected={folder()}
+                onSelect={(id) => {
+                  setFolder(id);
+                  setPage(1);
+                }}
+              />
+            </CardBody>
+          </Card>
+
           <Show
-            when={mails().length > 0}
+            when={visibleMails().length > 0}
             fallback={
               <EmptyState
                 title="メールはありません"
-                description="受信トレイは空です"
+                description={query() ? "検索条件に一致するメールが見つかりませんでした" : "このフォルダは空です"}
                 action={
                   <Button variant="primary" size="sm" onClick={() => setComposeOpen(true)}>
                     新規作成
@@ -237,48 +308,71 @@ export function MailApp() {
             <For each={pagedMails()}>
               {(mail) => (
                 <>
-                  <div
-                    style={{
-                      padding: "12px",
-                      cursor: "pointer",
-                      background: selectedId() === mail.id ? "var(--so-color-primary-subtle)" : "transparent",
-                      "border-left": mail.read ? "3px solid transparent" : "3px solid var(--so-color-primary-base)",
-                    }}
-                    onClick={() => {
-                      setSelectedId(mail.id);
-                      markAsRead(mail.id);
-                    }}
-                  >
-                    <HStack gap={2}>
-                      <Checkbox checked={selected().has(mail.id)} onChange={() => toggleSelect(mail.id)} />
-                      <Avatar name={mail.from} size="sm" />
-                      <div style={{ flex: "1", "min-width": "0" }}>
-                        <HStack gap={2}>
-                          <span style={{ "font-weight": mail.read ? "400" : "600", "font-size": "14px" }}>
-                            {mail.from}
-                          </span>
-                          <Spacer />
-                          <span style={{ "font-size": "11px", color: "var(--so-text-muted)", "white-space": "nowrap" }}>
-                            {mail.date}
-                          </span>
-                        </HStack>
-                        <div style={{ "font-size": "13px", "font-weight": mail.read ? "400" : "600" }}>
-                          {mail.subject}
-                        </div>
-                        <div
-                          style={{
-                            "font-size": "12px",
-                            color: "var(--so-text-muted)",
-                            overflow: "hidden",
-                            "text-overflow": "ellipsis",
-                            "white-space": "nowrap",
+                  <ContextMenu
+                    label={`${mail.subject} の操作`}
+                    content={
+                      <>
+                        <MenuItem onSelect={() => markAsRead(mail.id)}>既読にする</MenuItem>
+                        <MenuItem onSelect={() => toast.add({ message: "アーカイブしました", variant: "info" })}>
+                          アーカイブ
+                        </MenuItem>
+                        <MenuSeparator />
+                        <MenuItem
+                          onSelect={() => {
+                            setMails((prev) => prev.filter((m) => m.id !== mail.id));
+                            toast.add({ message: "削除しました", variant: "success" });
                           }}
                         >
-                          {mail.preview}
+                          削除
+                        </MenuItem>
+                      </>
+                    }
+                  >
+                    <div
+                      style={{
+                        padding: "12px",
+                        cursor: "pointer",
+                        background: selectedId() === mail.id ? "var(--so-color-primary-subtle)" : "transparent",
+                        "border-left": mail.read ? "3px solid transparent" : "3px solid var(--so-color-primary-base)",
+                      }}
+                      onClick={() => {
+                        setSelectedId(mail.id);
+                        markAsRead(mail.id);
+                      }}
+                    >
+                      <HStack gap={2}>
+                        <Checkbox checked={selected().has(mail.id)} onChange={() => toggleSelect(mail.id)} />
+                        <Avatar name={mail.from} size="sm" />
+                        <div style={{ flex: "1", "min-width": "0" }}>
+                          <HStack gap={2}>
+                            <span style={{ "font-weight": mail.read ? "400" : "600", "font-size": "14px" }}>
+                              {mail.from}
+                            </span>
+                            <Spacer />
+                            <span
+                              style={{ "font-size": "11px", color: "var(--so-text-muted)", "white-space": "nowrap" }}
+                            >
+                              {mail.date}
+                            </span>
+                          </HStack>
+                          <div style={{ "font-size": "13px", "font-weight": mail.read ? "400" : "600" }}>
+                            {mail.subject}
+                          </div>
+                          <div
+                            style={{
+                              "font-size": "12px",
+                              color: "var(--so-text-muted)",
+                              overflow: "hidden",
+                              "text-overflow": "ellipsis",
+                              "white-space": "nowrap",
+                            }}
+                          >
+                            {mail.preview}
+                          </div>
                         </div>
-                      </div>
-                    </HStack>
-                  </div>
+                      </HStack>
+                    </div>
+                  </ContextMenu>
                   <Divider />
                 </>
               )}

@@ -35,7 +35,9 @@ function flatten(nodes: TreeNode[], expanded: string[], level = 1): FlatNode[] {
   });
 }
 
-export function Tree(props: TreeProps & JSX.HTMLAttributes<HTMLUListElement>) {
+// onSelect is omitted because TreeProps redefines it: the DOM select event
+// handler would otherwise be intersected with the node-id callback.
+export function Tree(props: TreeProps & Omit<JSX.HTMLAttributes<HTMLUListElement>, "onSelect">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

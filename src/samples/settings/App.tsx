@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Alert } from "../../components/ui/soluid/Alert";
 import { Badge } from "../../components/ui/soluid/Badge";
@@ -9,12 +9,14 @@ import { Checkbox } from "../../components/ui/soluid/Checkbox";
 import { CheckboxGroup } from "../../components/ui/soluid/CheckboxGroup";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
+import { FileUpload } from "../../components/ui/soluid/FileUpload";
 import { FormField } from "../../components/ui/soluid/FormField";
+import { Grid } from "../../components/ui/soluid/Grid";
 import { HStack } from "../../components/ui/soluid/HStack";
-import { NumberInput } from "../../components/ui/soluid/NumberInput";
-import { RadioButton } from "../../components/ui/soluid/RadioButton";
-import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
+import { PinInput } from "../../components/ui/soluid/PinInput";
+import { SegmentedControl } from "../../components/ui/soluid/SegmentedControl";
 import { Select } from "../../components/ui/soluid/Select";
+import { Slider } from "../../components/ui/soluid/Slider";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Stack } from "../../components/ui/soluid/Stack";
 import { Switch } from "../../components/ui/soluid/Switch";
@@ -36,6 +38,9 @@ export function SettingsApp() {
   const [timezone, setTimezone] = createSignal("asia-tokyo");
   const [theme, setTheme] = createSignal("system");
   const [fontSize, setFontSize] = createSignal(14);
+  const [lineHeight, setLineHeight] = createSignal(150);
+  const [avatarFiles, setAvatarFiles] = createSignal<File[]>([]);
+  const [otp, setOtp] = createSignal<string[]>([]);
 
   const [emailNotif, setEmailNotif] = createSignal(true);
   const [pushNotif, setPushNotif] = createSignal(true);
@@ -95,7 +100,17 @@ export function SettingsApp() {
                 <FormField label="自己紹介">
                   <TextArea value={bio()} onInput={setBio} rows={3} />
                 </FormField>
-                <div class="sample-grid sample-grid--2">
+                <FormField label="プロフィール画像" hint="PNG または JPG、5MB まで">
+                  <FileUpload
+                    label="ここにドロップ、またはクリックして選択"
+                    accept="image/*"
+                    files={avatarFiles()}
+                    onSelect={setAvatarFiles}
+                    onRemove={() => setAvatarFiles([])}
+                    removeLabel={(file) => `${file.name} を削除`}
+                  />
+                </FormField>
+                <Grid minItemWidth="14rem" gap={3}>
                   <Select
                     label="言語"
                     value={language()}
@@ -117,7 +132,7 @@ export function SettingsApp() {
                       { value: "europe-london", label: "Europe/London (UTC+0)" },
                     ]}
                   />
-                </div>
+                </Grid>
               </Stack>
             </CardBody>
             <CardFooter>
@@ -175,33 +190,48 @@ export function SettingsApp() {
             </CardHeader>
             <CardBody>
               <Stack gap={4}>
-                <RadioGroup
-                  label="テーマ"
-                  value={theme()}
-                  onChange={(v) => {
-                    setTheme(v);
-                    if (v === "dark") {
-                      document.documentElement.setAttribute("data-theme", "dark");
-                    } else {
-                      document.documentElement.removeAttribute("data-theme");
-                    }
-                  }}
-                >
-                  <RadioButton value="light" label="ライト" />
-                  <RadioButton value="dark" label="ダーク" />
-                  <RadioButton value="system" label="システム設定に従う" />
-                </RadioGroup>
+                <FormField label="テーマ">
+                  <SegmentedControl
+                    label="テーマ"
+                    value={theme()}
+                    onChange={(v) => {
+                      setTheme(v);
+                      if (v === "dark") {
+                        document.documentElement.setAttribute("data-theme", "dark");
+                      } else {
+                        document.documentElement.removeAttribute("data-theme");
+                      }
+                    }}
+                    options={[
+                      { value: "light", label: "ライト" },
+                      { value: "dark", label: "ダーク" },
+                      { value: "system", label: "システム" },
+                    ]}
+                  />
+                </FormField>
 
                 <Divider />
 
-                <NumberInput
+                <Slider
                   label="フォントサイズ"
-                  hint={`現在: ${fontSize()}px`}
                   value={fontSize()}
                   onInput={setFontSize}
                   min={10}
                   max={24}
                   step={1}
+                  showValue
+                  formatValue={(v) => `${v}px`}
+                />
+
+                <Slider
+                  label="行間"
+                  value={lineHeight()}
+                  onInput={setLineHeight}
+                  min={100}
+                  max={200}
+                  step={10}
+                  showValue
+                  formatValue={(v) => `${(v / 100).toFixed(1)}`}
                 />
 
                 <Divider />
@@ -257,6 +287,21 @@ export function SettingsApp() {
                       });
                     }}
                   />
+
+                  <Show when={twoFactor()}>
+                    <FormField label="認証コード" hint="認証アプリに表示された6桁を入力してください">
+                      <PinInput
+                        label="認証コード"
+                        value={otp()}
+                        onChange={setOtp}
+                        length={6}
+                        itemLabel={(position, length) => `${length}桁中 ${position} 桁目`}
+                        onComplete={(code) =>
+                          toast.add({ message: `コード ${code} を確認しました`, variant: "success" })
+                        }
+                      />
+                    </FormField>
+                  </Show>
 
                   <Select
                     label="セッションタイムアウト"

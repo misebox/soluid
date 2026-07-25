@@ -5,10 +5,12 @@ import { Breadcrumb, BreadcrumbItem } from "../../components/ui/soluid/Breadcrum
 import { Button } from "../../components/ui/soluid/Button";
 import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/soluid/Card";
 import { Checkbox } from "../../components/ui/soluid/Checkbox";
+import { Combobox } from "../../components/ui/soluid/Combobox";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
+import { Grid } from "../../components/ui/soluid/Grid";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
 import { NumberInput } from "../../components/ui/soluid/NumberInput";
@@ -17,9 +19,11 @@ import { Popover } from "../../components/ui/soluid/Popover";
 import { Progress } from "../../components/ui/soluid/Progress";
 import { RadioButton } from "../../components/ui/soluid/RadioButton";
 import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
+import { Rating } from "../../components/ui/soluid/Rating";
 import { Select } from "../../components/ui/soluid/Select";
 import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Stack } from "../../components/ui/soluid/Stack";
+import { Steps } from "../../components/ui/soluid/Steps";
 import { Tag } from "../../components/ui/soluid/Tag";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
@@ -167,7 +171,9 @@ export function ShopApp() {
       </div>
 
       <HStack gap={3} style={{ "margin-bottom": "16px" }}>
-        <Select
+        <Combobox
+          placeholder="カテゴリで絞り込み"
+          emptyLabel="該当するカテゴリがありません"
           value={category()}
           onChange={(v) => {
             setCategory(v);
@@ -192,7 +198,7 @@ export function ShopApp() {
         <Tag variant="neutral">{filtered().length} 件</Tag>
       </HStack>
 
-      <div class="sample-grid sample-grid--3">
+      <Grid minItemWidth="17rem" gap={4}>
         <For each={paged()}>
           {(product) => (
             <Card>
@@ -229,8 +235,14 @@ export function ShopApp() {
                   </Tag>
                 </HStack>
                 <div style={{ height: "8px" }} />
-                <HStack gap={2}>
-                  <span style={{ "font-size": "12px", color: "var(--so-text-muted)" }}>★ {product.rating}</span>
+                <HStack gap={2} align="center">
+                  <Rating
+                    value={Math.round(product.rating)}
+                    readOnly
+                    size="sm"
+                    itemLabel={(value, max) => `5段階中 ${value}（${max}項目）`}
+                  />
+                  <span style={{ "font-size": "12px", color: "var(--so-text-muted)" }}>{product.rating}</span>
                   <Spacer />
                   <Show
                     when={product.stock > 0}
@@ -258,9 +270,12 @@ export function ShopApp() {
                         <p style={{ margin: "0 0 4px", "font-size": "13px", color: "var(--so-text-muted)" }}>
                           カテゴリ: {product.category === "electronics" ? "エレクトロニクス" : "アパレル"}
                         </p>
-                        <p style={{ margin: "0 0 4px", "font-size": "13px", color: "var(--so-text-muted)" }}>
-                          評価: ★ {product.rating} / 5.0
-                        </p>
+                        <HStack gap={2} align="center" style={{ "margin-bottom": "4px" }}>
+                          <Rating value={Math.round(product.rating)} readOnly size="sm" />
+                          <span style={{ "font-size": "13px", color: "var(--so-text-muted)" }}>
+                            {product.rating} / 5.0
+                          </span>
+                        </HStack>
                         <p style={{ margin: "0", "font-size": "13px", color: "var(--so-text-muted)" }}>
                           在庫: {product.stock} 点
                         </p>
@@ -278,7 +293,7 @@ export function ShopApp() {
             </Card>
           )}
         </For>
-      </div>
+      </Grid>
 
       <div style={{ height: "24px" }} />
 
@@ -382,7 +397,18 @@ export function ShopApp() {
       <Dialog open={checkoutOpen()} onClose={() => {}} size="sm">
         <DialogHeader>注文処理</DialogHeader>
         <DialogBody>
-          <Stack gap={3}>
+          <Stack gap={4}>
+            <Steps
+              label="注文処理"
+              orientation="vertical"
+              current={checkoutStep()}
+              completedLabel="完了"
+              steps={[
+                { label: "注文受付", description: "注文内容を確認しています" },
+                { label: "在庫確認", description: "各商品の在庫を引き当てます" },
+                { label: "決済", description: "お支払いを処理します" },
+              ]}
+            />
             <Show
               when={checkoutStep() < 3}
               fallback={
@@ -391,12 +417,7 @@ export function ShopApp() {
                 </Alert>
               }
             >
-              <div style={{ "text-align": "center", "font-size": "14px", color: "var(--so-text-muted)" }}>
-                <Show when={checkoutStep() === 0}>注文を処理しています…</Show>
-                <Show when={checkoutStep() === 1}>在庫を確認中…</Show>
-                <Show when={checkoutStep() === 2}>決済処理中…</Show>
-              </div>
-              <Progress value={Math.round((checkoutStep() / 3) * 100)} />
+              <Progress value={Math.round((checkoutStep() / 3) * 100)} aria-label="注文処理の進捗" />
             </Show>
           </Stack>
         </DialogBody>

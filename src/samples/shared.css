@@ -19,21 +19,11 @@
   font-weight: 700;
 }
 
+/* Equal-width grids come from the library's <Grid>. Only the asymmetric
+   sidebar layout, which Grid cannot express, is left here. */
 .sample-grid {
   display: grid;
   gap: 16px;
-}
-
-.sample-grid--2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.sample-grid--3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.sample-grid--4 {
-  grid-template-columns: repeat(4, 1fr);
 }
 
 .sample-grid--sidebar {
@@ -41,22 +31,7 @@
 }
 
 @media (max-width: 768px) {
-  .sample-grid--2,
-  .sample-grid--3,
-  .sample-grid--4,
   .sample-grid--sidebar {
     grid-template-columns: 1fr;
   }
-}
-
-.stat-value {
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--so-text-muted);
-  margin-top: 4px;
 }

@@ -32,7 +32,8 @@ function Star(props: { filled: boolean }) {
   );
 }
 
-export function Rating(props: RatingProps & JSX.HTMLAttributes<HTMLDivElement>) {
+// onChange is omitted because RatingProps redefines it with a numeric value.
+export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
