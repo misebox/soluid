@@ -3,5 +3,5 @@
   "printWidth": 120,
   "indentWidth": 2,
   "useTabs": false,
-  "ignorePatterns": ["dist", "docs", "tmp", "archived"]
+  "ignorePatterns": ["dist", "docs", "tmp", "archived", "src/dev/api-data.json"]
 }

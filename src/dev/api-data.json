@@ -34,7 +34,9 @@
   {
     "name": "AccordionProps",
     "description": "Collapsible content sections",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "children",
@@ -56,7 +58,9 @@
   {
     "name": "AlertProps",
     "description": "Inline notification",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "variant",
@@ -93,7 +97,9 @@
   {
     "name": "AspectRatioProps",
     "description": "Box that reserves a fixed width-to-height ratio",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "ratio",
@@ -120,7 +126,10 @@
   {
     "name": "AvatarGroupProps",
     "description": "Overlapping avatars with a +N overflow chip",
-    "dependencies": ["core", "Avatar"],
+    "dependencies": [
+      "core",
+      "Avatar"
+    ],
     "props": [
       {
         "name": "max",
@@ -157,7 +166,9 @@
   {
     "name": "AvatarProps",
     "description": "User avatar with image and initials fallback",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "src",
@@ -199,7 +210,9 @@
   {
     "name": "BadgeProps",
     "description": "Status label",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "variant",
@@ -263,7 +276,9 @@
   {
     "name": "BreadcrumbProps",
     "description": "Breadcrumb navigation",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "label",
@@ -290,7 +305,9 @@
   {
     "name": "ButtonGroupProps",
     "description": "Joins adjacent buttons into one visual unit",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "orientation",
@@ -327,7 +344,9 @@
   {
     "name": "ButtonProps",
     "description": "Primary, neutral, danger button with icon and loading",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "iconLeft",
@@ -430,7 +449,9 @@
   {
     "name": "CardProps",
     "description": "Content card with header/body/footer",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "variant",
@@ -457,7 +478,10 @@
   {
     "name": "CheckboxGroupProps",
     "description": "Checkbox group with shared state",
-    "dependencies": ["core", "Checkbox"],
+    "dependencies": [
+      "core",
+      "Checkbox"
+    ],
     "props": [
       {
         "name": "value",
@@ -504,7 +528,9 @@
   {
     "name": "CheckboxProps",
     "description": "Checkbox with indeterminate support",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "checked",
@@ -3011,7 +3037,9 @@
   {
     "name": "CollapsibleProps",
     "description": "Controlled single disclosure section",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "open",
@@ -3120,7 +3148,11 @@
   {
     "name": "ComboboxProps",
     "description": "Filterable single-select with a listbox popup",
-    "dependencies": ["core", "FormField", "VisuallyHidden"],
+    "dependencies": [
+      "core",
+      "FormField",
+      "VisuallyHidden"
+    ],
     "props": [
       {
         "name": "label",
@@ -3202,7 +3234,9 @@
   {
     "name": "ContainerProps",
     "description": "Centered page wrapper with a max width",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "size",
@@ -3234,7 +3268,10 @@
   {
     "name": "ContextMenuProps",
     "description": "Right-click menu anchored to the pointer",
-    "dependencies": ["core", "Menu"],
+    "dependencies": [
+      "core",
+      "Menu"
+    ],
     "props": [
       {
         "name": "content",
@@ -3266,7 +3303,9 @@
   {
     "name": "DescriptionListProps",
     "description": "Key-value display",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "items",
@@ -3344,7 +3383,9 @@
   {
     "name": "DialogProps",
     "description": "Modal dialog with focus trap",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "open",
@@ -3381,7 +3422,9 @@
   {
     "name": "DividerProps",
     "description": "Horizontal/vertical separator",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "orientation",
@@ -3420,7 +3463,9 @@
   {
     "name": "DrawerProps",
     "description": "Side panel with focus trap",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "open",
@@ -3462,7 +3507,9 @@
   {
     "name": "EmptyStateProps",
     "description": "Empty data display with action",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "title",
@@ -3499,7 +3546,9 @@
   {
     "name": "FileUploadProps",
     "description": "Drop zone and file picker with a selected-file list",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "onSelect",
@@ -3561,7 +3610,9 @@
   {
     "name": "FormFieldProps",
     "description": "Label + error/hint wrapper for form inputs",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "label",
@@ -3603,7 +3654,9 @@
   {
     "name": "GridProps",
     "description": "CSS grid with fixed or auto-fitting columns",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "columns",
@@ -3645,7 +3698,9 @@
   {
     "name": "HeadingProps",
     "description": "h1-h6 heading with visual size decoupled from level",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "level",
@@ -3677,7 +3732,9 @@
   {
     "name": "HStackProps",
     "description": "Horizontal flex layout with gap",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "gap",
@@ -3719,7 +3776,9 @@
   {
     "name": "IconButtonProps",
     "description": "Icon-only button with aria-label",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "icon",
@@ -3761,7 +3820,9 @@
   {
     "name": "KbdProps",
     "description": "Keyboard key display",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "size",
@@ -3788,7 +3849,10 @@
   {
     "name": "LinkProps",
     "description": "Styled anchor with external-link handling",
-    "dependencies": ["core", "VisuallyHidden"],
+    "dependencies": [
+      "core",
+      "VisuallyHidden"
+    ],
     "props": [
       {
         "name": "href",
@@ -3862,7 +3926,9 @@
   {
     "name": "MenuProps",
     "description": "Dropdown menu with keyboard navigation",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "open",
@@ -3916,7 +3982,10 @@
   {
     "name": "NumberInputProps",
     "description": "Number input with stepper buttons",
-    "dependencies": ["core", "FormField"],
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
     "props": [
       {
         "name": "label",
@@ -6428,7 +6497,9 @@
   {
     "name": "PaginationProps",
     "description": "Page navigation",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "page",
@@ -6495,7 +6566,9 @@
   {
     "name": "PinInputProps",
     "description": "One-time code entry with paste and arrow-key support",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -6557,7 +6630,9 @@
   {
     "name": "PopoverProps",
     "description": "Floating element with trigger and panel",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "open",
@@ -6599,7 +6674,9 @@
   {
     "name": "ProgressProps",
     "description": "Progress bar",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -9118,7 +9195,9 @@
   {
     "name": "RadioGroupProps",
     "description": "Radio button group",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -9170,7 +9249,9 @@
   {
     "name": "RatingProps",
     "description": "Star rating, interactive or read-only",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -9227,7 +9308,11 @@
   {
     "name": "SearchFieldProps",
     "description": "Text input with a search icon and clear button",
-    "dependencies": ["core", "FormField", "TextField"],
+    "dependencies": [
+      "core",
+      "FormField",
+      "TextField"
+    ],
     "props": [
       {
         "name": "value",
@@ -11739,7 +11824,9 @@
   {
     "name": "SegmentedControlProps",
     "description": "Exclusive choice between a few options",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -14088,7 +14175,10 @@
   {
     "name": "SelectProps",
     "description": "Native select dropdown",
-    "dependencies": ["core", "FormField"],
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
     "props": [
       {
         "name": "label",
@@ -16405,7 +16495,9 @@
   {
     "name": "SkeletonProps",
     "description": "Loading placeholder",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "variant",
@@ -18934,7 +19026,10 @@
   {
     "name": "SliderProps",
     "description": "Range input with optional value readout",
-    "dependencies": ["core", "FormField"],
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
     "props": [
       {
         "name": "label",
@@ -21446,7 +21541,9 @@
   {
     "name": "SpinnerProps",
     "description": "Loading spinner",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "size",
@@ -21478,7 +21575,9 @@
   {
     "name": "StackProps",
     "description": "Vertical flex layout with gap",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "gap",
@@ -21515,7 +21614,9 @@
   {
     "name": "StatProps",
     "description": "Metric with label, value and change indicator",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "label",
@@ -21562,7 +21663,10 @@
   {
     "name": "StepsProps",
     "description": "Progress indicator for a multi-step flow",
-    "dependencies": ["core", "VisuallyHidden"],
+    "dependencies": [
+      "core",
+      "VisuallyHidden"
+    ],
     "props": [
       {
         "name": "steps",
@@ -21604,7 +21708,9 @@
   {
     "name": "SwitchProps",
     "description": "Toggle switch",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "checked",
@@ -23981,7 +24087,9 @@
   {
     "name": "TableProps",
     "description": "Data table with sort, pagination, row selection",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "columns",
@@ -24119,7 +24227,9 @@
   {
     "name": "TabsProps",
     "description": "Tab navigation",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "value",
@@ -24151,7 +24261,9 @@
   {
     "name": "TagProps",
     "description": "Removable label for filters",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "variant",
@@ -26545,7 +26657,10 @@
   {
     "name": "TextAreaProps",
     "description": "Multiline text input",
-    "dependencies": ["core", "FormField"],
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
     "props": [
       {
         "name": "label",
@@ -31399,7 +31514,10 @@
   {
     "name": "TextFieldProps",
     "description": "Text input with label/error/hint",
-    "dependencies": ["core", "FormField"],
+    "dependencies": [
+      "core",
+      "FormField"
+    ],
     "props": [
       {
         "name": "label",
@@ -33906,7 +34024,9 @@
   {
     "name": "TextProps",
     "description": "Body text with size, weight and tone",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "as",
@@ -33958,7 +34078,9 @@
   {
     "name": "TimelineProps",
     "description": "Chronological list of events",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "items",
@@ -36237,7 +36359,9 @@
   {
     "name": "TooltipProps",
     "description": "Tooltip",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "content",
@@ -36264,7 +36388,9 @@
   {
     "name": "TreeProps",
     "description": "Hierarchical list with keyboard navigation",
-    "dependencies": ["core"],
+    "dependencies": [
+      "core"
+    ],
     "props": [
       {
         "name": "nodes",
