@@ -3,12 +3,20 @@ import { lang } from "../lang";
 import { t } from "../locales";
 
 const categories = [
-  { labelKey: "cat.layout", components: "Stack, HStack, Divider, Spacer" },
-  { labelKey: "cat.general", components: "Button, IconButton, Badge, Tag, Tooltip, Avatar" },
-  { labelKey: "cat.form", components: "TextField, TextArea, NumberInput, Select, Checkbox, RadioGroup, Switch" },
-  { labelKey: "cat.data", components: "Table, Card, DescriptionList, Skeleton, EmptyState, Accordion" },
-  { labelKey: "cat.feedback", components: "Dialog, Drawer, Alert, Toast, Progress, Spinner" },
-  { labelKey: "cat.navigation", components: "Tabs, Breadcrumb, Pagination, Menu" },
+  { slug: "layout", labelKey: "cat.layout", components: "Stack, Grid, Container, AspectRatio, Divider, Spacer" },
+  { slug: "general", labelKey: "cat.general", components: "Button, Heading, Text, Link, Badge, Tag, Avatar, Tooltip" },
+  {
+    slug: "form",
+    labelKey: "cat.form",
+    components: "TextField, Select, Combobox, Checkbox, Switch, Slider, Rating, FileUpload",
+  },
+  { slug: "data", labelKey: "cat.data", components: "Table, Card, Stat, Timeline, Tree, Accordion, Collapsible" },
+  { slug: "feedback", labelKey: "cat.feedback", components: "Dialog, Drawer, Alert, Toast, Progress, Spinner" },
+  {
+    slug: "navigation",
+    labelKey: "cat.navigation",
+    components: "Tabs, Breadcrumb, Steps, Pagination, Menu, ContextMenu",
+  },
 ];
 
 export function TopPage() {
@@ -44,7 +52,11 @@ export function TopPage() {
         <div class="top-feature-grid">
           {categories.map((cat) => (
             <div class="top-category-card">
-              <h3>{t(lang(), cat.labelKey)}</h3>
+              <h3>
+                <A class="top-category-link" href={`/components#category-${cat.slug}`}>
+                  {t(lang(), cat.labelKey)}
+                </A>
+              </h3>
               <p>{cat.components}</p>
             </div>
           ))}

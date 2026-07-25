@@ -1,13 +1,12 @@
 import { createSignal, For, Show } from "solid-js";
-import type { JSX } from "solid-js";
 import { Avatar } from "../../components/ui/soluid/Avatar";
 import { Badge } from "../../components/ui/soluid/Badge";
-import { Breadcrumb, BreadcrumbItem } from "../../components/ui/soluid/Breadcrumb";
 import { Button } from "../../components/ui/soluid/Button";
-import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
+import { Card, CardBody, CardFooter, CardHeader } from "../../components/ui/soluid/Card";
+import { Collapsible } from "../../components/ui/soluid/Collapsible";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Divider } from "../../components/ui/soluid/Divider";
-import { Grid } from "../../components/ui/soluid/Grid";
+import { Heading } from "../../components/ui/soluid/Heading";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
@@ -19,7 +18,6 @@ import { Spacer } from "../../components/ui/soluid/Spacer";
 import { Spinner } from "../../components/ui/soluid/Spinner";
 import { Stack } from "../../components/ui/soluid/Stack";
 import { Stat } from "../../components/ui/soluid/Stat";
-import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import { Tag } from "../../components/ui/soluid/Tag";
 import type { Column } from "../../components/ui/soluid/Table";
 import { Table } from "../../components/ui/soluid/Table";
@@ -27,6 +25,40 @@ import { Text } from "../../components/ui/soluid/Text";
 import { Timeline } from "../../components/ui/soluid/Timeline";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
+
+/* ---------- Icons ---------- */
+
+const RefreshIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <path d="M20 11a8 8 0 10-2.3 5.7" />
+    <path d="M20 5v6h-6" stroke-linejoin="round" />
+  </svg>
+);
+
+const HelpIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.6 9.2a2.5 2.5 0 114 2.3c-.9.6-1.6 1-1.6 2.1" />
+    <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+const ChevronIcon = () => (
+  <svg
+    class="dash-chevron"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
+/* ---------- Data ---------- */
 
 interface Order {
   id: string;
@@ -38,12 +70,12 @@ interface Order {
 }
 
 const ORDERS: Order[] = [
-  { id: "ORD-001", customer: "田中太郎", amount: "¥12,800", status: "completed", date: "2026-05-30" },
-  { id: "ORD-002", customer: "佐藤花子", amount: "¥8,400", status: "pending", date: "2026-05-30" },
-  { id: "ORD-003", customer: "鈴木一郎", amount: "¥24,000", status: "completed", date: "2026-05-29" },
-  { id: "ORD-004", customer: "高橋美咲", amount: "¥3,200", status: "cancelled", date: "2026-05-29" },
-  { id: "ORD-005", customer: "伊藤健太", amount: "¥15,600", status: "completed", date: "2026-05-28" },
-  { id: "ORD-006", customer: "渡辺陽子", amount: "¥9,900", status: "pending", date: "2026-05-28" },
+  { id: "ORD-001", customer: "田中太郎", amount: "¥12,800", status: "completed", date: "06-30 14:22" },
+  { id: "ORD-002", customer: "佐藤花子", amount: "¥8,400", status: "pending", date: "06-30 11:48" },
+  { id: "ORD-003", customer: "鈴木一郎", amount: "¥24,000", status: "completed", date: "06-29 19:03" },
+  { id: "ORD-004", customer: "高橋美咲", amount: "¥3,200", status: "cancelled", date: "06-29 16:40" },
+  { id: "ORD-005", customer: "伊藤健太", amount: "¥15,600", status: "completed", date: "06-28 09:15" },
+  { id: "ORD-006", customer: "渡辺陽子", amount: "¥9,900", status: "pending", date: "06-28 08:02" },
 ];
 
 const STATUS_VARIANT = {
@@ -58,59 +90,152 @@ const STATUS_LABEL = {
   cancelled: "キャンセル",
 } as const;
 
-function MetricCard(props: { label: string; value: string; change: string; positive: boolean }) {
+/** Monthly revenue in 万円. The last point is the headline figure. */
+const REVENUE = [
+  { label: "1月", value: 98 },
+  { label: "2月", value: 112 },
+  { label: "3月", value: 96 },
+  { label: "4月", value: 134 },
+  { label: "5月", value: 148 },
+  { label: "6月", value: 128 },
+];
+
+const SECONDARY = [
+  { label: "注文数", value: "324", change: "8.2%", positive: true, trend: [240, 268, 255, 290, 310, 324] },
+  { label: "顧客数", value: "1,892", change: "3.1%", positive: true, trend: [1710, 1755, 1790, 1820, 1860, 1892] },
+  { label: "返品率", value: "2.4%", change: "0.8pt", positive: false, trend: [1.4, 1.6, 1.5, 1.9, 2.1, 2.4] },
+];
+
+const CATEGORIES = [
+  { label: "エレクトロニクス", value: 78, amount: "¥998,400" },
+  { label: "アパレル", value: 62, amount: "¥793,600" },
+  { label: "食品", value: 45, amount: "¥576,000" },
+  { label: "書籍", value: 31, amount: "¥396,800" },
+];
+
+/* ---------- Charts ---------- */
+
+/** Rounds up to a readable axis maximum, e.g. 148 -> 200. */
+function niceMax(value: number): number {
+  const magnitude = 10 ** Math.floor(Math.log10(value));
+  return Math.ceil(value / magnitude) * magnitude;
+}
+
+const CHART = { width: 640, height: 200, left: 36, right: 8, top: 14, bottom: 28 };
+
+function TrendChart(props: { data: { label: string; value: number }[] }) {
+  const top = () => niceMax(Math.max(...props.data.map((d) => d.value)));
+  const plotWidth = CHART.width - CHART.left - CHART.right;
+  const plotHeight = CHART.height - CHART.top - CHART.bottom;
+
+  const x = (index: number) => CHART.left + (index * plotWidth) / (props.data.length - 1);
+  const y = (value: number) => CHART.top + (1 - value / top()) * plotHeight;
+
+  const points = () => props.data.map((d, i) => `${x(i)},${y(d.value)}`).join(" ");
+  const area = () =>
+    `M${x(0)},${CHART.top + plotHeight} L${props.data.map((d, i) => `${x(i)},${y(d.value)}`).join(" L")} L${x(
+      props.data.length - 1,
+    )},${CHART.top + plotHeight} Z`;
+
+  const ticks = () => [0, 0.5, 1].map((ratio) => Math.round(top() * ratio));
+  const last = () => props.data.length - 1;
+
   return (
-    <Card>
-      <CardBody>
-        <Stat
-          label={props.label}
-          value={props.value}
-          delta={`${props.positive ? "↑" : "↓"} ${props.change}`}
-          deltaTone={props.positive ? "positive" : "negative"}
-          hint="前月比"
-        />
-      </CardBody>
-    </Card>
+    <svg
+      class="dash-chart"
+      viewBox={`0 0 ${CHART.width} ${CHART.height}`}
+      role="img"
+      aria-label={`月間売上推移。${props.data.map((d) => `${d.label} ${d.value}万円`).join("、")}`}
+    >
+      <defs>
+        <linearGradient id="dash-area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--so-color-primary-base)" stop-opacity="0.24" />
+          <stop offset="100%" stop-color="var(--so-color-primary-base)" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <For each={ticks()}>
+        {(tick) => (
+          <>
+            <line class="dash-chart__grid" x1={CHART.left} x2={CHART.width - CHART.right} y1={y(tick)} y2={y(tick)} />
+            <text class="dash-chart__tick" x={CHART.left - 8} y={y(tick)} text-anchor="end" dominant-baseline="middle">
+              {tick}
+            </text>
+          </>
+        )}
+      </For>
+
+      <path class="dash-chart__area" d={area()} fill="url(#dash-area)" />
+      <polyline class="dash-chart__line" points={points()} />
+
+      {/* Only the latest point is marked: it is the figure quoted on the left. */}
+      <circle class="dash-chart__dot" cx={x(last())} cy={y(props.data[last()].value)} r="4" />
+
+      <For each={props.data}>
+        {(d, i) => (
+          <text class="dash-chart__label" x={x(i())} y={CHART.height - 8} text-anchor="middle">
+            {d.label}
+          </text>
+        )}
+      </For>
+    </svg>
   );
 }
 
-function SkeletonCards() {
+/** Bare trend line for the secondary figures — shape only, no axes. */
+function Sparkline(props: { values: number[]; positive: boolean }) {
+  const lo = () => Math.min(...props.values);
+  const hi = () => Math.max(...props.values);
+  const points = () =>
+    props.values
+      .map((value, i) => {
+        const span = hi() - lo() || 1;
+        return `${(i * 100) / (props.values.length - 1)},${24 - ((value - lo()) / span) * 20}`;
+      })
+      .join(" ");
+
   return (
-    <Grid minItemWidth="12rem" gap={4}>
-      <For each={[1, 2, 3, 4]}>
-        {() => (
-          <Card>
-            <CardBody>
-              <Stack gap={2}>
-                <Skeleton width="60px" height="12px" />
-                <Skeleton width="120px" height="32px" />
-                <Skeleton width="100px" height="16px" />
-              </Stack>
-            </CardBody>
-          </Card>
-        )}
-      </For>
-    </Grid>
+    <svg
+      class={`dash-spark ${props.positive ? "dash-spark--up" : "dash-spark--down"}`}
+      viewBox="0 0 100 28"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <polyline points={points()} />
+    </svg>
+  );
+}
+
+/* ---------- Page ---------- */
+
+function CategoryRow(props: { label: string; value: number; amount: string }) {
+  return (
+    <div class="dash-category">
+      <span class="dash-category__label">{props.label}</span>
+      <span class="dash-category__amount">{props.amount}</span>
+      <Progress value={props.value} aria-label={`${props.label} ${props.value}%`} size="sm" />
+      <span class="dash-category__percent">{props.value}%</span>
+    </div>
   );
 }
 
 export function DashboardApp() {
   const [loading, setLoading] = createSignal(true);
-  const [tab, setTab] = createSignal("overview");
+  const [range, setRange] = createSignal("30d");
   const [menuOpen, setMenuOpen] = createSignal(false);
   const [popoverOpen, setPopoverOpen] = createSignal(false);
-  const [range, setRange] = createSignal("7d");
+  const [systemOpen, setSystemOpen] = createSignal(false);
   const toast = useToast();
 
-  setTimeout(() => setLoading(false), 1500);
+  setTimeout(() => setLoading(false), 1000);
 
   const columns: Column<Order>[] = [
-    { key: "id", header: "注文ID", width: "120px" },
+    { key: "id", header: "注文ID", width: "7rem" },
     {
       key: "customer",
       header: "顧客",
       render: (_v, row) => (
-        <HStack gap={2}>
+        <HStack gap={2} align="center">
           <Avatar name={row.customer as string} size="sm" />
           <span>{row.customer as string}</span>
         </HStack>
@@ -126,200 +251,151 @@ export function DashboardApp() {
         </Badge>
       ),
     },
-    { key: "date", header: "日付" },
+    { key: "date", header: "受注", align: "end" },
   ];
+
+  function refresh() {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 800);
+  }
 
   function handleExport() {
     toast.add({ message: "CSVファイルを準備しています…", variant: "info" });
-    setTimeout(() => {
-      toast.add({ message: "ダウンロードが開始されました", variant: "success" });
-    }, 2000);
+    setTimeout(() => toast.add({ message: "ダウンロードが開始されました", variant: "success" }), 2000);
   }
 
   return (
     <div class="sample-page">
       <ToastContainer position="top-right" />
 
-      <Breadcrumb>
-        <BreadcrumbItem href="#">ホーム</BreadcrumbItem>
-        <BreadcrumbItem current>ダッシュボード</BreadcrumbItem>
-      </Breadcrumb>
-
-      <div style={{ height: "16px" }} />
-
-      <div class="sample-header">
-        <h1>ダッシュボード</h1>
-        <HStack gap={2}>
-          <Tooltip content="データを更新">
-            <IconButton
-              variant="neutral"
+      <Stack gap={4}>
+        <div class="dash-header">
+          <Stack gap={1}>
+            <Heading level={1} size="xl">
+              売上サマリ
+            </Heading>
+            <HStack gap={2} align="center">
+              <span class="dash-live" aria-hidden="true" />
+              <Text as="span" size="sm" tone="muted">
+                全店舗 · 2026年6月30日 14:22 時点
+              </Text>
+            </HStack>
+          </Stack>
+          <HStack gap={2} align="center">
+            <SegmentedControl
               size="sm"
-              icon={<span>↻</span>}
-              aria-label="更新"
-              onClick={() => {
-                setLoading(true);
-                setTimeout(() => setLoading(false), 1000);
-              }}
+              label="集計期間"
+              value={range()}
+              onChange={setRange}
+              options={[
+                { value: "7d", label: "7日" },
+                { value: "30d", label: "30日" },
+                { value: "12m", label: "12ヶ月" },
+              ]}
             />
-          </Tooltip>
-          <Menu
-            open={menuOpen()}
-            onOpenChange={setMenuOpen}
-            trigger={
-              <Button variant="neutral" size="sm">
-                操作 ▾
-              </Button>
-            }
-          >
-            <MenuItem onSelect={handleExport}>CSVエクスポート</MenuItem>
-            <MenuItem onSelect={() => toast.add({ message: "レポート生成中…", variant: "info" })}>
-              レポート生成
-            </MenuItem>
-            <MenuSeparator />
-            <MenuItem onSelect={() => toast.add({ message: "設定を開きます", variant: "info" })}>設定</MenuItem>
-          </Menu>
-        </HStack>
-      </div>
+            <Tooltip content="データを更新">
+              <IconButton variant="ghost" size="sm" icon={<RefreshIcon />} aria-label="更新" onClick={refresh} />
+            </Tooltip>
+            <Menu
+              open={menuOpen()}
+              onOpenChange={setMenuOpen}
+              trigger={
+                <Button variant="neutral" size="sm" iconRight={<ChevronIcon />}>
+                  操作
+                </Button>
+              }
+            >
+              <MenuItem onSelect={handleExport}>CSVエクスポート</MenuItem>
+              <MenuItem onSelect={() => toast.add({ message: "レポート生成中…", variant: "info" })}>
+                レポート生成
+              </MenuItem>
+              <MenuSeparator />
+              <MenuItem onSelect={() => toast.add({ message: "設定を開きます", variant: "info" })}>設定</MenuItem>
+            </Menu>
+          </HStack>
+        </div>
 
-      <Show when={!loading()} fallback={<SkeletonCards />}>
-        <Grid minItemWidth="12rem" gap={4}>
-          <MetricCard label="売上" value="¥1,284,000" change="12.5%" positive />
-          <MetricCard label="注文数" value="324" change="8.2%" positive />
-          <MetricCard label="顧客数" value="1,892" change="3.1%" positive />
-          <MetricCard label="返品率" value="2.4%" change="0.8%" positive={false} />
-        </Grid>
-      </Show>
+        {/* The headline figure and the chart it comes from live together. */}
+        <Card>
+          <CardBody>
+            <Show when={!loading()} fallback={<HeroSkeleton />}>
+              <div class="dash-hero">
+                <div class="dash-hero__figure">
+                  <HStack gap={2} align="center">
+                    <Text as="span" size="sm" tone="muted">
+                      今月の売上
+                    </Text>
+                    <Popover
+                      open={popoverOpen()}
+                      onOpenChange={setPopoverOpen}
+                      content={
+                        <Stack gap={2} class="dash-popover">
+                          <Text weight="semibold" size="sm">
+                            売上の集計について
+                          </Text>
+                          <Text size="sm" tone="muted">
+                            確定済みの注文のみを対象とし、キャンセルと返金は差し引いています。
+                          </Text>
+                        </Stack>
+                      }
+                    >
+                      <IconButton variant="ghost" size="sm" icon={<HelpIcon />} aria-label="集計方法" />
+                    </Popover>
+                  </HStack>
+                  <p class="dash-hero__value">¥1,280,000</p>
+                  <HStack gap={2} align="center">
+                    <Badge variant="success" size="sm">
+                      ▲ 12.5%
+                    </Badge>
+                    <Text as="span" size="xs" tone="muted">
+                      前月比 +¥142,000
+                    </Text>
+                  </HStack>
+                </div>
+                <div class="dash-hero__chart">
+                  <TrendChart data={REVENUE} />
+                </div>
+              </div>
+            </Show>
+          </CardBody>
+          <CardFooter>
+            <div class="dash-strip">
+              <For each={SECONDARY}>
+                {(metric, i) => (
+                  <>
+                    <Show when={i() > 0}>
+                      <Divider orientation="vertical" />
+                    </Show>
+                    <div class="dash-strip__item">
+                      <Stat
+                        label={metric.label}
+                        value={metric.value}
+                        delta={`${metric.positive ? "▲" : "▼"} ${metric.change}`}
+                        deltaTone={metric.positive ? "positive" : "negative"}
+                      />
+                      <Sparkline values={metric.trend} positive={metric.positive} />
+                    </div>
+                  </>
+                )}
+              </For>
+            </div>
+          </CardFooter>
+        </Card>
 
-      <div style={{ height: "24px" }} />
-
-      <Tabs value={tab()} onChange={setTab}>
-        <TabList>
-          <Tab value="overview">概要</Tab>
-          <Tab value="orders">最近の注文</Tab>
-          <Tab value="details">詳細</Tab>
-        </TabList>
-
-        <TabPanel value="overview">
-          <div style={{ height: "16px" }} />
-          <Grid minItemWidth="20rem" gap={4}>
-            <Card>
-              <CardHeader>
-                <HStack gap={2} align="center">
-                  <Text as="span" weight="semibold">
-                    月間売上推移
-                  </Text>
-                  <Spacer />
-                  <Popover
-                    open={popoverOpen()}
-                    onOpenChange={setPopoverOpen}
-                    content={
-                      <div style={{ padding: "12px", "max-width": "240px" }}>
-                        <p style={{ margin: "0 0 8px", "font-weight": "600" }}>売上推移について</p>
-                        <p style={{ margin: 0, "font-size": "13px", color: "var(--so-text-muted)" }}>
-                          過去6ヶ月の月間売上を表示しています。前年同月比で15%増加傾向にあります。
-                        </p>
-                      </div>
-                    }
-                  >
-                    <IconButton variant="neutral" size="sm" icon={<span>?</span>} aria-label="詳細情報" />
-                  </Popover>
-                </HStack>
-              </CardHeader>
-              <CardBody>
-                <BarChart
-                  data={[
-                    { label: "1月", value: 65 },
-                    { label: "2月", value: 72 },
-                    { label: "3月", value: 58 },
-                    { label: "4月", value: 85 },
-                    { label: "5月", value: 92 },
-                    { label: "6月", value: 78 },
-                  ]}
-                />
-              </CardBody>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Text as="span" weight="semibold">
-                  カテゴリ別売上
-                </Text>
-              </CardHeader>
-              <CardBody>
-                <Stack gap={3}>
-                  <ProgressRow label="エレクトロニクス" value={78} />
-                  <ProgressRow label="アパレル" value={62} />
-                  <ProgressRow label="食品" value={45} />
-                  <ProgressRow label="書籍" value={31} />
-                </Stack>
-              </CardBody>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Text as="span" weight="semibold">
-                  最近のアクティビティ
-                </Text>
-              </CardHeader>
-              <CardBody>
-                <Timeline
-                  items={[
-                    {
-                      title: "デプロイ完了",
-                      description: "v2.14.0 を本番環境に反映",
-                      timestamp: "14:22",
-                      dateTime: "2026-05-30T14:22",
-                      variant: "success",
-                    },
-                    {
-                      title: "在庫アラート",
-                      description: "ワイヤレスイヤホンの在庫が残り3点",
-                      timestamp: "11:05",
-                      dateTime: "2026-05-30T11:05",
-                      variant: "warning",
-                    },
-                    {
-                      title: "返金処理",
-                      description: "ORD-004 をキャンセル",
-                      timestamp: "09:48",
-                      dateTime: "2026-05-30T09:48",
-                      variant: "danger",
-                    },
-                    {
-                      title: "日次バッチ実行",
-                      timestamp: "03:00",
-                      dateTime: "2026-05-30T03:00",
-                    },
-                  ]}
-                />
-              </CardBody>
-            </Card>
-          </Grid>
-        </TabPanel>
-
-        <TabPanel value="orders">
-          <div style={{ height: "16px" }} />
+        <div class="dash-columns">
           <Card>
             <CardHeader>
               <HStack gap={2} align="center">
                 <Text as="span" weight="semibold">
-                  最近の注文
+                  直近の注文
                 </Text>
-                <Spacer />
-                <SegmentedControl
-                  size="sm"
-                  label="期間"
-                  value={range()}
-                  onChange={setRange}
-                  options={[
-                    { value: "24h", label: "24時間" },
-                    { value: "7d", label: "7日" },
-                    { value: "30d", label: "30日" },
-                  ]}
-                />
-                <Tag variant="primary" size="sm">
-                  全 {ORDERS.length} 件
+                <Tag variant="neutral" size="sm">
+                  {ORDERS.length} 件
                 </Tag>
+                <Spacer />
+                <Button variant="ghost" size="sm" onClick={handleExport}>
+                  エクスポート
+                </Button>
               </HStack>
             </CardHeader>
             <CardBody>
@@ -331,102 +407,119 @@ export function DashboardApp() {
               />
             </CardBody>
           </Card>
-        </TabPanel>
 
-        <TabPanel value="details">
-          <div style={{ height: "16px" }} />
-          <Card>
-            <CardHeader>
-              <Text as="span" weight="semibold">
-                システム情報
-              </Text>
-            </CardHeader>
-            <CardBody>
-              <DescriptionList
-                columns={2}
-                items={[
-                  { term: "サーバー稼働時間", description: "14日 8時間 32分" },
-                  {
-                    term: "API応答時間",
-                    description: (
-                      <HStack gap={1}>
-                        <span>42ms</span>{" "}
-                        <Badge variant="success" size="sm">
-                          正常
-                        </Badge>
-                      </HStack>
-                    ),
-                  },
-                  {
-                    term: "データベース",
-                    description: (
-                      <HStack gap={1}>
-                        <span>PostgreSQL 16</span>{" "}
-                        <Badge variant="info" size="sm">
-                          v16.2
-                        </Badge>
-                      </HStack>
-                    ),
-                  },
-                  { term: "最終デプロイ", description: "2026-05-30 14:22" },
-                  { term: "ストレージ使用量", description: <Progress value={68} /> },
-                  { term: "メモリ使用率", description: <Progress value={42} /> },
-                ]}
-              />
-            </CardBody>
-          </Card>
-        </TabPanel>
-      </Tabs>
+          <Stack gap={3}>
+            <Card>
+              <CardHeader>
+                <Text as="span" weight="semibold">
+                  カテゴリ別
+                </Text>
+              </CardHeader>
+              <CardBody>
+                <Stack gap={3}>
+                  <For each={CATEGORIES}>
+                    {(category) => (
+                      <CategoryRow label={category.label} value={category.value} amount={category.amount} />
+                    )}
+                  </For>
+                </Stack>
+              </CardBody>
+            </Card>
 
-      <div style={{ height: "24px" }} />
+            <Card>
+              <CardHeader>
+                <Text as="span" weight="semibold">
+                  アクティビティ
+                </Text>
+              </CardHeader>
+              <CardBody>
+                <Timeline
+                  items={[
+                    {
+                      title: "デプロイ完了",
+                      description: "v2.14.0 を本番環境に反映",
+                      timestamp: "14:22",
+                      dateTime: "2026-06-30T14:22",
+                      variant: "success",
+                    },
+                    {
+                      title: "在庫アラート",
+                      description: "ワイヤレスイヤホンの在庫が残り3点",
+                      timestamp: "11:05",
+                      dateTime: "2026-06-30T11:05",
+                      variant: "warning",
+                    },
+                    {
+                      title: "返金処理",
+                      description: "ORD-004 をキャンセル",
+                      timestamp: "09:48",
+                      dateTime: "2026-06-30T09:48",
+                      variant: "danger",
+                    },
+                    { title: "日次バッチ実行", timestamp: "03:00", dateTime: "2026-06-30T03:00" },
+                  ]}
+                />
+              </CardBody>
+            </Card>
+          </Stack>
+        </div>
 
-      <Divider />
+        <Collapsible open={systemOpen()} onOpenChange={setSystemOpen} title="システム情報">
+          <DescriptionList
+            columns={2}
+            items={[
+              { term: "サーバー稼働時間", description: "14日 8時間 32分" },
+              {
+                term: "API応答時間",
+                description: (
+                  <HStack gap={2} align="center">
+                    <span>42ms</span>
+                    <Badge variant="success" size="sm">
+                      正常
+                    </Badge>
+                  </HStack>
+                ),
+              },
+              {
+                term: "データベース",
+                description: (
+                  <HStack gap={2} align="center">
+                    <span>PostgreSQL 16</span>
+                    <Badge variant="info" size="sm">
+                      v16.2
+                    </Badge>
+                  </HStack>
+                ),
+              },
+              { term: "最終デプロイ", description: "2026-06-30 14:22" },
+              { term: "ストレージ使用量", description: <Progress value={68} aria-label="ストレージ使用量" /> },
+              { term: "メモリ使用率", description: <Progress value={42} aria-label="メモリ使用率" /> },
+            ]}
+          />
+        </Collapsible>
 
-      <div style={{ height: "16px" }} />
-
-      <HStack gap={2} align="center">
-        <Spinner size="sm" label="更新中" />
-        <Text as="span" size="sm" tone="muted">
-          30秒ごとに自動更新
-        </Text>
-      </HStack>
+        <HStack gap={2} align="center">
+          <Show when={loading()}>
+            <Spinner size="sm" label="更新中" />
+          </Show>
+          <Text as="span" size="xs" tone="muted">
+            30秒ごとに自動更新
+          </Text>
+        </HStack>
+      </Stack>
     </div>
   );
 }
 
-function BarChart(props: { data: Array<{ label: string; value: number }> }) {
-  const max = () => Math.max(...props.data.map((d) => d.value));
+function HeroSkeleton() {
   return (
-    <div style={{ display: "flex", "align-items": "flex-end", gap: "12px", height: "160px" }}>
-      <For each={props.data}>
-        {(d) => (
-          <div style={{ flex: "1", "text-align": "center" }}>
-            <div
-              style={{
-                height: `${(d.value / max()) * 130}px`,
-                background: "var(--so-color-primary-base)",
-                "border-radius": "4px 4px 0 0",
-                "min-height": "4px",
-                transition: "height 0.3s",
-              }}
-            />
-            <div style={{ "font-size": "11px", color: "var(--so-text-muted)", "margin-top": "4px" }}>{d.label}</div>
-          </div>
-        )}
-      </For>
-    </div>
-  );
-}
-
-function ProgressRow(props: { label: string; value: number }): JSX.Element {
-  return (
-    <div>
-      <HStack gap={2} style={{ "margin-bottom": "4px" }}>
-        <span style={{ "font-size": "13px" }}>{props.label}</span>
-        <Spacer />
-        <span style={{ "font-size": "13px", "font-weight": "600" }}>{props.value}%</span>
-      </HStack>
-      <Progress value={props.value} />
+    <div class="dash-hero">
+      <Stack gap={2}>
+        <Skeleton width="6rem" height="12px" />
+        <Skeleton width="11rem" height="36px" />
+        <Skeleton width="8rem" height="16px" />
+      </Stack>
+      <Skeleton variant="rect" height="160px" />
     </div>
   );
 }

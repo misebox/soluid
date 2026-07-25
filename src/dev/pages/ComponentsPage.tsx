@@ -1,4 +1,5 @@
-import { createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import { useLocation } from "@solidjs/router";
+import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import { Badge } from "../../components/ui/soluid/Badge";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
@@ -103,6 +104,15 @@ export function ComponentsPage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Arriving from another page, the router sets the hash through the history
+  // API, which does not scroll on its own.
+  const location = useLocation();
+  createEffect(() => {
+    const id = location.hash.slice(1);
+    if (!id) return;
+    queueMicrotask(() => document.getElementById(id)?.scrollIntoView({ block: "start" }));
+  });
+
   return (
     <div class="components-page">
       {/* Sidebar */}
@@ -166,8 +176,15 @@ export function ComponentsPage() {
         {/* Component cards */}
         <For each={filtered()}>
           {(cat) => (
-            <section class="components-category">
-              <h2>{t(lang(), cat.labelKey)}</h2>
+            <section id={`category-${cat.slug}`} class="components-category">
+              <h2>
+                <a class="heading-anchor" href={`#category-${cat.slug}`}>
+                  {t(lang(), cat.labelKey)}
+                  <span class="heading-anchor__mark" aria-hidden="true">
+                    #
+                  </span>
+                </a>
+              </h2>
               <For each={cat.components}>{(name) => <ComponentCard name={name} />}</For>
             </section>
           )}
@@ -191,7 +208,12 @@ function ComponentCard(props: { name: string }) {
       <Card>
         <CardHeader>
           <div>
-            <span class="component-card-name">{props.name}</span>
+            <a class="heading-anchor component-card-name" href={`#component-${props.name}`}>
+              {props.name}
+              <span class="heading-anchor__mark" aria-hidden="true">
+                #
+              </span>
+            </a>
             <Show when={description()}>{(desc) => <p class="component-card-desc">{desc()}</p>}</Show>
           </div>
         </CardHeader>

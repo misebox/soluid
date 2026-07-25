@@ -7,6 +7,7 @@
   --site-font-size-3xl: 36px;
   --site-space-8: 48px;
   --site-space-10: 64px;
+  --site-header-height: 56px;
 }
 
 /* ===== Site Layout ===== */
@@ -22,7 +23,12 @@
   gap: var(--so-space-4);
   padding: var(--so-space-3) var(--so-space-5);
   border-bottom: 1px solid var(--so-border);
+  /* Opaque, because content scrolls underneath. Below soluid's overlay
+     layer (z-index 1000) so dialogs and menus still sit on top. */
   background: var(--so-bg-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .site-logo {
@@ -97,15 +103,16 @@
 /* ===== Components Page ===== */
 .components-page {
   display: flex;
-  min-height: calc(100vh - 56px);
+  min-height: calc(100vh - var(--site-header-height));
 }
 
 .components-sidebar {
   width: 220px;
   flex-shrink: 0;
   position: sticky;
-  top: 0;
-  height: calc(100vh - 56px);
+  /* Sits below the sticky header rather than under it. */
+  top: var(--site-header-height);
+  height: calc(100vh - var(--site-header-height));
   overflow-y: auto;
   border-right: 1px solid var(--so-border);
   background: var(--so-bg-subtle);
@@ -215,9 +222,14 @@
   border-bottom: 1px solid var(--so-border);
 }
 
+/* Anchor targets clear the sticky header when scrolled to. */
+.component-card-anchor,
+.components-category {
+  scroll-margin-top: calc(var(--site-header-height) + var(--so-space-3));
+}
+
 .component-card-anchor {
   margin-bottom: var(--so-space-4);
-  scroll-margin-top: 16px;
 }
 
 .component-card-name {
@@ -724,5 +736,35 @@
 
 .sample-preview__actions a:hover {
   color: var(--so-text);
+  text-decoration: underline;
+}
+
+/* ---------- Heading anchors ---------- */
+
+.heading-anchor {
+  color: inherit;
+  text-decoration: none;
+}
+
+.heading-anchor__mark {
+  margin-left: var(--so-space-2);
+  color: var(--so-text-muted);
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.heading-anchor:hover .heading-anchor__mark,
+.heading-anchor:focus-visible .heading-anchor__mark {
+  opacity: 1;
+}
+
+.top-category-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.top-category-link:hover {
+  color: var(--so-color-primary-subtle-fg);
   text-decoration: underline;
 }
