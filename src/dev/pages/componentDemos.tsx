@@ -14,6 +14,7 @@ import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
+import { FormField } from "../../components/ui/soluid/FormField";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { IconButton } from "../../components/ui/soluid/IconButton";
 import { Menu, MenuItem, MenuSeparator } from "../../components/ui/soluid/Menu";
@@ -33,9 +34,10 @@ import { Table } from "../../components/ui/soluid/Table";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import { Tag } from "../../components/ui/soluid/Tag";
 import { TextArea } from "../../components/ui/soluid/TextArea";
-import { TextField } from "../../components/ui/soluid/TextField";
+import { TextField, TextFieldInput } from "../../components/ui/soluid/TextField";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { Tooltip } from "../../components/ui/soluid/Tooltip";
+import { VisuallyHidden } from "../../components/ui/soluid/VisuallyHidden";
 
 /* ---------- Categories ---------- */
 
@@ -44,12 +46,22 @@ export const CATEGORIES = [
   {
     slug: "general",
     labelKey: "cat.general",
-    components: ["Button", "IconButton", "Badge", "Tag", "Avatar", "Tooltip"],
+    components: ["Button", "IconButton", "Badge", "Tag", "Avatar", "Tooltip", "VisuallyHidden"],
   },
   {
     slug: "form",
     labelKey: "cat.form",
-    components: ["TextField", "TextArea", "NumberInput", "Select", "Checkbox", "CheckboxGroup", "RadioGroup", "Switch"],
+    components: [
+      "FormField",
+      "TextField",
+      "TextArea",
+      "NumberInput",
+      "Select",
+      "Checkbox",
+      "CheckboxGroup",
+      "RadioGroup",
+      "Switch",
+    ],
   },
   {
     slug: "data",
@@ -155,6 +167,21 @@ import { HStack } from "./soluid/HStack";
 <Tooltip content="Save changes" placement="bottom">
   <Button variant="primary">Save</Button>
 </Tooltip>`,
+
+  VisuallyHidden: `import { VisuallyHidden } from "./soluid/VisuallyHidden";
+
+<button>
+  <TrashIcon />
+  <VisuallyHidden>Delete item</VisuallyHidden>
+</button>`,
+
+  FormField: `import { FormField } from "./soluid/FormField";
+
+// Wraps any control with a label, hint and error, and wires up
+// the id / aria-describedby association for you.
+<FormField label="API key" hint="Found in project settings" required>
+  <input class="so-text-field__input" type="text" />
+</FormField>`,
 
   TextField: `import { TextField } from "./soluid/TextField";
 
@@ -906,6 +933,32 @@ function ToastDemo(): JSX.Element {
   );
 }
 
+function VisuallyHiddenDemo(): JSX.Element {
+  return (
+    <Stack gap={2}>
+      <Button variant="neutral">
+        ✕<VisuallyHidden>Close panel</VisuallyHidden>
+      </Button>
+      <p style={{ "font-size": "var(--so-font-size-sm)", color: "var(--so-text-muted)", margin: "0" }}>
+        The button above reads as “Close panel” to a screen reader.
+      </p>
+    </Stack>
+  );
+}
+
+function FormFieldDemo(): JSX.Element {
+  return (
+    <Stack gap={3}>
+      <FormField label="API key" hint="Found in your project settings" required>
+        <TextFieldInput placeholder="sk-..." />
+      </FormField>
+      <FormField label="Workspace" error="This workspace no longer exists">
+        <TextFieldInput value="acme-prod" />
+      </FormField>
+    </Stack>
+  );
+}
+
 function TabsDemo(): JSX.Element {
   const [active, setActive] = createSignal("tab1");
   return (
@@ -993,6 +1046,8 @@ export const DEMOS: Record<string, () => JSX.Element> = {
   Tag: TagDemo,
   Avatar: AvatarDemo,
   Tooltip: TooltipDemo,
+  VisuallyHidden: VisuallyHiddenDemo,
+  FormField: FormFieldDemo,
   TextField: TextFieldDemo,
   TextArea: TextAreaDemo,
   NumberInput: NumberInputDemo,

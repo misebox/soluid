@@ -15,6 +15,7 @@ export const ja: Record<string, string> = {
   "AlertProps.variant": "表示スタイル: success, danger, warning, info",
   "AlertProps.children": "アラートの内容",
   "AlertProps.onDismiss": "閉じるボタンクリック時のコールバック",
+  "AlertProps.dismissLabel": "閉じるボタンのアクセシブルラベル",
   "AlertProps.class": "追加CSSクラス",
   "AlertProps.density": "コンポーネントの密度",
 
@@ -43,6 +44,7 @@ export const ja: Record<string, string> = {
 
   // BreadcrumbProps
   "BreadcrumbProps.children": "BreadcrumbItem要素",
+  "BreadcrumbProps.label": "ナビゲーションランドマークのアクセシブルラベル",
   "BreadcrumbProps.class": "追加CSSクラス",
   "BreadcrumbProps.density": "コンポーネントの密度",
 
@@ -218,6 +220,10 @@ export const ja: Record<string, string> = {
   "PaginationProps.size": "ボタンのサイズ",
   "PaginationProps.showPages": "ページ番号ボタンを表示",
   "PaginationProps.maxVisible": "表示するページボタンの最大数",
+  "PaginationProps.label": "ナビゲーションランドマークのアクセシブルラベル",
+  "PaginationProps.previousLabel": "前ページボタンのテキストとアクセシブルラベル",
+  "PaginationProps.nextLabel": "次ページボタンのテキストとアクセシブルラベル",
+  "PaginationProps.pageLabel": "ページ番号ボタンのアクセシブルラベルを生成する関数",
   "PaginationProps.class": "追加CSSクラス",
   "PaginationProps.density": "コンポーネントの密度",
 
@@ -232,6 +238,7 @@ export const ja: Record<string, string> = {
 
   // ProgressProps
   "ProgressProps.value": "進捗率 (0-100)",
+  "ProgressProps.segments": "複数セグメント表示。指定時は value と variant を無視",
   "ProgressProps.variant": "カラーバリアント",
   "ProgressProps.size": "バーの高さ",
   "ProgressProps.aria-label": "アクセシビリティラベル",
@@ -261,6 +268,15 @@ export const ja: Record<string, string> = {
   "SelectProps.value": "現在選択中の値",
   "SelectProps.onChange": "選択変更時のコールバック",
   "SelectProps.options": "選択可能なオプションの配列",
+  "SelectInputProps.value": "現在選択されている値",
+  "SelectInputProps.onChange": "選択が変更されたときのコールバック",
+  "SelectInputProps.options": "選択可能なオプションの配列",
+  "SelectInputProps.placeholder": "未選択時に表示されるプレースホルダー選択肢",
+  "TextFieldInputProps.value": "現在のテキスト値",
+  "TextFieldInputProps.onInput": "入力のたびに呼ばれるコールバック",
+  "TextFieldInputProps.type": "入力タイプ: text, email, password, url, tel",
+  "TextAreaInputProps.value": "現在のテキスト値",
+  "TextAreaInputProps.onInput": "入力のたびに呼ばれるコールバック",
   "SelectProps.placeholder": "プレースホルダーテキスト",
   "SelectProps.label": "フィールドラベル",
   "SelectProps.error": "エラーメッセージ",
@@ -281,6 +297,7 @@ export const ja: Record<string, string> = {
   // SpinnerProps
   "SpinnerProps.size": "スピナーのサイズ",
   "SpinnerProps.variant": "カラー: primary または neutral",
+  "SpinnerProps.label": "ローディング中に読み上げられるアクセシブルラベル",
   "SpinnerProps.class": "追加CSSクラス",
   "SpinnerProps.density": "コンポーネントの密度",
 
@@ -314,6 +331,8 @@ export const ja: Record<string, string> = {
   "TableProps.selectedKeys": "選択中の行キーのSet",
   "TableProps.onSelect": "選択変更時のコールバック",
   "TableProps.rowKey": "行キーを導出する関数",
+  "TableProps.selectAllLabel": "全選択チェックボックスのアクセシブルラベル",
+  "TableProps.selectRowLabel": "行チェックボックスのアクセシブルラベルを生成する関数",
   "TableProps.class": "追加CSSクラス",
   "TableProps.density": "コンポーネントの密度",
 
@@ -344,6 +363,7 @@ export const ja: Record<string, string> = {
   "TagProps.fill": "塗りスタイル: subtle または solid",
   "TagProps.size": "タグのサイズ",
   "TagProps.onRemove": "削除ボタンクリック時のコールバック",
+  "TagProps.removeLabel": "削除ボタンのアクセシブルラベル",
   "TagProps.children": "タグラベル",
   "TagProps.class": "追加CSSクラス",
   "TagProps.density": "コンポーネントの密度",
@@ -378,6 +398,7 @@ export const ja: Record<string, string> = {
 
   // ToastContainerProps
   "ToastContainerProps.position": "トーストの表示位置",
+  "ToastContainerProps.dismissLabel": "各トーストの閉じるボタンのアクセシブルラベル",
 
   // TooltipProps
   "TooltipProps.content": "ツールチップのテキスト",
@@ -422,6 +443,8 @@ export const ja: Record<string, string> = {
   "desc.Tag": "分類やフィルタリング用の削除可能なラベル。",
   "desc.Avatar": "イニシャルまたは画像を表示する円形のユーザー表現。",
   "desc.Tooltip": "ホバー時に表示される配置可能なポップアップヒント。",
+  "desc.VisuallyHidden": "視覚的には隠しつつスクリーンリーダーには読み上げさせるテキスト。",
+  "desc.FormField": "任意のコントロールに id と ARIA を紐付けるラベル・ヒント・エラーのラッパー。",
   "desc.TextField": "ラベル、ヒント、バリデーション付きの1行テキスト入力。",
   "desc.TextArea": "ラベルとヒント付きの複数行テキスト入力。",
   "desc.NumberInput": "増減ボタンと最小/最大値を持つ数値入力。",

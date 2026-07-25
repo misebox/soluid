@@ -15,6 +15,7 @@ export const en: Record<string, string> = {
   "AlertProps.variant": "Visual style: success, danger, warning, info",
   "AlertProps.children": "Alert content",
   "AlertProps.onDismiss": "Callback when dismiss button is clicked",
+  "AlertProps.dismissLabel": "Accessible label for the dismiss button",
   "AlertProps.class": "Additional CSS class",
   "AlertProps.density": "Component density",
 
@@ -43,6 +44,7 @@ export const en: Record<string, string> = {
 
   // BreadcrumbProps
   "BreadcrumbProps.children": "BreadcrumbItem elements",
+  "BreadcrumbProps.label": "Accessible label for the navigation landmark",
   "BreadcrumbProps.class": "Additional CSS class",
   "BreadcrumbProps.density": "Component density",
 
@@ -218,6 +220,10 @@ export const en: Record<string, string> = {
   "PaginationProps.size": "Button size",
   "PaginationProps.showPages": "Show page number buttons",
   "PaginationProps.maxVisible": "Max visible page buttons",
+  "PaginationProps.label": "Accessible label for the navigation landmark",
+  "PaginationProps.previousLabel": "Text and accessible label for the previous-page button",
+  "PaginationProps.nextLabel": "Text and accessible label for the next-page button",
+  "PaginationProps.pageLabel": "Builds the accessible label for a numbered page button",
   "PaginationProps.class": "Additional CSS class",
   "PaginationProps.density": "Component density",
 
@@ -232,6 +238,7 @@ export const en: Record<string, string> = {
 
   // ProgressProps
   "ProgressProps.value": "Progress percentage (0-100)",
+  "ProgressProps.segments": "Multi-segment mode; overrides value and variant",
   "ProgressProps.variant": "Color variant",
   "ProgressProps.size": "Bar height",
   "ProgressProps.aria-label": "Accessible label",
@@ -261,6 +268,15 @@ export const en: Record<string, string> = {
   "SelectProps.value": "Currently selected value",
   "SelectProps.onChange": "Callback when selection changes",
   "SelectProps.options": "Array of selectable options",
+  "SelectInputProps.value": "Currently selected value",
+  "SelectInputProps.onChange": "Callback when the selection changes",
+  "SelectInputProps.options": "Array of selectable options",
+  "SelectInputProps.placeholder": "Placeholder option shown when nothing is selected",
+  "TextFieldInputProps.value": "Current text value",
+  "TextFieldInputProps.onInput": "Callback on every keystroke",
+  "TextFieldInputProps.type": "Input type: text, email, password, url or tel",
+  "TextAreaInputProps.value": "Current text value",
+  "TextAreaInputProps.onInput": "Callback on every keystroke",
   "SelectProps.placeholder": "Placeholder text",
   "SelectProps.label": "Field label",
   "SelectProps.error": "Error message",
@@ -281,6 +297,7 @@ export const en: Record<string, string> = {
   // SpinnerProps
   "SpinnerProps.size": "Spinner size",
   "SpinnerProps.variant": "Color: primary or neutral",
+  "SpinnerProps.label": "Accessible label announced while loading",
   "SpinnerProps.class": "Additional CSS class",
   "SpinnerProps.density": "Component density",
 
@@ -314,6 +331,8 @@ export const en: Record<string, string> = {
   "TableProps.selectedKeys": "Set of selected row keys",
   "TableProps.onSelect": "Callback when selection changes",
   "TableProps.rowKey": "Function to derive row key",
+  "TableProps.selectAllLabel": "Accessible label for the select-all checkbox",
+  "TableProps.selectRowLabel": "Builds the accessible label for a row checkbox",
   "TableProps.class": "Additional CSS class",
   "TableProps.density": "Component density",
 
@@ -344,6 +363,7 @@ export const en: Record<string, string> = {
   "TagProps.fill": "Fill style: subtle or solid",
   "TagProps.size": "Tag size",
   "TagProps.onRemove": "Callback when remove button is clicked",
+  "TagProps.removeLabel": "Accessible label for the remove button",
   "TagProps.children": "Tag label",
   "TagProps.class": "Additional CSS class",
   "TagProps.density": "Component density",
@@ -378,6 +398,7 @@ export const en: Record<string, string> = {
 
   // ToastContainerProps
   "ToastContainerProps.position": "Toast position on screen",
+  "ToastContainerProps.dismissLabel": "Accessible label for each toast's dismiss button",
 
   // TooltipProps
   "TooltipProps.content": "Tooltip text",
@@ -421,6 +442,8 @@ export const en: Record<string, string> = {
   "desc.Tag": "Removable label for categorization or filtering.",
   "desc.Avatar": "Circular user representation showing initials or image.",
   "desc.Tooltip": "Popup hint shown on hover with configurable placement.",
+  "desc.VisuallyHidden": "Text exposed to screen readers but hidden from sight.",
+  "desc.FormField": "Label, hint and error wrapper that wires up ids and ARIA for any control.",
   "desc.TextField": "Single-line text input with label, hint, and validation support.",
   "desc.TextArea": "Multi-line text input with label and hint.",
   "desc.NumberInput": "Numeric input with increment/decrement controls and min/max bounds.",

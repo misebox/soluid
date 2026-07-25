@@ -647,6 +647,9 @@ const a11yRules: Rule[] = [
   },
 ];
 
+/** `--so-color-<name>-<role>` tokens generated for every colour by createTheme(). */
+const COLOR_ROLE_TOKEN = /^--so-color-[a-z]+-(base|fg|subtle|subtle-fg|border|hover|active)$/;
+
 /** Blank out `/* ... *\/` comments, preserving newlines so line numbers stay valid. */
 function stripComments(css: string): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, " "));
@@ -711,14 +714,19 @@ const cssRules: Rule[] = [
       for (const { text } of cssFiles) {
         for (const match of text.matchAll(/var\((--so-[a-z0-9-]+)/g)) used.add(match[1]);
       }
-      return Array.from(definedTokens)
-        .filter((token) => !used.has(token))
-        .map((token) => ({
-          rule: "css/token-used",
-          level: "warn" as const,
-          file: relative(TOKEN_FILE),
-          message: `${token} is defined but never referenced`,
-        }));
+      return (
+        Array.from(definedTokens)
+          .filter((token) => !used.has(token))
+          // createTheme() emits the full role set for every colour, so a role no
+          // built-in component happens to paint is still part of the contract.
+          .filter((token) => !COLOR_ROLE_TOKEN.test(token))
+          .map((token) => ({
+            rule: "css/token-used",
+            level: "warn" as const,
+            file: relative(TOKEN_FILE),
+            message: `${token} is defined but never referenced`,
+          }))
+      );
     },
   },
   {
