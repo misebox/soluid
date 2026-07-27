@@ -724,6 +724,9 @@ export const en: Record<string, string> = {
   "top.featureThemeableDesc": "CSS custom properties with light/dark themes and density variants.",
   "top.componentsHeading": "Components",
   "action.close": "Close",
+  "density.label": "Spacing",
+  "density.normal": "Comfortable",
+  "density.dense": "Compact",
 
   // ===== Sample apps =====
   "samples.heading": "Sample Apps",

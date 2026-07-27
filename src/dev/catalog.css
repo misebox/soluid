@@ -109,6 +109,9 @@
 .components-sidebar {
   width: 220px;
   flex-shrink: 0;
+  /* The height below is the whole box: without this the padding is added on
+     top of it and the last link sits below the viewport, unreachable. */
+  box-sizing: border-box;
   position: sticky;
   /* Sits below the sticky header rather than under it. */
   top: var(--site-header-height);
@@ -748,17 +751,22 @@
   text-decoration: none;
 }
 
+.heading-anchor:hover {
+  color: var(--so-color-primary-subtle-fg);
+}
+
+/* Always visible: a marker that only appears on hover is a link nobody
+   discovers, and it is invisible to touch users entirely. */
 .heading-anchor__mark {
   margin-left: var(--so-space-2);
-  color: var(--so-text-muted);
+  color: var(--so-border);
   font-weight: 400;
-  opacity: 0;
-  transition: opacity 0.15s;
+  transition: color 0.15s;
 }
 
 .heading-anchor:hover .heading-anchor__mark,
 .heading-anchor:focus-visible .heading-anchor__mark {
-  opacity: 1;
+  color: var(--so-color-primary-base);
 }
 
 .top-category-link {
@@ -769,4 +777,10 @@
 .top-category-link:hover {
   color: var(--so-color-primary-subtle-fg);
   text-decoration: underline;
+}
+
+/* The segmented track shares its background with the header, so it needs an
+   outline here to read as one control. */
+.site-header .so-segmented {
+  border: 1px solid var(--so-border);
 }

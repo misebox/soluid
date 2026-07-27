@@ -725,6 +725,9 @@ export const ja: Record<string, string> = {
   "top.featureThemeableDesc": "CSSカスタムプロパティによるライト/ダークテーマと密度バリアント。",
   "top.componentsHeading": "コンポーネント",
   "action.close": "閉じる",
+  "density.label": "表示の余白",
+  "density.normal": "標準",
+  "density.dense": "コンパクト",
 
   // ===== Sample apps =====
   "samples.heading": "サンプルアプリ",

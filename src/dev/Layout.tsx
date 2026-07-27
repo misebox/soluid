@@ -2,6 +2,7 @@ import { A } from "@solidjs/router";
 import { createEffect, createSignal, type ParentProps } from "solid-js";
 import type { Density } from "../components/ui/soluid/core/types";
 import { IconButton } from "../components/ui/soluid/IconButton";
+import { SegmentedControl } from "../components/ui/soluid/SegmentedControl";
 import { Spacer } from "../components/ui/soluid/Spacer";
 import { type Lang, lang, setLang } from "./lang";
 import { t } from "./locales";
@@ -16,22 +17,6 @@ const SunIcon = () => (
 const MoonIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </svg>
-);
-
-/* Rows inside a frame, so the icon reads as row spacing rather than as the
-   hamburger menu three bare lines look like. */
-const DensityNormalIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-    <rect x="3" y="3" width="18" height="18" rx="2.5" />
-    <path d="M7 9.5h10M7 14.5h10" />
-  </svg>
-);
-
-const DensityDenseIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-    <rect x="3" y="3" width="18" height="18" rx="2.5" />
-    <path d="M7 8h10M7 12h10M7 16h10" />
   </svg>
 );
 
@@ -64,12 +49,17 @@ export function Layout(props: ParentProps) {
         </nav>
         <Spacer />
         <div class="site-controls">
-          <IconButton
-            icon={density() === "normal" ? <DensityNormalIcon /> : <DensityDenseIcon />}
-            aria-label={density() === "normal" ? "Switch to dense" : "Switch to normal"}
-            variant="ghost"
+          {/* Two icon attempts at this were read as a menu and as a font-size
+              control, so the options are spelled out instead. */}
+          <SegmentedControl
             size="sm"
-            onClick={() => setDensity(density() === "normal" ? "dense" : "normal")}
+            label={t(lang(), "density.label")}
+            value={density()}
+            onChange={(value) => setDensity(value as Density)}
+            options={[
+              { value: "normal", label: t(lang(), "density.normal") },
+              { value: "dense", label: t(lang(), "density.dense") },
+            ]}
           />
           <select class="lang-select" value={lang()} onChange={(e) => setLang(e.currentTarget.value as Lang)}>
             <option value="en">EN</option>
