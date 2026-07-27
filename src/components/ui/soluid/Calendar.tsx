@@ -67,8 +67,10 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   ]);
 
   // Uncontrolled fallback: open on the selected month, else the current one.
-  const [ownMonth, setOwnMonth] = createSignal(local.value?.slice(0, 7) ?? toISO(Date.now()).slice(0, 7));
-  const month = () => local.month ?? ownMonth();
+  // `||` rather than `??` because an empty string is how a form says "no date
+  // yet", and an empty month would reach Intl as an invalid date.
+  const [ownMonth, setOwnMonth] = createSignal(local.value?.slice(0, 7) || toISO(Date.now()).slice(0, 7));
+  const month = () => local.month || ownMonth();
 
   const weekStart = () => local.weekStartsOn ?? 0;
   const locale = () => local.locale;

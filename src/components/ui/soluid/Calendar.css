@@ -2,6 +2,10 @@
   display: inline-flex;
   flex-direction: column;
   gap: var(--so-space-2);
+  /* Sized by its seven fixed columns, so a stretching parent cannot
+     stretch the month grid across the whole row. */
+  width: max-content;
+  max-width: 100%;
   padding: var(--so-space-2);
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
@@ -54,7 +58,7 @@
 .so-calendar__weekdays,
 .so-calendar__days {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 2rem);
   gap: 2px;
 }
 
