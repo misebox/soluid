@@ -4,6 +4,27 @@
   "type": "module",
   "description": "CLI that installs SolidJS UI components directly into your project — own the code, no runtime dependency",
   "license": "MIT",
+  "scripts": {
+    "dev": "bun run precatalog && vite --open /soluid/ --base /soluid",
+    "generate:css": "bunx tsx scripts/generate-css-imports.ts",
+    "generate:api": "bunx tsx scripts/generate-api-data.ts",
+    "precatalog": "bun run generate:css && bun run generate:api",
+    "build:catalog": "bun run precatalog && vite build --config vite.config.catalog.ts && bun run build:samples",
+    "build:samples": "vite build --config vite.config.samples.ts",
+    "build:cli": "tsc -p cli/tsconfig.json",
+    "prepare": "bun run build:cli",
+    "test": "vitest run",
+    "audit": "bun scripts/audit-components.ts",
+    "typecheck": "tsc --noEmit",
+    "fmt": "oxfmt src/ cli/ scripts/",
+    "fmt:check": "oxfmt --check src/ cli/ scripts/",
+    "lint": "oxlint src/ cli/",
+    "lint:fix": "oxlint --fix src/ cli/ && oxfmt src/ cli/ scripts/",
+    "verify": "concurrently -n lint,fmt,test,audit,build \"bun run lint\" \"bun run fmt:check\" \"bun run test\" \"bun run audit\" \"bun run build:cli\"",
+    "ready": "bun run lint:fix && bun run verify && bun run build:catalog && bun run fmt",
+    "push:check": "sh bin/check-build-freshness.sh",
+    "check-drift": "bash scripts/check-cli-drift.sh; bash scripts/check-components-drift.sh"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misebox/soluid.git"
@@ -29,27 +50,6 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "dev": "bun run precatalog && vite --open /soluid/ --base /soluid",
-    "generate:css": "bunx tsx scripts/generate-css-imports.ts",
-    "generate:api": "bunx tsx scripts/generate-api-data.ts",
-    "precatalog": "bun run generate:css && bun run generate:api",
-    "build:catalog": "bun run precatalog && vite build --config vite.config.catalog.ts && bun run build:samples",
-    "build:samples": "vite build --config vite.config.samples.ts",
-    "build:cli": "tsc -p cli/tsconfig.json",
-    "prepare": "bun run build:cli",
-    "test": "vitest run",
-    "audit": "bun scripts/audit-components.ts",
-    "typecheck": "tsc --noEmit",
-    "fmt": "oxfmt src/ cli/ scripts/",
-    "fmt:check": "oxfmt --check src/ cli/ scripts/",
-    "lint": "oxlint src/ cli/",
-    "lint:fix": "oxlint --fix src/ cli/ && oxfmt src/ cli/ scripts/",
-    "verify": "concurrently -n lint,fmt,test,audit,build \"bun run lint\" \"bun run fmt:check\" \"bun run test\" \"bun run audit\" \"bun run build:cli\"",
-    "ready": "bun run lint:fix && bun run verify && bun run build:catalog && bun run fmt",
-    "push:check": "sh bin/check-build-freshness.sh",
-    "check-drift": "bash scripts/check-cli-drift.sh; bash scripts/check-components-drift.sh"
-  },
   "devDependencies": {
     "@floating-ui/dom": "^1.7.5",
     "@solid-primitives/active-element": "^2.1.5",
