@@ -117,6 +117,8 @@
   top: var(--site-header-height);
   height: calc(100vh - var(--site-header-height));
   overflow-y: auto;
+  /* Hitting the end of the sidebar must not carry the scroll on to the page. */
+  overscroll-behavior: contain;
   border-right: 1px solid var(--so-border);
   background: var(--so-bg-subtle);
   padding: var(--so-space-3);
