@@ -99,9 +99,8 @@ export function ComponentsPage() {
     for (const obs of observers) obs.disconnect();
   });
 
-  const scrollTo = (name: string) => {
-    const el = document.getElementById(`component-${name}`);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Arriving from another page, the router sets the hash through the history
@@ -130,7 +129,16 @@ export function ComponentsPage() {
           <For each={filtered()}>
             {(cat) => (
               <div class="sidebar-category">
-                <div class="sidebar-category-label">{t(lang(), cat.labelKey)}</div>
+                <a
+                  class="sidebar-category-label"
+                  href={`#category-${cat.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo(`category-${cat.slug}`);
+                  }}
+                >
+                  {t(lang(), cat.labelKey)}
+                </a>
                 <For each={cat.components}>
                   {(name) => (
                     <a
@@ -138,7 +146,7 @@ export function ComponentsPage() {
                       href={`#component-${name}`}
                       onClick={(e) => {
                         e.preventDefault();
-                        scrollTo(name);
+                        scrollTo(`component-${name}`);
                       }}
                     >
                       {name}
@@ -162,7 +170,7 @@ export function ComponentsPage() {
                 href={`#component-${name}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  scrollTo(name);
+                  scrollTo(`component-${name}`);
                 }}
               >
                 <Badge variant="neutral" size="sm">

@@ -158,13 +158,19 @@
 }
 
 .sidebar-category-label {
+  display: block;
   font-size: var(--site-font-size-xs);
   font-weight: 600;
   color: var(--so-text-muted);
+  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: var(--so-space-1) var(--so-space-2);
   margin-bottom: var(--so-space-1);
+}
+
+.sidebar-category-label:hover {
+  color: var(--so-text);
 }
 
 .sidebar-link {
@@ -440,6 +446,27 @@
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   background: var(--so-bg);
+}
+
+/* The whole card is the link, so it carries the hover and focus states. */
+.top-category-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.top-category-card:hover {
+  border-color: var(--so-color-primary-border);
+  background: var(--so-color-primary-subtle);
+}
+
+.top-category-card:hover h3 {
+  color: var(--so-color-primary-subtle-fg);
+}
+
+.top-category-card:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: 2px;
 }
 
 .top-feature-card h3,
@@ -832,16 +859,6 @@
 .heading-anchor:hover .heading-anchor__mark,
 .heading-anchor:focus-visible .heading-anchor__mark {
   color: var(--so-color-primary-base);
-}
-
-.top-category-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.top-category-link:hover {
-  color: var(--so-color-primary-subtle-fg);
-  text-decoration: underline;
 }
 
 /* The segmented track shares its background with the header, so it needs an

@@ -156,14 +156,10 @@ export function TopPage() {
         <h2>{t(lang(), "top.componentsHeading")}</h2>
         <div class="top-feature-grid">
           {categories.map((cat) => (
-            <div class="top-category-card">
-              <h3>
-                <A class="top-category-link" href={`/components#category-${cat.slug}`}>
-                  {t(lang(), cat.labelKey)}
-                </A>
-              </h3>
+            <A class="top-category-card" href={`/components#category-${cat.slug}`}>
+              <h3>{t(lang(), cat.labelKey)}</h3>
               <p>{cat.components}</p>
-            </div>
+            </A>
           ))}
         </div>
         <div class="top-links">
