@@ -432,6 +432,21 @@
   user-select: none;
 }
 
+/* Shields.io images have a fixed 20px height; width/height are set on the tags
+   so the hero does not reflow once they load. */
+.top-badges {
+  display: flex;
+  gap: var(--so-space-2);
+  justify-content: center;
+  margin-top: var(--so-space-3);
+}
+
+.top-badges img {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+
 .top-features {
   margin-bottom: var(--site-space-8);
 }

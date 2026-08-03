@@ -131,6 +131,14 @@ export function TopPage() {
         <pre class="top-install">
           <code>bunx soluid init</code>
         </pre>
+        <p class="top-badges">
+          <a href="https://www.npmjs.com/package/soluid" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/npm/v/soluid" alt="npm version" width="80" height="20" />
+          </a>
+          <a href="https://github.com/misebox/soluid/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
+            <img src="https://img.shields.io/npm/l/soluid" alt="license" width="78" height="20" />
+          </a>
+        </p>
       </section>
 
       <ScreenshotZoom />
