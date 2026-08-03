@@ -371,12 +371,57 @@
   margin-bottom: var(--site-space-8);
 }
 
-.top-showcase img {
+.top-shot {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--so-border);
+  border-radius: var(--so-radius);
+  background: none;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.top-shot img {
   width: 100%;
   height: auto;
   display: block;
-  border: 1px solid var(--so-border);
-  border-radius: var(--so-radius);
+}
+
+/* Full-size viewer */
+.top-zoom {
+  width: 96vw;
+  max-width: 96vw;
+  height: 92vh;
+  max-height: 92dvh;
+}
+
+.top-zoom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--so-space-3);
+}
+
+.top-zoom-body {
+  padding: 0;
+  overflow: hidden;
+}
+
+.top-zoom-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  cursor: grab;
+}
+
+.top-zoom-scroll:active {
+  cursor: grabbing;
+}
+
+.top-zoom-scroll img {
+  display: block;
+  max-width: none;
+  user-select: none;
 }
 
 .top-features {

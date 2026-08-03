@@ -1,4 +1,7 @@
 import { A } from "@solidjs/router";
+import { createSignal, For, Show } from "solid-js";
+import { Dialog, DialogBody, DialogHeader } from "../../components/ui/soluid/Dialog";
+import { IconButton } from "../../components/ui/soluid/IconButton";
 import { lang } from "../lang";
 import { t } from "../locales";
 
@@ -19,7 +22,105 @@ const categories = [
   },
 ];
 
-const base = import.meta.env.BASE_URL;
+// `--base /soluid` (no trailing slash) is valid on the CLI, so normalize before joining.
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+
+const screenshots = [
+  { src: `${base}images/components-wall-dark-4k.png`, altKey: "top.showcaseAltDark" },
+  { src: `${base}images/components-wall-light-4k.png`, altKey: "top.showcaseAltLight" },
+];
+
+type Screenshot = (typeof screenshots)[number];
+
+/** Full-size viewer: opens the screenshot at 1:1 and scrolls to the spot that was clicked. */
+function ScreenshotZoom() {
+  const [shown, setShown] = createSignal<Screenshot>();
+  // Where the thumbnail was clicked, as a 0..1 ratio of the image.
+  let focus = { x: 0.5, y: 0.5 };
+  let scroller: HTMLDivElement | undefined;
+
+  function open(shot: Screenshot, event: MouseEvent & { currentTarget: HTMLButtonElement }) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    focus = {
+      x: (event.clientX - rect.left) / rect.width,
+      y: (event.clientY - rect.top) / rect.height,
+    };
+    setShown(shot);
+  }
+
+  function scrollToFocus() {
+    if (!scroller) return;
+    scroller.scrollLeft = focus.x * scroller.scrollWidth - scroller.clientWidth / 2;
+    scroller.scrollTop = focus.y * scroller.scrollHeight - scroller.clientHeight / 2;
+  }
+
+  // Grab-and-drag panning. Null while no drag is in flight.
+  let grab: { x: number; y: number; left: number; top: number } | undefined;
+
+  function startPan(event: PointerEvent & { currentTarget: HTMLDivElement }) {
+    // Touch already scrolls natively; only take over for mouse and pen.
+    if (event.button !== 0 || event.pointerType === "touch") return;
+    const el = event.currentTarget;
+    grab = { x: event.clientX, y: event.clientY, left: el.scrollLeft, top: el.scrollTop };
+    el.setPointerCapture(event.pointerId);
+  }
+
+  function pan(event: PointerEvent & { currentTarget: HTMLDivElement }) {
+    if (!grab) return;
+    event.currentTarget.scrollLeft = grab.left - (event.clientX - grab.x);
+    event.currentTarget.scrollTop = grab.top - (event.clientY - grab.y);
+  }
+
+  function endPan(event: PointerEvent & { currentTarget: HTMLDivElement }) {
+    if (!grab) return;
+    grab = undefined;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  }
+
+  return (
+    <>
+      <section class="top-showcase">
+        <For each={screenshots}>
+          {(shot) => (
+            <button type="button" class="top-shot" onClick={[open, shot]}>
+              <img src={shot.src} alt={t(lang(), shot.altKey)} loading="lazy" />
+            </button>
+          )}
+        </For>
+      </section>
+
+      <Show when={shown()}>
+        {(shot) => (
+          <Dialog open onClose={() => setShown(undefined)} class="top-zoom">
+            <DialogHeader class="top-zoom-header">
+              <span>{t(lang(), shot().altKey)}</span>
+              <IconButton
+                size="sm"
+                aria-label={t(lang(), "action.close")}
+                icon={<span>✕</span>}
+                onClick={() => setShown(undefined)}
+              />
+            </DialogHeader>
+            <DialogBody class="top-zoom-body">
+              <div
+                ref={scroller}
+                class="top-zoom-scroll"
+                onPointerDown={startPan}
+                onPointerMove={pan}
+                onPointerUp={endPan}
+                onPointerCancel={endPan}
+              >
+                <img src={shot().src} alt={t(lang(), shot().altKey)} draggable={false} onLoad={scrollToFocus} />
+              </div>
+            </DialogBody>
+          </Dialog>
+        )}
+      </Show>
+    </>
+  );
+}
 
 export function TopPage() {
   return (
@@ -32,14 +133,7 @@ export function TopPage() {
         </pre>
       </section>
 
-      <section class="top-showcase">
-        <img src={`${base}images/components-wall-dark-4k.png`} alt={t(lang(), "top.showcaseAltDark")} loading="lazy" />
-        <img
-          src={`${base}images/components-wall-light-4k.png`}
-          alt={t(lang(), "top.showcaseAltLight")}
-          loading="lazy"
-        />
-      </section>
+      <ScreenshotZoom />
 
       <section class="top-features">
         <div class="top-feature-grid">
