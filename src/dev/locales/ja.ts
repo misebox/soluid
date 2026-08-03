@@ -716,6 +716,8 @@ export const ja: Record<string, string> = {
 
   // ===== Top Page =====
   "top.heroSub": "SolidJS向けのコピー&ペースト型UIコンポーネントツールキット",
+  "top.showcaseAltDark": "ダークテーマで表示したsoluidコンポーネント一覧",
+  "top.showcaseAltLight": "ライトテーマで表示したsoluidコンポーネント一覧",
   "top.featureCopyOwn": "コピー&所有",
   "top.featureCopyOwnDesc":
     "コンポーネントはプロジェクトにコピーされます。ランタイム依存なし — コードはあなたのものです。",

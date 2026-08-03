@@ -716,6 +716,8 @@ export const en: Record<string, string> = {
 
   // ===== Top Page =====
   "top.heroSub": "SolidJS Opinionated UI — copy-paste component toolkit for business apps.",
+  "top.showcaseAltDark": "Wall of soluid components rendered in the dark theme",
+  "top.showcaseAltLight": "Wall of soluid components rendered in the light theme",
   "top.featureCopyOwn": "Copy & Own",
   "top.featureCopyOwnDesc": "Components are copied into your project. No runtime dependency — you own the code.",
   "top.featureAccessible": "Accessible",

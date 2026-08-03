@@ -19,6 +19,8 @@ const categories = [
   },
 ];
 
+const base = import.meta.env.BASE_URL;
+
 export function TopPage() {
   return (
     <div class="top-page">
@@ -28,6 +30,15 @@ export function TopPage() {
         <pre class="top-install">
           <code>bunx soluid init</code>
         </pre>
+      </section>
+
+      <section class="top-showcase">
+        <img src={`${base}images/components-wall-dark-4k.png`} alt={t(lang(), "top.showcaseAltDark")} loading="lazy" />
+        <img
+          src={`${base}images/components-wall-light-4k.png`}
+          alt={t(lang(), "top.showcaseAltLight")}
+          loading="lazy"
+        />
       </section>
 
       <section class="top-features">

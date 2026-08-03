@@ -7,6 +7,11 @@ CLI that installs SolidJS UI components directly into your project. Own the code
 
 [Website & Demo](https://misebox.github.io/soluid/)
 
+<p align="center">
+  <img src="./public/images/components-wall-dark-4k.png" width="49%" alt="soluid components, dark theme">
+  <img src="./public/images/components-wall-light-4k.png" width="49%" alt="soluid components, light theme">
+</p>
+
 ## Features
 
 - **Rich component set** — layout, form, data display, feedback, navigation
