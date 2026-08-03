@@ -1,7 +1,7 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
-import { cls } from "./core/utils";
+import { cls, mergeStyle } from "./core/utils";
 
 export interface GridProps extends CommonProps {
   /** Fixed column count. Ignored when `minItemWidth` is set. */
@@ -25,6 +25,7 @@ export function Grid(props: GridProps & JSX.HTMLAttributes<HTMLDivElement>) {
     "gap",
     "align",
     "children",
+    "style",
   ]);
 
   // min() keeps a single narrow item from overflowing its container.
@@ -40,7 +41,7 @@ export function Grid(props: GridProps & JSX.HTMLAttributes<HTMLDivElement>) {
         local.align && `so-grid--align-${local.align}`,
         local.class,
       )}
-      style={{ "grid-template-columns": autoColumns() }}
+      style={mergeStyle({ "grid-template-columns": autoColumns() }, local.style)}
       data-density={local.density}
       {...others}
     >
