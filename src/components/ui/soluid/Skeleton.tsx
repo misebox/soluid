@@ -15,12 +15,13 @@ export function Skeleton(props: SkeletonProps) {
     <div
       class={cls("so-skeleton", `so-skeleton--${local.variant ?? "text"}`, local.class)}
       data-density={local.density}
+      aria-hidden="true"
+      {...others}
+      // Set after the spread so a caller cannot drop the sizing this needs.
       style={{
         width: local.width,
         height: local.height,
       }}
-      aria-hidden="true"
-      {...others}
     />
   );
 }

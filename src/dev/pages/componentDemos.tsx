@@ -874,7 +874,9 @@ function ContainerDemo(): JSX.Element {
 
 function AspectRatioDemo(): JSX.Element {
   return (
-    <HStack gap={3}>
+    // Without align="start" the flex row stretches both boxes to the same
+    // height, which overrides the ratio being demonstrated.
+    <HStack gap={3} align="start">
       <AspectRatio ratio={16 / 9} class="demo-outline" style={{ width: "180px" }}>
         <div class="demo-tile">16 / 9</div>
       </AspectRatio>

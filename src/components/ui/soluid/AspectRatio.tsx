@@ -1,7 +1,7 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
-import { cls } from "./core/utils";
+import { cls, mergeStyle } from "./core/utils";
 
 export interface AspectRatioProps extends CommonProps {
   /** Width divided by height, e.g. 16 / 9 (default: 1) */
@@ -10,12 +10,12 @@ export interface AspectRatioProps extends CommonProps {
 }
 
 export function AspectRatio(props: AspectRatioProps & JSX.HTMLAttributes<HTMLDivElement>) {
-  const [local, others] = splitProps(props, ["class", "density", "ratio", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "ratio", "children", "style"]);
 
   return (
     <div
       class={cls("so-aspect-ratio", local.class)}
-      style={{ "aspect-ratio": String(local.ratio ?? 1) }}
+      style={mergeStyle({ "aspect-ratio": String(local.ratio ?? 1) }, local.style)}
       data-density={local.density}
       {...others}
     >
