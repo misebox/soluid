@@ -888,6 +888,7 @@ export const en: Record<string, string> = {
   "gs.step1.p2": "This creates {code} interactively.",
   "gs.step2.title": "2. Edit Config",
   "gs.step2.p1": "Open {code} and adjust paths and components as needed:",
+  "gs.step2.componentsVersion": "components release to install; written by init and bumped by update",
   "gs.step2.componentDir": "directory where component files are copied",
   "gs.step2.cssPath": "output path for the concatenated CSS file",
   "gs.step2.components": "list of components to install",
@@ -902,5 +903,9 @@ export const en: Record<string, string> = {
   "gs.step5.p1": "Import and use directly — you own the code:",
   "gs.theme.title": "Theming",
   "gs.theme.p1": "Switch between light/dark themes and density variants via data attributes:",
+  "gs.theme.colorsIntro":
+    "Brand colors are set in soluid.config.json. Add a colors block to override primary, neutral, danger, success, warning or info; install writes them into the generated CSS:",
+  "gs.theme.colorsNote":
+    "Only the base color is needed. Hover, active, subtle and border shades are derived from it with color-mix(), and both light and dark themes follow automatically.",
   "gs.other.title": "Other Commands",
 };

@@ -889,6 +889,7 @@ export const ja: Record<string, string> = {
   "gs.step1.p2": "対話形式で {code} が作成されます。",
   "gs.step2.title": "2. 設定の編集",
   "gs.step2.p1": "{code} を開いてパスとコンポーネントを調整します:",
+  "gs.step2.componentsVersion": "インストールするコンポーネントのリリース。init が書き込み、update が更新する",
   "gs.step2.componentDir": "コンポーネントファイルのコピー先ディレクトリ",
   "gs.step2.cssPath": "結合CSSファイルの出力パス",
   "gs.step2.components": "インストールするコンポーネントのリスト",
@@ -902,5 +903,9 @@ export const ja: Record<string, string> = {
   "gs.step5.p1": "直接インポートして使用 — コードはあなたのものです:",
   "gs.theme.title": "テーマ設定",
   "gs.theme.p1": "data属性でライト/ダークテーマと密度バリアントを切り替えます:",
+  "gs.theme.colorsIntro":
+    "ブランドカラーは soluid.config.json で設定します。colors を追加すると primary / neutral / danger / success / warning / info を上書きでき、install が生成CSSに書き出します:",
+  "gs.theme.colorsNote":
+    "指定するのはベース色だけです。hover / active / subtle / border は color-mix() で自動計算され、ライト・ダーク両テーマに追従します。",
   "gs.other.title": "その他のコマンド",
 };

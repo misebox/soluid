@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { HStack } from "../../components/ui/soluid/HStack";
@@ -60,16 +60,39 @@ function TextWithCode(props: { textKey: string; code: string }) {
   );
 }
 
-const CONFIG_EXAMPLE = `{
+const COLORS_EXAMPLE = `"colors": {
+  "primary": "#7c3aed",
+  "danger": "#e11d48"
+}`;
+
+/** Shown until the release list loads, and if GitHub is unreachable or rate-limits us. */
+const FALLBACK_COMPONENTS_VERSION = "0.2.7";
+
+/** Same lookup the CLI does in cli/config.ts, over plain HTTP so the static site stays current. */
+async function fetchLatestComponentsVersion(): Promise<string> {
+  try {
+    const res = await fetch("https://api.github.com/repos/misebox/soluid/releases?per_page=20");
+    if (!res.ok) return FALLBACK_COMPONENTS_VERSION;
+    const releases = (await res.json()) as Array<{ tag_name: string }>;
+    const latest = releases.find((r) => r.tag_name.startsWith("components-v"));
+    return latest ? latest.tag_name.replace("components-v", "") : FALLBACK_COMPONENTS_VERSION;
+  } catch {
+    return FALLBACK_COMPONENTS_VERSION;
+  }
+}
+
+export function GettingStartedPage() {
+  const [runner, setRunner] = createSignal<Runner>("bunx");
+  const [componentsVersion] = createResource(fetchLatestComponentsVersion);
+
+  const cmd = (args: string) => `${runner()} soluid ${args}`;
+
+  const configExample = () => `{
+  "componentsVersion": "${componentsVersion() ?? FALLBACK_COMPONENTS_VERSION}",
   "componentDir": "src/components/ui",
   "cssPath": "src/soluid.css",
   "components": ["Button", "TextField", "Dialog"]
 }`;
-
-export function GettingStartedPage() {
-  const [runner, setRunner] = createSignal<Runner>("bunx");
-
-  const cmd = (args: string) => `${runner()} soluid ${args}`;
 
   return (
     <div class="gs-page">
@@ -92,8 +115,11 @@ export function GettingStartedPage() {
 
         <Step titleKey="gs.step2.title">
           <TextWithCode textKey="gs.step2.p1" code="soluid.config.json" />
-          <CodeBlock>{CONFIG_EXAMPLE}</CodeBlock>
+          <CodeBlock>{configExample()}</CodeBlock>
           <ul class="gs-list">
+            <li>
+              <code>componentsVersion</code> — {t(lang(), "gs.step2.componentsVersion")}
+            </li>
             <li>
               <code>componentDir</code> — {t(lang(), "gs.step2.componentDir")}
             </li>
@@ -147,6 +173,9 @@ function App() {
             {`document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.setAttribute("data-density", "dense");`}
           </CodeBlock>
+          <p>{t(lang(), "gs.theme.colorsIntro")}</p>
+          <CodeBlock>{COLORS_EXAMPLE}</CodeBlock>
+          <p>{t(lang(), "gs.theme.colorsNote")}</p>
         </Step>
 
         <Step titleKey="gs.other.title">
