@@ -1152,7 +1152,7 @@ function SliderDemo(): JSX.Element {
         showValue
         formatValue={(v) => `${v}%`}
       />
-      <Slider value={3} onInput={() => {}} min={1} max={5} step={1} size="sm" showValue />
+      <Slider label="Rating" value={3} onInput={() => {}} min={1} max={5} step={1} size="sm" showValue />
     </Stack>
   );
 }
@@ -1859,8 +1859,9 @@ function PaginationDemo(): JSX.Element {
   const [p2, setP2] = createSignal(3);
   return (
     <Stack gap={3}>
-      <Pagination page={p1()} totalPages={10} onChange={setP1} />
-      <Pagination page={p2()} totalPages={20} onChange={setP2} showPages maxVisible={7} />
+      {/* Distinct labels: two landmarks sharing one name are indistinguishable. */}
+      <Pagination label="Compact pagination" page={p1()} totalPages={10} onChange={setP1} />
+      <Pagination label="Numbered pagination" page={p2()} totalPages={20} onChange={setP2} showPages maxVisible={7} />
     </Stack>
   );
 }

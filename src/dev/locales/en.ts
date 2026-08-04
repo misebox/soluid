@@ -712,6 +712,7 @@ export const en: Record<string, string> = {
   "nav.gettingStarted": "Getting Started",
   "nav.components": "Components",
   "nav.samples": "Samples",
+  "nav.primary": "Primary",
   "nav.browseComponents": "Browse Components",
 
   // ===== Top Page =====
@@ -874,6 +875,9 @@ export const en: Record<string, string> = {
 
   // ===== Components Page UI =====
   "ui.search": "Search...",
+  "ui.searchComponents": "Search components",
+  "ui.language": "Language",
+  "ui.skipToContent": "Skip to content",
   "ui.tabDemo": "Demo",
   "ui.tabCode": "Code",
   "ui.tabApi": "API",

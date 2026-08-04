@@ -32,11 +32,16 @@ export function Layout(props: ParentProps) {
 
   return (
     <div class="site">
+      {/* First tab stop: the components page puts 60+ sidebar links between
+          the header and the content. */}
+      <a href="#site-main" class="site-skip-link">
+        {t(lang(), "ui.skipToContent")}
+      </a>
       <header class="site-header">
         <A href="/" class="site-logo">
           soluid
         </A>
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label={t(lang(), "nav.primary")}>
           <A href="/getting-started" class="site-nav-link" activeClass="active">
             {t(lang(), "nav.gettingStarted")}
           </A>
@@ -61,7 +66,12 @@ export function Layout(props: ParentProps) {
               { value: "dense", label: t(lang(), "density.dense") },
             ]}
           />
-          <select class="lang-select" value={lang()} onChange={(e) => setLang(e.currentTarget.value as Lang)}>
+          <select
+            class="lang-select"
+            aria-label={t(lang(), "ui.language")}
+            value={lang()}
+            onChange={(e) => setLang(e.currentTarget.value as Lang)}
+          >
             <option value="en">EN</option>
             <option value="ja">JA</option>
           </select>
@@ -85,7 +95,9 @@ export function Layout(props: ParentProps) {
           </a>
         </div>
       </header>
-      <main class="site-main">{props.children}</main>
+      <main id="site-main" class="site-main">
+        {props.children}
+      </main>
     </div>
   );
 }

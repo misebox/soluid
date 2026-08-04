@@ -712,6 +712,7 @@ export const ja: Record<string, string> = {
   "nav.gettingStarted": "はじめに",
   "nav.components": "コンポーネント",
   "nav.samples": "サンプル",
+  "nav.primary": "メイン",
   "nav.browseComponents": "コンポーネント一覧",
 
   // ===== Top Page =====
@@ -875,6 +876,9 @@ export const ja: Record<string, string> = {
 
   // ===== Components Page UI =====
   "ui.search": "検索...",
+  "ui.searchComponents": "コンポーネントを検索",
+  "ui.language": "言語",
+  "ui.skipToContent": "本文へスキップ",
   "ui.tabDemo": "デモ",
   "ui.tabCode": "コード",
   "ui.tabApi": "API",

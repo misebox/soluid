@@ -17,6 +17,27 @@
   flex-direction: column;
 }
 
+/* Off-screen until focused, then it drops in above the sticky header. */
+.site-skip-link {
+  position: fixed;
+  top: var(--so-space-2);
+  left: var(--so-space-2);
+  z-index: 1100;
+  padding: var(--so-space-2) var(--so-space-4);
+  border-radius: var(--so-radius);
+  background: var(--so-color-primary-base);
+  color: #fff;
+  font-size: var(--so-font-size-sm);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.site-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--so-ring);
+  outline-offset: 2px;
+}
+
 .site-header {
   display: flex;
   align-items: center;
@@ -176,7 +197,10 @@
 }
 
 .sidebar-link {
-  display: block;
+  /* min-height rather than padding: 24px holds under either density (WCAG 2.5.8). */
+  display: flex;
+  align-items: center;
+  min-height: 24px;
   font-size: var(--so-font-size-sm);
   color: var(--so-text-muted);
   text-decoration: none;
