@@ -119,7 +119,8 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
       // context-menu key, which browsers dispatch as a contextmenu event.
       tabIndex={0}
       aria-haspopup="menu"
-      aria-expanded={open()}
+      // No aria-expanded: it needs a role that supports it, and this region has
+      // none. Opening moves focus into the menu, which announces it instead.
       aria-controls={open() ? menuId : undefined}
       data-density={local.density}
       onContextMenu={handleContextMenu}

@@ -26,6 +26,9 @@ export function Avatar(props: AvatarProps) {
 
   const showImage = () => local.src && !imgFailed();
   const initials = () => (local.name ? getInitials(local.name) : "");
+  // role="img" without a name is a violation, so an unnamed avatar stays a
+  // plain decorative span rather than getting an invented English label.
+  const label = () => local.alt ?? local.name;
 
   return (
     <span
@@ -35,8 +38,8 @@ export function Avatar(props: AvatarProps) {
         `so-avatar--${local.variant ?? "neutral"}`,
         local.class,
       )}
-      role="img"
-      aria-label={local.alt ?? local.name}
+      role={label() ? "img" : undefined}
+      aria-label={label()}
       data-density={local.density}
       {...others}
     >

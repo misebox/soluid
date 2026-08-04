@@ -71,27 +71,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--so-space-1);
 }
 
+/* The button is a 24px hit area (WCAG 2.5.8); ::before is the visible dot.
+   The dots sit flush so their centres stay 24px apart. */
 .so-carousel__dot {
-  width: 8px;
-  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.so-carousel__dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--so-border);
-  cursor: pointer;
   transition:
     background-color 0.15s,
     width 0.15s;
 }
 
-.so-carousel__dot:hover {
+.so-carousel__dot:hover::before {
   background-color: var(--so-color-neutral-base);
 }
 
-.so-carousel__dot--active {
+.so-carousel__dot--active::before {
   width: 20px;
   border-radius: 4px;
   background-color: var(--so-color-primary-base);
