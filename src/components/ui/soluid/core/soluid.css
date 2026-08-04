@@ -78,20 +78,22 @@
   --so-text-muted: #6b7280;
   --so-border: #e5e7eb;
 
-  /* Semantic color bases. Override these to recolor the entire system. */
-  --so-color-primary-base: #3b82f6;
-  --so-color-neutral-base: #6b7280;
-  --so-color-danger-base: #ef4444;
-  --so-color-success-base: #22c55e;
-  --so-color-warning-base: #f59e0b;
-  --so-color-info-base: #06b6d4;
+  /* Semantic color bases. Override these to recolor the entire system.
+     Chosen so each one clears 4.5:1 both as text on its own subtle tint and
+     under white text on the solid fill. */
+  --so-color-primary-base: #1961d2;
+  --so-color-neutral-base: #616875;
+  --so-color-danger-base: #cc1926;
+  --so-color-success-base: #00790a;
+  --so-color-warning-base: #a25100;
+  --so-color-info-base: #00708d;
 
   --so-ring: var(--so-color-primary-base);
 }
 
 /* --- Global tokens (dark) ---
-   Only swap bg/text/border. Color bases stay the same; derived shades
-   auto-adapt because they mix against --so-bg and --so-text. */
+   Swaps bg/text/border; the color bases are overridden further down.
+   Derived shades auto-adapt because they mix against --so-bg and --so-text. */
 
 [data-theme="dark"] {
   --so-bg: #0f172a;
@@ -153,6 +155,28 @@
   --so-color-info-subtle: color-mix(in oklch, var(--so-color-info-base) 14%, var(--so-bg));
   --so-color-info-subtle-fg: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 35%);
   --so-color-info-border: color-mix(in oklch, var(--so-color-info-base) 50%, var(--so-bg));
+}
+
+/* --- Color bases (dark) ---
+   A single base cannot clear 4.5:1 in both themes: reading as text on white
+   needs it darker than reading as text on #0f172a allows. Dark therefore gets
+   its own, lighter set, and the solid fills carry dark text instead of white.
+   Declared after the block above so these win at equal specificity. */
+
+[data-theme="dark"] {
+  --so-color-primary-base: #468eff;
+  --so-color-neutral-base: #888f9e;
+  --so-color-danger-base: #ff5451;
+  --so-color-success-base: #00a741;
+  --so-color-warning-base: #d07c00;
+  --so-color-info-base: #009ebc;
+
+  --so-color-primary-fg: var(--so-bg);
+  --so-color-neutral-fg: var(--so-bg);
+  --so-color-danger-fg: var(--so-bg);
+  --so-color-success-fg: var(--so-bg);
+  --so-color-warning-fg: var(--so-bg);
+  --so-color-info-fg: var(--so-bg);
 }
 
 /* --- Root container --- */
