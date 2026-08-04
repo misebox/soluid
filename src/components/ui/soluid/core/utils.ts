@@ -6,6 +6,16 @@ export function cls(...classes: (string | false | null | undefined)[]): string {
 }
 
 /**
+ * Whether the user asked for reduced motion.
+ *
+ * The stylesheet neutralises CSS transitions and animations globally, but it
+ * cannot reach motion driven from JavaScript, so scripted scrolling has to ask.
+ */
+export function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
  * Merge a component's own inline style with the caller's.
  *
  * Spreading caller props over an element that already sets `style` replaces the

@@ -1,7 +1,7 @@
 import { children, createEffect, createMemo, For, onCleanup, onMount, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
-import { cls } from "./core/utils";
+import { cls, prefersReducedMotion } from "./core/utils";
 
 export interface CarouselProps extends CommonProps {
   /** Index of the visible slide */
@@ -72,7 +72,10 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
   function scrollToIndex(index: number): void {
     if (!viewport || viewport.clientWidth === 0) return;
     syncing = true;
-    viewport.scrollTo({ left: viewport.clientWidth * index, behavior: "smooth" });
+    viewport.scrollTo({
+      left: viewport.clientWidth * index,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
     setTimeout(() => (syncing = false), 400);
   }
 
