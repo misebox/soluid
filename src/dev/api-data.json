@@ -7253,7 +7253,7 @@
       {
         "name": "aria-label",
         "type": "string",
-        "optional": true
+        "optional": false
       },
       {
         "name": "class",
