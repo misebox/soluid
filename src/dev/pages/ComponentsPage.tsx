@@ -120,6 +120,7 @@ export function ComponentsPage() {
           <input
             type="text"
             class="sidebar-search-input"
+            aria-label={t(lang(), "ui.searchComponents")}
             placeholder={t(lang(), "ui.search")}
             value={filter()}
             onInput={(e) => setFilter(e.currentTarget.value)}
