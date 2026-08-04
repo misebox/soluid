@@ -683,9 +683,10 @@ const [open, setOpen] = createSignal(false);
 
   Progress: `import { Progress } from "./soluid/Progress";
 
-<Progress value={65} variant="success" />
+<Progress value={65} variant="success" aria-label="Upload 65%" />
 
 <Progress
+  aria-label="Disk usage by type"
   segments={[
     { value: 40, variant: "success" },
     { value: 20, variant: "info" },
@@ -1645,10 +1646,11 @@ function AlertDemo(): JSX.Element {
 function ProgressDemo(): JSX.Element {
   return (
     <Stack gap={2}>
-      <Progress value={30} variant="info" />
-      <Progress value={65} variant="success" />
-      <Progress value={90} variant="warning" />
+      <Progress value={30} variant="info" aria-label="Upload 30%" />
+      <Progress value={65} variant="success" aria-label="Upload 65%" />
+      <Progress value={90} variant="warning" aria-label="Upload 90%" />
       <Progress
+        aria-label="Disk usage by type"
         segments={[
           { value: 40, variant: "success" },
           { value: 20, variant: "info" },

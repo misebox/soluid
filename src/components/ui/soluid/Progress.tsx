@@ -17,7 +17,8 @@ export interface ProgressProps extends CommonProps {
    */
   segments?: ProgressSegment[];
   size?: "sm" | "md";
-  "aria-label"?: string;
+  /** Required: role="progressbar" is meaningless to a screen reader without a name. */
+  "aria-label": string;
 }
 
 function clamp(n: number): number {
