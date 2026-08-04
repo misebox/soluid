@@ -91,9 +91,10 @@
   background-color: var(--so-bg-subtle);
 }
 
+/* No extra opacity: --so-text-muted already reads as secondary, and dimming it
+   further dropped these days to 2.98:1. */
 .so-calendar__day--outside {
   color: var(--so-text-muted);
-  opacity: 0.55;
 }
 
 .so-calendar__day--today {
