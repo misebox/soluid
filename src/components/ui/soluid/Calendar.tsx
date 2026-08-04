@@ -87,11 +87,16 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     return Array.from({ length: 7 }, (_, i) => format.format(new Date(Date.UTC(2024, 0, 7 + ((i + weekStart()) % 7)))));
   });
 
-  /** Six weeks of days, so the grid height never jumps between months. */
-  const days = createMemo(() => {
+  /**
+   * Six weeks of days, so the grid height never jumps between months. Grouped
+   * per week because `role="gridcell"` requires a `role="row"` parent.
+   */
+  const weeks = createMemo(() => {
     const first = startOfMonth(month());
     const offset = (new Date(first).getUTCDay() - weekStart() + 7) % 7;
-    return Array.from({ length: 42 }, (_, i) => first + (i - offset) * DAY_MS);
+    return Array.from({ length: 6 }, (_, week) =>
+      Array.from({ length: 7 }, (_, day) => first + (week * 7 + day - offset) * DAY_MS),
+    );
   });
 
   const isOutside = (utc: number) => toISO(utc).slice(0, 7) !== month();
@@ -175,31 +180,37 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
           </For>
         </div>
         <div class="so-calendar__days" role="rowgroup">
-          <For each={days()}>
-            {(utc) => {
-              const iso = toISO(utc);
-              return (
-                <button
-                  type="button"
-                  data-so-day={iso}
-                  class={cls(
-                    "so-calendar__day",
-                    isOutside(utc) && "so-calendar__day--outside",
-                    iso === today && "so-calendar__day--today",
-                    iso === local.value && "so-calendar__day--selected",
-                  )}
-                  role="gridcell"
-                  aria-selected={iso === local.value}
-                  aria-current={iso === today ? "date" : undefined}
-                  disabled={isDisabled(iso)}
-                  tabIndex={iso === tabStop() ? 0 : -1}
-                  onClick={() => select(iso)}
-                  onKeyDown={(e) => handleKeyDown(iso, e)}
-                >
-                  {new Date(utc).getUTCDate()}
-                </button>
-              );
-            }}
+          <For each={weeks()}>
+            {(week) => (
+              <div class="so-calendar__week" role="row">
+                <For each={week}>
+                  {(utc) => {
+                    const iso = toISO(utc);
+                    return (
+                      <button
+                        type="button"
+                        data-so-day={iso}
+                        class={cls(
+                          "so-calendar__day",
+                          isOutside(utc) && "so-calendar__day--outside",
+                          iso === today && "so-calendar__day--today",
+                          iso === local.value && "so-calendar__day--selected",
+                        )}
+                        role="gridcell"
+                        aria-selected={iso === local.value}
+                        aria-current={iso === today ? "date" : undefined}
+                        disabled={isDisabled(iso)}
+                        tabIndex={iso === tabStop() ? 0 : -1}
+                        onClick={() => select(iso)}
+                        onKeyDown={(e) => handleKeyDown(iso, e)}
+                      >
+                        {new Date(utc).getUTCDate()}
+                      </button>
+                    );
+                  }}
+                </For>
+              </div>
+            )}
           </For>
         </div>
       </div>
