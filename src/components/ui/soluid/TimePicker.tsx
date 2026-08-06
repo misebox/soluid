@@ -154,11 +154,21 @@ export function TimePickerControl(props: TimePickerControlProps) {
     onCleanup(autoUpdate(triggerRef, list, updatePosition));
   });
 
-  // Keep the highlighted time in view as the arrow keys walk the list.
+  // Keep the highlighted time in view as the arrow keys walk the list. Scrolls
+  // the list itself rather than calling scrollIntoView, which also scrolls the
+  // page while floating-ui has yet to position the list.
   createEffect(() => {
     if (!open()) return;
     const index = active();
-    queueMicrotask(() => document.getElementById(optionId(index))?.scrollIntoView({ block: "nearest" }));
+    queueMicrotask(() => {
+      const list = listRef();
+      const option = document.getElementById(optionId(index));
+      if (!list || !option) return;
+      const top = option.offsetTop;
+      const bottom = top + option.offsetHeight;
+      if (top < list.scrollTop) list.scrollTop = top;
+      else if (bottom > list.scrollTop + list.clientHeight) list.scrollTop = bottom - list.clientHeight;
+    });
   });
 
   function handleClickOutside(e: MouseEvent): void {

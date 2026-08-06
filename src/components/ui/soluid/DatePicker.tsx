@@ -80,8 +80,12 @@ export function DatePickerControl(props: DatePickerControlProps) {
     const panel = panelRef();
     if (!open() || !triggerRef || !panel) return;
     onCleanup(autoUpdate(triggerRef, panel, updatePosition));
-    // Hand focus to whichever day the calendar made its tab stop.
-    queueMicrotask(() => panel.querySelector<HTMLButtonElement>('[data-so-day][tabindex="0"]')?.focus());
+    // Hand focus to whichever day the calendar made its tab stop. preventScroll
+    // because floating-ui positions the panel a microtask later, so without it
+    // the browser scrolls to wherever the unpositioned panel happens to sit.
+    queueMicrotask(() =>
+      panel.querySelector<HTMLButtonElement>('[data-so-day][tabindex="0"]')?.focus({ preventScroll: true }),
+    );
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
