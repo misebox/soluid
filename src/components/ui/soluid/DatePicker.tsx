@@ -73,6 +73,15 @@ export function DatePickerControl(props: DatePickerControlProps) {
     }).then(({ x, y }) => {
       panel.style.left = `${x}px`;
       panel.style.top = `${y}px`;
+      // Until this runs the panel sits at the document origin, so the CSS keeps
+      // it hidden and nothing can focus or measure it there.
+      const firstPlacement = panel.dataset.soPlaced === undefined;
+      panel.dataset.soPlaced = "";
+      // Hand focus to whichever day the calendar made its tab stop, now that
+      // the panel is where it belongs. preventScroll guards the ordering.
+      if (firstPlacement) {
+        panel.querySelector<HTMLButtonElement>('[data-so-day][tabindex="0"]')?.focus({ preventScroll: true });
+      }
     });
   }
 
@@ -80,12 +89,6 @@ export function DatePickerControl(props: DatePickerControlProps) {
     const panel = panelRef();
     if (!open() || !triggerRef || !panel) return;
     onCleanup(autoUpdate(triggerRef, panel, updatePosition));
-    // Hand focus to whichever day the calendar made its tab stop. preventScroll
-    // because floating-ui positions the panel a microtask later, so without it
-    // the browser scrolls to wherever the unpositioned panel happens to sit.
-    queueMicrotask(() =>
-      panel.querySelector<HTMLButtonElement>('[data-so-day][tabindex="0"]')?.focus({ preventScroll: true }),
-    );
   });
 
   function handleKeyDown(e: KeyboardEvent): void {

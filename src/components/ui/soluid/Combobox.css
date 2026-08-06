@@ -49,6 +49,12 @@
 
 /* --- Listbox (portalled, positioned by floating-ui) --- */
 
+/* Portalled to <body>, so it starts at the document origin until floating-ui
+   writes its coordinates. Hidden until then. */
+.so-combobox__list:not([data-so-placed]) {
+  visibility: hidden;
+}
+
 .so-combobox__list {
   position: absolute;
   top: 0;

@@ -145,6 +145,9 @@ export function TimePickerControl(props: TimePickerControlProps) {
     }).then(({ x, y }) => {
       list.style.left = `${x}px`;
       list.style.top = `${y}px`;
+      // Until this runs the list sits at the document origin, so the CSS keeps
+      // it hidden and nothing can focus or measure it there.
+      list.dataset.soPlaced = "";
     });
   }
 

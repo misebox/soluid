@@ -61,6 +61,12 @@
 
 /* --- Listbox (portalled, positioned by floating-ui) --- */
 
+/* Portalled to <body>, so it starts at the document origin until floating-ui
+   writes its coordinates. Hidden until then. */
+.so-time-picker__list:not([data-so-placed]) {
+  visibility: hidden;
+}
+
 .so-time-picker__list {
   position: absolute;
   top: 0;

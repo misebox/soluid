@@ -97,6 +97,9 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     }).then(({ x, y }) => {
       panel.style.left = `${x}px`;
       panel.style.top = `${y}px`;
+      // Until this runs the panel sits at the document origin, so the CSS keeps
+      // it hidden and nothing can focus or measure it there.
+      panel.dataset.soPlaced = "";
     });
   }
 

@@ -56,6 +56,12 @@
 
 /* --- Panel --- */
 
+/* Portalled to <body>, so it starts at the document origin until floating-ui
+   writes its coordinates. Hidden until then. */
+.so-color-picker__panel:not([data-so-placed]) {
+  visibility: hidden;
+}
+
 .so-color-picker__panel {
   position: absolute;
   top: 0;

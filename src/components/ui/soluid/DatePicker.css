@@ -61,6 +61,13 @@
 
 /* --- Panel (portalled, positioned by floating-ui) --- */
 
+/* The panel is portalled to <body>, so top/left resolve against the document:
+   until floating-ui writes its coordinates it sits at the page origin. Hidden
+   until then, so nothing can be focused, measured or painted up there. */
+.so-date-picker__panel:not([data-so-placed]) {
+  visibility: hidden;
+}
+
 .so-date-picker__panel {
   position: absolute;
   top: 0;
