@@ -4,9 +4,12 @@ import { Badge } from "../../components/ui/soluid/Badge";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import apiData from "../api-data.json";
+// Generated from the demo source by scripts/generate-code-examples.ts, so the
+// Code tab always shows the demo on screen.
+import codeExamples from "../code-examples.json";
 import { lang } from "../lang";
 import { t } from "../locales";
-import { CATEGORIES, CODE_EXAMPLES, DEMOS, SUB_COMPONENTS } from "./componentDemos";
+import { CATEGORIES, DEMOS, SUB_COMPONENTS } from "./componentDemos";
 
 /* ---------- CopyableCode ---------- */
 
@@ -210,7 +213,7 @@ function ComponentCard(props: { name: string }) {
   const apis = createMemo(() => propsFor(props.name));
   const demo = () => DEMOS[props.name];
   const description = () => t(lang(), `desc.${props.name}`);
-  const codeExample = () => CODE_EXAMPLES[props.name];
+  const codeExample = () => (codeExamples as Record<string, string>)[props.name];
 
   return (
     <div id={`component-${props.name}`} class="component-card-anchor">

@@ -19,7 +19,8 @@ import * as path from "path";
 import * as ts from "typescript";
 import { fileURLToPath } from "url";
 import { registry } from "../cli/registry";
-import { CATEGORIES, CODE_EXAMPLES, DEMOS, SUB_COMPONENTS } from "../src/dev/pages/componentDemos";
+import codeExamples from "../src/dev/code-examples.json";
+import { CATEGORIES, DEMOS, SUB_COMPONENTS } from "../src/dev/pages/componentDemos";
 import { en } from "../src/dev/locales/en";
 import { ja } from "../src/dev/locales/ja";
 
@@ -810,7 +811,7 @@ const catalogRules: Rule[] = [
       for (const name of CATEGORIES.flatMap((c) => c.components)) {
         const missing: string[] = [];
         if (!DEMOS[name]) missing.push("DEMOS");
-        if (!CODE_EXAMPLES[name]) missing.push("CODE_EXAMPLES");
+        if (!(codeExamples as Record<string, string>)[name]) missing.push("code-examples.json");
         if (!en[`desc.${name}`]) missing.push("en desc");
         if (!ja[`desc.${name}`]) missing.push("ja desc");
         if (missing.length === 0) continue;
