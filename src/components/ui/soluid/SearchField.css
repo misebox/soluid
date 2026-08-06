@@ -5,9 +5,14 @@
   width: 100%;
 }
 
-/* Leave room for the icon on the left and the clear button on the right. */
 .so-search-field__input {
   width: 100%;
+}
+
+/* Room for the icon on the left and the clear button on the right. Scoped to
+   the wrapper for specificity: the size modifiers in TextField.css set `padding`
+   as a shorthand, which resets these and wins on source order otherwise. */
+.so-search-field .so-search-field__input {
   padding-left: var(--so-space-6);
   padding-right: var(--so-space-6);
 }
