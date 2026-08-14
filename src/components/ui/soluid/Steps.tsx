@@ -52,14 +52,16 @@ export function Steps(props: StepsProps & JSX.HTMLAttributes<HTMLElement>) {
             >
               <span class="so-steps__marker" aria-hidden="true">
                 <Show when={stateOf(i()) === "complete"} fallback={i() + 1}>
-                  <svg viewBox="0 0 12 12" fill="none" class="so-steps__check">
-                    <polyline
-                      points="2,6 5,9 10,3"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                  <svg
+                    class="so-steps__check"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m4 12 6 6 10-12" />
                   </svg>
                 </Show>
               </span>

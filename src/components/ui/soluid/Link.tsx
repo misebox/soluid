@@ -42,14 +42,17 @@ export function Link(props: LinkProps & JSX.AnchorHTMLAttributes<HTMLAnchorEleme
     >
       {local.children}
       <Show when={local.external}>
-        <svg class="so-link__external-icon" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <path
-            d="M4.5 2h5.5v5.5M10 2L5 7M8 8v2H2V4h2"
-            stroke="currentColor"
-            stroke-width="1.2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+        <svg
+          class="so-link__external-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M9 4h11v11M20 4 10 14M16 16v4H4V8h4" />
         </svg>
         <VisuallyHidden>{local.externalLabel ?? "(opens in a new tab)"}</VisuallyHidden>
       </Show>

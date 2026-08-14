@@ -134,9 +134,18 @@ export function DatePickerControl(props: DatePickerControlProps) {
         <Show when={display()} fallback={<span class="so-date-picker__placeholder">{local.placeholder}</span>}>
           {(text) => <span class="so-date-picker__value">{text()}</span>}
         </Show>
-        <svg class="so-date-picker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-          <rect x="3" y="5" width="18" height="16" rx="2" stroke-width="1.6" />
-          <path d="M3 10h18M8 3v4M16 3v4" stroke-width="1.6" stroke-linecap="round" />
+        <svg
+          class="so-date-picker__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M3 10h18M8 3v4M16 3v4" />
         </svg>
       </button>
 

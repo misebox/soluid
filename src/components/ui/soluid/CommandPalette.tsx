@@ -163,9 +163,18 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
             aria-label={local.label}
           >
             <div class="so-command__search">
-              <svg class="so-command__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5" />
-                <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <svg
+                class="so-command__icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m16 16 5 5" />
               </svg>
               <input
                 ref={inputRef}

@@ -97,20 +97,29 @@ export function Checkbox(props: CheckboxProps) {
         />
         <span class="so-checkbox__indicator" aria-hidden="true">
           <Show when={local.indeterminate}>
-            <svg viewBox="0 0 12 12" fill="none" class="so-checkbox__icon">
-              <line x1="2" y1="6" x2="10" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <svg
+              class="so-checkbox__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 12h16" />
             </svg>
           </Show>
           <Show when={!local.indeterminate && isChecked()}>
-            <svg viewBox="0 0 12 12" fill="none" class="so-checkbox__icon">
-              <polyline
-                points="2,6 5,9 10,3"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="none"
-              />
+            <svg
+              class="so-checkbox__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m4 12 6 6 10-12" />
             </svg>
           </Show>
         </span>

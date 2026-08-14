@@ -91,14 +91,17 @@ export function FileUpload(props: FileUploadProps & Omit<JSX.HTMLAttributes<HTML
             e.currentTarget.value = "";
           }}
         />
-        <svg class="so-file-upload__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 16v2.5A1.5 1.5 0 005.5 20h13a1.5 1.5 0 001.5-1.5V16"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+        <svg
+          class="so-file-upload__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 16v2.5A1.5 1.5 0 005.5 20h13a1.5 1.5 0 001.5-1.5V16" />
         </svg>
         <span class="so-file-upload__label">{local.label}</span>
         <Show when={local.hint}>
