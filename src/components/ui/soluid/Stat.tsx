@@ -3,6 +3,8 @@ import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+export type DeltaTone = "positive" | "negative" | "neutral";
+
 export interface StatProps extends CommonProps {
   label: string;
   value: JSX.Element;
@@ -11,7 +13,7 @@ export interface StatProps extends CommonProps {
   /** Change indicator, e.g. "+12.5%" */
   delta?: string;
   /** Colour of the change indicator (default: "neutral") */
-  deltaTone?: "positive" | "negative" | "neutral";
+  deltaTone?: DeltaTone;
   icon?: JSX.Element;
 }
 

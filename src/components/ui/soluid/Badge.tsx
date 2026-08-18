@@ -1,12 +1,12 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps, Variant } from "./core/types";
+import type { CommonProps, Fill, SmallSize, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface BadgeProps extends CommonProps {
   variant?: Variant;
-  fill?: "subtle" | "solid";
-  size?: "sm" | "md";
+  fill?: Fill;
+  size?: SmallSize;
   children: JSX.Element;
 }
 

@@ -1,17 +1,22 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, TextAlign } from "./core/types";
 import { cls } from "./core/utils";
+
+export type TextElement = "p" | "span" | "div" | "small" | "label";
+export type TextSize = "xs" | "sm" | "md" | "lg";
+export type TextWeight = "normal" | "medium" | "semibold" | "bold";
+export type TextTone = "default" | "muted" | "primary" | "danger" | "success" | "warning" | "info";
 
 export interface TextProps extends CommonProps {
   /** Element to render (default: "p") */
-  as?: "p" | "span" | "div" | "small" | "label";
-  size?: "xs" | "sm" | "md" | "lg";
-  weight?: "normal" | "medium" | "semibold" | "bold";
+  as?: TextElement;
+  size?: TextSize;
+  weight?: TextWeight;
   /** Colour role (default: "default") */
-  tone?: "default" | "muted" | "primary" | "danger" | "success" | "warning" | "info";
-  align?: "start" | "center" | "end";
+  tone?: TextTone;
+  align?: TextAlign;
   /** Clamp to a single line with an ellipsis */
   truncate?: boolean;
   children: JSX.Element;

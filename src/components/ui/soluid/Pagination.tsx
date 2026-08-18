@@ -1,12 +1,12 @@
 import { For, Show, splitProps } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface PaginationProps extends CommonProps {
   page: number;
   totalPages: number;
   onChange: (page: number) => void;
-  size?: "sm" | "md";
+  size?: SmallSize;
   /** Show numbered page buttons (default: false for backward compatibility) */
   showPages?: boolean;
   /** Max visible page buttons before ellipsis (default: 5) */

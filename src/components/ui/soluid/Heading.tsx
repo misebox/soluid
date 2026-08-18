@@ -16,11 +16,13 @@ const SIZE_FOR_LEVEL: Record<HeadingLevel, string> = {
   6: "sm",
 };
 
+export type HeadingSize = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+
 export interface HeadingProps extends CommonProps {
   /** Document outline level, rendered as h1-h6 (default: 2) */
   level?: HeadingLevel;
   /** Visual size, decoupled from `level` so the outline stays correct */
-  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+  size?: HeadingSize;
   children: JSX.Element;
 }
 

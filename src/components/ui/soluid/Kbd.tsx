@@ -1,10 +1,10 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface KbdProps extends CommonProps {
-  size?: "sm" | "md";
+  size?: SmallSize;
   children: JSX.Element;
 }
 

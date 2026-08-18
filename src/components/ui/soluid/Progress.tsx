@@ -1,5 +1,5 @@
 import { For, Show, splitProps } from "solid-js";
-import type { CommonProps, FeedbackVariant } from "./core/types";
+import type { CommonProps, FeedbackVariant, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface ProgressSegment {
@@ -16,7 +16,7 @@ export interface ProgressProps extends CommonProps {
    * 0-100; the sum may be less than 100 (the remainder shows the empty track).
    */
   segments?: ProgressSegment[];
-  size?: "sm" | "md";
+  size?: SmallSize;
   /** Required: role="progressbar" is meaningless to a screen reader without a name. */
   "aria-label": string;
 }

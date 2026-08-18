@@ -1,10 +1,10 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Orientation } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface ButtonGroupProps extends CommonProps {
-  orientation?: "horizontal" | "vertical";
+  orientation?: Orientation;
   /** Join adjacent buttons into one visual unit (default: true) */
   attached?: boolean;
   /** Accessible label describing what the group of actions is for */

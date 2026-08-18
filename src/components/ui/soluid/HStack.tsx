@@ -1,12 +1,12 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { Align, CommonProps, Gap, Justify } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface HStackProps extends CommonProps {
-  gap?: 1 | 2 | 3 | 4 | 5 | 6;
-  align?: "start" | "center" | "end" | "stretch";
-  justify?: "start" | "center" | "end" | "between" | "around";
+  gap?: Gap;
+  align?: Align;
+  justify?: Justify;
   wrap?: boolean;
   children: JSX.Element;
 }

@@ -2,16 +2,18 @@ import { createContext, createUniqueId, Show, splitProps, useContext } from "sol
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createOverlay } from "./core/createOverlay";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Size } from "./core/types";
 import { cls } from "./core/utils";
 
 const DrawerContext = createContext<string>();
 
+export type DrawerSide = "left" | "right";
+
 export interface DrawerProps extends CommonProps {
   open: boolean;
   onClose: () => void;
-  side?: "left" | "right";
-  size?: "sm" | "md" | "lg";
+  side?: DrawerSide;
+  size?: Size;
   children: JSX.Element;
 }
 

@@ -3,7 +3,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Calendar } from "./Calendar";
-import type { InteractiveProps } from "./core/types";
+import type { InteractiveProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
@@ -14,7 +14,7 @@ export interface DatePickerControlProps extends InteractiveProps {
   onChange?: (value: string) => void;
   min?: string;
   max?: string;
-  weekStartsOn?: 0 | 1;
+  weekStartsOn?: WeekStart;
   locale?: string;
   placeholder?: string;
   required?: boolean;

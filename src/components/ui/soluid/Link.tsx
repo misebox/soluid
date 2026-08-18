@@ -4,14 +4,17 @@ import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 import { VisuallyHidden } from "./VisuallyHidden";
 
+export type LinkUnderline = "always" | "hover" | "none";
+export type LinkTone = "primary" | "neutral" | "danger";
+
 export interface LinkProps extends CommonProps {
   href?: string;
   /** Open in a new tab, with the matching rel and an announced hint */
   external?: boolean;
   /** Text appended for screen readers on external links */
   externalLabel?: string;
-  underline?: "always" | "hover" | "none";
-  tone?: "primary" | "neutral" | "danger";
+  underline?: LinkUnderline;
+  tone?: LinkTone;
   children: JSX.Element;
 }
 

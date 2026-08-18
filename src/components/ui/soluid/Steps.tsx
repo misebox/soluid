@@ -1,6 +1,6 @@
 import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Orientation } from "./core/types";
 import { cls } from "./core/utils";
 import { VisuallyHidden } from "./VisuallyHidden";
 
@@ -13,7 +13,7 @@ export interface StepsProps extends CommonProps {
   steps: Step[];
   /** Zero-based index of the active step */
   current: number;
-  orientation?: "horizontal" | "vertical";
+  orientation?: Orientation;
   /** Accessible label for the step list */
   label?: string;
   /** Text announced for steps before the current one (default: "completed") */

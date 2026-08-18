@@ -1,6 +1,6 @@
 import { createMemo, createSignal, For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
 
 /**
@@ -18,7 +18,7 @@ export interface CalendarProps extends CommonProps {
   min?: string;
   max?: string;
   /** First column of the week (default: 0, Sunday) */
-  weekStartsOn?: 0 | 1;
+  weekStartsOn?: WeekStart;
   /** BCP 47 tag for month and weekday names (default: the browser's) */
   locale?: string;
   /** Accessible label for the grid */

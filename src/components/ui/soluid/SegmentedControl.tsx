@@ -1,5 +1,5 @@
 import { For, splitProps } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface SegmentedControlOption<T extends string = string> {
@@ -12,7 +12,7 @@ export interface SegmentedControlProps<T extends string = string> extends Common
   value: T;
   onChange: (value: T) => void;
   options: SegmentedControlOption<T>[];
-  size?: "sm" | "md";
+  size?: SmallSize;
   /** Accessible label describing what is being chosen */
   label?: string;
   /** Stretch the segments to fill the available width */

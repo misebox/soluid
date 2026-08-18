@@ -2,8 +2,10 @@ import { splitProps } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+export type SkeletonVariant = "text" | "circle" | "rect";
+
 export interface SkeletonProps extends CommonProps {
-  variant?: "text" | "circle" | "rect";
+  variant?: SkeletonVariant;
   width?: string;
   height?: string;
 }

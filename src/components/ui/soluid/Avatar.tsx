@@ -8,7 +8,7 @@ export interface AvatarProps extends CommonProps {
   alt?: string;
   name?: string;
   size?: Size;
-  variant?: Extract<Variant, "primary" | "neutral" | "success" | "danger" | "warning" | "info">;
+  variant?: Variant;
 }
 
 function getInitials(name: string): string {

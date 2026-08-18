@@ -3,9 +3,11 @@ import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+export type DescriptionListColumns = 1 | 2;
+
 export interface DescriptionListProps extends CommonProps {
   items: Array<{ term: string; description: JSX.Element }>;
-  columns?: 1 | 2;
+  columns?: DescriptionListColumns;
 }
 
 export function DescriptionList(props: DescriptionListProps) {

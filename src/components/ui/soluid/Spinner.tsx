@@ -1,10 +1,10 @@
 import { splitProps } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Size, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface SpinnerProps extends CommonProps {
-  size?: "sm" | "md" | "lg";
-  variant?: "primary" | "neutral" | "danger" | "success" | "warning" | "info";
+  size?: Size;
+  variant?: Variant;
   /** Accessible label announced while loading (default: "Loading") */
   label?: string;
 }

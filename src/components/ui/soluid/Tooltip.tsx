@@ -2,9 +2,11 @@ import { children, createEffect, createUniqueId, Show, splitProps } from "solid-
 import type { JSX } from "solid-js";
 import { cls } from "./core/utils";
 
+export type TooltipPlacement = "top" | "bottom" | "left" | "right";
+
 export interface TooltipProps {
   content?: string;
-  placement?: "top" | "bottom" | "left" | "right";
+  placement?: TooltipPlacement;
   class?: string;
   children: JSX.Element;
 }

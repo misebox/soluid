@@ -5,8 +5,10 @@ import { createToast } from "./core/createToast";
 import type { ToastInput, ToastReturn } from "./core/createToast";
 import { cls } from "./core/utils";
 
+export type ToastPosition = "top-right" | "top-center" | "bottom-right" | "bottom-center";
+
 export interface ToastContainerProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "children"> {
-  position?: "top-right" | "top-center" | "bottom-right" | "bottom-center";
+  position?: ToastPosition;
   /** Accessible label for each toast's dismiss button (default: "Dismiss") */
   dismissLabel?: string;
 }

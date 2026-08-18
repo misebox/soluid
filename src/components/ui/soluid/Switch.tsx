@@ -1,7 +1,7 @@
 import { createMemo, createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { createToggle } from "./core/createToggle";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 /** Native button attributes minus the ones this component owns. */
@@ -14,7 +14,7 @@ export interface SwitchProps extends CommonProps, SwitchAttributes {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
-  size?: "sm" | "md";
+  size?: SmallSize;
   label?: string;
   error?: string;
   hint?: string;

@@ -8,6 +8,8 @@ const PATTERNS = {
   alphanumeric: /^[a-zA-Z0-9]$/,
 } as const;
 
+export type PinInputType = "numeric" | "alphanumeric";
+
 export interface PinInputProps extends CommonProps {
   /**
    * One entry per box, empty string for a blank box. An array rather than a
@@ -18,7 +20,7 @@ export interface PinInputProps extends CommonProps {
   /** Number of boxes (default: 6) */
   length?: number;
   /** Characters accepted (default: "numeric") */
-  type?: "numeric" | "alphanumeric";
+  type?: PinInputType;
   /** Render entered characters as dots */
   mask?: boolean;
   disabled?: boolean;

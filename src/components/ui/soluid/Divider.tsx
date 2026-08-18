@@ -1,10 +1,10 @@
 import { splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Orientation } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface DividerProps extends CommonProps {
-  orientation?: "horizontal" | "vertical";
+  orientation?: Orientation;
 }
 
 export function Divider(props: DividerProps & JSX.HTMLAttributes<HTMLHRElement>) {

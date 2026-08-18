@@ -1,6 +1,6 @@
 import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Size } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface RatingProps extends CommonProps {
@@ -11,7 +11,7 @@ export interface RatingProps extends CommonProps {
   /** Render as a static indicator with no controls */
   readOnly?: boolean;
   disabled?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: Size;
   /** Accessible label for the group */
   label?: string;
   /** Accessible label for each item (default: `{n} of {max}`) */

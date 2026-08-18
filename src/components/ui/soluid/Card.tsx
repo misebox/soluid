@@ -3,8 +3,10 @@ import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+export type CardVariant = "outlined" | "elevated";
+
 export interface CardProps extends CommonProps {
-  variant?: "outlined" | "elevated";
+  variant?: CardVariant;
   children: JSX.Element;
 }
 

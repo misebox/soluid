@@ -1,7 +1,7 @@
 import { createEffect, createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { useCheckboxGroup } from "./CheckboxGroupContext";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 /** Native input attributes minus the ones this component owns. */
@@ -15,7 +15,7 @@ export interface CheckboxProps extends CommonProps, CheckboxAttributes {
   onChange?: (checked: boolean) => void;
   indeterminate?: boolean;
   disabled?: boolean;
-  size?: "sm" | "md";
+  size?: SmallSize;
   label?: string;
   value?: string;
   error?: string;

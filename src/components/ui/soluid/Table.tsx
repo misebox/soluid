@@ -1,14 +1,16 @@
 import { createMemo, For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, TextAlign } from "./core/types";
 import { cls } from "./core/utils";
+
+export type SortDirection = "asc" | "desc";
 
 export interface Column<T> {
   key: string;
   header: string;
   width?: string;
   sortable?: boolean;
-  align?: "start" | "center" | "end";
+  align?: TextAlign;
   render?: (value: unknown, row: T) => JSX.Element;
 }
 
@@ -16,8 +18,8 @@ export interface TableProps<T> extends CommonProps {
   columns: Column<T>[];
   data: T[];
   sortKey?: string;
-  sortDirection?: "asc" | "desc";
-  onSort?: (key: string, direction: "asc" | "desc") => void;
+  sortDirection?: SortDirection;
+  onSort?: (key: string, direction: SortDirection) => void;
   selectable?: boolean;
   selectedKeys?: Set<string>;
   onSelect?: (keys: Set<string>) => void;

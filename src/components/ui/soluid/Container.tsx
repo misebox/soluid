@@ -3,9 +3,11 @@ import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+export type ContainerSize = "sm" | "md" | "lg" | "xl" | "full";
+
 export interface ContainerProps extends CommonProps {
   /** Maximum content width (default: "lg") */
-  size?: "sm" | "md" | "lg" | "xl" | "full";
+  size?: ContainerSize;
   /** Horizontal padding inside the container (default: true) */
   padded?: boolean;
   children: JSX.Element;

@@ -2,7 +2,7 @@ import { createContext, createUniqueId, Show, splitProps, useContext } from "sol
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createOverlay } from "./core/createOverlay";
-import type { CommonProps } from "./core/types";
+import type { CommonProps, Size } from "./core/types";
 import { cls } from "./core/utils";
 
 const DialogContext = createContext<string>();
@@ -10,7 +10,7 @@ const DialogContext = createContext<string>();
 export interface DialogProps extends CommonProps {
   open: boolean;
   onClose: () => void;
-  size?: "sm" | "md" | "lg";
+  size?: Size;
   children: JSX.Element;
 }
 
