@@ -875,6 +875,8 @@ export const ja: Record<string, string> = {
   "apiDesc.VisuallyHiddenProps": "スクリーンリーダー専用コンテンツ",
 
   // ===== Components Page UI =====
+  "api.values": "指定可能な値",
+  "api.default": "省略時:",
   "ui.search": "検索...",
   "ui.searchComponents": "コンポーネントを検索",
   "ui.language": "言語",

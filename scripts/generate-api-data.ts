@@ -11,6 +11,10 @@ interface PropInfo {
   name: string;
   type: string;
   optional: boolean;
+  /** Accepted values, when the type is a union of string literals. */
+  values?: string[];
+  /** What the component falls back to when the prop is omitted. */
+  default?: string;
 }
 
 interface ComponentApi {
@@ -20,11 +24,74 @@ interface ComponentApi {
   props: PropInfo[];
 }
 
+/**
+ * The values a prop accepts, when it is a union of literals.
+ *
+ * The table shows the alias name (`Size`, not `"sm" | "md" | "lg"`) to keep the
+ * Type column narrow, so the members have to travel alongside it. Mixed unions
+ * such as `boolean | "true" | "false"` are left alone: listing the literals
+ * would misrepresent what the prop takes.
+ */
+function literalValues(propType: ts.Type): string[] | undefined {
+  const parts = propType.isUnion() ? propType.types : [propType];
+  const defined = parts.filter((t) => (t.flags & ts.TypeFlags.Undefined) === 0);
+  if (defined.length === 0) return undefined;
+  if (defined.every((t) => t.isStringLiteral())) {
+    return defined.map((t) => JSON.stringify((t as ts.StringLiteralType).value));
+  }
+  if (defined.every((t) => t.isNumberLiteral())) {
+    return defined.map((t) => String((t as ts.NumberLiteralType).value));
+  }
+  return undefined;
+}
+
+/**
+ * Defaults, read from the `local.foo ?? "bar"` fallbacks in the component.
+ *
+ * Only plain literals are reported: an expression like `local.children ?? local.label`
+ * has no single value to print. Scoped per file, so a prop name used with two
+ * different fallbacks in one file is skipped rather than guessed at.
+ */
+function defaultsFromSource(sourceFile: ts.SourceFile): Map<string, string> {
+  const found = new Map<string, string>();
+  const conflicting = new Set<string>();
+
+  const visit = (node: ts.Node) => {
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken &&
+      ts.isPropertyAccessExpression(node.left) &&
+      ts.isIdentifier(node.left.expression) &&
+      node.left.expression.text === "local"
+    ) {
+      const name = node.left.name.text;
+      const right = node.right;
+      const isLiteral =
+        ts.isStringLiteral(right) ||
+        ts.isNumericLiteral(right) ||
+        right.kind === ts.SyntaxKind.TrueKeyword ||
+        right.kind === ts.SyntaxKind.FalseKeyword;
+      if (isLiteral) {
+        const text = ts.isStringLiteral(right) ? JSON.stringify(right.text) : right.getText(sourceFile);
+        const seen = found.get(name);
+        if (seen !== undefined && seen !== text) conflicting.add(name);
+        else found.set(name, text);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+
+  for (const name of conflicting) found.delete(name);
+  return found;
+}
+
 function extractPropsFromFile(filePath: string, program: ts.Program): ComponentApi[] {
   const checker = program.getTypeChecker();
   const sourceFile = program.getSourceFile(filePath);
   if (!sourceFile) return [];
 
+  const defaults = defaultsFromSource(sourceFile);
   const results: ComponentApi[] = [];
 
   ts.forEachChild(sourceFile, (node) => {
@@ -53,7 +120,13 @@ function extractPropsFromFile(filePath: string, program: ts.Program): ComponentA
       if (optional) {
         typeStr = typeStr.replace(/ \| undefined$/, "");
       }
-      props.push({ name: prop.name, type: typeStr, optional });
+      props.push({
+        name: prop.name,
+        type: typeStr,
+        optional,
+        values: literalValues(propType),
+        default: optional ? defaults.get(prop.name) : undefined,
+      });
     }
 
     results.push({

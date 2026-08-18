@@ -2,6 +2,7 @@ import { useLocation } from "@solidjs/router";
 import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import { Badge } from "../../components/ui/soluid/Badge";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
+import { Popover } from "../../components/ui/soluid/Popover";
 import { Tab, TabList, TabPanel, Tabs } from "../../components/ui/soluid/Tabs";
 import apiData from "../api-data.json";
 // Generated from the demo source by scripts/generate-code-examples.ts, so the
@@ -40,6 +41,8 @@ interface PropInfo {
   name: string;
   type: string;
   optional: boolean;
+  values?: string[];
+  default?: string;
 }
 interface ComponentApi {
   name: string;
@@ -54,6 +57,61 @@ const propsFor = (componentName: string): ComponentApi[] => {
   const subs = SUB_COMPONENTS[componentName] ?? [componentName];
   return subs.map((sub) => data.find((d) => d.name === `${sub}Props`)).filter((d): d is ComponentApi => d != null);
 };
+
+/* ---------- TypeCell ---------- */
+
+/**
+ * The type name, and a popover holding whatever else is worth knowing.
+ *
+ * Accepted values and defaults live behind a click rather than in their own
+ * columns: spelled out inline, a union pushes the Type column wide enough to
+ * squeeze the description.
+ */
+function TypeCell(props: { prop: PropInfo }) {
+  const [open, setOpen] = createSignal(false);
+  const hasDetail = () => props.prop.values !== undefined || props.prop.default !== undefined;
+
+  return (
+    <Show when={hasDetail()} fallback={<code>{props.prop.type}</code>}>
+      <Popover
+        open={open()}
+        onOpenChange={setOpen}
+        content={
+          <div class="api-type-detail">
+            <Show when={props.prop.values}>
+              {(values) => (
+                <>
+                  <p class="api-type-heading">{t(lang(), "api.values")}</p>
+                  <ul class="api-type-values">
+                    <For each={values()}>
+                      {(value) => (
+                        <li>
+                          <code>{value}</code>
+                        </li>
+                      )}
+                    </For>
+                  </ul>
+                </>
+              )}
+            </Show>
+            <Show when={props.prop.default}>
+              {(value) => (
+                <p class="api-type-default">
+                  {t(lang(), "api.default")} <code>{value()}</code>
+                </p>
+              )}
+            </Show>
+          </div>
+        }
+      >
+        <code>{props.prop.type}</code>
+        <span class="api-type-marker" aria-hidden="true">
+          ▾
+        </span>
+      </Popover>
+    </Show>
+  );
+}
 
 /* ---------- All component names ---------- */
 
@@ -281,7 +339,7 @@ function ComponentCard(props: { name: string }) {
                                       <code>{prop.name}</code>
                                     </td>
                                     <td>
-                                      <code>{prop.type}</code>
+                                      <TypeCell prop={prop} />
                                     </td>
                                     <td>{prop.optional ? "" : "Yes"}</td>
                                     <td class="api-table-desc">{(() => t(lang(), `${comp.name}.${prop.name}`))()}</td>

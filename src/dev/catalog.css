@@ -645,6 +645,40 @@
   border-radius: 3px;
 }
 
+/* The marker is the only hint that a type has more behind it, so it sits tight
+   against the name and inherits the muted tone of the surrounding table. */
+.api-type-marker {
+  margin-left: 2px;
+  color: var(--so-text-muted);
+  font-size: var(--site-font-size-xs);
+}
+
+.api-type-detail {
+  padding: var(--so-space-2) var(--so-space-3);
+  max-width: 20rem;
+}
+
+.api-type-heading {
+  margin-bottom: var(--so-space-1);
+  color: var(--so-text-muted);
+  font-size: var(--site-font-size-xs);
+}
+
+.api-type-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--so-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.api-type-default {
+  margin-top: var(--so-space-2);
+  color: var(--so-text-muted);
+  font-size: var(--site-font-size-xs);
+}
+
 .api-table-desc {
   color: var(--so-text-muted);
   font-size: var(--site-font-size-xs);

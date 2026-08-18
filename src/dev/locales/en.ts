@@ -874,6 +874,8 @@ export const en: Record<string, string> = {
   "apiDesc.VisuallyHiddenProps": "Screen reader only content",
 
   // ===== Components Page UI =====
+  "api.values": "Accepted values",
+  "api.default": "Defaults to",
   "ui.search": "Search...",
   "ui.searchComponents": "Search components",
   "ui.language": "Language",
