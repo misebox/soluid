@@ -1,10 +1,11 @@
-import { createResource, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import { Card, CardBody, CardHeader } from "../../components/ui/soluid/Card";
 import { HStack } from "../../components/ui/soluid/HStack";
 import { RadioButton } from "../../components/ui/soluid/RadioButton";
 import { RadioGroup } from "../../components/ui/soluid/RadioGroup";
 import { Stack } from "../../components/ui/soluid/Stack";
+import { componentsVersion } from "../componentsVersion";
 import { lang } from "../lang";
 import { t } from "../locales";
 
@@ -65,30 +66,13 @@ const COLORS_EXAMPLE = `"colors": {
   "danger": "#e11d48"
 }`;
 
-/** Shown until the release list loads, and if GitHub is unreachable or rate-limits us. */
-const FALLBACK_COMPONENTS_VERSION = "0.2.7";
-
-/** Same lookup the CLI does in cli/config.ts, over plain HTTP so the static site stays current. */
-async function fetchLatestComponentsVersion(): Promise<string> {
-  try {
-    const res = await fetch("https://api.github.com/repos/misebox/soluid/releases?per_page=20");
-    if (!res.ok) return FALLBACK_COMPONENTS_VERSION;
-    const releases = (await res.json()) as Array<{ tag_name: string }>;
-    const latest = releases.find((r) => r.tag_name.startsWith("components-v"));
-    return latest ? latest.tag_name.replace("components-v", "") : FALLBACK_COMPONENTS_VERSION;
-  } catch {
-    return FALLBACK_COMPONENTS_VERSION;
-  }
-}
-
 export function GettingStartedPage() {
   const [runner, setRunner] = createSignal<Runner>("bunx");
-  const [componentsVersion] = createResource(fetchLatestComponentsVersion);
 
   const cmd = (args: string) => `${runner()} soluid ${args}`;
 
   const configExample = () => `{
-  "componentsVersion": "${componentsVersion() ?? FALLBACK_COMPONENTS_VERSION}",
+  "componentsVersion": "${componentsVersion()}",
   "componentDir": "src/components/ui",
   "cssPath": "src/soluid.css",
   "components": ["Button", "TextField", "Dialog"]

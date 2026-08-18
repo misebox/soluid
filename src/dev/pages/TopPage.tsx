@@ -2,6 +2,7 @@ import { A } from "@solidjs/router";
 import { createSignal, For, Show } from "solid-js";
 import { Dialog, DialogBody, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { IconButton } from "../../components/ui/soluid/IconButton";
+import { componentsVersion } from "../componentsVersion";
 import { lang } from "../lang";
 import { t } from "../locales";
 
@@ -137,6 +138,18 @@ export function TopPage() {
           </a>
           <a href="https://github.com/misebox/soluid/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
             <img src="https://img.shields.io/npm/l/soluid" alt="license" width="78" height="20" />
+          </a>
+          {/* Drawn here rather than fetched from shields.io: components ship as
+              GitHub releases, and shields would print the whole
+              `components-v0.2.9` tag beside a terse `npm v0.2.6`. */}
+          <a
+            class="top-badge"
+            href="https://github.com/misebox/soluid/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="top-badge__label">components</span>
+            <span class="top-badge__value">v{componentsVersion()}</span>
           </a>
         </p>
       </section>

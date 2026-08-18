@@ -471,6 +471,37 @@
   width: auto;
 }
 
+/* Matches the shields.io "flat" badges it sits beside: 20px tall, 3px radius,
+   grey label, coloured value. Fixed colours, because a badge that changed with
+   the theme would not match its neighbours. */
+.top-badge {
+  display: flex;
+  height: 20px;
+  border-radius: 3px;
+  overflow: hidden;
+  /* shields renders its text in Verdana; matching it keeps the three badges
+     looking like one row rather than two designs. */
+  font-family: Verdana, "DejaVu Sans", sans-serif;
+  font-size: 11px;
+  line-height: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.top-badge__label,
+.top-badge__value {
+  padding: 0 6px;
+  color: #fff;
+}
+
+.top-badge__label {
+  background: #555;
+}
+
+.top-badge__value {
+  background: #007ec6;
+}
+
 .top-features {
   margin-bottom: var(--site-space-8);
 }
