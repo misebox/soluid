@@ -58,6 +58,16 @@ const propsFor = (componentName: string): ComponentApi[] => {
   return subs.map((sub) => data.find((d) => d.name === `${sub}Props`)).filter((d): d is ComponentApi => d != null);
 };
 
+/**
+ * Required props first, declaration order preserved within each group.
+ *
+ * Sorted here rather than in the generated data: what a reader needs first is a
+ * presentation question, and the JSON stays faithful to how the interface reads.
+ */
+function requiredFirst(props: PropInfo[]): PropInfo[] {
+  return [...props].sort((a, b) => Number(a.optional) - Number(b.optional));
+}
+
 /* ---------- TypeCell ---------- */
 
 /**
@@ -332,7 +342,7 @@ function ComponentCard(props: { name: string }) {
                               </tr>
                             </thead>
                             <tbody>
-                              <For each={comp.props}>
+                              <For each={requiredFirst(comp.props)}>
                                 {(prop) => (
                                   <tr>
                                     <td>
