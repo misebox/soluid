@@ -7,6 +7,18 @@ Components and the CLI are released separately, so they are listed separately.
 
 ## Components
 
+### components-v0.2.11 — 2026-08-20
+
+#### Added
+
+- `DialogDescription`, a line under the title wired to the dialog's `aria-describedby`. A screen reader announced the title on open and nothing about what the dialog was for. The attribute is only set when a description is present.
+- `TextField` accepts `search`, `number` and `date` in addition to `text`, `email`, `password`, `url` and `tel`.
+
+#### Fixed
+
+- `createFocusTrap` named `document` as its listener target while the component was still being set up, so `Dialog`, `Drawer` and `CommandPalette` threw on a server render before anything reached the page. The listener is now registered on the client only.
+- `Card`, `CardHeader`, `CardBody` and `CardFooter` accept HTML attributes such as `classList` and `onClick`. They were already passed through to the element; only the types rejected them.
+
 ### components-v0.2.10 — 2026-08-19
 
 #### Changed
