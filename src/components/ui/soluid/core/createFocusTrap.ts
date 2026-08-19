@@ -2,6 +2,7 @@ import { createActiveElement } from "@solid-primitives/active-element";
 import { makeEventListener } from "@solid-primitives/event-listener";
 import { onCleanup, onMount } from "solid-js";
 import type { Accessor } from "solid-js";
+import { isServer } from "solid-js/web";
 
 const FOCUSABLE_SELECTOR = [
   "a[href]",
@@ -77,7 +78,10 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     }
   }
 
-  makeEventListener(document, "keydown", handleKeyDown);
+  // Guarded because `document` is evaluated here, at component setup: without
+  // this, rendering a Dialog or Drawer on the server throws before the listener
+  // is even reached. There is nothing to listen for there anyway.
+  if (!isServer) makeEventListener(document, "keydown", handleKeyDown);
 
   onCleanup(() => {
     if (previouslyFocused && previouslyFocused instanceof HTMLElement) {
