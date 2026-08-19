@@ -249,6 +249,8 @@ export const en: Record<string, string> = {
   "DialogFooterProps.children": "Dialog footer content",
 
   // DialogHeaderProps
+  "DialogDescriptionProps.class": "Additional CSS class",
+  "DialogDescriptionProps.children": "Sentence describing what the dialog is for",
   "DialogHeaderProps.class": "Additional CSS class",
   "DialogHeaderProps.children": "Dialog header content",
 

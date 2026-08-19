@@ -249,6 +249,8 @@ export const ja: Record<string, string> = {
   "DialogFooterProps.children": "ダイアログフッターの内容",
 
   // DialogHeaderProps
+  "DialogDescriptionProps.class": "追加CSSクラス",
+  "DialogDescriptionProps.children": "ダイアログの用途を説明する一文",
   "DialogHeaderProps.class": "追加CSSクラス",
   "DialogHeaderProps.children": "ダイアログヘッダーの内容",
 

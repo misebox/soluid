@@ -23,7 +23,7 @@ import { Container } from "../../components/ui/soluid/Container";
 import { ContextMenu } from "../../components/ui/soluid/ContextMenu";
 import { DatePicker } from "../../components/ui/soluid/DatePicker";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
-import { Dialog, DialogBody, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
+import { Dialog, DialogBody, DialogDescription, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
 import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
@@ -155,7 +155,7 @@ export const CATEGORIES = [
 export const SUB_COMPONENTS: Record<string, string[]> = {
   Stack: ["Stack", "HStack"],
   Card: ["Card", "CardHeader", "CardBody", "CardFooter"],
-  Dialog: ["Dialog", "DialogHeader", "DialogBody", "DialogFooter"],
+  Dialog: ["Dialog", "DialogHeader", "DialogDescription", "DialogBody", "DialogFooter"],
   Drawer: ["Drawer", "DrawerHeader"],
   Tabs: ["Tabs", "TabList", "Tab", "TabPanel"],
   Breadcrumb: ["Breadcrumb", "BreadcrumbItem"],
@@ -1021,6 +1021,7 @@ function DialogDemo(): JSX.Element {
       </Button>
       <Dialog open={open()} onClose={() => setOpen(false)}>
         <DialogHeader>Confirm Action</DialogHeader>
+        <DialogDescription>This cannot be undone.</DialogDescription>
         <DialogBody>
           <p>Are you sure you want to proceed with this action?</p>
         </DialogBody>

@@ -1,11 +1,27 @@
-import { createContext, createUniqueId, Show, splitProps, useContext } from "solid-js";
+import {
+  createContext,
+  createSignal,
+  createUniqueId,
+  onCleanup,
+  onMount,
+  Show,
+  splitProps,
+  useContext,
+} from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createOverlay } from "./core/createOverlay";
 import type { CommonProps, Size } from "./core/types";
 import { cls } from "./core/utils";
 
-const DialogContext = createContext<string>();
+interface DialogIds {
+  titleId: string;
+  descriptionId: string;
+  /** Set by DialogDescription, so aria-describedby only points at an element that exists. */
+  setDescribed: (present: boolean) => void;
+}
+
+const DialogContext = createContext<DialogIds>();
 
 export interface DialogProps extends CommonProps {
   open: boolean;
@@ -29,10 +45,18 @@ export interface DialogFooterProps {
   children: JSX.Element;
 }
 
+export interface DialogDescriptionProps {
+  class?: string;
+  children: JSX.Element;
+}
+
 export function Dialog(props: DialogProps) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "size", "children"]);
 
-  const titleId = `so-dialog-title-${createUniqueId()}`;
+  const id = createUniqueId();
+  const titleId = `so-dialog-title-${id}`;
+  const descriptionId = `so-dialog-description-${id}`;
+  const [described, setDescribed] = createSignal(false);
 
   const overlay = createOverlay({
     isOpen: () => local.open,
@@ -42,7 +66,7 @@ export function Dialog(props: DialogProps) {
   return (
     <Show when={overlay.mounted()}>
       <Portal>
-        <DialogContext.Provider value={titleId}>
+        <DialogContext.Provider value={{ titleId, descriptionId, setDescribed }}>
           <div
             class={cls("so-dialog-backdrop", overlay.closing() && "so-dialog-backdrop--closing")}
             on:mousedown={overlay.handleBackdropMouseDown}
@@ -60,6 +84,7 @@ export function Dialog(props: DialogProps) {
               role="dialog"
               aria-modal="true"
               aria-labelledby={titleId}
+              aria-describedby={described() ? descriptionId : undefined}
               data-density={local.density}
               {...others}
             >
@@ -74,10 +99,10 @@ export function Dialog(props: DialogProps) {
 
 export function DialogHeader(props: DialogHeaderProps) {
   const [local, others] = splitProps(props, ["class", "children"]);
-  const titleId = useContext(DialogContext);
+  const ids = useContext(DialogContext);
 
   return (
-    <div id={titleId} class={cls("so-dialog__header", local.class)} {...others}>
+    <div id={ids?.titleId} class={cls("so-dialog__header", local.class)} {...others}>
       {local.children}
     </div>
   );
@@ -100,5 +125,25 @@ export function DialogFooter(props: DialogFooterProps) {
     <div class={cls("so-dialog__footer", local.class)} {...others}>
       {local.children}
     </div>
+  );
+}
+
+/**
+ * A sentence naming what the dialog is for, wired to aria-describedby.
+ *
+ * Screen readers announce the title on open; without a description the user
+ * hears the name of the dialog and nothing about what it does.
+ */
+export function DialogDescription(props: DialogDescriptionProps) {
+  const [local, others] = splitProps(props, ["class", "children"]);
+  const ids = useContext(DialogContext);
+
+  onMount(() => ids?.setDescribed(true));
+  onCleanup(() => ids?.setDescribed(false));
+
+  return (
+    <p id={ids?.descriptionId} class={cls("so-dialog__description", local.class)} {...others}>
+      {local.children}
+    </p>
   );
 }

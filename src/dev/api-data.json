@@ -1710,6 +1710,23 @@
     ]
   },
   {
+    "name": "DialogDescriptionProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
     "name": "DialogFooterProps",
     "description": "",
     "dependencies": [],
@@ -4248,11 +4265,14 @@
         "type": "TextFieldType",
         "optional": true,
         "values": [
+          "\"number\"",
           "\"text\"",
           "\"email\"",
           "\"password\"",
           "\"url\"",
-          "\"tel\""
+          "\"tel\"",
+          "\"search\"",
+          "\"date\""
         ],
         "default": "\"text\""
       },
@@ -4327,11 +4347,14 @@
         "type": "TextFieldType",
         "optional": true,
         "values": [
+          "\"number\"",
           "\"text\"",
           "\"email\"",
           "\"password\"",
           "\"url\"",
-          "\"tel\""
+          "\"tel\"",
+          "\"search\"",
+          "\"date\""
         ],
         "default": "\"text\""
       },

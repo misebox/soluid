@@ -133,8 +133,14 @@ export type { Column, TableProps } from "./components/ui/soluid/Table";
 // Feedback
 export { Alert } from "./components/ui/soluid/Alert";
 export type { AlertProps } from "./components/ui/soluid/Alert";
-export { Dialog, DialogBody, DialogFooter, DialogHeader } from "./components/ui/soluid/Dialog";
-export type { DialogBodyProps, DialogFooterProps, DialogHeaderProps, DialogProps } from "./components/ui/soluid/Dialog";
+export { Dialog, DialogBody, DialogDescription, DialogFooter, DialogHeader } from "./components/ui/soluid/Dialog";
+export type {
+  DialogBodyProps,
+  DialogDescriptionProps,
+  DialogFooterProps,
+  DialogHeaderProps,
+  DialogProps,
+} from "./components/ui/soluid/Dialog";
 export { Drawer, DrawerHeader } from "./components/ui/soluid/Drawer";
 export type { DrawerHeaderProps, DrawerProps } from "./components/ui/soluid/Drawer";
 export { Progress } from "./components/ui/soluid/Progress";
