@@ -3,6 +3,7 @@ import { install } from "./install.js";
 
 interface UpdateOptions {
   interactive?: boolean;
+  force?: boolean;
 }
 
 export async function update(cwd: string, options: UpdateOptions = {}): Promise<void> {
@@ -23,5 +24,5 @@ export async function update(cwd: string, options: UpdateOptions = {}): Promise<
   config.componentsVersion = latestVersion;
   saveConfig(cwd, config);
 
-  await install(cwd, { interactive: options.interactive });
+  await install(cwd, { interactive: options.interactive, force: options.force });
 }

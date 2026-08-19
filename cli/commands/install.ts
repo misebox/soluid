@@ -93,13 +93,28 @@ interface WriteResult {
   updatedCount: number;
   cssChunks: string[];
   installedModules: string[];
+  /** Files left alone because they differ locally and overwriting was declined. */
+  kept: string[];
 }
 
-function writeComponentFiles(archive: Map<string, string>, resolved: string[], targetRoot: string): WriteResult {
+interface WriteOptions {
+  /** Replace files whose local content differs from the release. */
+  overwrite: boolean;
+  /** Report what would change without touching the disk. */
+  dryRun?: boolean;
+}
+
+function writeComponentFiles(
+  archive: Map<string, string>,
+  resolved: string[],
+  targetRoot: string,
+  options: WriteOptions,
+): WriteResult {
   let addedCount = 0;
   let updatedCount = 0;
   const cssChunks: string[] = [];
   const installedModules: string[] = [];
+  const kept: string[] = [];
 
   for (const name of resolved) {
     const entry = registry[name];
@@ -134,10 +149,18 @@ function writeComponentFiles(archive: Map<string, string>, resolved: string[], t
       if (!isNew) {
         const existing = fs.readFileSync(destPath, "utf-8");
         if (existing === output) continue;
+        // Differs from the release: either an older version or a local edit.
+        // Nothing here can tell the two apart, so the caller decides.
+        if (!options.overwrite) {
+          kept.push(localPath);
+          continue;
+        }
       }
 
-      fs.mkdirSync(destDir, { recursive: true });
-      fs.writeFileSync(destPath, output, "utf-8");
+      if (!options.dryRun) {
+        fs.mkdirSync(destDir, { recursive: true });
+        fs.writeFileSync(destPath, output, "utf-8");
+      }
 
       if (isNew) {
         status = "added";
@@ -155,7 +178,7 @@ function writeComponentFiles(archive: Map<string, string>, resolved: string[], t
     }
   }
 
-  return { addedCount, updatedCount, cssChunks, installedModules };
+  return { addedCount, updatedCount, cssChunks, installedModules, kept };
 }
 
 function generateBarrelIndex(installedModules: string[], targetRoot: string): void {
@@ -230,10 +253,14 @@ async function installNpmDependencies(npmDeps: string[], cwd: string, interactiv
 
 interface InstallOptions {
   interactive?: boolean;
+  /** Overwrite locally changed files, and skip every prompt. */
+  force?: boolean;
 }
 
 export async function install(cwd: string, options: InstallOptions = {}): Promise<void> {
-  const interactive = options.interactive !== false;
+  const force = options.force === true;
+  // --force answers the prompts too, so it implies non-interactive.
+  const interactive = options.interactive !== false && !force;
   const config = requireConfig(cwd);
 
   if (config.components.length === 0) {
@@ -273,7 +300,25 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   }
 
   const targetRoot = path.resolve(cwd, config.componentDir);
-  const { addedCount, updatedCount, cssChunks, installedModules } = writeComponentFiles(archive, resolved, targetRoot);
+
+  // Ask before replacing files that differ locally. Committed work is safe in
+  // git either way; this is about edits that have not been committed yet.
+  let overwrite = true;
+  if (interactive) {
+    const preview = writeComponentFiles(archive, resolved, targetRoot, { overwrite: false, dryRun: true });
+    if (preview.kept.length > 0) {
+      console.log(`\n${preview.kept.length} file(s) differ from components v${version}:`);
+      for (const file of preview.kept) console.log(`  ${file}`);
+      overwrite = await confirm("Overwrite them? [y/N] ");
+    }
+  }
+
+  const { addedCount, updatedCount, cssChunks, installedModules, kept } = writeComponentFiles(
+    archive,
+    resolved,
+    targetRoot,
+    { overwrite },
+  );
 
   generateBarrelIndex(installedModules, targetRoot);
   writeConcatenatedCss(cssChunks, config.cssPath, cwd, config);
@@ -285,6 +330,10 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
     if (addedCount > 0) parts.push(`${addedCount} added`);
     if (updatedCount > 0) parts.push(`${updatedCount} updated`);
     console.log(`\n${parts.join(", ")} in ${config.componentDir}/`);
+  }
+
+  if (kept.length > 0) {
+    console.log(`${kept.length} left unchanged. Pass --force to overwrite.`);
   }
 
   if (npmDeps.length > 0) {
