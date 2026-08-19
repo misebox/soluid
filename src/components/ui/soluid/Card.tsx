@@ -25,7 +25,7 @@ export interface CardFooterProps {
   children: JSX.Element;
 }
 
-export function Card(props: CardProps) {
+export function Card(props: CardProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "density", "variant", "children"]);
 
   return (
@@ -39,7 +39,7 @@ export function Card(props: CardProps) {
   );
 }
 
-export function CardHeader(props: CardHeaderProps) {
+export function CardHeader(props: CardHeaderProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   return (
@@ -49,7 +49,7 @@ export function CardHeader(props: CardHeaderProps) {
   );
 }
 
-export function CardBody(props: CardBodyProps) {
+export function CardBody(props: CardBodyProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   return (
@@ -59,7 +59,7 @@ export function CardBody(props: CardBodyProps) {
   );
 }
 
-export function CardFooter(props: CardFooterProps) {
+export function CardFooter(props: CardFooterProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   return (

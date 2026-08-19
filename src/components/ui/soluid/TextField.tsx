@@ -8,7 +8,7 @@ import { useFormField } from "./FormFieldContext";
 /** Native input attributes minus the ones this component owns. */
 type InputAttributes = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" | "onInput" | "type" | "size" | "class">;
 
-export type TextFieldType = "text" | "email" | "password" | "url" | "tel";
+export type TextFieldType = "text" | "email" | "password" | "url" | "tel" | "search" | "number" | "date";
 
 export interface TextFieldInputProps extends InteractiveProps, InputAttributes {
   value?: string;
