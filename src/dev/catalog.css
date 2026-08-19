@@ -590,6 +590,78 @@
   opacity: 0.85;
 }
 
+/* ===== Changelog Page ===== */
+
+.changelog-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--so-space-5);
+}
+
+.changelog-page h1 {
+  font-size: var(--site-font-size-2xl);
+  font-weight: 700;
+  color: var(--so-text);
+}
+
+.changelog-lead {
+  margin-bottom: var(--site-space-8);
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+}
+
+.changelog-release {
+  margin-bottom: var(--site-space-8);
+}
+
+.changelog-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--so-space-2);
+  margin-bottom: var(--so-space-3);
+  font-size: var(--site-font-size-xl);
+  font-weight: 600;
+}
+
+.changelog-tag a {
+  color: var(--so-text);
+  text-decoration: none;
+}
+
+.changelog-tag a:hover {
+  color: var(--so-color-primary-base);
+}
+
+.changelog-date {
+  margin-left: auto;
+  color: var(--so-text-muted);
+  font-size: var(--so-font-size-sm);
+  font-weight: 400;
+}
+
+.changelog-note,
+.changelog-group li {
+  color: var(--so-text);
+  font-size: var(--so-font-size-md);
+  line-height: 1.7;
+}
+
+.changelog-group {
+  margin-top: var(--so-space-4);
+}
+
+.changelog-group h3 {
+  margin-bottom: var(--so-space-2);
+}
+
+.changelog-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--so-space-2);
+  margin: 0;
+  padding-left: var(--so-space-5);
+}
+
 /* ===== Getting Started Page ===== */
 .gs-page {
   max-width: 720px;

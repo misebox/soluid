@@ -713,6 +713,9 @@ export const ja: Record<string, string> = {
   "nav.components": "コンポーネント",
   "nav.samples": "サンプル",
   "nav.primary": "メイン",
+  "nav.changelog": "変更履歴",
+  "changelog.lead":
+    "コンポーネントと CLI は別々にリリースされます。コンポーネントは GitHub リリース、CLI は npm です。",
   "nav.browseComponents": "コンポーネント一覧",
 
   // ===== Top Page =====

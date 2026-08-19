@@ -713,6 +713,8 @@ export const en: Record<string, string> = {
   "nav.components": "Components",
   "nav.samples": "Samples",
   "nav.primary": "Primary",
+  "nav.changelog": "Changelog",
+  "changelog.lead": "Components and the CLI are released separately: components as GitHub releases, the CLI to npm.",
   "nav.browseComponents": "Browse Components",
 
   // ===== Top Page =====
