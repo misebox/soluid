@@ -1044,3 +1044,13 @@
 .site-header .so-segmented {
   border: 1px solid var(--so-border);
 }
+
+.changelog-switch {
+  margin-bottom: var(--site-space-8);
+}
+
+.api-table-note {
+  margin-top: var(--so-space-2);
+  color: var(--so-text-muted);
+  font-size: var(--site-font-size-xs);
+}

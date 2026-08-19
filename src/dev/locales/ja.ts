@@ -714,6 +714,9 @@ export const ja: Record<string, string> = {
   "nav.samples": "サンプル",
   "nav.primary": "メイン",
   "nav.changelog": "変更履歴",
+  "changelog.streamLabel": "リリースの種類",
+  "changelog.components": "コンポーネント",
+  "changelog.cli": "CLI",
   "changelog.lead":
     "コンポーネントと CLI は別々にリリースされます。コンポーネントは GitHub リリース、CLI は npm です。",
   "nav.browseComponents": "コンポーネント一覧",
@@ -878,6 +881,7 @@ export const ja: Record<string, string> = {
   "apiDesc.VisuallyHiddenProps": "スクリーンリーダー専用コンテンツ",
 
   // ===== Components Page UI =====
+  "api.forwarded": "標準のHTML属性は下層の要素へそのまま渡されます。",
   "api.values": "指定可能な値",
   "api.default": "省略時:",
   "ui.search": "検索...",

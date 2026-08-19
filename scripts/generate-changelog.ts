@@ -27,9 +27,9 @@ export interface ReleaseSection {
   groups: { title: string; entries: string[] }[];
 }
 
-/** `## components-v0.2.10 — 2026-08-19` and `## v0.2.7 — 2026-08-03 (CLI)` */
-const HEADING = /^##\s+(\S+)\s+—\s+(\d{4}-\d{2}-\d{2})/;
-const GROUP = /^###\s+(.+?)\s*$/;
+/** `### components-v0.2.10 — 2026-08-19`, under a `## Components` or `## CLI` section. */
+const HEADING = /^###\s+(\S+)\s+—\s+(\d{4}-\d{2}-\d{2})/;
+const GROUP = /^####\s+(.+?)\s*$/;
 const ENTRY = /^-\s+(.+?)\s*$/;
 
 export function parseChangelog(markdown: string): ReleaseSection[] {

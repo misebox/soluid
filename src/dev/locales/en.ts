@@ -714,6 +714,9 @@ export const en: Record<string, string> = {
   "nav.samples": "Samples",
   "nav.primary": "Primary",
   "nav.changelog": "Changelog",
+  "changelog.streamLabel": "Release stream",
+  "changelog.components": "Components",
+  "changelog.cli": "CLI",
   "changelog.lead": "Components and the CLI are released separately: components as GitHub releases, the CLI to npm.",
   "nav.browseComponents": "Browse Components",
 
@@ -876,6 +879,7 @@ export const en: Record<string, string> = {
   "apiDesc.VisuallyHiddenProps": "Screen reader only content",
 
   // ===== Components Page UI =====
+  "api.forwarded": "Standard HTML attributes are forwarded to the underlying element.",
   "api.values": "Accepted values",
   "api.default": "Defaults to",
   "ui.search": "Search...",

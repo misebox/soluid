@@ -68,5 +68,29 @@
     "date": "2026-08-03",
     "groups": [],
     "note": "No CLI changes. Published to keep the npm version in step with the repository."
+  },
+  {
+    "tag": "v0.2.6",
+    "stream": "cli",
+    "version": "0.2.6",
+    "date": "2026-07-25",
+    "groups": [
+      {
+        "title": "Added",
+        "entries": ["The registry lists 16 more components: the date, colour and media set, and the interaction set."]
+      }
+    ]
+  },
+  {
+    "tag": "v0.2.5",
+    "stream": "cli",
+    "version": "0.2.5",
+    "date": "2026-05-06",
+    "groups": [
+      {
+        "title": "Added",
+        "entries": ["The registry lists 12 more primitive components."]
+      }
+    ]
   }
 ]

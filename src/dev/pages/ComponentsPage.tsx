@@ -358,6 +358,7 @@ function ComponentCard(props: { name: string }) {
                               </For>
                             </tbody>
                           </table>
+                          <p class="api-table-note">{t(lang(), "api.forwarded")}</p>
                         </div>
                       );
                     }}

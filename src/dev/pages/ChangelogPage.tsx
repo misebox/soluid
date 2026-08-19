@@ -1,5 +1,6 @@
-import { For, Show } from "solid-js";
+import { createMemo, createSignal, For, Show } from "solid-js";
 import { Badge } from "../../components/ui/soluid/Badge";
+import { SegmentedControl } from "../../components/ui/soluid/SegmentedControl";
 import changelog from "../changelog.json";
 import { lang } from "../lang";
 import { t } from "../locales";
@@ -31,12 +32,29 @@ function Entry(props: { text: string }) {
 }
 
 export function ChangelogPage() {
+  // Split rather than interleaved: a reader is upgrading one or the other,
+  // and the two version numbers are unrelated.
+  const [stream, setStream] = createSignal<"components" | "cli">("components");
+  const shown = createMemo(() => releases.filter((release) => release.stream === stream()));
+
   return (
     <div class="changelog-page">
       <h1>{t(lang(), "nav.changelog")}</h1>
       <p class="changelog-lead">{t(lang(), "changelog.lead")}</p>
 
-      <For each={releases}>
+      <div class="changelog-switch">
+        <SegmentedControl
+          value={stream()}
+          onChange={setStream}
+          label={t(lang(), "changelog.streamLabel")}
+          options={[
+            { value: "components", label: t(lang(), "changelog.components") },
+            { value: "cli", label: t(lang(), "changelog.cli") },
+          ]}
+        />
+      </div>
+
+      <For each={shown()}>
         {(release) => (
           <section class="changelog-release">
             <h2 class="changelog-tag">

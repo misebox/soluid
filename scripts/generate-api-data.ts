@@ -108,6 +108,11 @@ function extractPropsFromFile(filePath: string, program: ts.Program): ComponentA
       const decl = prop.declarations?.[0];
       if (!decl) continue;
 
+      // Only what soluid declares. Interfaces that extend JSX.HTMLAttributes
+      // inherit hundreds of DOM attributes -- `role` alone is an 839-character
+      // union -- and the reference for those is MDN, not this table.
+      if (!decl.getSourceFile().fileName.includes("/components/ui/soluid/")) continue;
+
       const propType = checker.getTypeOfSymbolAtLocation(prop, decl);
       let typeStr = checker.typeToString(propType, decl, ts.TypeFormatFlags.NoTruncation);
 
