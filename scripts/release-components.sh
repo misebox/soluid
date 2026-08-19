@@ -35,6 +35,16 @@ else
   echo "Bumping: ${CURRENT} -> ${NEW}"
 fi
 
+# Release notes come from CHANGELOG.md, so the site and the GitHub release say
+# the same thing. Refuse to release without them: every release before this was
+# published with empty notes precisely because nothing checked.
+NOTES=$(bunx tsx scripts/release-notes.ts "$TAG") || {
+  echo "Add a '## ${TAG} — YYYY-MM-DD' section to CHANGELOG.md first." >&2
+  exit 1
+}
+NOTES_FILE=$(mktemp)
+printf '%s\n' "$NOTES" > "$NOTES_FILE"
+
 # Create tarball from src/components/ui (includes soluid/ folder)
 tar -czf components.tar.gz -C src/components/ui .
 echo "Created components.tar.gz"
@@ -44,9 +54,9 @@ git tag "$TAG"
 git push origin HEAD --tags
 
 # Create GitHub release with tarball
-gh release create "$TAG" components.tar.gz --title "$TAG" --notes ""
+gh release create "$TAG" components.tar.gz --title "$TAG" --notes-file "$NOTES_FILE"
 
 # Clean up
-rm components.tar.gz
+rm components.tar.gz "$NOTES_FILE"
 
 echo "Done: ${TAG}"
