@@ -1,6 +1,5 @@
-import { createActiveElement } from "@solid-primitives/active-element";
 import { makeEventListener } from "@solid-primitives/event-listener";
-import { onCleanup, onMount } from "solid-js";
+import { createEffect, createUniqueId, onCleanup } from "solid-js";
 import type { Accessor } from "solid-js";
 import { isServer } from "solid-js/web";
 
@@ -22,32 +21,60 @@ export interface FocusTrapOptions {
   onClose?: () => void;
 }
 
+/**
+ * Open overlays, oldest first. Escape belongs to the last one, so a Dialog
+ * behind a Drawer does not close along with it.
+ */
+const openTraps: string[] = [];
+
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
-  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (el) => !el.hasAttribute("hidden") && el.getAttribute("aria-hidden") !== "true",
+  );
 }
 
 export function createFocusTrap(options: FocusTrapOptions): void {
-  const activeElement = createActiveElement();
-  let previouslyFocused: Element | null = null;
+  const id = createUniqueId();
 
-  onMount(() => {
-    if (options.isActive()) {
-      previouslyFocused = activeElement();
-      focusFirst();
-    }
-  });
-
-  function focusFirst(): void {
-    const el = options.container();
-    if (!el) return;
-    const focusable = getFocusableElements(el);
+  function focusFirst(container: HTMLElement): void {
+    const focusable = getFocusableElements(container);
     if (focusable.length > 0) {
       focusable[0].focus();
+      return;
     }
+    // An overlay with nothing to focus still has to take focus, or the reader
+    // is left behind on the page underneath.
+    if (!container.hasAttribute("tabindex")) container.setAttribute("tabindex", "-1");
+    container.focus();
   }
+
+  // The container only exists once the overlay has rendered, which is a tick
+  // after `isActive` turns true — so both are tracked, and focus moves as soon
+  // as there is somewhere to put it.
+  createEffect(() => {
+    const container = options.container();
+    if (!options.isActive() || !container) return;
+
+    const active = document.activeElement;
+    const restoreTo = active instanceof HTMLElement && !container.contains(active) ? active : undefined;
+
+    openTraps.push(id);
+    onCleanup(() => {
+      const index = openTraps.lastIndexOf(id);
+      if (index !== -1) openTraps.splice(index, 1);
+      // Hand focus back to whatever opened the overlay, as long as it is still
+      // on the page. This runs when the overlay closes, not when the component
+      // holding it is finally disposed of.
+      if (restoreTo?.isConnected) restoreTo.focus();
+    });
+
+    if (!container.contains(document.activeElement)) focusFirst(container);
+  });
 
   function handleKeyDown(e: KeyboardEvent): void {
     if (!options.isActive()) return;
+    // Only the overlay on top responds; the ones underneath stay open.
+    if (openTraps[openTraps.length - 1] !== id) return;
 
     if (e.key === "Escape") {
       options.onClose?.();
@@ -56,10 +83,10 @@ export function createFocusTrap(options: FocusTrapOptions): void {
 
     if (e.key !== "Tab") return;
 
-    const el = options.container();
-    if (!el) return;
+    const container = options.container();
+    if (!container) return;
 
-    const focusable = getFocusableElements(el);
+    const focusable = getFocusableElements(container);
     if (focusable.length === 0) {
       e.preventDefault();
       return;
@@ -68,6 +95,15 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     const active = document.activeElement;
+
+    // Focus can sit outside the overlay — a click on the backdrop, or a trap
+    // that opened with nothing focusable. Tab has to pull it back in rather
+    // than walk off into the page behind.
+    if (!container.contains(active)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+      return;
+    }
 
     if (e.shiftKey && active === first) {
       e.preventDefault();
@@ -82,10 +118,4 @@ export function createFocusTrap(options: FocusTrapOptions): void {
   // this, rendering a Dialog or Drawer on the server throws before the listener
   // is even reached. There is nothing to listen for there anyway.
   if (!isServer) makeEventListener(document, "keydown", handleKeyDown);
-
-  onCleanup(() => {
-    if (previouslyFocused && previouslyFocused instanceof HTMLElement) {
-      previouslyFocused.focus();
-    }
-  });
 }

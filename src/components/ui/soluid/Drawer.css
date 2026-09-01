@@ -21,6 +21,8 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  /* Keeps a scroll that reaches the end from carrying on into the page behind. */
+  overscroll-behavior: contain;
 }
 
 /* --- Sides --- */

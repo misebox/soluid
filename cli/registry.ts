@@ -25,13 +25,10 @@ export const registry: Record<string, RegistryEntry> = {
       "soluid/core/createToast.ts",
       "soluid/core/createToggle.ts",
       "soluid/core/createOverlay.ts",
+      "soluid/core/createScrollLock.ts",
     ],
     dependencies: [],
-    npmDependencies: [
-      "@solid-primitives/active-element",
-      "@solid-primitives/event-listener",
-      "@solid-primitives/scheduled",
-    ],
+    npmDependencies: ["@solid-primitives/event-listener", "@solid-primitives/scheduled"],
     description: "Type definitions, CSS tokens, theme utilities, primitives",
   },
 

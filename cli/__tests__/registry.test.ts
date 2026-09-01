@@ -36,7 +36,7 @@ describe("registry", () => {
 
   test("collects npm dependencies", () => {
     const deps = collectNpmDeps(["core"]);
-    expect(deps).toContain("@solid-primitives/active-element");
+    expect(deps).toContain("@solid-primitives/event-listener");
   });
 
   test("allComponentNames excludes core", () => {

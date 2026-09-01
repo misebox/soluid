@@ -1,6 +1,7 @@
 import { createEffect, createSignal, on } from "solid-js";
 import type { Accessor } from "solid-js";
 import { createFocusTrap } from "./createFocusTrap";
+import { createScrollLock } from "./createScrollLock";
 
 interface CreateOverlayOptions {
   isOpen: Accessor<boolean>;
@@ -55,6 +56,10 @@ export function createOverlay(options: CreateOverlayOptions): OverlayReturn {
     isActive: options.isOpen,
     onClose: options.onClose,
   });
+
+  // Held for as long as the overlay is on screen, so the page behind stays put
+  // through the closing animation too.
+  createScrollLock(mounted);
 
   // Track whether the press started on the backdrop itself. Without this,
   // selecting text inside an input and releasing over the backdrop would

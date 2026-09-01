@@ -72,6 +72,8 @@
   padding: var(--so-space-4) var(--so-space-5);
   overflow-y: auto;
   flex: 1;
+  /* Keeps a scroll that reaches the end from carrying on into the page behind. */
+  overscroll-behavior: contain;
   color: var(--so-text);
 }
 
