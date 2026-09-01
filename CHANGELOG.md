@@ -7,6 +7,23 @@ Components and the CLI are released separately, so they are listed separately.
 
 ## Components
 
+### components-v0.2.12 — 2026-09-02
+
+#### Fixed
+
+- `Dialog`, `Drawer` and `CommandPalette` left the page behind them scrolling. Nothing held the page while an overlay was open, so the wheel moved it whenever the pointer was over the backdrop, and a scroll inside the overlay carried on into the page once it reached the end. The page is now held for as long as the overlay is on screen — counted, so nested overlays release it only when the last one closes — the scrollbar's width is padded back so the page does not shift sideways, and the scrollable regions contain their own overscroll. iOS ignores `overflow: hidden` on the scrolling element, so there the page is pinned and the reading position restored on close.
+- Focus never entered an overlay when it opened. The trap moved focus in `onMount`, which runs before the overlay's own content exists and never again, so opening a `Dialog` from a button left focus on the button. Focus now moves in as soon as there is something to move it to, and an overlay with nothing focusable takes focus itself rather than leaving the reader on the page underneath.
+- Focus was not handed back when an overlay closed, only when the component holding it was disposed of — so in the usual case, where the `Dialog` stays mounted and `open` goes false, focus was left on `<body>`.
+- Escape closed every open overlay at once instead of the one on top, because each trap listened on `document` and answered independently.
+- Tab could walk out of an overlay. Once focus sat outside the container — after a click on the backdrop, say — neither end of the trap matched, so tabbing continued into the page behind. Tab now pulls focus back in.
+- `NumberInput` drifted on fractional steps: three increments of `0.1` from zero produced `0.30000000000000004`. Stepped values are rounded back to the decimals the step and the value carry.
+- `Calendar` moved focus with a document-wide lookup, so with two calendars showing the same month the arrow keys focused a day in the wrong one.
+- `Calendar` could put its only tab stop on a day ruled out by `min` or `max`, leaving the grid unreachable by keyboard. The tab stop falls back to the first day that can actually be focused.
+
+#### Changed
+
+- `@solid-primitives/active-element` is no longer installed. The focus trap reads `document.activeElement` directly, which is all it needed.
+
 ### components-v0.2.11 — 2026-08-20
 
 #### Added
