@@ -29,6 +29,21 @@ export interface NumberInputProps extends NumberControlProps {
   hint?: string;
 }
 
+/**
+ * Decimal places to round a stepped value to. Undefined when a value is
+ * written in exponential form, where the count would be misleading.
+ */
+function precisionOf(...values: number[]): number | undefined {
+  let places = 0;
+  for (const value of values) {
+    const text = String(value);
+    if (text.includes("e")) return undefined;
+    const dot = text.indexOf(".");
+    places = Math.max(places, dot === -1 ? 0 : text.length - dot - 1);
+  }
+  return places;
+}
+
 function NumberControl(props: NumberControlProps) {
   const [local, others] = splitProps(props, [
     "value",
@@ -58,7 +73,13 @@ function NumberControl(props: NumberControlProps) {
   }
 
   function nudge(direction: 1 | -1): void {
-    local.onInput?.(clamp((local.value ?? 0) + direction * stepValue()));
+    const current = local.value ?? 0;
+    const next = current + direction * stepValue();
+    // A step like 0.1 has no exact binary form, so repeated nudges drift
+    // (0.2 + 0.1 = 0.30000000000000004). Rounding back to the decimals the
+    // step and the value carry keeps the number the one on screen.
+    const places = precisionOf(stepValue(), current);
+    local.onInput?.(clamp(places === undefined ? next : Number(next.toFixed(places))));
   }
 
   // Pass the raw parsed value through while typing. Clamping mid-input

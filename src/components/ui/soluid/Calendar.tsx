@@ -75,6 +75,10 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   const weekStart = () => local.weekStartsOn ?? 0;
   const locale = () => local.locale;
 
+  // Days are looked up through this rather than the document, so two calendars
+  // showing the same month do not steal each other's focus.
+  let grid: HTMLDivElement | undefined;
+
   const monthLabel = createMemo(() =>
     new Intl.DateTimeFormat(locale(), { year: "numeric", month: "long", timeZone: "UTC" }).format(
       new Date(startOfMonth(month())),
@@ -119,7 +123,7 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     const targetMonth = target.slice(0, 7);
     if (targetMonth !== month()) goToMonth(targetMonth);
     // The cell may only exist after the month re-renders.
-    queueMicrotask(() => document.querySelector<HTMLButtonElement>(`[data-so-day="${target}"]`)?.focus());
+    queueMicrotask(() => grid?.querySelector<HTMLButtonElement>(`[data-so-day="${target}"]`)?.focus());
   }
 
   function handleKeyDown(iso: string, e: KeyboardEvent): void {
@@ -133,12 +137,16 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     }
   }
 
-  /** Exactly one day is a tab stop: the selection, else today, else the 1st. */
+  /**
+   * Exactly one day is a tab stop: the selection, else today, else the first
+   * day the keyboard can land on. min and max can rule out the start of the
+   * month, and a disabled button would leave the grid unreachable by keyboard.
+   */
   const tabStop = createMemo(() => {
-    const inMonth = (iso: string) => iso.slice(0, 7) === month();
-    if (local.value && inMonth(local.value)) return local.value;
-    if (inMonth(today)) return today;
-    return `${month()}-01`;
+    const reachable = (iso: string) => iso.slice(0, 7) === month() && !isDisabled(iso);
+    if (local.value && reachable(local.value)) return local.value;
+    if (reachable(today)) return today;
+    return weeks().flat().map(toISO).find(reachable) ?? `${month()}-01`;
   });
 
   return (
@@ -179,7 +187,7 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
             )}
           </For>
         </div>
-        <div class="so-calendar__days" role="rowgroup">
+        <div class="so-calendar__days" role="rowgroup" ref={grid}>
           <For each={weeks()}>
             {(week) => (
               <div class="so-calendar__week" role="row">
