@@ -8,7 +8,7 @@
   align-items: center;
   gap: var(--so-space-2);
   padding: 0 var(--so-space-2);
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);
@@ -65,7 +65,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   display: flex;
   flex-direction: column;
   gap: var(--so-space-3);
@@ -115,7 +115,7 @@
   width: 2.5rem;
   height: var(--so-control-height-sm);
   padding: 0;
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background: none;
   cursor: pointer;
@@ -125,7 +125,7 @@
   width: 7rem;
   height: var(--so-control-height-sm);
   padding: 0 var(--so-space-2);
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);

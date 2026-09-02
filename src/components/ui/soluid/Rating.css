@@ -10,7 +10,7 @@
   border: none;
   border-radius: 2px;
   background: none;
-  color: var(--so-border);
+  color: var(--so-border-control);
   cursor: pointer;
   transition: color 0.15s;
 }

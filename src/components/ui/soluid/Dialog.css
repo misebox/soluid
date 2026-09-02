@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   animation: so-dialog-backdrop-in 0.2s ease-out;
 }
 

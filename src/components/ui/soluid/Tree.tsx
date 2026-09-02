@@ -166,7 +166,7 @@ export function Tree(props: TreeProps & Omit<JSX.HTMLAttributes<HTMLUListElement
                 local.selected === node.id && "so-tree__row--selected",
                 node.disabled && "so-tree__row--disabled",
               )}
-              style={{ "padding-left": `calc(var(--so-space-2) * ${levelOf(node)})` }}
+              style={{ "padding-inline-start": `calc(var(--so-space-2) * ${levelOf(node)})` }}
               disabled={node.disabled}
               tabIndex={tabStop() === node.id ? 0 : -1}
               onClick={() => activate(node)}

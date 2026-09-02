@@ -1,6 +1,6 @@
 .so-toast-container {
   position: fixed;
-  z-index: 1100;
+  z-index: var(--so-z-toast);
   display: flex;
   flex-direction: column;
   gap: var(--so-space-2);
@@ -84,25 +84,25 @@
 .so-toast--info {
   background-color: var(--so-color-info-subtle);
   color: var(--so-color-info-subtle-fg);
-  border-left: 4px solid var(--so-color-info-base);
+  border-inline-start: 4px solid var(--so-color-info-base);
 }
 
 .so-toast--success {
   background-color: var(--so-color-success-subtle);
   color: var(--so-color-success-subtle-fg);
-  border-left: 4px solid var(--so-color-success-base);
+  border-inline-start: 4px solid var(--so-color-success-base);
 }
 
 .so-toast--warning {
   background-color: var(--so-color-warning-subtle);
   color: var(--so-color-warning-subtle-fg);
-  border-left: 4px solid var(--so-color-warning-base);
+  border-inline-start: 4px solid var(--so-color-warning-base);
 }
 
 .so-toast--danger {
   background-color: var(--so-color-danger-subtle);
   color: var(--so-color-danger-subtle-fg);
-  border-left: 4px solid var(--so-color-danger-base);
+  border-inline-start: 4px solid var(--so-color-danger-base);
 }
 
 .so-toast--dismissing {

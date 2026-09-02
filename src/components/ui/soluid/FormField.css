@@ -13,7 +13,7 @@
 
 .so-form-field__required {
   color: var(--so-color-danger-base);
-  margin-left: var(--so-space-1);
+  margin-inline-start: var(--so-space-1);
 }
 
 .so-form-field__hint {

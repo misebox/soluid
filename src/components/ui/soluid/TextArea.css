@@ -1,6 +1,6 @@
 .so-textarea__input {
   width: 100%;
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);

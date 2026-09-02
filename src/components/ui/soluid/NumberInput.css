@@ -1,7 +1,7 @@
 .so-number-input {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   overflow: hidden;

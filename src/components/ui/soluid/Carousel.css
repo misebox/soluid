@@ -58,11 +58,11 @@
 }
 
 .so-carousel__nav--prev {
-  left: var(--so-space-2);
+  inset-inline-start: var(--so-space-2);
 }
 
 .so-carousel__nav--next {
-  right: var(--so-space-2);
+  inset-inline-end: var(--so-space-2);
 }
 
 /* --- Dots --- */
@@ -92,7 +92,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--so-border);
+  background-color: var(--so-border-control);
   transition:
     background-color 0.15s,
     width 0.15s;

@@ -5,7 +5,7 @@
 
 .so-tooltip {
   position: absolute;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   padding: var(--so-space-1) var(--so-space-2);
   border-radius: var(--so-radius);
   background-color: var(--so-text);

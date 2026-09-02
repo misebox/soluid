@@ -7,7 +7,7 @@
   width: var(--so-control-height-md);
   height: var(--so-control-height-lg);
   padding: 0;
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);

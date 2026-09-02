@@ -7,8 +7,9 @@
 
 .so-combobox__input {
   width: 100%;
-  padding: 0 var(--so-space-5) 0 var(--so-space-2);
-  border: 1px solid var(--so-border);
+  padding-block: 0;
+  padding-inline: var(--so-space-2) var(--so-space-5);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);
@@ -23,7 +24,7 @@
 
 .so-combobox__arrow {
   position: absolute;
-  right: var(--so-space-2);
+  inset-inline-end: var(--so-space-2);
   width: 12px;
   height: 12px;
   color: var(--so-text-muted);
@@ -59,7 +60,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   max-height: 15rem;
   margin: 0;
   padding: var(--so-space-1);

@@ -77,6 +77,13 @@
   --so-text: #111827;
   --so-text-muted: #6b7280;
   --so-border: #e5e7eb;
+  /* The edge of a control, not of a surface: WCAG 1.4.11 wants 3:1 against
+     the background for the boundary that tells a control apart. */
+  --so-border-control: #8a919b;
+
+  /* One step per layer, so a host can move the whole library at once. */
+  --so-z-overlay: 1000;
+  --so-z-toast: 1100;
 
   /* Semantic color bases. Override these to recolor the entire system.
      Chosen so each one clears 4.5:1 both as text on its own subtle tint and
@@ -101,6 +108,12 @@
   --so-text: #f1f5f9;
   --so-text-muted: #94a3b8;
   --so-border: #334155;
+  --so-border-control: #64748b;
+
+  /* Black shadows are invisible on a dark ground; these are deeper. */
+  --so-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --so-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --so-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.7);
 }
 
 /* --- Derived semantic colors ---

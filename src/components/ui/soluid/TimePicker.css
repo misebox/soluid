@@ -10,7 +10,7 @@
   gap: var(--so-space-2);
   width: 100%;
   padding: 0 var(--so-space-2);
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);
@@ -71,7 +71,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   max-height: 14rem;
   margin: 0;
   padding: var(--so-space-1);

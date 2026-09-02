@@ -9,17 +9,16 @@
   width: 100%;
 }
 
-/* Room for the icon on the left and the clear button on the right. Scoped to
+/* Room for the icon before the text and the clear button after it. Scoped to
    the wrapper for specificity: the size modifiers in TextField.css set `padding`
    as a shorthand, which resets these and wins on source order otherwise. */
 .so-search-field .so-search-field__input {
-  padding-left: var(--so-space-6);
-  padding-right: var(--so-space-6);
+  padding-inline: var(--so-space-6);
 }
 
 .so-search-field__icon {
   position: absolute;
-  left: var(--so-space-2);
+  inset-inline-start: var(--so-space-2);
   width: 16px;
   height: 16px;
   color: var(--so-text-muted);
@@ -28,7 +27,7 @@
 
 .so-search-field__clear {
   position: absolute;
-  right: var(--so-space-1);
+  inset-inline-end: var(--so-space-1);
   display: flex;
   align-items: center;
   justify-content: center;

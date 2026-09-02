@@ -30,7 +30,7 @@
   content: "";
   position: absolute;
   top: 20px;
-  left: 5px;
+  inset-inline-start: 5px;
   width: 1px;
   height: calc(100% - 20px + var(--so-space-4));
   background-color: var(--so-border);

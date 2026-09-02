@@ -1,6 +1,6 @@
 .so-progress {
   width: 100%;
-  background-color: var(--so-border);
+  background-color: var(--so-border-control);
   border-radius: var(--so-radius);
   overflow: hidden;
 }

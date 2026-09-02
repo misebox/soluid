@@ -5,7 +5,7 @@
 
 .so-select__input {
   width: 100%;
-  border: 1px solid var(--so-border);
+  border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
   color: var(--so-text);
@@ -21,7 +21,7 @@
 
 .so-select__arrow {
   position: absolute;
-  right: var(--so-space-3);
+  inset-inline-end: var(--so-space-3);
   top: 50%;
   transform: translateY(-50%);
   width: 12px;
@@ -54,18 +54,21 @@
 
 .so-select__input--sm {
   height: var(--so-control-height-sm);
-  padding: 0 var(--so-space-5) 0 var(--so-space-2);
+  padding-block: 0;
+  padding-inline: var(--so-space-2) var(--so-space-5);
   font-size: var(--so-font-size-sm);
 }
 
 .so-select__input--md {
   height: var(--so-control-height-md);
-  padding: 0 var(--so-space-5) 0 var(--so-space-3);
+  padding-block: 0;
+  padding-inline: var(--so-space-3) var(--so-space-5);
   font-size: var(--so-font-size-md);
 }
 
 .so-select__input--lg {
   height: var(--so-control-height-lg);
-  padding: 0 var(--so-space-6) 0 var(--so-space-4);
+  padding-block: 0;
+  padding-inline: var(--so-space-4) var(--so-space-6);
   font-size: var(--so-font-size-lg);
 }

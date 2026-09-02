@@ -34,7 +34,7 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--so-border);
+  border: 2px solid var(--so-border-control);
   border-radius: calc(var(--so-radius) / 2);
   background-color: var(--so-bg);
   color: var(--so-color-primary-fg);

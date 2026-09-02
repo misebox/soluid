@@ -9,7 +9,7 @@
 }
 
 .so-avatar-group > :not(:first-child) {
-  margin-left: calc(var(--so-space-2) * -1);
+  margin-inline-start: calc(var(--so-space-2) * -1);
 }
 
 .so-avatar-group__overflow {

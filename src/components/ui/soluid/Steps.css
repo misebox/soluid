@@ -89,7 +89,7 @@
   content: "";
   position: absolute;
   top: 12px;
-  left: calc(100% - var(--so-space-2));
+  inset-inline-start: calc(100% - var(--so-space-2));
   width: var(--so-space-2);
   height: 1px;
   background-color: var(--so-border);
@@ -110,7 +110,7 @@
   content: "";
   position: absolute;
   top: 28px;
-  left: 12px;
+  inset-inline-start: 12px;
   width: 1px;
   height: calc(100% - 28px + var(--so-space-4));
   background-color: var(--so-border);

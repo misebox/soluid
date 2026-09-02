@@ -40,14 +40,23 @@
   background: linear-gradient(
     to right,
     var(--so-color-primary-base) var(--so-slider-progress),
-    var(--so-border) var(--so-slider-progress)
+    var(--so-border-control) var(--so-slider-progress)
+  );
+}
+
+/* WebKit paints the track itself, so the fill direction is ours to set. */
+[dir="rtl"] .so-slider__input::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to left,
+    var(--so-color-primary-base) var(--so-slider-progress),
+    var(--so-border-control) var(--so-slider-progress)
   );
 }
 
 .so-slider__input::-moz-range-track {
   height: var(--so-slider-track);
   border-radius: var(--so-slider-track);
-  background-color: var(--so-border);
+  background-color: var(--so-border-control);
 }
 
 .so-slider__input::-moz-range-progress {

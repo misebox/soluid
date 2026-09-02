@@ -12,7 +12,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   min-width: 10rem;
   padding: var(--so-space-1);
   border: 1px solid var(--so-border);

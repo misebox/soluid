@@ -19,25 +19,25 @@
 /* --- Attached: collapse the seam between neighbours --- */
 
 .so-button-group--attached.so-button-group--horizontal > :not(:first-child) {
-  margin-left: -1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  margin-inline-start: -1px;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
 }
 
 .so-button-group--attached.so-button-group--horizontal > :not(:last-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .so-button-group--attached.so-button-group--vertical > :not(:first-child) {
   margin-top: -1px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
 }
 
 .so-button-group--attached.so-button-group--vertical > :not(:last-child) {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
 /* Raise the focused button so its ring is not clipped by its neighbour. */

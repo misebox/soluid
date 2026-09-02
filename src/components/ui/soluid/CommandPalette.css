@@ -1,7 +1,7 @@
 .so-command-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--so-z-overlay);
   display: flex;
   align-items: flex-start;
   justify-content: center;

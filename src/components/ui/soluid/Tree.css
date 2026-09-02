@@ -14,7 +14,7 @@
   gap: var(--so-space-1);
   width: 100%;
   min-height: var(--so-control-height-sm);
-  padding-right: var(--so-space-2);
+  padding-inline-end: var(--so-space-2);
   border: none;
   border-radius: var(--so-radius);
   background: none;

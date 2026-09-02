@@ -6,6 +6,7 @@ export default defineConfig({
   // Solid ships separate server and browser builds; tests need the browser one.
   resolve: { conditions: ["development", "browser"] },
   test: {
-    include: ["cli/__tests__/**/*.test.ts", "src/__tests__/**/*.test.tsx"],
+    // Both extensions: a .ts test under src/__tests__ would otherwise be skipped in silence.
+    include: ["cli/__tests__/**/*.test.ts", "src/__tests__/**/*.test.{ts,tsx}"],
   },
 });
