@@ -18,7 +18,13 @@ export function AvatarGroup(props: AvatarGroupProps & JSX.HTMLAttributes<HTMLDiv
 
   const avatars = children(() => local.children);
 
-  const limit = () => (Number.isFinite(local.max) ? Math.max(0, Math.trunc(local.max ?? 0)) : Number.POSITIVE_INFINITY);
+  // No `??`: the absence of a limit is not a default value to document.
+  const limit = () => {
+    const requested = local.max;
+    return requested !== undefined && Number.isFinite(requested)
+      ? Math.max(0, Math.trunc(requested))
+      : Number.POSITIVE_INFINITY;
+  };
   const visible = () => avatars.toArray().slice(0, limit());
   const hidden = () => Math.max(0, avatars.toArray().length - limit());
 
