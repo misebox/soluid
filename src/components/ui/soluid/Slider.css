@@ -10,7 +10,8 @@
   --so-slider-progress: 0%;
   flex: 1;
   min-width: 0;
-  height: var(--so-slider-thumb);
+  /* The thumb is smaller than the strip you can press. */
+  height: max(24px, var(--so-slider-thumb));
   margin: 0;
   background: none;
   appearance: none;

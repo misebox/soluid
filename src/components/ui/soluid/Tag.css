@@ -87,6 +87,7 @@
 /* --- Remove button --- */
 
 .so-tag__remove {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -102,6 +103,17 @@
   transition: opacity 0.15s;
   font-size: inherit;
   line-height: 1;
+}
+
+/* The cross is drawn at 1em; the area you can press is 24px square. */
+.so-tag__remove::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
 }
 
 .so-tag__remove:hover {

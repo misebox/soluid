@@ -6,6 +6,11 @@
 
 .so-rating__item {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* At least 24px to press, whatever size the star is drawn at. */
+  min-width: 24px;
+  min-height: 24px;
   padding: 0;
   border: none;
   border-radius: 2px;
@@ -32,23 +37,22 @@ button.so-rating__item:hover:not(:disabled) {
 }
 
 .so-rating__icon {
-  width: 100%;
-  height: 100%;
+  flex-shrink: 0;
 }
 
 /* --- Sizes --- */
 
-.so-rating--sm .so-rating__item {
+.so-rating--sm .so-rating__icon {
   width: 16px;
   height: 16px;
 }
 
-.so-rating--md .so-rating__item {
+.so-rating--md .so-rating__icon {
   width: 20px;
   height: 20px;
 }
 
-.so-rating--lg .so-rating__item {
+.so-rating--lg .so-rating__icon {
   width: 26px;
   height: 26px;
 }

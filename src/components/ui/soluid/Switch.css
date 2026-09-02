@@ -1,6 +1,8 @@
 .so-switch {
   display: inline-flex;
   align-items: center;
+  /* The label is the pressable area, and it has to clear 24px. */
+  min-height: 24px;
   gap: var(--so-space-2);
   cursor: pointer;
   user-select: none;

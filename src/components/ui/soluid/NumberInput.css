@@ -1,6 +1,7 @@
 .so-number-input {
   display: inline-flex;
-  align-items: center;
+  /* Stretch: the steppers are segments of the control, not badges inside it. */
+  align-items: stretch;
   border: 1px solid var(--so-border-control);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);

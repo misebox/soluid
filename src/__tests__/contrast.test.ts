@@ -97,3 +97,28 @@ it("inline-axis offsets are written as logical properties", () => {
     expect(body, `${file} ${selector}`).not.toMatch(/^\s*(left|right):/m);
   }
 });
+
+it("controls smaller than a fingertip declare a 24px pressable area", () => {
+  // WCAG 2.5.8 asks for 24 CSS px. Measured in a browser, these were the ones
+  // that fell short; jsdom has no layout, so the declaration is what is pinned.
+  for (const [file, selector] of [
+    ["Checkbox.css", ".so-checkbox"],
+    ["RadioButton.css", ".so-radio-button"],
+    ["Switch.css", ".so-switch"],
+    ["Rating.css", ".so-rating__item"],
+  ] as const) {
+    const rules = readFileSync(`src/components/ui/soluid/${file}`, "utf-8");
+    const block = rules.slice(rules.indexOf(`${selector} {`));
+    expect(block.slice(0, block.indexOf("}")), `${file} ${selector}`).toMatch(/min-height:\s*24px/);
+  }
+
+  const tag = readFileSync("src/components/ui/soluid/Tag.css", "utf-8");
+  expect(tag).toContain(".so-tag__remove::after");
+
+  const slider = readFileSync("src/components/ui/soluid/Slider.css", "utf-8");
+  expect(slider).toContain("height: max(24px, var(--so-slider-thumb))");
+
+  // The steppers are segments of the field, so they inherit its height.
+  const number = readFileSync("src/components/ui/soluid/NumberInput.css", "utf-8");
+  expect(number).toContain("align-items: stretch");
+});
