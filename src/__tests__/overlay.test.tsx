@@ -237,9 +237,30 @@ describe("Escape", () => {
   });
 });
 
+it("closes on a press that both starts and ends on the backdrop", () => {
+  const [open, setOpen] = createSignal(true);
+  let closes = 0;
+  mount(() =>
+    dialog(
+      open,
+      () => {
+        closes += 1;
+        setOpen(false);
+      },
+      <input />,
+    ),
+  );
+  const backdrop = document.querySelector(".so-dialog-backdrop") as HTMLElement;
+
+  backdrop.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  backdrop.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+  expect(closes).toBe(1);
+});
+
 it("a drag that starts inside the dialog and ends on the backdrop does not close it", () => {
   // Selecting text in a field and releasing over the backdrop is an ordinary
-  // gesture; it used to be indistinguishable from a click on the backdrop.
+  // gesture, and the release lands on the backdrop either way.
   const [open, setOpen] = createSignal(true);
   let closes = 0;
   mount(() =>

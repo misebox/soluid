@@ -7,6 +7,21 @@ Components and the CLI are released separately, so they are listed separately.
 
 ## Components
 
+### components-v0.2.14 — 2026-09-03
+
+#### Fixed
+
+- `SegmentedControl` picked its tab stop by comparing option objects, so a derived options array matched nothing and left every segment at `tabindex="-1"`, unreachable by keyboard. It compares by value now.
+- Escape ownership lived in a single list for the whole page, so the newest overlay anywhere answered the key rather than the one focus was in: with a `Dialog` in use and a `Popover` open elsewhere, Escape inside the dialog closed the popover and pulled focus out of the modal onto the popover's trigger. Each overlay now reports both its panel and whatever opened it, so a picker whose focus stays on its trigger still counts as in use, and only the overlay the keyboard is inside answers.
+- `Menu` closed on any Tab reaching the document without checking where focus was, so a Tab anywhere on the page closed it and moved focus to its trigger; `ContextMenu` had the same shape.
+- `Slider` left the thumb wherever a drag ended when the parent kept the old value, so the thumb, the filled track and the readout disagreed. Updates made inside an event handler are batched; the model is compared once it has settled.
+- `createToast` moved to plain timers in the previous release but bound them to no owner, so a pending auto-dismiss could fire into a store that had already been disposed.
+- `TimePicker` pointed `aria-controls` and `aria-activedescendant` at an empty list when `min`, `max` and `step` left no time to offer.
+- `DatePicker`, `TimePicker` and `ColorPicker` used the visually-hidden style without depending on the component that defines it, so in a project that installed them without `VisuallyHidden` the field carrying `name` and `required` rendered at full size.
+- The `NumberInput` steppers rendered as small pills in the middle of the field instead of full-height segments, because the wrapper centred its children instead of stretching them.
+- Controls smaller than the 24 CSS px WCAG 2.5.8 asks for had a pressable area no bigger than what they were drawn at: the `Tag` remove button was 14 square, the `Rating` stars 20 square two pixels apart, the `Slider` strip 18 tall, and the `Checkbox`, `RadioButton` and `Switch` labels 22 tall. The cross and the stars keep the size they are drawn at.
+- `createTheme` logged its contrast warnings on every call, including in production. They are returned to the caller only, which is where they belong.
+
 ### components-v0.2.13 — 2026-09-02
 
 #### Fixed
@@ -151,6 +166,13 @@ Components and the CLI are released separately, so they are listed separately.
 - The default palette gives each theme its own colour bases. No single base can clear 4.5:1 on both white and `#0f172a`, so light and dark now differ, and solid fills carry dark text in dark mode. Contrast failures drop from 98 to 2 in light and from 245 to 2 in dark, the remainder being disabled controls, which WCAG exempts.
 
 ## CLI
+
+### v0.2.11 — 2026-09-03
+
+#### Fixed
+
+- Every interactive prompt discarded the answer and returned its default, so the overwrite prompt always declined and `init` always took defaults regardless of what was typed. The end-of-input fallback added in the previous release resolved the prompt from readline's `close` event, which fires synchronously before the answer callback can resolve it.
+- `install` wrote the new `componentsVersion` to the config before fetching or checking the release, so an install it went on to refuse still left the newer version recorded.
 
 ### v0.2.11 — 2026-09-03
 

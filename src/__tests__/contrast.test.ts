@@ -71,7 +71,8 @@ it("chevrons that name a direction are mirrored when the text runs the other way
     ["Tree.css", ".so-tree__chevron"],
   ] as const) {
     const rules = readFileSync(`src/components/ui/soluid/${file}`, "utf-8");
-    expect(rules, file).toContain(`[dir="rtl"] ${selector}`);
+    const block = rules.slice(rules.indexOf(`[dir="rtl"] ${selector}`));
+    expect(block.slice(0, block.indexOf("}")), `${file} ${selector}`).toContain("scaleX(-1)");
   }
 });
 
