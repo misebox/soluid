@@ -61,3 +61,15 @@ it("dark theme carries its own shadows, which black ones cannot provide", () => 
   const darkBlock = css.slice(css.indexOf('[data-theme="dark"] {'));
   expect(darkBlock.slice(0, darkBlock.indexOf("}"))).toContain("--so-shadow-md");
 });
+
+it("chevrons that name a direction are mirrored when the text runs the other way", () => {
+  // A left-pointing "previous" arrow points the wrong way in a right-to-left page.
+  for (const [file, selector] of [
+    ["Calendar.css", ".so-calendar__nav svg"],
+    ["Carousel.css", ".so-carousel__nav svg"],
+    ["Tree.css", ".so-tree__chevron"],
+  ] as const) {
+    const rules = readFileSync(`src/components/ui/soluid/${file}`, "utf-8");
+    expect(rules, file).toContain(`[dir="rtl"] ${selector}`);
+  }
+});

@@ -52,6 +52,10 @@
   cursor: not-allowed;
 }
 
+[dir="rtl"] .so-carousel__nav svg {
+  transform: scaleX(-1);
+}
+
 .so-carousel__nav svg {
   width: 16px;
   height: 16px;

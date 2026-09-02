@@ -74,10 +74,26 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   const now = new Date();
   const today = toISO(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
   const [ownMonth, setOwnMonth] = createSignal(local.value?.slice(0, 7) || today.slice(0, 7));
-  const month = () => local.month || ownMonth();
+  // A month Intl cannot parse would reach `format` as an invalid date and throw,
+  // taking the whole render tree with it.
+  const month = () => {
+    const candidate = local.month || ownMonth();
+    return /^\d{4}-\d{2}/.test(candidate) ? candidate.slice(0, 7) : today.slice(0, 7);
+  };
 
   const weekStart = () => local.weekStartsOn ?? 0;
-  const locale = () => local.locale;
+  // Intl throws on a tag it cannot parse, and "en_US" is what several backends
+  // emit; an unusable tag falls back to the browser's own.
+  const locale = createMemo(() => {
+    const tag = local.locale;
+    if (tag == null) return undefined;
+    try {
+      new Intl.DateTimeFormat(tag);
+      return tag;
+    } catch {
+      return undefined;
+    }
+  });
 
   // Days are looked up through this rather than the document, so two calendars
   // showing the same month do not steal each other's focus.

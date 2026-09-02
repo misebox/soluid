@@ -47,9 +47,12 @@ export function SliderInput(props: SliderInputProps) {
 
   const ctx = useFormField();
 
-  const min = () => local.min ?? 0;
-  const max = () => local.max ?? 100;
-  const current = () => local.value ?? min();
+  // parseFloat("") is a normal way to end up with NaN here, and NaN would reach
+  // the DOM as min="NaN" and a NaN% track.
+  const num = (value: number | undefined, fallback: number) => (Number.isFinite(value) ? (value as number) : fallback);
+  const min = () => num(local.min, 0);
+  const max = () => num(local.max, 100);
+  const current = () => num(local.value, min());
   const display = () => local.formatValue?.(current()) ?? String(current());
 
   /** Position of the filled portion, used to paint the track. */

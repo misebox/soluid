@@ -53,6 +53,11 @@
   transition: transform 0.15s;
 }
 
+/* The open chevron points down, which is the same either way. */
+[dir="rtl"] .so-tree__chevron:not(.so-tree__chevron--open) {
+  transform: scaleX(-1);
+}
+
 .so-tree__chevron--open {
   transform: rotate(90deg);
 }

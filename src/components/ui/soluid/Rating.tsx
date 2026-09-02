@@ -51,7 +51,8 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
     "itemLabel",
   ]);
 
-  const max = () => local.max ?? 5;
+  // Array.from throws on Infinity and on lengths past 2^32-1.
+  const max = () => (Number.isFinite(local.max) ? Math.max(0, Math.min(1000, Math.trunc(local.max ?? 0))) : 5);
   // A memo: every star reads `tabStop`, which would otherwise rebuild the list.
   const items = createMemo(() => Array.from({ length: max() }, (_, i) => i + 1));
   // Exactly one tab stop: the selected item, else the first, so the group stays

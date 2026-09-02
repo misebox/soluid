@@ -18,7 +18,7 @@ export function AvatarGroup(props: AvatarGroupProps & JSX.HTMLAttributes<HTMLDiv
 
   const avatars = children(() => local.children);
 
-  const limit = () => Math.max(0, local.max ?? Infinity);
+  const limit = () => (Number.isFinite(local.max) ? Math.max(0, Math.trunc(local.max ?? 0)) : Number.POSITIVE_INFINITY);
   const visible = () => avatars.toArray().slice(0, limit());
   const hidden = () => Math.max(0, avatars.toArray().length - limit());
 

@@ -50,7 +50,8 @@ export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivE
 
   const boxes = new Map<number, HTMLInputElement>();
 
-  const length = () => local.length ?? 6;
+  // Array.from throws on Infinity and on lengths past 2^32-1.
+  const length = () => (Number.isFinite(local.length) ? Math.max(0, Math.min(64, Math.trunc(local.length ?? 0))) : 6);
   const chars = () => Array.from({ length: length() }, (_, i) => local.value[i] ?? "");
   const itemLabel = (index: number) =>
     local.itemLabel?.(index + 1, length()) ?? `Character ${index + 1} of ${length()}`;

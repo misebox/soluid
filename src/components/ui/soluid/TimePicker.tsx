@@ -80,7 +80,8 @@ export function TimePickerControl(props: TimePickerControlProps) {
   const [listRef, setListRef] = createSignal<HTMLUListElement | undefined>(undefined);
 
   const options = createMemo(() => {
-    const step = Math.max(1, local.step ?? 30);
+    // A fractional step would build times like "00:1.5" and commit them as HH:MM.
+    const step = Number.isFinite(local.step) ? Math.max(1, Math.trunc(local.step ?? 0)) : 30;
     const from = toMinutes(local.min ?? "00:00");
     const to = toMinutes(local.max ?? "23:59");
     const times: string[] = [];

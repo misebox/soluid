@@ -77,7 +77,9 @@ export function Pagination(props: PaginationProps & Omit<JSX.HTMLAttributes<HTML
     "pageLabel",
   ]);
 
-  const pageList = () => buildPageList(local.page, local.totalPages, local.maxVisible ?? 5);
+  // A total that is still NaN would render a page button labelled "NaN".
+  const total = () => (Number.isFinite(local.totalPages) ? Math.max(0, Math.trunc(local.totalPages)) : 0);
+  const pageList = () => buildPageList(local.page, total(), local.maxVisible ?? 5);
   const pageLabel = (page: number) => local.pageLabel?.(page) ?? `Page ${page}`;
 
   return (
@@ -101,7 +103,7 @@ export function Pagination(props: PaginationProps & Omit<JSX.HTMLAttributes<HTML
         when={local.showPages}
         fallback={
           <span class="so-pagination__info">
-            {local.page} / {local.totalPages}
+            {local.page} / {total()}
           </span>
         }
       >
@@ -132,7 +134,7 @@ export function Pagination(props: PaginationProps & Omit<JSX.HTMLAttributes<HTML
       <button
         type="button"
         class="so-pagination__button"
-        disabled={local.page >= local.totalPages}
+        disabled={local.page >= total()}
         onClick={() => local.onChange(local.page + 1)}
         aria-label={local.nextLabel ?? "Next page"}
       >

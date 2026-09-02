@@ -244,13 +244,13 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
                     type="button"
                     class={cls(
                       "so-color-picker__swatch",
-                      swatch.toLowerCase() === color().toLowerCase() && "so-color-picker__swatch--selected",
+                      swatch?.toLowerCase() === color().toLowerCase() && "so-color-picker__swatch--selected",
                     )}
                     style={{ "background-color": swatch }}
                     aria-label={local.swatchLabel?.(swatch) ?? swatch}
-                    aria-pressed={swatch.toLowerCase() === color().toLowerCase()}
+                    aria-pressed={swatch?.toLowerCase() === color().toLowerCase()}
                     onClick={() => {
-                      commit(swatch.toLowerCase());
+                      commit(swatch?.toLowerCase());
                       close();
                     }}
                   />

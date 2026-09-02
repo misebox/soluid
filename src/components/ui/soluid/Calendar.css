@@ -48,6 +48,10 @@
   color: var(--so-text);
 }
 
+[dir="rtl"] .so-calendar__nav svg {
+  transform: scaleX(-1);
+}
+
 .so-calendar__nav svg {
   width: 16px;
   height: 16px;

@@ -41,20 +41,24 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
 
   let viewport: HTMLDivElement | undefined;
 
-  const atStart = () => local.index <= 0;
-  const atEnd = () => local.index >= count() - 1;
+  // A fractional or NaN index matches no slide, which would leave every slide
+  // inert and both arrows reporting NaN.
+  const index = () => (Number.isFinite(local.index) ? Math.round(local.index) : 0);
+
+  const atStart = () => index() <= 0;
+  const atEnd = () => index() >= count() - 1;
 
   function go(delta: number): void {
     const total = count();
     if (total === 0) return;
-    const next = local.index + delta;
+    const next = index() + delta;
     if (local.loop) {
       local.onIndexChange((next + total) % total);
       return;
     }
     // Clamped rather than dropped, so an index past the end can still come back.
     const clamped = Math.min(Math.max(next, 0), total - 1);
-    if (clamped !== local.index) local.onIndexChange(clamped);
+    if (clamped !== index()) local.onIndexChange(clamped);
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
@@ -92,21 +96,21 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
     if (!viewport) return;
     const element = viewport;
 
-    const observer = new ResizeObserver(() => scrollToIndex(local.index));
+    const observer = new ResizeObserver(() => scrollToIndex(index()));
     observer.observe(element);
     onCleanup(() => observer.disconnect());
 
     const onScroll = () => {
       if (syncing || element.clientWidth === 0) return;
       const nearest = Math.round(element.scrollLeft / element.clientWidth);
-      if (nearest !== local.index) local.onIndexChange(nearest);
+      if (nearest !== index()) local.onIndexChange(nearest);
     };
     element.addEventListener("scroll", onScroll, { passive: true });
     onCleanup(() => element.removeEventListener("scroll", onScroll));
   });
 
   // Reading index inside the effect is what makes a controlled change scroll.
-  createEffect(() => scrollToIndex(local.index));
+  createEffect(() => scrollToIndex(index()));
 
   return (
     <div
@@ -126,8 +130,8 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
               role="group"
               aria-roledescription="slide"
               // Off-screen slides are hidden from readers and, with inert, from Tab too.
-              aria-hidden={i() !== local.index}
-              inert={i() !== local.index}
+              aria-hidden={i() !== index()}
+              inert={i() !== index()}
               aria-label={local.dotLabel?.(i() + 1, count()) ?? `${i() + 1} / ${count()}`}
             >
               {slide}
@@ -165,9 +169,9 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
             {(i) => (
               <button
                 type="button"
-                class={cls("so-carousel__dot", i === local.index && "so-carousel__dot--active")}
+                class={cls("so-carousel__dot", i === index() && "so-carousel__dot--active")}
                 aria-label={local.dotLabel?.(i + 1, count()) ?? `${i + 1} / ${count()}`}
-                aria-current={i === local.index}
+                aria-current={i === index()}
                 onClick={() => local.onIndexChange(i)}
               />
             )}
