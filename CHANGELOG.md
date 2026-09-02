@@ -68,6 +68,12 @@ Components and the CLI are released separately, so they are listed separately.
 - `SegmentedControl`, `Tabs` and `Rating` recomputed their single tab stop once per item, so changing the selection cost time proportional to the square of the item count. `CommandPalette` re-filtered its whole command list about five times per arrow key, and `Table` called the caller's `rowKey` three times per row on mount. All four are computed once now.
 - A `Dialog` without a `DialogHeader` still pointed `aria-labelledby` at an element nothing rendered, so the dialog had no name. A `Combobox` with nothing to show kept a listbox role over a message that is not an option. `CommandPalette`'s search box had no name at all, and its dialog had none unless the caller passed a label; both fall back to "Search commands".
 - `aria-required` is not allowed on a plain button, so a required `DatePicker` or `ColorPicker` trigger produced invalid ARIA; both triggers are now the `combobox` role the `TimePicker` trigger already used.
+- `Calendar` threw for any value it could not parse, such as `"abc"`, `"20260101"` or `"01/15/2026"`, because the unparsed month reached `Intl` as an invalid date and took the whole render tree down; `DatePicker` inherited the crash. It falls back to the current month. It threw the same way for a locale tag `Intl` rejects, including `"en_US"`, the underscore form several backends emit, and the empty string; an unusable tag falls back to the browser's own.
+- `Carousel` with a fractional or `NaN` index, which a missing URL parameter through `parseInt` produces, matched no slide: every slide was `aria-hidden` and `inert`, both arrows stayed enabled, and clicking them reported `NaN` forever.
+- `Pagination` rendered a page button labelled NaN, named "Page NaN" to a screen reader, while a count had not loaded. `AvatarGroup` with a NaN `max` rendered nothing at all, overflow chip included. `Slider` put `min="NaN"` on the range input and a NaN percent track for a value from `parseFloat("")`. `Rating` and `PinInput` threw from `Array.from` for an infinite `max` or `length`.
+- `TimePicker` with a fractional `step` offered times like `"00:1.5"` and committed them as though they were `HH:MM`. `ColorPicker` threw when the swatch list held a gap, which a list built by mapping rows can leave.
+- In a right-to-left page the `Calendar` and `Carousel` navigation chevrons and the `Tree` collapse chevron still pointed the way they do left to right.
+- `createTheme` used `import.meta.env`, which exists only under a bundler, so it was the one file in the library that failed to type-check once copied into a project without one. Its contrast warnings are logged unconditionally now, and still returned to the caller.
 - `Collapsible` rejected JSX as `title` at compile time, `Table` rejected rows typed by an `interface`, and a caller's `onKeyDown` on `Carousel` or `onContextMenu` on `ContextMenu` silently replaced the component's own handler; the types now say so. `DatePicker`, `TimePicker`, `ColorPicker` and `Combobox` accept the native attributes of their trigger or input, and `TimePicker`, `ColorPicker` and `Combobox` take a `name` and submit their value. `NumberInput`'s `label` is optional like every other field, it no longer wipes an uncontrolled box on blur, and its steppers respect the lowercase `readonly` attribute. `SliderInput` merges a caller `style` instead of dropping it. The named unions (`SmallSize`, `WeekStart`, `SortDirection`, `TooltipPlacement` and the rest) are exported from the index.
 
 #### Changed
@@ -145,6 +151,17 @@ Components and the CLI are released separately, so they are listed separately.
 - The default palette gives each theme its own colour bases. No single base can clear 4.5:1 on both white and `#0f172a`, so light and dark now differ, and solid fills carry dark text in dark mode. Contrast failures drop from 98 to 2 in light and from 245 to 2 in dark, the remainder being disabled controls, which WCAG exempts.
 
 ## CLI
+
+### v0.2.11 — 2026-09-03
+
+#### Fixed
+
+- The drift check added in the previous version refused every existing release. macOS tar embeds an AppleDouble `._name` entry per file unless `COPYFILE_DISABLE` is set, and every published tarball carries about 147 of them; each matched the check's pattern for a component file. The release script excludes them now and the check ignores dotfiles. This was never published.
+- That check also scanned the whole archive, so a release adding any component would have stopped the install for everyone on an older CLI, even someone installing only `Button`. It now looks for the thing that actually breaks an install: a file being written whose relative import is not also being written.
+- The npm packages to install came from the CLI's own registry, which describes the components in the CLI rather than the release being installed, so pinning an older `componentsVersion` could leave an import unresolvable. They are the union of the registry and the packages the release's own files import.
+- The published package carried 82 files, including compiled tests, declarations and a stylesheet left over from a build that no longer exists. It carries 14 now, 125 KB down to 52 KB.
+- `release-cli.sh` tagged and pushed before publishing, so a publish that failed left a tag for a version npm never received and the drift check read it as released; v0.2.8 is in that state. `release-components.sh` refuses to run unless npm already carries this tree's CLI version, since a components release needing a newer registry breaks installs until the CLI lands.
+- The package declares `engines` of Node 18 or newer, which its use of `fetch` and `node:stream/web` already required.
 
 ### v0.2.10 — 2026-09-02
 
