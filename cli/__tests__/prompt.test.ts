@@ -43,3 +43,23 @@ test("confirm reads a yes", async () => {
 
   await expect(answer).resolves.toBe(true);
 });
+
+test("confirm accepts the long form the question invites", async () => {
+  // init asks "Continue anyway? (y/n)", so "yes" cannot mean no.
+  for (const [typed, expected] of [
+    ["y", true],
+    ["Y", true],
+    ["yes", true],
+    ["YES", true],
+    ["n", false],
+    ["", false],
+    ["nope", false],
+  ] as const) {
+    const stream = new PassThrough();
+    Object.defineProperty(process, "stdin", { value: stream, configurable: true });
+    const answer = confirm("Sure? ");
+    stream.write(`${typed}\n`);
+
+    await expect(answer, typed).resolves.toBe(expected);
+  }
+});

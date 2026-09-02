@@ -1017,7 +1017,8 @@
     "description": "Swatch palette with a hex field and native picker",
     "dependencies": [
       "core",
-      "FormField"
+      "FormField",
+      "VisuallyHidden"
     ],
     "props": [
       {
@@ -1566,7 +1567,8 @@
     "dependencies": [
       "core",
       "FormField",
-      "Calendar"
+      "Calendar",
+      "VisuallyHidden"
     ],
     "props": [
       {
@@ -4648,7 +4650,8 @@
     "description": "Time field backed by a stepped listbox",
     "dependencies": [
       "core",
-      "FormField"
+      "FormField",
+      "VisuallyHidden"
     ],
     "props": [
       {

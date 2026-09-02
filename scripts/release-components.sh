@@ -11,6 +11,13 @@ if [ "$PUBLISHED" != "$LOCAL" ]; then
   echo "Publish the CLI first: npm has ${PUBLISHED:-nothing}, this tree is ${LOCAL}." >&2
   exit 1
 fi
+# Matching version numbers are not enough: cli/ can hold changes this release
+# needs, such as a registry entry for a component it is about to ship.
+if ! bash scripts/check-cli-drift.sh >/dev/null 2>&1; then
+  echo "Publish the CLI first: cli/ has changes since v${PUBLISHED}." >&2
+  bash scripts/check-cli-drift.sh >&2 || true
+  exit 1
+fi
 
 # Get current version from latest components tag
 CURRENT=$(git tag -l 'components-v*' --sort=-v:refname | head -1 | sed 's/components-v//')

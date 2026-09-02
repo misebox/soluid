@@ -173,8 +173,9 @@ Components and the CLI are released separately, so they are listed separately.
 
 - Every interactive prompt discarded the answer and returned its default, so the overwrite prompt always declined and `init` always took defaults regardless of what was typed. The end-of-input fallback added in the previous release resolved the prompt from readline's `close` event, which fires synchronously before the answer callback can resolve it.
 - `install` wrote the new `componentsVersion` to the config before fetching or checking the release, so an install it went on to refuse still left the newer version recorded.
+  If a `0.2.10` install refused, check `componentsVersion` in `soluid.config.json` against what is on disk: it can name a release whose files were never written, and a later `install` will believe it is up to date.
 
-### v0.2.11 — 2026-09-03
+### v0.2.10 — 2026-09-02
 
 #### Fixed
 
@@ -184,10 +185,6 @@ Components and the CLI are released separately, so they are listed separately.
 - The published package carried 82 files, including compiled tests, declarations and a stylesheet left over from a build that no longer exists. It carries 14 now, 125 KB down to 52 KB.
 - `release-cli.sh` tagged and pushed before publishing, so a publish that failed left a tag for a version npm never received and the drift check read it as released; v0.2.8 is in that state. `release-components.sh` refuses to run unless npm already carries this tree's CLI version, since a components release needing a newer registry breaks installs until the CLI lands.
 - The package declares `engines` of Node 18 or newer, which its use of `fetch` and `node:stream/web` already required.
-
-### v0.2.10 — 2026-09-02
-
-#### Fixed
 
 - `install` refuses a release that carries component files the registry does not know (an older CLI paired with a newer release could import a file that is never installed, as reported for `createScrollLock`) and one lacking files the registry expects; both print the drift and an upgrade hint instead of installing silently or halfway. This is a stopgap: a manifest shipped inside the release would remove the drift entirely.
 - `update` wrote the new `componentsVersion` before the install finished, so a failed install still left the newer version recorded; `install` writes it only once the files are on disk.

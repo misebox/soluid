@@ -9,7 +9,7 @@ import { createSignal } from "solid-js";
  */
 
 /** Shown until the release list loads, and if GitHub is unreachable or rate-limits us. */
-export const FALLBACK_COMPONENTS_VERSION = "0.2.12";
+export const FALLBACK_COMPONENTS_VERSION = "0.2.13";
 
 const RELEASES_URL = "https://api.github.com/repos/misebox/soluid/releases?per_page=20";
 const TAG_PREFIX = "components-v";

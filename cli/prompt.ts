@@ -19,7 +19,8 @@ export function confirm(question: string): Promise<boolean> {
   return new Promise((resolve) => {
     rl.once("close", () => resolve(false));
     rl.question(question, (answer) => {
-      resolve(answer.trim().toLowerCase() === "y");
+      const said = answer.trim().toLowerCase();
+      resolve(said === "y" || said === "yes");
       rl.close();
     });
   });

@@ -39,7 +39,7 @@ bunx soluid list                # list available components
 
 ```json
 {
-  "componentsVersion": "0.2.12",
+  "componentsVersion": "0.2.13",
   "componentDir": "src/components/ui",
   "cssPath": "src/soluid.css",
   "components": ["Button", "TextField", "Dialog"]
