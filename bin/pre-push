@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+echo "[pre-commit] typecheck"
+bun run typecheck
+
+echo "[pre-commit] test"
+bun run test
+
 echo "[pre-push] build:cli"
 bun run build:cli
 

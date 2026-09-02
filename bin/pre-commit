@@ -1,14 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "[pre-commit] typecheck"
-bun run typecheck
-
 echo "[pre-commit] lint"
 bun run lint
-
-echo "[pre-commit] test"
-bun run test
 
 echo "[pre-commit] fmt:check"
 bun run fmt:check
