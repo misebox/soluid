@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, expect, it } from "vitest";
 import { Calendar } from "../components/ui/soluid/Calendar";
@@ -49,4 +50,13 @@ it("puts the tab stop on a day that can actually be reached", () => {
 
   expect(tabStop).not.toBeNull();
   expect(tabStop?.disabled).toBe(false);
+});
+
+it("moves to the month of a value that arrives after mount", () => {
+  const [value, setValue] = createSignal<string>();
+  const root = mount(() => <Calendar label="cal" value={value()} />);
+
+  setValue("2026-03-15");
+
+  expect(root.querySelector('[data-so-day="2026-03-15"]')?.getAttribute("aria-selected")).toBe("true");
 });

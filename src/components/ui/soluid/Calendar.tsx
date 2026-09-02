@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For, splitProps } from "solid-js";
+import { createComputed, createMemo, createSignal, For, on, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
@@ -111,6 +111,19 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     if (local.month == null) setOwnMonth(next);
     local.onMonthChange?.(next);
   }
+
+  // A value that arrives after mount, or is picked from an adjacent month's
+  // trailing days, would otherwise stay out of view.
+  createComputed(
+    on(
+      () => local.value,
+      (value) => {
+        const target = value?.slice(0, 7);
+        if (target && target !== month()) goToMonth(target);
+      },
+      { defer: true },
+    ),
+  );
 
   function select(iso: string): void {
     if (isDisabled(iso)) return;
