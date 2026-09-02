@@ -13,6 +13,7 @@ export interface AvatarProps extends CommonProps {
 
 function getInitials(name: string): string {
   return name
+    .trim()
     .split(/\s+/)
     .slice(0, 2)
     .map((w) => w.charAt(0).toUpperCase())
@@ -22,9 +23,10 @@ function getInitials(name: string): string {
 export function Avatar(props: AvatarProps) {
   const [local, others] = splitProps(props, ["class", "density", "src", "alt", "name", "size", "variant"]);
 
-  const [imgFailed, setImgFailed] = createSignal(false);
+  // Remember which src failed so a new src gets its chance to load.
+  const [failedSrc, setFailedSrc] = createSignal<string>();
 
-  const showImage = () => local.src && !imgFailed();
+  const showImage = () => local.src && failedSrc() !== local.src;
   const initials = () => (local.name ? getInitials(local.name) : "");
   // role="img" without a name is a violation, so an unnamed avatar stays a
   // plain decorative span rather than getting an invented English label.
@@ -48,7 +50,7 @@ export function Avatar(props: AvatarProps) {
           class="so-avatar__img"
           src={local.src}
           alt={local.alt ?? local.name ?? ""}
-          onError={() => setImgFailed(true)}
+          onError={() => setFailedSrc(local.src)}
         />
       </Show>
       <Show when={!showImage() && initials()}>

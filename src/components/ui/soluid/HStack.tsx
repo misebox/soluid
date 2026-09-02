@@ -12,7 +12,7 @@ export interface HStackProps extends CommonProps {
 }
 
 export function HStack(props: HStackProps & JSX.HTMLAttributes<HTMLDivElement>) {
-  const [local, others] = splitProps(props, ["class", "gap", "align", "justify", "wrap", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "gap", "align", "justify", "wrap", "children"]);
 
   return (
     <div
@@ -24,6 +24,7 @@ export function HStack(props: HStackProps & JSX.HTMLAttributes<HTMLDivElement>) 
         local.wrap && "so-hstack--wrap",
         local.class,
       )}
+      data-density={local.density}
       {...others}
     >
       {local.children}

@@ -18,8 +18,9 @@ export function AvatarGroup(props: AvatarGroupProps & JSX.HTMLAttributes<HTMLDiv
 
   const avatars = children(() => local.children);
 
-  const visible = () => avatars.toArray().slice(0, local.max ?? Infinity);
-  const hidden = () => Math.max(0, avatars.toArray().length - (local.max ?? Infinity));
+  const limit = () => Math.max(0, local.max ?? Infinity);
+  const visible = () => avatars.toArray().slice(0, limit());
+  const hidden = () => Math.max(0, avatars.toArray().length - limit());
 
   return (
     <div class={cls("so-avatar-group", local.class)} data-density={local.density} {...others}>

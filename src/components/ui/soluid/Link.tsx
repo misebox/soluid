@@ -24,6 +24,7 @@ export function Link(props: LinkProps & JSX.AnchorHTMLAttributes<HTMLAnchorEleme
     "density",
     "external",
     "externalLabel",
+    "rel",
     "underline",
     "tone",
     "children",
@@ -33,7 +34,7 @@ export function Link(props: LinkProps & JSX.AnchorHTMLAttributes<HTMLAnchorEleme
     <a
       // noreferrer alongside noopener keeps the referrer off cross-origin tabs.
       target={local.external ? "_blank" : undefined}
-      rel={local.external ? "noopener noreferrer" : undefined}
+      rel={local.external ? cls("noopener noreferrer", local.rel) : local.rel}
       class={cls(
         "so-link",
         `so-link--${local.tone ?? "primary"}`,

@@ -22,6 +22,7 @@ export interface ProgressProps extends CommonProps {
 }
 
 function clamp(n: number): number {
+  if (Number.isNaN(n)) return 0;
   return Math.max(0, Math.min(100, n));
 }
 

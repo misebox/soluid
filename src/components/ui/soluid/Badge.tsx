@@ -11,7 +11,7 @@ export interface BadgeProps extends CommonProps {
 }
 
 export function Badge(props: BadgeProps & JSX.HTMLAttributes<HTMLSpanElement>) {
-  const [local, others] = splitProps(props, ["class", "variant", "fill", "size", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "variant", "fill", "size", "children"]);
 
   return (
     <span
@@ -22,6 +22,7 @@ export function Badge(props: BadgeProps & JSX.HTMLAttributes<HTMLSpanElement>) {
         local.fill === "solid" && "so-badge--solid",
         local.class,
       )}
+      data-density={local.density}
       {...others}
     >
       {local.children}

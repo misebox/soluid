@@ -16,6 +16,7 @@ export interface TagProps extends CommonProps {
 export function Tag(props: TagProps & JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, others] = splitProps(props, [
     "class",
+    "density",
     "variant",
     "fill",
     "size",
@@ -33,6 +34,7 @@ export function Tag(props: TagProps & JSX.HTMLAttributes<HTMLSpanElement>) {
         local.fill === "solid" && "so-tag--solid",
         local.class,
       )}
+      data-density={local.density}
       {...others}
     >
       {local.children}

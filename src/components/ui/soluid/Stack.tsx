@@ -11,7 +11,7 @@ export interface StackProps extends CommonProps {
 }
 
 export function Stack(props: StackProps & JSX.HTMLAttributes<HTMLDivElement>) {
-  const [local, others] = splitProps(props, ["class", "gap", "align", "justify", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "gap", "align", "justify", "children"]);
 
   return (
     <div
@@ -22,6 +22,7 @@ export function Stack(props: StackProps & JSX.HTMLAttributes<HTMLDivElement>) {
         local.justify && `so-stack--justify-${local.justify}`,
         local.class,
       )}
+      data-density={local.density}
       {...others}
     >
       {local.children}

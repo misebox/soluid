@@ -9,7 +9,7 @@ export interface IconButtonProps extends VariantProps<ButtonVariant> {
 }
 
 export function IconButton(props: IconButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
-  const [local, others] = splitProps(props, ["class", "variant", "size", "disabled", "icon"]);
+  const [local, others] = splitProps(props, ["class", "density", "variant", "size", "disabled", "icon"]);
 
   return (
     <button
@@ -22,6 +22,7 @@ export function IconButton(props: IconButtonProps & JSX.ButtonHTMLAttributes<HTM
         local.class,
       )}
       disabled={local.disabled}
+      data-density={local.density}
       {...others}
     >
       {local.icon}

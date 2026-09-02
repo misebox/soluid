@@ -13,6 +13,7 @@ export interface ButtonProps extends VariantProps<ButtonVariant> {
 export function Button(props: ButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [local, others] = splitProps(props, [
     "class",
+    "density",
     "variant",
     "size",
     "disabled",
@@ -36,6 +37,7 @@ export function Button(props: ButtonProps & JSX.ButtonHTMLAttributes<HTMLButtonE
       )}
       disabled={local.disabled || local.loading}
       aria-busy={local.loading || undefined}
+      data-density={local.density}
       {...others}
     >
       <Show when={local.loading}>
