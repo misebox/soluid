@@ -69,6 +69,8 @@ export function SliderInput(props: SliderInputProps) {
     // otherwise leave the thumb where the drag ended while the filled track
     // and the readout still show the value it kept.
     queueMicrotask(() => {
+      // Uncontrolled: there is no model to disagree with.
+      if (local.value == null) return;
       const settled = String(current());
       if (input.value !== settled) input.value = settled;
     });

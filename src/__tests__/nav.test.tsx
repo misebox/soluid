@@ -344,3 +344,14 @@ it("SegmentedControl keeps a tab stop when its options are a derived array", () 
 
   expect(root.querySelector('[role="radio"][tabindex="0"]')).not.toBeNull();
 });
+
+it("SegmentedControl gives one tab stop even when two options share a value", () => {
+  const options = [
+    { value: "a", label: "A" },
+    { value: "a", label: "A again" },
+    { value: "b", label: "B" },
+  ];
+  const root = mount(() => <SegmentedControl options={options} value="a" onChange={() => {}} />);
+
+  expect(root.querySelectorAll('[role="radio"][tabindex="0"]').length).toBe(1);
+});

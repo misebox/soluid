@@ -45,11 +45,18 @@ export function SegmentedControl<T extends string = string>(
     "fullWidth",
   ]);
 
-  // Memos: every segment reads `tabStop`, so a plain accessor would re-filter
-  // the whole list once per segment.
+  // Memos: every segment reads these, so a plain accessor would re-filter the
+  // whole list once per segment.
   const selectable = createMemo(() => local.options.filter((option) => !option.disabled));
-  // Exactly one tab stop: the selection, else the first enabled segment.
-  const tabStop = createMemo(() => selectable().find((option) => option.value === local.value) ?? selectable()[0]);
+  /**
+   * Exactly one tab stop: the selection, else the first enabled segment. By
+   * position, so a derived options array still matches and two options sharing
+   * a value do not both claim it.
+   */
+  const tabStopIndex = createMemo(() => {
+    const selected = local.options.findIndex((option) => option.value === local.value && !option.disabled);
+    return selected !== -1 ? selected : local.options.findIndex((option) => !option.disabled);
+  });
 
   let root: HTMLDivElement | undefined;
 
@@ -103,14 +110,14 @@ export function SegmentedControl<T extends string = string>(
       {...others}
     >
       <For each={local.options}>
-        {(option) => (
+        {(option, i) => (
           <button
             type="button"
             class={cls("so-segmented__item", local.value === option.value && "so-segmented__item--active")}
             role="radio"
             aria-checked={local.value === option.value}
             disabled={option.disabled}
-            tabIndex={option.value === tabStop()?.value ? 0 : -1}
+            tabIndex={i() === tabStopIndex() ? 0 : -1}
             onClick={() => local.onChange(option.value)}
           >
             {option.label}

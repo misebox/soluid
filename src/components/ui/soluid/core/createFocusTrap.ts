@@ -166,9 +166,9 @@ export function createFocusTrap(options: FocusTrapOptions): void {
 
     const active = document.activeElement;
     // A menu, popover or picker panel opened from inside is portaled outside
-    // the container and claimed Escape after this trap did; while focus sits
-    // in it, Tab belongs to that layer.
-    if (!container.contains(active) && escapeOwners[escapeOwners.length - 1]?.id !== id) return;
+    // the container; while focus sits in it, Tab belongs to that layer. An
+    // overlay open elsewhere on the page holds no focus and does not count.
+    if (escapeOwners.some((owner) => owner.id !== id && owner.panel?.contains(active) === true)) return;
 
     const focusable = getFocusableElements(container);
     if (focusable.length === 0) {

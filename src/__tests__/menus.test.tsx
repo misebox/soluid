@@ -549,3 +549,47 @@ it("Tab elsewhere on the page leaves an open Menu alone", async () => {
   expect(menuOpen()).toBe(true);
   expect(document.activeElement).toBe(elsewhere);
 });
+
+it("Tab stays inside a dialog while a popover is open elsewhere on the page", async () => {
+  const [popoverOpen, setPopoverOpen] = createSignal(false);
+  mount(() => (
+    <>
+      <Dialog open onClose={() => {}}>
+        <DialogBody>
+          <button>inside the dialog</button>
+        </DialogBody>
+      </Dialog>
+      <Popover open={popoverOpen()} onOpenChange={setPopoverOpen} content={<button>pop</button>}>
+        Open
+      </Popover>
+    </>
+  ));
+  await settle();
+  setPopoverOpen(true);
+  await settle();
+  // Focus is on neither overlay, as it is after a click on the backdrop.
+  (document.activeElement as HTMLElement | null)?.blur();
+
+  const event = new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true });
+  document.dispatchEvent(event);
+
+  expect(event.defaultPrevented).toBe(true);
+  expect(q(".so-dialog").contains(document.activeElement)).toBe(true);
+});
+
+it("a toast dismissed just before disposal does not touch the store afterwards", () => {
+  vi.useFakeTimers();
+  const store = createRoot((dispose) => {
+    const created = createToast({ defaultDuration: 0 });
+    // The id is generated, so it has to come from add().
+    created.dismiss(created.add({ message: "saved" }));
+    dispose();
+    return created;
+  });
+  const before = store.toasts.length;
+  expect(before).toBe(1);
+
+  vi.advanceTimersByTime(1000);
+
+  expect(store.toasts.length).toBe(before);
+});

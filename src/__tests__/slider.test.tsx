@@ -74,3 +74,17 @@ it("leaves the thumb alone when the parent accepts the new value", async () => {
   expect(value()).toBe(5);
   expect(input.value).toBe("5");
 });
+
+it("leaves an uncontrolled slider where the user put it", async () => {
+  // Without a value prop there is no model to disagree with; comparing against
+  // one pinned the thumb to min.
+  const seen: number[] = [];
+  const input = mount(() => <Slider label="s" min={1} max={5} step={1} onInput={(v) => seen.push(v)} />);
+
+  input.value = "4";
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  await Promise.resolve();
+
+  expect(seen).toEqual([4]);
+  expect(input.value).toBe("4");
+});

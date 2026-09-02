@@ -39,6 +39,7 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
   // `add` runs under, so a toast added from an effect would lose its
   // auto-dismiss when that effect re-ran or unmounted.
   const timers = new Map<string, ReturnType<typeof setTimeout>>();
+  const removals = new Set<ReturnType<typeof setTimeout>>();
 
   function remove(id: string): void {
     setToasts(
@@ -69,14 +70,21 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
     );
 
     // Remove after exit animation
-    setTimeout(() => remove(id), EXIT_DURATION);
+    const removal = setTimeout(() => {
+      removals.delete(removal);
+      remove(id);
+    }, EXIT_DURATION);
+    removals.add(removal);
   }
 
   // Timers outlive the store otherwise, and fire into a disposed component.
+  // A store created at module scope has no owner to hang this on; there the
+  // caller decides when it ends.
   if (getOwner()) {
     onCleanup(() => {
-      for (const timer of timers.values()) clearTimeout(timer);
+      for (const timer of [...timers.values(), ...removals]) clearTimeout(timer);
       timers.clear();
+      removals.clear();
     });
   }
 
