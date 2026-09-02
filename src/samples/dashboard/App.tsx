@@ -66,7 +66,6 @@ interface Order {
   amount: string;
   status: "completed" | "pending" | "cancelled";
   date: string;
-  [key: string]: unknown;
 }
 
 const ORDERS: Order[] = [
@@ -236,8 +235,8 @@ export function DashboardApp() {
       header: "顧客",
       render: (_v, row) => (
         <HStack gap={2} align="center">
-          <Avatar name={row.customer as string} size="sm" />
-          <span>{row.customer as string}</span>
+          <Avatar name={row.customer} size="sm" />
+          <span>{row.customer}</span>
         </HStack>
       ),
     },
@@ -246,8 +245,8 @@ export function DashboardApp() {
       key: "status",
       header: "ステータス",
       render: (_v, row) => (
-        <Badge variant={STATUS_VARIANT[row.status as Order["status"]]} size="sm">
-          {STATUS_LABEL[row.status as Order["status"]]}
+        <Badge variant={STATUS_VARIANT[row.status]} size="sm">
+          {STATUS_LABEL[row.status]}
         </Badge>
       ),
     },

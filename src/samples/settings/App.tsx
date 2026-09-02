@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Alert } from "../../components/ui/soluid/Alert";
 import { Badge } from "../../components/ui/soluid/Badge";
@@ -26,6 +26,17 @@ import { TextField } from "../../components/ui/soluid/TextField";
 import { ToastContainer, useToast } from "../../components/ui/soluid/Toast";
 import { VisuallyHidden } from "../../components/ui/soluid/VisuallyHidden";
 
+const APPEARANCE_OPTIONS = [
+  { value: "animations", label: "アニメーションを有効化" },
+  { value: "sidebar", label: "サイドバーを常に表示" },
+  { value: "compact", label: "コンパクトモード" },
+];
+
+const ACCESSIBILITY_OPTIONS = [
+  { value: "high-contrast", label: "ハイコントラストモード" },
+  { value: "reduced-motion", label: "モーション軽減" },
+];
+
 export function SettingsApp() {
   const [tab, setTab] = createSignal("profile");
   const [confirmOpen, setConfirmOpen] = createSignal(false);
@@ -39,6 +50,9 @@ export function SettingsApp() {
   const [theme, setTheme] = createSignal("system");
   const [fontSize, setFontSize] = createSignal(14);
   const [lineHeight, setLineHeight] = createSignal(150);
+  const [appearance, setAppearance] = createSignal(["animations"]);
+  const toggleAppearance = (value: string, on: boolean) =>
+    setAppearance((current) => (on ? [...current, value] : current.filter((it) => it !== value)));
   const [avatarFiles, setAvatarFiles] = createSignal<File[]>([]);
   const [otp, setOtp] = createSignal<string[]>([]);
 
@@ -239,15 +253,28 @@ export function SettingsApp() {
                 <Accordion>
                   <AccordionItem title="詳細な外観設定">
                     <Stack gap={3}>
-                      <Checkbox label="アニメーションを有効化" checked onChange={() => {}} />
-                      <Checkbox label="サイドバーを常に表示" checked={false} onChange={() => {}} />
-                      <Checkbox label="コンパクトモード" checked={false} onChange={() => {}} />
+                      <For each={APPEARANCE_OPTIONS}>
+                        {(option) => (
+                          <Checkbox
+                            label={option.label}
+                            checked={appearance().includes(option.value)}
+                            onChange={(checked) => toggleAppearance(option.value, checked)}
+                          />
+                        )}
+                      </For>
                     </Stack>
                   </AccordionItem>
                   <AccordionItem title="アクセシビリティ">
                     <Stack gap={3}>
-                      <Checkbox label="ハイコントラストモード" checked={false} onChange={() => {}} />
-                      <Checkbox label="モーション軽減" checked={false} onChange={() => {}} />
+                      <For each={ACCESSIBILITY_OPTIONS}>
+                        {(option) => (
+                          <Checkbox
+                            label={option.label}
+                            checked={appearance().includes(option.value)}
+                            onChange={(checked) => toggleAppearance(option.value, checked)}
+                          />
+                        )}
+                      </For>
                       <VisuallyHidden>
                         <span>スクリーンリーダー用の追加情報: 外観設定はリアルタイムで反映されます</span>
                       </VisuallyHidden>

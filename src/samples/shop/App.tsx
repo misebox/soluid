@@ -172,6 +172,7 @@ export function ShopApp() {
 
       <HStack gap={3} style={{ "margin-bottom": "16px" }}>
         <Combobox
+          aria-label="カテゴリ"
           placeholder="カテゴリで絞り込み"
           emptyLabel="該当するカテゴリがありません"
           value={category()}
@@ -186,6 +187,7 @@ export function ShopApp() {
           ]}
         />
         <Select
+          aria-label="並び替え"
           value={sort()}
           onChange={setSort}
           options={[
