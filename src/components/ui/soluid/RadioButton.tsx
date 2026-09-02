@@ -1,4 +1,4 @@
-import { Show, splitProps } from "solid-js";
+import { children, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
@@ -18,7 +18,7 @@ export interface RadioButtonProps extends CommonProps, RadioAttributes {
 }
 
 export function RadioButton(props: RadioButtonProps) {
-  const [local, others] = splitProps(props, ["class", "value", "label", "disabled", "children"]);
+  const [local, others] = splitProps(props, ["class", "density", "value", "label", "disabled", "children"]);
 
   const group = useRadioGroup();
 
@@ -28,8 +28,14 @@ export function RadioButton(props: RadioButtonProps) {
     group?.onChange(local.value);
   };
 
+  // Resolved once: reading `local.children` twice would create it twice.
+  const content = children(() => local.children);
+
   return (
-    <label class={cls("so-radio-button", local.disabled && "so-radio-button--disabled", local.class)}>
+    <label
+      class={cls("so-radio-button", local.disabled && "so-radio-button--disabled", local.class)}
+      data-density={local.density}
+    >
       <input
         {...others}
         type="radio"
@@ -44,8 +50,8 @@ export function RadioButton(props: RadioButtonProps) {
       <span class="so-radio-button__indicator" aria-hidden="true">
         <span class="so-radio-button__dot" />
       </span>
-      <Show when={local.label || local.children}>
-        <span class="so-radio-button__label">{local.children ?? local.label}</span>
+      <Show when={local.label || content()}>
+        <span class="so-radio-button__label">{content() ?? local.label}</span>
       </Show>
     </label>
   );

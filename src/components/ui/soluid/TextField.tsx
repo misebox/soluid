@@ -40,6 +40,7 @@ export function TextFieldInput(props: TextFieldInputProps) {
       class={cls("so-text-field__input", `so-text-field__input--${local.size ?? "md"}`, local.class)}
       type={local.type ?? "text"}
       value={local.value ?? ""}
+      data-density={local.density}
       aria-invalid={ctx?.hasError || undefined}
       aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
       onInput={handleInput}

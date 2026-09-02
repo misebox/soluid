@@ -50,7 +50,9 @@ export function FileUpload(props: FileUploadProps & Omit<JSX.HTMLAttributes<HTML
   const [dragging, setDragging] = createSignal(false);
 
   function emit(list: FileList | null): void {
-    const files = Array.from(list ?? []);
+    const all = Array.from(list ?? []);
+    // A drop can carry several files even when the picker would allow one.
+    const files = local.multiple ? all : all.slice(0, 1);
     if (files.length > 0) local.onSelect(files);
   }
 
@@ -61,8 +63,13 @@ export function FileUpload(props: FileUploadProps & Omit<JSX.HTMLAttributes<HTML
   }
 
   function handleDragOver(e: DragEvent): void {
+    // Always prevented, or the browser would open the dropped file.
     e.preventDefault();
-    if (!local.disabled) setDragging(true);
+    if (local.disabled) {
+      if (e.dataTransfer) e.dataTransfer.dropEffect = "none";
+      return;
+    }
+    setDragging(true);
   }
 
   return (

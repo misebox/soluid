@@ -62,7 +62,7 @@ export function SliderInput(props: SliderInputProps) {
   };
 
   return (
-    <div class={cls("so-slider", `so-slider--${local.size ?? "md"}`, local.class)}>
+    <div class={cls("so-slider", `so-slider--${local.size ?? "md"}`, local.class)} data-density={local.density}>
       {/* A range input clamps and snaps `value` against the bounds it has when the
           value lands, so `min`, `max` and `step` must be set before it. */}
       <input

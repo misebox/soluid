@@ -4,8 +4,8 @@ import type { Accessor } from "solid-js";
 export interface ToggleOptions {
   /** Initial pressed state (uncontrolled) */
   defaultPressed?: boolean;
-  /** Controlled pressed state */
-  pressed?: Accessor<boolean>;
+  /** Controlled pressed state; while it yields undefined the internal state applies */
+  pressed?: Accessor<boolean | undefined>;
   /** Called when pressed state changes */
   onPressedChange?: (pressed: boolean) => void;
 }
@@ -23,12 +23,10 @@ export interface ToggleReturn {
 export function createToggle(options: ToggleOptions = {}): ToggleReturn {
   const [internalPressed, setInternalPressed] = createSignal(options.defaultPressed ?? false);
 
-  const pressed: Accessor<boolean> = options.pressed ?? internalPressed;
+  const pressed: Accessor<boolean> = () => options.pressed?.() ?? internalPressed();
 
   function setPressed(value: boolean): void {
-    if (!options.pressed) {
-      setInternalPressed(value);
-    }
+    setInternalPressed(value);
     options.onPressedChange?.(value);
   }
 

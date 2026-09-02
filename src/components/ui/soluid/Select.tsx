@@ -49,7 +49,7 @@ export function SelectInput<T extends string = string>(props: SelectInputProps<T
   };
 
   return (
-    <div class={cls("so-select__wrapper", local.class)}>
+    <div class={cls("so-select__wrapper", local.class)} data-density={local.density}>
       <select
         {...others}
         id={ctx?.id ?? local.id}

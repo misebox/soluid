@@ -18,6 +18,7 @@ export interface RadioGroupProps extends CommonProps {
 export function RadioGroup(props: RadioGroupProps) {
   const [local, others] = splitProps(props, [
     "class",
+    "density",
     "value",
     "onChange",
     "name",
@@ -55,6 +56,7 @@ export function RadioGroup(props: RadioGroupProps) {
         role="radiogroup"
         aria-invalid={local.error ? true : undefined}
         aria-describedby={describedBy()}
+        data-density={local.density}
         {...others}
       >
         <Show when={local.label}>

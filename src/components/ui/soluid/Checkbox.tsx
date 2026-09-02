@@ -1,4 +1,4 @@
-import { createEffect, createUniqueId, Show, splitProps } from "solid-js";
+import { children, createEffect, createSignal, createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { useCheckboxGroup } from "./CheckboxGroupContext";
 import type { CommonProps, SmallSize } from "./core/types";
@@ -26,6 +26,7 @@ export interface CheckboxProps extends CommonProps, CheckboxAttributes {
 export function Checkbox(props: CheckboxProps) {
   const [local, others] = splitProps(props, [
     "class",
+    "density",
     "checked",
     "onChange",
     "indeterminate",
@@ -46,15 +47,19 @@ export function Checkbox(props: CheckboxProps) {
   const errorId = `so-cb-error-${id}`;
   const hintId = `so-cb-hint-${id}`;
 
+  // Own state for a checkbox rendered without `checked`.
+  const [internal, setInternal] = createSignal(false);
+
   const isChecked = () => {
     if (group && local.value != null) {
       return group.value().includes(local.value);
     }
-    return local.checked ?? false;
+    return local.checked ?? internal();
   };
 
   const handleChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = () => {
     const next = !isChecked();
+    setInternal(next);
     if (group && local.value != null) {
       group.onChange(local.value, next);
     }
@@ -73,8 +78,11 @@ export function Checkbox(props: CheckboxProps) {
     }
   });
 
+  // Resolved once: reading `local.children` twice would create it twice.
+  const content = children(() => local.children);
+
   return (
-    <div class={cls("so-checkbox-wrapper", local.error && "so-checkbox-wrapper--error")}>
+    <div class={cls("so-checkbox-wrapper", local.error && "so-checkbox-wrapper--error")} data-density={local.density}>
       <label
         class={cls(
           "so-checkbox",
@@ -123,8 +131,8 @@ export function Checkbox(props: CheckboxProps) {
             </svg>
           </Show>
         </span>
-        <Show when={local.label || local.children}>
-          <span class="so-checkbox__label">{local.children ?? local.label}</span>
+        <Show when={local.label || content()}>
+          <span class="so-checkbox__label">{content() ?? local.label}</span>
         </Show>
       </label>
       <Show when={local.error}>

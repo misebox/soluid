@@ -1,4 +1,4 @@
-import { For, splitProps } from "solid-js";
+import { Index, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
@@ -78,17 +78,32 @@ export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivE
       next[cursor] = char;
       cursor += 1;
     }
+    // Nothing accepted: leave the value alone so onChange and onComplete stay quiet.
+    if (cursor === from) return;
     commit(next);
     focusBox(Math.min(cursor, length() - 1));
+  }
+
+  function clearBox(index: number): void {
+    const next = chars();
+    next[index] = "";
+    commit(next);
   }
 
   const handleInput =
     (index: number): JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> =>
     (e) => {
-      // A box already holding a character keeps the newly typed one, not both.
-      const typed = e.currentTarget.value.slice(-1);
-      e.currentTarget.value = chars()[index];
-      if (typed !== "") setChars(index, [typed]);
+      const current = chars()[index];
+      const raw = e.currentTarget.value;
+      e.currentTarget.value = current;
+      if (raw === "") {
+        clearBox(index);
+        return;
+      }
+      // Typing over a filled box can arrive as "<old><new>"; an autofilled
+      // code arrives whole and is spread across the boxes like a paste.
+      const incoming = current !== "" && raw.startsWith(current) ? raw.slice(current.length) : raw;
+      setChars(index, incoming.split(""));
     };
 
   function handleKeyDown(index: number, e: KeyboardEvent): void {
@@ -96,8 +111,7 @@ export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivE
       e.preventDefault();
       const next = chars();
       if (next[index] !== "") {
-        next[index] = "";
-        commit(next);
+        clearBox(index);
       } else if (index > 0) {
         next[index - 1] = "";
         commit(next);
@@ -126,25 +140,30 @@ export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivE
       data-density={local.density}
       {...others}
     >
-      <For each={chars()}>
+      {/* Keyed by position: a box must survive its own character changing,
+          or Backspace would dispose the focused input. */}
+      <Index each={chars()}>
         {(char, i) => (
           <input
-            ref={(el) => boxes.set(i(), el)}
+            ref={(el) => boxes.set(i, el)}
             class="so-pin-input__box"
             type={local.mask ? "password" : "text"}
             inputMode={local.type === "alphanumeric" ? "text" : "numeric"}
             autocomplete="one-time-code"
             maxLength={1}
-            value={char}
+            value={char()}
             disabled={local.disabled}
-            aria-label={itemLabel(i())}
-            onInput={handleInput(i())}
-            onKeyDown={(e) => handleKeyDown(i(), e)}
-            onPaste={(e) => handlePaste(i(), e)}
+            aria-label={itemLabel(i)}
+            onInput={handleInput(i)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
+            onPaste={(e) => handlePaste(i, e)}
             onFocus={(e) => e.currentTarget.select()}
+            // Safari collapses the focus-time selection on mouseup, after which
+            // maxLength blocks typing over a filled box.
+            onMouseUp={(e) => e.preventDefault()}
           />
         )}
-      </For>
+      </Index>
     </div>
   );
 }

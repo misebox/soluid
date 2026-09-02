@@ -35,6 +35,7 @@ export function TextAreaInput(props: TextAreaInputProps) {
       class={cls("so-textarea__input", `so-textarea__input--${local.size ?? "md"}`, local.class)}
       value={local.value ?? ""}
       rows={local.rows ?? 3}
+      data-density={local.density}
       aria-invalid={ctx?.hasError || undefined}
       aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
       onInput={handleInput}

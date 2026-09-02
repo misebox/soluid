@@ -3,7 +3,8 @@ import { createContext, useContext } from "solid-js";
 export interface FormFieldContextValue {
   id: string;
   errorId: string;
-  hintId: string;
+  /** Undefined while there is no hint to point at. */
+  hintId: string | undefined;
   hasError: boolean;
 }
 

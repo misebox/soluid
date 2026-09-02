@@ -28,13 +28,18 @@ export interface SearchFieldProps extends InteractiveProps, SearchAttributes {
 function SearchControl(props: SearchFieldProps) {
   const [local, others] = splitProps(props, ["value", "onInput", "onSearch", "onClear", "clearLabel", "class"]);
 
-  function handleKeyDown(e: KeyboardEvent): void {
-    if (e.key === "Enter") local.onSearch?.(local.value ?? "");
+  let inputRef: HTMLInputElement | undefined;
+
+  function handleKeyDown(e: KeyboardEvent & { currentTarget: HTMLInputElement }): void {
+    // keyCode 229 is how Safari delivers the Enter that confirms an IME composition.
+    if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
+    local.onSearch?.(e.currentTarget.value);
   }
 
   function handleClear(): void {
     local.onClear?.();
     local.onInput?.("");
+    inputRef?.focus();
   }
 
   return (
@@ -54,6 +59,7 @@ function SearchControl(props: SearchFieldProps) {
       </svg>
       <TextFieldInput
         {...others}
+        ref={(el) => (inputRef = el)}
         class="so-search-field__input"
         type="text"
         value={local.value}
@@ -64,6 +70,7 @@ function SearchControl(props: SearchFieldProps) {
         <button
           type="button"
           class="so-search-field__clear"
+          disabled={others.disabled}
           aria-label={local.clearLabel ?? "Clear search"}
           onClick={handleClear}
         >

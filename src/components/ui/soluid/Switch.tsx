@@ -1,4 +1,4 @@
-import { createMemo, createUniqueId, Show, splitProps } from "solid-js";
+import { children, createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { createToggle } from "./core/createToggle";
 import type { CommonProps, SmallSize } from "./core/types";
@@ -7,7 +7,7 @@ import { cls } from "./core/utils";
 /** Native button attributes minus the ones this component owns. */
 type SwitchAttributes = Omit<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
-  "onChange" | "type" | "role" | "class" | "children"
+  "onChange" | "onClick" | "onKeyDown" | "type" | "role" | "class" | "children"
 >;
 
 export interface SwitchProps extends CommonProps, SwitchAttributes {
@@ -24,6 +24,7 @@ export interface SwitchProps extends CommonProps, SwitchAttributes {
 export function Switch(props: SwitchProps) {
   const [local, others] = splitProps(props, [
     "class",
+    "density",
     "checked",
     "onChange",
     "disabled",
@@ -38,10 +39,8 @@ export function Switch(props: SwitchProps) {
   const errorId = `so-sw-error-${id}`;
   const hintId = `so-sw-hint-${id}`;
 
-  const pressedAccessor = createMemo(() => local.checked ?? false);
-
   const toggle = createToggle({
-    pressed: pressedAccessor,
+    pressed: () => local.checked,
     onPressedChange(pressed) {
       local.onChange?.(pressed);
     },
@@ -68,8 +67,11 @@ export function Switch(props: SwitchProps) {
     return undefined;
   };
 
+  // Resolved once: reading `local.children` twice would create it twice.
+  const content = children(() => local.children);
+
   return (
-    <div class={cls("so-switch-wrapper", local.error && "so-switch-wrapper--error")}>
+    <div class={cls("so-switch-wrapper", local.error && "so-switch-wrapper--error")} data-density={local.density}>
       <label
         class={cls(
           "so-switch",
@@ -92,8 +94,8 @@ export function Switch(props: SwitchProps) {
         >
           <span class="so-switch__thumb" />
         </button>
-        <Show when={local.label || local.children}>
-          <span class="so-switch__label">{local.children ?? local.label}</span>
+        <Show when={local.label || content()}>
+          <span class="so-switch__label">{content() ?? local.label}</span>
         </Show>
       </label>
       <Show when={local.error}>

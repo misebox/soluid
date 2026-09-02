@@ -56,6 +56,7 @@ function NumberControl(props: NumberControlProps) {
     "density",
     "id",
     "disabled",
+    "readOnly",
     "onBlur",
     "decrementLabel",
     "incrementLabel",
@@ -98,15 +99,21 @@ function NumberControl(props: NumberControlProps) {
       const clamped = clamp(parsed);
       if (clamped !== parsed) local.onInput?.(clamped);
     }
+    // The box may be empty or hold a value the parent rejected; repaint from
+    // the model so what is shown is what is stored.
+    e.currentTarget.value = local.value == null ? "" : String(local.value);
     local.onBlur?.(e);
   };
 
   return (
-    <div class={cls("so-number-input", `so-number-input--${local.size ?? "md"}`, local.class)}>
+    <div
+      class={cls("so-number-input", `so-number-input--${local.size ?? "md"}`, local.class)}
+      data-density={local.density}
+    >
       <button
         type="button"
         class="so-number-input__button so-number-input__button--decrement"
-        disabled={local.disabled}
+        disabled={local.disabled || local.readOnly}
         tabIndex={-1}
         aria-label={local.decrementLabel ?? "Decrement"}
         onClick={() => nudge(-1)}
@@ -123,6 +130,7 @@ function NumberControl(props: NumberControlProps) {
         max={local.max}
         step={local.step}
         disabled={local.disabled}
+        readOnly={local.readOnly}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={handleInput}
@@ -131,7 +139,7 @@ function NumberControl(props: NumberControlProps) {
       <button
         type="button"
         class="so-number-input__button so-number-input__button--increment"
-        disabled={local.disabled}
+        disabled={local.disabled || local.readOnly}
         tabIndex={-1}
         aria-label={local.incrementLabel ?? "Increment"}
         onClick={() => nudge(1)}

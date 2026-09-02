@@ -15,7 +15,16 @@ export interface CheckboxGroupProps extends CommonProps {
 }
 
 export function CheckboxGroup(props: CheckboxGroupProps) {
-  const [local, others] = splitProps(props, ["class", "value", "onChange", "label", "error", "hint", "children"]);
+  const [local, others] = splitProps(props, [
+    "class",
+    "density",
+    "value",
+    "onChange",
+    "label",
+    "error",
+    "hint",
+    "children",
+  ]);
 
   const id = createUniqueId();
   const errorId = `so-cbg-error-${id}`;
@@ -43,6 +52,7 @@ export function CheckboxGroup(props: CheckboxGroupProps) {
         role="group"
         aria-invalid={local.error ? true : undefined}
         aria-describedby={describedBy()}
+        data-density={local.density}
         {...others}
       >
         <Show when={local.label}>
