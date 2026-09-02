@@ -257,9 +257,7 @@
     "groups": [
       {
         "title": "Added",
-        "entries": [
-          "The registry lists 16 more components: the date, colour and media set, and the interaction set."
-        ]
+        "entries": ["The registry lists 16 more components: the date, colour and media set, and the interaction set."]
       }
     ]
   },
@@ -271,9 +269,7 @@
     "groups": [
       {
         "title": "Added",
-        "entries": [
-          "The registry lists 12 more primitive components."
-        ]
+        "entries": ["The registry lists 12 more primitive components."]
       }
     ]
   }
