@@ -205,3 +205,34 @@ body {
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Windows High Contrast drops backgrounds and shadows; the states drawn with
+   them alone get a system colour or a border instead. */
+@media (forced-colors: active) {
+  .so-radio-button__input:checked + .so-radio-button__indicator .so-radio-button__dot,
+  .so-switch__track[aria-checked="true"],
+  .so-progress__bar,
+  .so-carousel__dot--active::before,
+  .so-segmented__item--active,
+  .so-calendar__day--selected {
+    forced-color-adjust: none;
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .so-switch__track,
+  .so-switch__thumb,
+  .so-carousel__dot::before,
+  .so-progress,
+  .so-tooltip,
+  .so-slider__input::-webkit-slider-runnable-track,
+  .so-slider__input::-moz-range-track {
+    border: 1px solid CanvasText;
+  }
+
+  .so-divider,
+  .so-menu-separator {
+    height: 0;
+    border-top: 1px solid CanvasText;
+  }
+}

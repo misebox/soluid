@@ -108,7 +108,8 @@
   opacity: 1;
 }
 
+/* currentColor rather than the ring: on a solid tag the ring is the fill colour. */
 .so-tag__remove:focus-visible {
-  outline: 2px solid var(--so-ring);
+  outline: 2px solid currentColor;
   outline-offset: -1px;
 }

@@ -24,8 +24,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Near-zero rather than none, so animationend still unmounts the palette. */
   .so-command-backdrop--closing {
-    animation: none;
+    animation-duration: 0.01ms;
   }
 }
 
@@ -35,6 +36,7 @@
   width: 100%;
   max-width: 34rem;
   max-height: 60vh;
+  max-height: 60dvh;
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   background-color: var(--so-bg);
@@ -68,6 +70,11 @@
   font-family: inherit;
   font-size: var(--so-font-size-lg);
   outline: none;
+}
+
+/* The input has no ring of its own; the search row shows focus instead. */
+.so-command__search:focus-within {
+  box-shadow: inset 0 -2px 0 var(--so-ring);
 }
 
 .so-command__input::placeholder {
@@ -108,6 +115,8 @@
 .so-command__option--active {
   background-color: var(--so-color-primary-subtle);
   color: var(--so-color-primary-subtle-fg);
+  outline: 2px solid var(--so-ring);
+  outline-offset: -2px;
 }
 
 .so-command__option--disabled {

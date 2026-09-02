@@ -166,6 +166,7 @@ export const ja: Record<string, string> = {
   "ColorPickerControlProps.swatches": "パネルに並べるプリセット色",
   "ColorPickerControlProps.required": "入力を必須にする",
   "ColorPickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
+  "ColorPickerControlProps.name": "フォーム送信時の name。値は hidden フィールドで送られる",
   "ColorPickerControlProps.panelLabel": "パネルのアクセシブルラベル",
   "ColorPickerControlProps.swatchLabel": "プリセット色のアクセシブルラベルを生成する関数",
   "ColorPickerControlProps.customLabel": "ネイティブカラー入力のラベル",
@@ -193,6 +194,7 @@ export const ja: Record<string, string> = {
   "ComboboxControlProps.placeholder": "未選択時に表示されるプレースホルダー",
   "ComboboxControlProps.required": "入力を必須にする",
   "ComboboxControlProps.id": "input の id。FormField のラベルはこれを指す",
+  "ComboboxControlProps.name": "フォーム送信時の name。ラベルではなく値が hidden フィールドで送られる",
   "ComboboxControlProps.emptyLabel": "検索結果が0件のときに表示するテキスト",
   "ComboboxControlProps.filter": "既定の大文字小文字を無視した部分一致を上書きする関数",
 
@@ -679,6 +681,7 @@ export const ja: Record<string, string> = {
   "TimePickerControlProps.placeholder": "未選択時に表示するテキスト",
   "TimePickerControlProps.required": "入力を必須にする",
   "TimePickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
+  "TimePickerControlProps.name": "フォーム送信時の name。値は hidden フィールドで送られる",
   "TimePickerControlProps.format": "表示用に時刻を整形する関数",
   "TimePickerControlProps.listLabel": "時刻候補リストのアクセシブルラベル",
 

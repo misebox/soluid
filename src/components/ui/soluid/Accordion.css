@@ -32,6 +32,11 @@
   transition: background-color 0.15s;
 }
 
+.so-accordion-item__title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .so-accordion-item__trigger::-webkit-details-marker {
   display: none;
 }
@@ -71,10 +76,8 @@
 
 /* --- Disabled --- */
 
-.so-accordion-item--disabled {
-  opacity: var(--so-disabled-opacity);
-}
-
+/* Only the trigger dims: an open item's content stays readable. */
 .so-accordion-item--disabled > .so-accordion-item__trigger {
+  opacity: var(--so-disabled-opacity);
   cursor: not-allowed;
 }

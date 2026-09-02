@@ -30,7 +30,7 @@ export interface TableProps<T> extends CommonProps {
   selectRowLabel?: (row: T, index: number) => string;
 }
 
-export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
+export function Table<T>(props: TableProps<T>) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
@@ -151,7 +151,9 @@ export function Table<T extends Record<string, unknown>>(props: TableProps<T>) {
                   <For each={local.columns}>
                     {(col) => (
                       <td class={cls("so-table__cell", col.align && `so-table__cell--${col.align}`)}>
-                        {col.render ? col.render(row[col.key], row) : (row[col.key] as JSX.Element)}
+                        {col.render
+                          ? col.render(row[col.key as keyof T], row)
+                          : (row[col.key as keyof T] as JSX.Element)}
                       </td>
                     )}
                   </For>

@@ -16,6 +16,8 @@
 
 .so-popover {
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1000;
   background-color: var(--so-bg);
   border: 1px solid var(--so-border);
@@ -24,6 +26,12 @@
   padding: var(--so-space-2);
   min-width: 120px;
   animation: so-popover-in 0.15s ease-out;
+}
+
+/* Portalled to <body>, so it sits at the document origin until floating-ui
+   writes its coordinates. Hidden until then. */
+.so-popover:not([data-so-placed]) {
+  visibility: hidden;
 }
 
 @keyframes so-popover-in {

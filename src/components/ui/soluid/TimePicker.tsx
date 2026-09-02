@@ -1,5 +1,6 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
@@ -8,8 +9,16 @@ import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
 /** Times are `HH:MM` on a 24-hour clock, matching `<input type="time">`. */
-export interface TimePickerControlProps extends InteractiveProps {
+/** Native button attributes minus the ones this component owns. */
+type TriggerAttributes = Omit<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange" | "onClick" | "onKeyDown" | "type" | "class" | "size" | "value"
+>;
+
+export interface TimePickerControlProps extends InteractiveProps, TriggerAttributes {
   value?: string;
+  /** Submitted through a hidden field, since the trigger is a button */
+  name?: string;
   onChange?: (value: string) => void;
   /** Minutes between offered times (default: 30) */
   step?: number;
@@ -54,6 +63,7 @@ export function TimePickerControl(props: TimePickerControlProps) {
     "id",
     "disabled",
     "required",
+    "name",
     "format",
     "listLabel",
   ]);
@@ -207,6 +217,23 @@ export function TimePickerControl(props: TimePickerControlProps) {
       class={cls("so-time-picker", `so-time-picker--${local.size ?? "md"}`, local.class)}
       data-density={local.density}
     >
+      {/* The trigger is a button, so the form needs its own field to submit; a
+          text input rather than hidden so `required` takes part in validation. */}
+      <Show when={local.name}>
+        {(name) => (
+          <input
+            class="so-visually-hidden"
+            type="text"
+            tabIndex={-1}
+            aria-hidden="true"
+            name={name()}
+            value={local.value ?? ""}
+            required={local.required}
+            disabled={local.disabled}
+            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+          />
+        )}
+      </Show>
       <button
         {...others}
         ref={triggerRef}
@@ -244,7 +271,14 @@ export function TimePickerControl(props: TimePickerControlProps) {
 
       <Show when={open()}>
         <Portal>
-          <ul ref={setListRef} id={listId} class="so-time-picker__list" role="listbox" aria-label={local.listLabel}>
+          <ul
+            ref={setListRef}
+            id={listId}
+            class="so-time-picker__list"
+            data-density={local.density}
+            role="listbox"
+            aria-label={local.listLabel}
+          >
             <For each={options()}>
               {(time, i) => (
                 <li

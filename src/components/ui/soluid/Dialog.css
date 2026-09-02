@@ -82,6 +82,7 @@
   border-top: 1px solid var(--so-border);
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: var(--so-space-2);
   flex-shrink: 0;
 }
@@ -133,6 +134,7 @@
   .so-dialog-backdrop--closing,
   .so-dialog,
   .so-dialog--closing {
-    animation: none;
+    /* Near-zero rather than none, so animationend still unmounts the dialog. */
+    animation-duration: 0.01ms;
   }
 }

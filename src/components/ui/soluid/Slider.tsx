@@ -1,7 +1,7 @@
 import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "./core/types";
-import { cls } from "./core/utils";
+import { cls, mergeStyle } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
@@ -42,6 +42,7 @@ export function SliderInput(props: SliderInputProps) {
     "id",
     "showValue",
     "formatValue",
+    "style",
   ]);
 
   const ctx = useFormField();
@@ -74,7 +75,7 @@ export function SliderInput(props: SliderInputProps) {
         max={max()}
         step={local.step}
         value={current()}
-        style={{ "--so-slider-progress": `${progress()}%` }}
+        style={mergeStyle({ "--so-slider-progress": `${progress()}%` }, local.style)}
         aria-valuetext={local.formatValue ? display() : undefined}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}

@@ -1,4 +1,4 @@
-import { splitProps } from "solid-js";
+import { Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
@@ -24,7 +24,7 @@ interface NumberControlProps extends InteractiveProps, NumberAttributes {
 }
 
 export interface NumberInputProps extends NumberControlProps {
-  label: string;
+  label?: string;
   error?: string;
   hint?: string;
 }
@@ -57,6 +57,7 @@ function NumberControl(props: NumberControlProps) {
     "id",
     "disabled",
     "readOnly",
+    "readonly",
     "onBlur",
     "decrementLabel",
     "incrementLabel",
@@ -65,6 +66,8 @@ function NumberControl(props: NumberControlProps) {
   const ctx = useFormField();
 
   const stepValue = () => local.step ?? 1;
+  // Both spellings are valid input attributes.
+  const readOnly = () => local.readOnly || local.readonly;
 
   function clamp(val: number): number {
     let result = val;
@@ -100,8 +103,9 @@ function NumberControl(props: NumberControlProps) {
       if (clamped !== parsed) local.onInput?.(clamped);
     }
     // The box may be empty or hold a value the parent rejected; repaint from
-    // the model so what is shown is what is stored.
-    e.currentTarget.value = local.value == null ? "" : String(local.value);
+    // the model so what is shown is what is stored. Uncontrolled, the box is
+    // the model.
+    if (local.value != null) e.currentTarget.value = String(local.value);
     local.onBlur?.(e);
   };
 
@@ -113,7 +117,7 @@ function NumberControl(props: NumberControlProps) {
       <button
         type="button"
         class="so-number-input__button so-number-input__button--decrement"
-        disabled={local.disabled || local.readOnly}
+        disabled={local.disabled || readOnly()}
         tabIndex={-1}
         aria-label={local.decrementLabel ?? "Decrement"}
         onClick={() => nudge(-1)}
@@ -130,7 +134,7 @@ function NumberControl(props: NumberControlProps) {
         max={local.max}
         step={local.step}
         disabled={local.disabled}
-        readOnly={local.readOnly}
+        readOnly={readOnly()}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={handleInput}
@@ -139,7 +143,7 @@ function NumberControl(props: NumberControlProps) {
       <button
         type="button"
         class="so-number-input__button so-number-input__button--increment"
-        disabled={local.disabled || local.readOnly}
+        disabled={local.disabled || readOnly()}
         tabIndex={-1}
         aria-label={local.incrementLabel ?? "Increment"}
         onClick={() => nudge(1)}
@@ -154,16 +158,23 @@ export function NumberInput(props: NumberInputProps) {
   const [field, control] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (
-    <FormField
-      label={field.label}
-      id={control.id}
-      error={field.error}
-      hint={field.hint}
-      required={field.required}
-      class={field.class}
-      density={field.density}
+    <Show
+      when={field.label}
+      fallback={<NumberControl {...control} required={field.required} class={field.class} density={field.density} />}
     >
-      <NumberControl {...control} required={field.required} />
-    </FormField>
+      {(label) => (
+        <FormField
+          label={label()}
+          id={control.id}
+          error={field.error}
+          hint={field.hint}
+          required={field.required}
+          class={field.class}
+          density={field.density}
+        >
+          <NumberControl {...control} required={field.required} />
+        </FormField>
+      )}
+    </Show>
   );
 }

@@ -2,6 +2,12 @@
   display: block;
 }
 
+/* Portalled to <body>, so it sits at the document origin until floating-ui
+   writes its coordinates. Hidden until then. */
+.so-context-menu:not([data-so-placed]) {
+  visibility: hidden;
+}
+
 .so-context-menu {
   position: absolute;
   top: 0;

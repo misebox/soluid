@@ -95,6 +95,8 @@
 .so-time-picker__option--active {
   background-color: var(--so-color-primary-subtle);
   color: var(--so-color-primary-subtle-fg);
+  outline: 2px solid var(--so-ring);
+  outline-offset: -2px;
 }
 
 .so-time-picker__option[aria-selected="true"] {

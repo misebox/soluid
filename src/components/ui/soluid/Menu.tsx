@@ -54,6 +54,8 @@ export function Menu(props: MenuProps) {
     }).then(({ x, y }) => {
       panel.style.left = `${x}px`;
       panel.style.top = `${y}px`;
+      // Until this runs the panel sits at the document origin, hidden by the CSS.
+      panel.dataset.soPlaced = "";
     });
   }
 
@@ -165,6 +167,7 @@ export function Menu(props: MenuProps) {
             id={menuId}
             class="so-menu"
             role="menu"
+            data-density={local.density}
           >
             {local.children}
           </div>

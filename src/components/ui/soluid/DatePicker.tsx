@@ -9,7 +9,13 @@ import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
-export interface DatePickerControlProps extends InteractiveProps {
+/** Native button attributes minus the ones this component owns. */
+type TriggerAttributes = Omit<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange" | "onClick" | "type" | "class" | "size" | "value"
+>;
+
+export interface DatePickerControlProps extends InteractiveProps, TriggerAttributes {
   /** Selected day as `YYYY-MM-DD` */
   value?: string;
   onChange?: (value: string) => void;
@@ -23,7 +29,7 @@ export interface DatePickerControlProps extends InteractiveProps {
   name?: string;
   /** Formats the value for the field; defaults to the raw ISO string */
   format?: (value: string) => string;
-  /** Accessible label for the button that opens the calendar */
+  /** Accessible label for the calendar panel and its grid (default: "Choose a date") */
   openLabel?: string;
 }
 
@@ -199,6 +205,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
             ref={setPanelRef}
             id={panelId}
             class="so-date-picker__panel"
+            data-density={local.density}
             role="dialog"
             aria-label={local.openLabel ?? "Choose a date"}
           >
@@ -221,7 +228,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
   );
 }
 
-export function DatePicker(props: DatePickerProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange">) {
+export function DatePicker(props: DatePickerProps) {
   const [field, control] = splitProps(props, ["label", "error", "hint", "required", "class", "density"]);
 
   return (

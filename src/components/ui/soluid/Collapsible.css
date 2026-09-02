@@ -22,6 +22,12 @@
   cursor: pointer;
 }
 
+/* Inset: the container clips overflow, which would cut an outer ring. */
+.so-collapsible__trigger:focus-visible {
+  outline: 2px solid var(--so-ring);
+  outline-offset: -2px;
+}
+
 .so-collapsible__trigger:hover:not(:disabled) {
   background-color: var(--so-bg-subtle);
 }

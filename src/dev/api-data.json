@@ -805,8 +805,7 @@
       {
         "name": "checked",
         "type": "boolean",
-        "optional": true,
-        "default": "false"
+        "optional": true
       },
       {
         "name": "onChange",
@@ -931,8 +930,12 @@
       {
         "name": "value",
         "type": "string",
-        "optional": true,
-        "default": "\"#000000\""
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
       },
       {
         "name": "onChange",
@@ -957,7 +960,8 @@
       {
         "name": "panelLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Choose a colour\""
       },
       {
         "name": "swatchLabel",
@@ -967,12 +971,14 @@
       {
         "name": "customLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Custom\""
       },
       {
         "name": "hexLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Hex\""
       },
       {
         "name": "disabled",
@@ -1032,8 +1038,12 @@
       {
         "name": "value",
         "type": "string",
-        "optional": true,
-        "default": "\"#000000\""
+        "optional": true
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
       },
       {
         "name": "onChange",
@@ -1058,7 +1068,8 @@
       {
         "name": "panelLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Choose a colour\""
       },
       {
         "name": "swatchLabel",
@@ -1068,12 +1079,14 @@
       {
         "name": "customLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Custom\""
       },
       {
         "name": "hexLabel",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Hex\""
       },
       {
         "name": "disabled",
@@ -1115,6 +1128,12 @@
       {
         "name": "value",
         "type": "T",
+        "optional": true,
+        "default": "\"\""
+      },
+      {
+        "name": "name",
+        "type": "string",
         "optional": true
       },
       {
@@ -1212,6 +1231,12 @@
       {
         "name": "value",
         "type": "T",
+        "optional": true,
+        "default": "\"\""
+      },
+      {
+        "name": "name",
+        "type": "string",
         "optional": true
       },
       {
@@ -1439,7 +1464,8 @@
       {
         "name": "value",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"\""
       },
       {
         "name": "onChange",
@@ -1560,7 +1586,8 @@
       {
         "name": "value",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"\""
       },
       {
         "name": "onChange",
@@ -2040,6 +2067,11 @@
         "name": "label",
         "type": "string",
         "optional": false
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "optional": true
       },
       {
         "name": "error",
@@ -2552,7 +2584,7 @@
       {
         "name": "label",
         "type": "string",
-        "optional": false
+        "optional": true
       },
       {
         "name": "error",
@@ -3098,8 +3130,7 @@
       {
         "name": "value",
         "type": "string",
-        "optional": true,
-        "default": "\"\""
+        "optional": true
       },
       {
         "name": "onInput",
@@ -3234,8 +3265,7 @@
       {
         "name": "value",
         "type": "T",
-        "optional": true,
-        "default": "\"\""
+        "optional": true
       },
       {
         "name": "onChange",
@@ -3310,8 +3340,7 @@
       {
         "name": "value",
         "type": "T",
-        "optional": true,
-        "default": "\"\""
+        "optional": true
       },
       {
         "name": "onChange",
@@ -3812,8 +3841,7 @@
       {
         "name": "checked",
         "type": "boolean",
-        "optional": true,
-        "default": "false"
+        "optional": true
       },
       {
         "name": "onChange",
@@ -4525,6 +4553,11 @@
         "default": "\"\""
       },
       {
+        "name": "name",
+        "type": "string",
+        "optional": true
+      },
+      {
         "name": "onChange",
         "type": "((value: string) => void)",
         "optional": true
@@ -4632,6 +4665,11 @@
         "type": "string",
         "optional": true,
         "default": "\"\""
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "optional": true
       },
       {
         "name": "onChange",

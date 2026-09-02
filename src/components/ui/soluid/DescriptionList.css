@@ -20,7 +20,8 @@
 
 .so-description-list--2col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, …): a long unbreakable value must not widen the column. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0 var(--so-space-6);
 }
 

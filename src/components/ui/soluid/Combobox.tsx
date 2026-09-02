@@ -1,5 +1,6 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
@@ -14,8 +15,16 @@ export interface ComboboxOption<T extends string = string> {
   disabled?: boolean;
 }
 
-export interface ComboboxControlProps<T extends string = string> extends InteractiveProps {
+/** Native input attributes minus the ones this component owns. */
+type InputAttributes = Omit<
+  JSX.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "onChange" | "onInput" | "onClick" | "onKeyDown" | "type" | "class" | "size" | "role" | "autocomplete"
+>;
+
+export interface ComboboxControlProps<T extends string = string> extends InteractiveProps, InputAttributes {
   value?: T;
+  /** Submitted through a hidden field: the visible input shows the label, not the value */
+  name?: string;
   onChange?: (value: T) => void;
   options: ComboboxOption<T>[];
   placeholder?: string;
@@ -40,6 +49,7 @@ function defaultFilter<T extends string>(option: ComboboxOption<T>, query: strin
 export function ComboboxControl<T extends string = string>(props: ComboboxControlProps<T>) {
   const [local, others] = splitProps(props, [
     "value",
+    "name",
     "onChange",
     "options",
     "placeholder",
@@ -193,6 +203,8 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
 
   return (
     <div class={cls("so-combobox", `so-combobox--${local.size ?? "md"}`, local.class)} data-density={local.density}>
+      {/* The visible input carries the label, so the form needs a field with the value. */}
+      <Show when={local.name}>{(name) => <input type="hidden" name={name()} value={local.value ?? ""} />}</Show>
       <input
         {...others}
         ref={inputRef}
@@ -234,7 +246,7 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
       </svg>
       <Show when={open()}>
         <Portal>
-          <ul ref={setListRef} id={listId} class="so-combobox__list" role="listbox">
+          <ul ref={setListRef} id={listId} class="so-combobox__list" data-density={local.density} role="listbox">
             <Show
               when={matches().length > 0}
               fallback={<li class="so-combobox__empty">{local.emptyLabel ?? "No results"}</li>}

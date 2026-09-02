@@ -267,11 +267,12 @@ it("DatePicker submits its value under the given name", () => {
 });
 
 it("ColorPicker names its panel and inputs by default", () => {
-  const root = mount(() => <ColorPickerControl value="#ff0000" />);
-  root.querySelector<HTMLButtonElement>(".so-color-picker__trigger")?.click();
+  mount(() => <ColorPickerControl value="#ff0000" />);
+  document.querySelector<HTMLButtonElement>(".so-color-picker__trigger")?.click();
 
-  expect(root.querySelector('[role="dialog"]')?.getAttribute("aria-label")).toBeTruthy();
-  for (const input of root.querySelectorAll("input")) {
+  const panel = document.querySelector(".so-color-picker__panel");
+  expect(panel?.getAttribute("aria-label")).toBeTruthy();
+  for (const input of panel?.querySelectorAll("input") ?? []) {
     expect(input.closest("label")?.textContent?.trim()).toBeTruthy();
   }
 });

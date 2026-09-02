@@ -74,7 +74,13 @@
 
 .so-pagination__page:focus-visible {
   outline: 2px solid var(--so-ring);
-  outline-offset: -1px;
+  outline-offset: 2px;
+}
+
+/* The ring colour is the active fill, so the current page needs a ring of its own. */
+.so-pagination__page--active:focus-visible {
+  outline-color: var(--so-color-primary-fg);
+  outline-offset: -3px;
 }
 
 .so-pagination__button:focus-visible {

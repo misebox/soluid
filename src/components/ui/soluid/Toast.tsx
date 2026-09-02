@@ -7,7 +7,11 @@ import { cls } from "./core/utils";
 
 export type ToastPosition = "top-right" | "top-center" | "bottom-right" | "bottom-center";
 
-export interface ToastContainerProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "children"> {
+// The live-region attributes are the container's own.
+export interface ToastContainerProps extends Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "children" | "aria-live" | "aria-relevant"
+> {
   position?: ToastPosition;
   /** Accessible label for each toast's dismiss button (default: "Dismiss") */
   dismissLabel?: string;

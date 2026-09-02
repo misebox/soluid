@@ -25,7 +25,8 @@ function pointAnchor(x: number, y: number): VirtualElement {
   };
 }
 
-export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDivElement>) {
+// onContextMenu is omitted because opening the menu is the component's own.
+export function ContextMenu(props: ContextMenuProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onContextMenu">) {
   const [local, others] = splitProps(props, ["class", "density", "content", "label", "children"]);
 
   const menuId = `so-context-menu-${createUniqueId()}`;
@@ -60,6 +61,11 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     }).then(({ x, y }) => {
       panel.style.left = `${x}px`;
       panel.style.top = `${y}px`;
+      // Until this runs the panel sits at the document origin, hidden by the
+      // CSS; focusing an item there would scroll the page to the bottom.
+      const firstPlacement = panel.dataset.soPlaced === undefined;
+      panel.dataset.soPlaced = "";
+      if (firstPlacement) panel.querySelector<HTMLElement>(ITEM_SELECTOR)?.focus();
     });
   }
 
@@ -68,7 +74,6 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     const reference = anchor();
     if (!open() || !panel || !reference) return;
     onCleanup(autoUpdate(reference, panel, updatePosition));
-    panel.querySelector<HTMLElement>(ITEM_SELECTOR)?.focus();
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
@@ -150,6 +155,7 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
             role="menu"
             aria-label={local.label}
             tabIndex={-1}
+            data-density={local.density}
             // A pick closes the menu; MenuItem has run onSelect by the time this bubbles up.
             onClick={(e) => e.target instanceof Element && e.target.closest(ITEM_SELECTOR) && close()}
           >

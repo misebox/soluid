@@ -36,6 +36,8 @@ export function AccordionItem(props: AccordionItemProps) {
     >
       <summary
         class="so-accordion-item__trigger"
+        aria-disabled={local.disabled || undefined}
+        tabIndex={local.disabled ? -1 : undefined}
         onClick={(e) => {
           if (local.disabled) {
             e.preventDefault();

@@ -41,6 +41,11 @@ export function Popover(props: PopoverProps) {
     }).then(({ x, y }) => {
       panel.style.left = `${x}px`;
       panel.style.top = `${y}px`;
+      // Until this runs the panel sits at the document origin, hidden by the
+      // CSS; focusing it there would scroll the page to the bottom.
+      const firstPlacement = panel.dataset.soPlaced === undefined;
+      panel.dataset.soPlaced = "";
+      if (firstPlacement) focusPanel(panel);
     });
   }
 
@@ -50,11 +55,10 @@ export function Popover(props: PopoverProps) {
     const panel = panelRef();
     if (!local.open || !triggerRef || !panel) return;
     onCleanup(autoUpdate(triggerRef, panel, updatePosition));
-    // The panel lives at the end of the document, outside the Tab order, so
-    // focus is moved in by hand: the first control, else the panel itself.
-    focusPanel(panel);
   });
 
+  // The panel lives at the end of the document, outside the Tab order, so
+  // focus is moved in by hand: the first control, else the panel itself.
   function focusPanel(panel: HTMLElement): void {
     (getFocusableElements(panel)[0] ?? panel).focus();
   }
@@ -133,7 +137,14 @@ export function Popover(props: PopoverProps) {
       </button>
       <Show when={local.open}>
         <Portal>
-          <div ref={setPanelRef} id={panelId} class="so-popover" role="dialog" tabIndex={-1}>
+          <div
+            ref={setPanelRef}
+            id={panelId}
+            class="so-popover"
+            role="dialog"
+            tabIndex={-1}
+            data-density={local.density}
+          >
             {local.content}
           </div>
         </Portal>

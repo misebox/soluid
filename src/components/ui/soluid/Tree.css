@@ -29,7 +29,8 @@
   background-color: var(--so-bg-subtle);
 }
 
-.so-tree__row--selected {
+.so-tree__row--selected,
+.so-tree__row--selected:hover:not(:disabled) {
   background-color: var(--so-color-primary-subtle);
   color: var(--so-color-primary-subtle-fg);
   font-weight: 500;

@@ -53,7 +53,7 @@
 
 .so-avatar--neutral {
   background-color: var(--so-color-neutral-subtle);
-  color: var(--so-text-muted);
+  color: var(--so-color-neutral-subtle-fg);
 }
 
 .so-avatar--success {

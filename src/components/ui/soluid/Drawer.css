@@ -133,6 +133,7 @@
   .so-drawer-backdrop--closing,
   .so-drawer,
   .so-drawer--closing {
-    animation: none;
+    /* Near-zero rather than none, so animationend still unmounts the drawer. */
+    animation-duration: 0.01ms;
   }
 }

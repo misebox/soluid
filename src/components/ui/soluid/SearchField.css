@@ -48,3 +48,9 @@
   background-color: var(--so-bg-subtle);
   color: var(--so-text);
 }
+
+.so-search-field__clear:disabled {
+  opacity: var(--so-disabled-opacity);
+  cursor: not-allowed;
+  background: none;
+}

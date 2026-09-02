@@ -17,7 +17,8 @@ export interface CollapsibleProps extends CommonProps {
  * <details> and owns its own state — the open state lives with the caller,
  * so it can be driven from a signal, a route or a form.
  */
-export function Collapsible(props: CollapsibleProps & JSX.HTMLAttributes<HTMLDivElement>) {
+// `title` is omitted because CollapsibleProps redefines it as JSX.
+export function Collapsible(props: CollapsibleProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "title">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

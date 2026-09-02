@@ -28,6 +28,11 @@ async function settle() {
   await Promise.resolve();
 }
 
+/** Waits out floating-ui's positioning, which a Popover focuses after. */
+function placed() {
+  return new Promise<void>((resolve) => setTimeout(resolve, 0));
+}
+
 function mount(ui: () => JSX.Element) {
   const host = document.createElement("div");
   document.body.append(host);
@@ -281,7 +286,7 @@ it("Popover moves focus into its panel when it opens", async () => {
   q(".so-popover-trigger").focus();
 
   setOpen(true);
-  await settle();
+  await placed();
 
   expect(document.activeElement?.textContent).toBe("inside");
 });
@@ -295,7 +300,7 @@ it("Popover takes focus itself when its content has no controls", async () => {
   ));
 
   setOpen(true);
-  await settle();
+  await placed();
 
   expect(document.activeElement?.classList.contains("so-popover")).toBe(true);
 });
@@ -308,7 +313,7 @@ it("Popover closes and returns to the trigger when Tab leaves its last control",
     </Popover>
   ));
   setOpen(true);
-  await settle();
+  await placed();
   const inside = document.activeElement as HTMLElement;
 
   keydown(inside, "Tab");

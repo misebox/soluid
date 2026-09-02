@@ -7,6 +7,8 @@
   display: flex;
   border-bottom: 1px solid var(--so-border);
   gap: 0;
+  /* More tabs than fit scroll rather than vanish off the edge. */
+  overflow-x: auto;
 }
 
 .so-tab {
@@ -38,7 +40,8 @@
   outline-offset: -1px;
 }
 
-.so-tab--active {
+.so-tab--active,
+.so-tab--active:hover:not(:disabled) {
   color: var(--so-color-primary-base);
   border-bottom-color: var(--so-color-primary-base);
 }

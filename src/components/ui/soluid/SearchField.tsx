@@ -5,7 +5,7 @@ import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { TextFieldInput } from "./TextField";
 
-/** Native input attributes minus the ones this component owns. */
+/** Native input attributes minus the ones this component owns; onKeyDown runs the search on Enter. */
 type SearchAttributes = Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
   "value" | "onInput" | "onKeyDown" | "type" | "size" | "class"

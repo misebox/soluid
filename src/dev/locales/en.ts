@@ -166,6 +166,7 @@ export const en: Record<string, string> = {
   "ColorPickerControlProps.swatches": "Preset colours offered in the panel",
   "ColorPickerControlProps.required": "Mark the field as required",
   "ColorPickerControlProps.id": "Id for the trigger; a FormField label points at it",
+  "ColorPickerControlProps.name": "Form field name; the value is submitted through a hidden field",
   "ColorPickerControlProps.panelLabel": "Accessible label for the panel",
   "ColorPickerControlProps.swatchLabel": "Builds the accessible label for a preset",
   "ColorPickerControlProps.customLabel": "Label for the native colour input",
@@ -193,6 +194,7 @@ export const en: Record<string, string> = {
   "ComboboxControlProps.placeholder": "Placeholder shown when nothing is selected",
   "ComboboxControlProps.required": "Mark the input as required",
   "ComboboxControlProps.id": "Id for the input; a FormField label points at it",
+  "ComboboxControlProps.name": "Form field name; the value, not the label, is submitted through a hidden field",
   "ComboboxControlProps.emptyLabel": "Text shown when the query matches nothing",
   "ComboboxControlProps.filter": "Overrides the default case-insensitive substring match",
 
@@ -679,6 +681,7 @@ export const en: Record<string, string> = {
   "TimePickerControlProps.placeholder": "Text shown while nothing is selected",
   "TimePickerControlProps.required": "Mark the field as required",
   "TimePickerControlProps.id": "Id for the trigger; a FormField label points at it",
+  "TimePickerControlProps.name": "Form field name; the value is submitted through a hidden field",
   "TimePickerControlProps.format": "Formats a time for display",
   "TimePickerControlProps.listLabel": "Accessible label for the list of times",
 

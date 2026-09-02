@@ -1,8 +1,10 @@
 import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
+import { Portal } from "solid-js/web";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
@@ -22,8 +24,16 @@ const DEFAULT_SWATCHES = [
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
 /** Colours are `#rrggbb`, the form `<input type="color">` accepts. */
-export interface ColorPickerControlProps extends InteractiveProps {
+/** Native button attributes minus the ones this component owns. */
+type TriggerAttributes = Omit<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange" | "onClick" | "type" | "class" | "size" | "value"
+>;
+
+export interface ColorPickerControlProps extends InteractiveProps, TriggerAttributes {
   value?: string;
+  /** Submitted through a hidden field, since the trigger is a button */
+  name?: string;
   onChange?: (value: string) => void;
   /** Preset colours offered in the panel */
   swatches?: string[];
@@ -56,6 +66,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     "id",
     "disabled",
     "required",
+    "name",
     "panelLabel",
     "swatchLabel",
     "customLabel",
@@ -147,6 +158,23 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
       class={cls("so-color-picker", `so-color-picker--${local.size ?? "md"}`, local.class)}
       data-density={local.density}
     >
+      {/* The trigger is a button, so the form needs its own field to submit; a
+          text input rather than hidden so `required` takes part in validation. */}
+      <Show when={local.name}>
+        {(name) => (
+          <input
+            class="so-visually-hidden"
+            type="text"
+            tabIndex={-1}
+            aria-hidden="true"
+            name={name()}
+            value={local.value ?? ""}
+            required={local.required}
+            disabled={local.disabled}
+            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+          />
+        )}
+      </Show>
       <button
         {...others}
         ref={triggerRef}
@@ -167,58 +195,60 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
       </button>
 
       <Show when={open()}>
-        <div
-          ref={setPanelRef}
-          id={panelId}
-          class="so-color-picker__panel"
-          role="dialog"
-          aria-label={local.panelLabel ?? "Choose a colour"}
-        >
-          <div class="so-color-picker__swatches">
-            <For each={swatches()}>
-              {(swatch) => (
-                <button
-                  type="button"
-                  class={cls(
-                    "so-color-picker__swatch",
-                    swatch.toLowerCase() === color().toLowerCase() && "so-color-picker__swatch--selected",
-                  )}
-                  style={{ "background-color": swatch }}
-                  aria-label={local.swatchLabel?.(swatch) ?? swatch}
-                  aria-pressed={swatch.toLowerCase() === color().toLowerCase()}
-                  onClick={() => {
-                    commit(swatch.toLowerCase());
-                    close();
-                  }}
-                />
-              )}
-            </For>
+        <Portal>
+          <div
+            ref={setPanelRef}
+            id={panelId}
+            class="so-color-picker__panel"
+            role="dialog"
+            aria-label={local.panelLabel ?? "Choose a colour"}
+          >
+            <div class="so-color-picker__swatches">
+              <For each={swatches()}>
+                {(swatch) => (
+                  <button
+                    type="button"
+                    class={cls(
+                      "so-color-picker__swatch",
+                      swatch.toLowerCase() === color().toLowerCase() && "so-color-picker__swatch--selected",
+                    )}
+                    style={{ "background-color": swatch }}
+                    aria-label={local.swatchLabel?.(swatch) ?? swatch}
+                    aria-pressed={swatch.toLowerCase() === color().toLowerCase()}
+                    onClick={() => {
+                      commit(swatch.toLowerCase());
+                      close();
+                    }}
+                  />
+                )}
+              </For>
+            </div>
+
+            <label class="so-color-picker__field">
+              <span class="so-color-picker__field-label">{local.customLabel ?? "Custom"}</span>
+              <input
+                class="so-color-picker__native"
+                type="color"
+                value={color()}
+                onInput={(e) => commit(e.currentTarget.value)}
+              />
+            </label>
+
+            <label class="so-color-picker__field">
+              <span class="so-color-picker__field-label">{local.hexLabel ?? "Hex"}</span>
+              <input
+                class="so-color-picker__hex-input"
+                type="text"
+                inputMode="text"
+                spellcheck={false}
+                maxLength={7}
+                value={draft() ?? color()}
+                onInput={(e) => handleHexInput(e.currentTarget.value)}
+                onBlur={() => setDraft(null)}
+              />
+            </label>
           </div>
-
-          <label class="so-color-picker__field">
-            <span class="so-color-picker__field-label">{local.customLabel ?? "Custom"}</span>
-            <input
-              class="so-color-picker__native"
-              type="color"
-              value={color()}
-              onInput={(e) => commit(e.currentTarget.value)}
-            />
-          </label>
-
-          <label class="so-color-picker__field">
-            <span class="so-color-picker__field-label">{local.hexLabel ?? "Hex"}</span>
-            <input
-              class="so-color-picker__hex-input"
-              type="text"
-              inputMode="text"
-              spellcheck={false}
-              maxLength={7}
-              value={draft() ?? color()}
-              onInput={(e) => handleHexInput(e.currentTarget.value)}
-              onBlur={() => setDraft(null)}
-            />
-          </label>
-        </div>
+        </Portal>
       </Show>
     </div>
   );
