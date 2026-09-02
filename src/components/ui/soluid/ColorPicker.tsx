@@ -1,5 +1,6 @@
 import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -110,10 +111,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
-    if (e.key === "Escape") {
-      e.stopPropagation();
-      close();
-    }
+    if (e.key === "Escape" && takeEscape(panelId, e)) close();
   }
 
   function handleClickOutside(e: MouseEvent): void {
@@ -128,6 +126,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
+    onCleanup(claimEscape(panelId));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -135,7 +134,10 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
   });
 
   return (
-    <div class={cls("so-color-picker", `so-color-picker--${local.size ?? "md"}`, local.class)}>
+    <div
+      class={cls("so-color-picker", `so-color-picker--${local.size ?? "md"}`, local.class)}
+      data-density={local.density}
+    >
       <button
         {...others}
         ref={triggerRef}
@@ -155,7 +157,13 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
       </button>
 
       <Show when={open()}>
-        <div ref={setPanelRef} id={panelId} class="so-color-picker__panel" role="dialog" aria-label={local.panelLabel}>
+        <div
+          ref={setPanelRef}
+          id={panelId}
+          class="so-color-picker__panel"
+          role="dialog"
+          aria-label={local.panelLabel ?? "Choose a colour"}
+        >
           <div class="so-color-picker__swatches">
             <For each={swatches()}>
               {(swatch) => (
@@ -178,7 +186,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
           </div>
 
           <label class="so-color-picker__field">
-            <span class="so-color-picker__field-label">{local.customLabel}</span>
+            <span class="so-color-picker__field-label">{local.customLabel ?? "Custom"}</span>
             <input
               class="so-color-picker__native"
               type="color"
@@ -188,7 +196,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
           </label>
 
           <label class="so-color-picker__field">
-            <span class="so-color-picker__field-label">{local.hexLabel}</span>
+            <span class="so-color-picker__field-label">{local.hexLabel ?? "Hex"}</span>
             <input
               class="so-color-picker__hex-input"
               type="text"

@@ -36,13 +36,24 @@ export function SegmentedControl<T extends string = string>(props: SegmentedCont
   ]);
 
   const selectable = () => local.options.filter((option) => !option.disabled);
+  // Exactly one tab stop: the selection, else the first enabled segment.
+  const tabStop = () => selectable().find((option) => option.value === local.value) ?? selectable()[0];
+
+  let root: HTMLDivElement | undefined;
+
+  // Roving tabindex: the stop moves to the chosen segment, so focus must too.
+  function choose(option: SegmentedControlOption<T>): void {
+    local.onChange(option.value);
+    const index = local.options.indexOf(option);
+    root?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[index]?.focus();
+  }
 
   function moveSelection(offset: number): void {
     const options = selectable();
     if (options.length === 0) return;
     const current = options.findIndex((option) => option.value === local.value);
     const next = (current + offset + options.length) % options.length;
-    local.onChange(options[next].value);
+    choose(options[next]);
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
@@ -55,17 +66,18 @@ export function SegmentedControl<T extends string = string>(props: SegmentedCont
     } else if (e.key === "Home") {
       e.preventDefault();
       const first = selectable()[0];
-      if (first) local.onChange(first.value);
+      if (first) choose(first);
     } else if (e.key === "End") {
       e.preventDefault();
       const options = selectable();
       const last = options[options.length - 1];
-      if (last) local.onChange(last.value);
+      if (last) choose(last);
     }
   }
 
   return (
     <div
+      ref={root}
       class={cls(
         "so-segmented",
         `so-segmented--${local.size ?? "md"}`,
@@ -86,8 +98,7 @@ export function SegmentedControl<T extends string = string>(props: SegmentedCont
             role="radio"
             aria-checked={local.value === option.value}
             disabled={option.disabled}
-            // Only the selected segment is a tab stop; arrow keys move within.
-            tabIndex={local.value === option.value ? 0 : -1}
+            tabIndex={option === tabStop() ? 0 : -1}
             onClick={() => local.onChange(option.value)}
           >
             {option.label}

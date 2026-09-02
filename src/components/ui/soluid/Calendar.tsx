@@ -69,7 +69,11 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   // Uncontrolled fallback: open on the selected month, else the current one.
   // `||` rather than `??` because an empty string is how a form says "no date
   // yet", and an empty month would reach Intl as an invalid date.
-  const [ownMonth, setOwnMonth] = createSignal(local.value?.slice(0, 7) || toISO(Date.now()).slice(0, 7));
+  // The viewer's calendar date, not the UTC one: at 08:30 in Tokyo it is
+  // still yesterday in UTC.
+  const now = new Date();
+  const today = toISO(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  const [ownMonth, setOwnMonth] = createSignal(local.value?.slice(0, 7) || today.slice(0, 7));
   const month = () => local.month || ownMonth();
 
   const weekStart = () => local.weekStartsOn ?? 0;
@@ -105,7 +109,6 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
 
   const isOutside = (utc: number) => toISO(utc).slice(0, 7) !== month();
   const isDisabled = (iso: string) => (local.min != null && iso < local.min) || (local.max != null && iso > local.max);
-  const today = toISO(Date.now());
 
   function goToMonth(next: string): void {
     if (local.month == null) setOwnMonth(next);
@@ -130,13 +133,26 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     local.onChange?.(iso);
   }
 
-  function moveFocus(from: string, deltaDays: number): void {
-    const [y, m, d] = from.split("-").map(Number);
-    const target = toISO(Date.UTC(y, m - 1, d) + deltaDays * DAY_MS);
+  function focusDay(target: string): void {
+    // A disabled day cannot take focus: moving there would drop focus to the
+    // page and, across a month boundary, strand the grid on a month with no stop.
+    if (isDisabled(target)) return;
     const targetMonth = target.slice(0, 7);
     if (targetMonth !== month()) goToMonth(targetMonth);
     // The cell may only exist after the month re-renders.
     queueMicrotask(() => grid?.querySelector<HTMLButtonElement>(`[data-so-day="${target}"]`)?.focus());
+  }
+
+  function moveFocus(from: string, deltaDays: number): void {
+    const [y, m, d] = from.split("-").map(Number);
+    focusDay(toISO(Date.UTC(y, m - 1, d) + deltaDays * DAY_MS));
+  }
+
+  /** The same day of the month `deltaMonths` away, clamped to that month's length. */
+  function moveMonth(from: string, deltaMonths: number): void {
+    const [y, m, d] = from.split("-").map(Number);
+    const lastDay = new Date(Date.UTC(y, m - 1 + deltaMonths + 1, 0)).getUTCDate();
+    focusDay(toISO(Date.UTC(y, m - 1 + deltaMonths, Math.min(d, lastDay))));
   }
 
   function handleKeyDown(iso: string, e: KeyboardEvent): void {
@@ -146,7 +162,7 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
       moveFocus(iso, steps[e.key]);
     } else if (e.key === "PageUp" || e.key === "PageDown") {
       e.preventDefault();
-      goToMonth(addMonths(month(), e.key === "PageUp" ? -1 : 1));
+      moveMonth(iso, e.key === "PageUp" ? -1 : 1);
     }
   }
 

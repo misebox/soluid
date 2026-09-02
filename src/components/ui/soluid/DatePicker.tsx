@@ -3,6 +3,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Calendar } from "./Calendar";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -48,6 +49,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     "disabled",
     "format",
     "openLabel",
+    "name",
   ]);
 
   const ctx = useFormField();
@@ -92,10 +94,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
-    if (e.key === "Escape") {
-      e.stopPropagation();
-      close();
-    }
+    if (e.key === "Escape" && takeEscape(panelId, e)) close();
   }
 
   function handleClickOutside(e: MouseEvent): void {
@@ -109,6 +108,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
+    onCleanup(claimEscape(panelId));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -116,7 +116,12 @@ export function DatePickerControl(props: DatePickerControlProps) {
   });
 
   return (
-    <div class={cls("so-date-picker", `so-date-picker--${local.size ?? "md"}`, local.class)}>
+    <div
+      class={cls("so-date-picker", `so-date-picker--${local.size ?? "md"}`, local.class)}
+      data-density={local.density}
+    >
+      {/* The trigger is a button, so the form needs its own field to submit. */}
+      <Show when={local.name}>{(name) => <input type="hidden" name={name()} value={local.value ?? ""} />}</Show>
       <button
         {...others}
         ref={triggerRef}

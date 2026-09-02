@@ -1,6 +1,7 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -76,11 +77,16 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
   });
 
   const enabled = () => matches().filter((option) => !option.disabled);
+  const firstEnabled = () =>
+    Math.max(
+      0,
+      matches().findIndex((option) => !option.disabled),
+    );
 
   function openList(): void {
     if (local.disabled) return;
     setQuery("");
-    setActive(0);
+    setActive(firstEnabled());
     setOpen(true);
   }
 
@@ -121,9 +127,7 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
       e.preventDefault();
       commit(matches()[active()]);
     } else if (e.key === "Escape") {
-      if (!open()) return;
-      e.preventDefault();
-      e.stopPropagation();
+      if (!open() || !takeEscape(listId, e)) return;
       closeList();
     } else if (e.key === "Tab") {
       closeList();
@@ -171,11 +175,12 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
+    onCleanup(claimEscape(listId));
     onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
   });
 
   return (
-    <div class={cls("so-combobox", `so-combobox--${local.size ?? "md"}`, local.class)}>
+    <div class={cls("so-combobox", `so-combobox--${local.size ?? "md"}`, local.class)} data-density={local.density}>
       <input
         {...others}
         ref={inputRef}
@@ -195,10 +200,12 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onInput={(e) => {
           setQuery(e.currentTarget.value);
-          setActive(0);
           setOpen(true);
+          setActive(firstEnabled());
         }}
-        onFocus={openList}
+        // A click, not focus: a dialog handing the field focus must not pop
+        // the list, and a click has to reopen it once the field already has focus.
+        onClick={() => !open() && openList()}
         onKeyDown={handleKeyDown}
       />
       <svg

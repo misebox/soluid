@@ -35,8 +35,9 @@ function Star(props: { filled: boolean }) {
   );
 }
 
-// onChange is omitted because RatingProps redefines it with a numeric value.
-export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange">) {
+// onChange is omitted because RatingProps redefines it with a numeric value;
+// onKeyDown because the arrow keys are the component's own.
+export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange" | "onKeyDown">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
@@ -54,9 +55,13 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
   const items = () => Array.from({ length: max() }, (_, i) => i + 1);
   const itemLabel = (value: number) => local.itemLabel?.(value, max()) ?? `${value} of ${max()}`;
 
+  let root: HTMLDivElement | undefined;
+
   function select(value: number): void {
     if (local.disabled || local.readOnly) return;
     local.onChange?.(value);
+    // Roving tabindex: the stop moves to the new value, so focus must too.
+    root?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[Math.max(0, value - 1)]?.focus();
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
@@ -78,6 +83,7 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
 
   return (
     <div
+      ref={root}
       class={cls("so-rating", `so-rating--${local.size ?? "md"}`, local.disabled && "so-rating--disabled", local.class)}
       // Read-only ratings are a single image, not a set of controls.
       role={local.readOnly ? "img" : "radiogroup"}

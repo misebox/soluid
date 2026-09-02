@@ -1,6 +1,7 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -121,9 +122,10 @@ export function TimePickerControl(props: TimePickerControlProps) {
       e.preventDefault();
       commit(active());
     } else if (e.key === "Escape") {
-      e.preventDefault();
-      e.stopPropagation();
-      close();
+      if (takeEscape(listId, e)) close();
+    } else if (e.key === "Tab") {
+      // Focus is leaving; drop the list without pulling focus back.
+      setOpen(false);
     }
   }
 
@@ -184,11 +186,15 @@ export function TimePickerControl(props: TimePickerControlProps) {
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
+    onCleanup(claimEscape(listId));
     onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
   });
 
   return (
-    <div class={cls("so-time-picker", `so-time-picker--${local.size ?? "md"}`, local.class)}>
+    <div
+      class={cls("so-time-picker", `so-time-picker--${local.size ?? "md"}`, local.class)}
+      data-density={local.density}
+    >
       <button
         {...others}
         ref={triggerRef}
