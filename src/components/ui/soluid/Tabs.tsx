@@ -1,14 +1,6 @@
-import {
-  createContext,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  onCleanup,
-  Show,
-  splitProps,
-  useContext,
-} from "solid-js";
+import { createContext, createSignal, createUniqueId, onCleanup, Show, splitProps, useContext } from "solid-js";
 import type { Accessor, JSX } from "solid-js";
+import { isServer } from "solid-js/web";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -68,11 +60,16 @@ export function Tabs(props: TabsProps) {
   const [tabs, setTabs] = createSignal<TabRecord[]>([]);
 
   // The selected tab, unless it cannot take focus; then the first enabled one,
-  // so the list stays reachable by keyboard.
-  const tabStop = createMemo(() => {
+  // so the list stays reachable by keyboard. Not a memo: on the server a memo
+  // is evaluated once, before any Tab has registered, so every tab would
+  // render tabindex="-1". Tabs register one at a time there, so a tab rendered
+  // before the selected one cannot see it yet; assume the selected value exists.
+  const tabStop = () => {
     const enabled = tabs().filter((tab) => !tab.disabled());
-    return (enabled.find((tab) => tab.value() === local.value) ?? enabled[0])?.value();
-  });
+    const selected = enabled.find((tab) => tab.value() === local.value);
+    if (selected) return selected.value();
+    return isServer ? local.value : enabled[0]?.value();
+  };
 
   const context: TabsContextValue = {
     value: () => local.value,
