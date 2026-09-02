@@ -48,6 +48,10 @@ fi
 # Build CLI
 bun run build:cli
 
+# Publish before tagging: a tag for a version npm never received reads as
+# released, and the drift check then reports an all-clear that is not true.
+npm publish
+
 # Tag and push (skip if tag already exists)
 if git rev-parse "$TAG" >/dev/null 2>&1; then
   echo "Tag ${TAG} already exists, skipping tag/push"
@@ -55,8 +59,5 @@ else
   git tag "$TAG"
   git push origin HEAD --tags
 fi
-
-# Publish to npm
-npm publish
 
 echo "Done: ${TAG}"

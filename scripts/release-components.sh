@@ -3,6 +3,15 @@ set -euo pipefail
 
 BUMP="${1:-}"
 
+# The CLI carries the file manifest, so it has to be on npm first or an install
+# of this release writes components whose imports were never installed.
+PUBLISHED=$(npm view soluid version 2>/dev/null || echo "")
+LOCAL=$(node -p "require('./package.json').version")
+if [ "$PUBLISHED" != "$LOCAL" ]; then
+  echo "Publish the CLI first: npm has ${PUBLISHED:-nothing}, this tree is ${LOCAL}." >&2
+  exit 1
+fi
+
 # Get current version from latest components tag
 CURRENT=$(git tag -l 'components-v*' --sort=-v:refname | head -1 | sed 's/components-v//')
 if [ -z "$CURRENT" ]; then
@@ -46,7 +55,9 @@ NOTES_FILE=$(mktemp)
 printf '%s\n' "$NOTES" > "$NOTES_FILE"
 
 # Create tarball from src/components/ui (includes soluid/ folder)
-tar -czf components.tar.gz -C src/components/ui .
+# COPYFILE_DISABLE and the excludes keep macOS AppleDouble entries (._*) out of
+# the archive; to the CLI they look like component files.
+COPYFILE_DISABLE=1 tar --exclude='._*' --exclude='.DS_Store' -czf components.tar.gz -C src/components/ui .
 echo "Created components.tar.gz"
 
 # Tag and push

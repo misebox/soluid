@@ -96,16 +96,53 @@ async function exitCodeOf(run: () => Promise<void>): Promise<unknown> {
 }
 
 describe("install drift checks", () => {
-  test("a release with files this CLI does not know is refused", async () => {
+  test("a component importing a file this CLI does not know is refused", async () => {
+    // The shape a downstream project hit: a release added createScrollLock.ts,
+    // createOverlay.ts imports it, and an older registry lists neither.
     registry.core.files = CORE_FILES.filter((f) => f !== "soluid/core/createScrollLock.ts");
     stubArchiveFetch(
-      await makeArchive(fixtureFor(["core", "Button"], { "soluid/core/createScrollLock.ts": "export {};\n" })),
+      await makeArchive(
+        fixtureFor(["core", "Button"], {
+          "soluid/core/createScrollLock.ts": "export const lock = 1;\n",
+          "soluid/core/createOverlay.ts": 'import { lock } from "./createScrollLock";\nexport const overlay = lock;\n',
+        }),
+      ),
     );
     writeConfig(["Button"]);
 
     expect(await exitCodeOf(() => install(proj, { interactive: false }))).toBe(1);
-    expect(errors.join("\n")).toContain("createScrollLock.ts");
+    expect(errors.join("\n")).toContain("createOverlay.ts");
     expect(fs.existsSync(path.join(proj, "src/ui/Button.tsx"))).toBe(false);
+  });
+
+  test("a release carrying components this CLI has never heard of still installs", async () => {
+    // Nothing the user asked for imports the newcomer, so the install stands.
+    stubArchiveFetch(
+      await makeArchive(fixtureFor(["core", "Button"], { "soluid/BrandNewThing.tsx": "export const x = 1;\n" })),
+    );
+    writeConfig(["Button"]);
+
+    await install(proj, { interactive: false });
+
+    expect(fs.existsSync(path.join(proj, "src/ui/Button.tsx"))).toBe(true);
+    expect(fs.existsSync(path.join(proj, "src/ui/BrandNewThing.tsx"))).toBe(false);
+  });
+
+  test("macOS AppleDouble entries are not mistaken for components", async () => {
+    // bsdtar writes a ._name sibling per file unless COPYFILE_DISABLE is set,
+    // and every release published so far carries them.
+    stubArchiveFetch(
+      await makeArchive({
+        ...fixtureFor(["core", "Button"]),
+        "soluid/._Button.tsx": "junk\n",
+        "soluid/core/._types.ts": "junk\n",
+      }),
+    );
+    writeConfig(["Button"]);
+
+    await install(proj, { interactive: false });
+
+    expect(fs.existsSync(path.join(proj, "src/ui/Button.tsx"))).toBe(true);
   });
 
   test("a release lacking a file this CLI expects is refused", async () => {
@@ -162,10 +199,9 @@ test("the latest components version skips pre-releases and drafts", async () => 
 });
 
 test("update keeps the old version in the config when the install is refused", async () => {
-  registry.core.files = CORE_FILES.filter((f) => f !== "soluid/core/createScrollLock.ts");
-  stubArchiveFetch(
-    await makeArchive(fixtureFor(["core", "Button"], { "soluid/core/createScrollLock.ts": "export {};\n" })),
-  );
+  const files = fixtureFor(["core", "Button"]);
+  delete files["soluid/core/createScrollLock.ts"];
+  stubArchiveFetch(await makeArchive(files));
   writeConfig(["Button"]);
 
   expect(await exitCodeOf(() => update(proj, { interactive: false }))).toBe(1);
@@ -195,4 +231,22 @@ test("a non-interactive install keeps files that differ unless --force is passed
 
   await install(proj, { interactive: false, force: true });
   expect(fs.readFileSync(file, "utf-8")).not.toBe("// edited locally\n");
+});
+
+test("npm packages are taken from the release, not only from this CLI's registry", async () => {
+  // A release older than the CLI can still import a package the registry has
+  // since dropped; the user needs it installed all the same.
+  stubArchiveFetch(
+    await makeArchive(
+      fixtureFor(["core", "Button"], {
+        "soluid/core/createToast.ts":
+          'import { debounce } from "@solid-primitives/scheduled";\nexport const t = debounce;\n',
+      }),
+    ),
+  );
+  writeConfig(["Button"]);
+
+  await install(proj, { interactive: false });
+
+  expect(logs.join("\n")).toContain("@solid-primitives/scheduled");
 });

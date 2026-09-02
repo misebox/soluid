@@ -258,26 +258,69 @@ interface InstallOptions {
   version?: string;
 }
 
+/** Relative import specifiers in `source`, resolved to archive paths. */
+function importsOf(source: string, file: string): string[] {
+  const dir = path.posix.dirname(file);
+  const targets: string[] = [];
+  for (const match of source.matchAll(/from\s+["'](\.[^"']*)["']/g)) {
+    const resolved = path.posix.normalize(path.posix.join(dir, match[1]));
+    targets.push(...[".ts", ".tsx"].map((extension) => resolved + extension));
+  }
+  return targets;
+}
+
+/**
+ * The npm packages the files being installed actually import. The registry
+ * describes the components in this CLI, which can be older or newer than the
+ * release being installed; the release's own source is the honest answer.
+ */
+function packagesImportedBy(archive: Map<string, string>, writing: string[]): string[] {
+  const packages = new Set<string>();
+  for (const file of writing) {
+    if (!file.endsWith(".ts") && !file.endsWith(".tsx")) continue;
+    for (const match of (archive.get(file) ?? "").matchAll(/from\s+["']([^."'][^"']*)["']/g)) {
+      const specifier = match[1];
+      if (specifier === "solid-js" || specifier.startsWith("solid-js/")) continue;
+      const parts = specifier.split("/");
+      packages.add(specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0]);
+    }
+  }
+  return [...packages];
+}
+
 /**
  * The file manifest ships with the CLI while the files ship with the release,
- * so the two can drift: a release can carry files this CLI has never heard of
- * (its components would import something never installed), or lack files this
- * CLI expects. Either way the install would be broken, so stop here.
+ * so the two can drift. What breaks an install is a component whose import is
+ * never written: a downstream project hit exactly that when a release added
+ * core/createScrollLock.ts that an older registry did not list. A release that
+ * merely carries newer components is harmless, so only the files this install
+ * would write are checked.
  */
 function checkDrift(archive: Map<string, string>, resolved: string[], version: string): void {
-  const known = new Set(Object.values(registry).flatMap((entry) => entry.files));
-  const unknown = [...archive.keys()].filter((file) => /^soluid\/.*\.tsx?$/.test(file) && !known.has(file));
-  if (unknown.length > 0) {
-    console.error(`components v${version} contains files this CLI does not know:\n  ${unknown.join("\n  ")}`);
-    console.error(`Upgrade the CLI: npx ${PROJECT_NAME}@latest install`);
-    process.exit(1);
-  }
-  const missing = resolved.flatMap((name) => registry[name].files.filter((file) => !archive.has(file)));
+  const writing = resolved.flatMap((name) => registry[name].files);
+
+  const missing = writing.filter((file) => !archive.has(file));
   if (missing.length > 0) {
     console.error(`components v${version} lacks files this CLI expects:\n  ${missing.join("\n  ")}`);
     console.error(
       `Set componentsVersion to a newer release, or use the matching CLI: npx ${PROJECT_NAME}@<version> install`,
     );
+    process.exit(1);
+  }
+
+  const written = new Set(writing);
+  const dangling = writing
+    .filter((file) => file.endsWith(".ts") || file.endsWith(".tsx"))
+    .filter((file) => {
+      const candidates = importsOf(archive.get(file) ?? "", file);
+      // Each import must land in the install under one of the two extensions.
+      return candidates.length > 0 && !candidates.some((target) => written.has(target));
+    });
+  if (dangling.length > 0) {
+    console.error(
+      `components v${version} needs files this CLI does not know, imported by:\n  ${dangling.join("\n  ")}`,
+    );
+    console.error(`Upgrade the CLI: npx ${PROJECT_NAME}@latest install`);
     process.exit(1);
   }
 }
@@ -303,7 +346,6 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   }
 
   const resolved = resolveDependencies(["core", ...config.components]);
-  const npmDeps = collectNpmDeps(resolved);
 
   console.log(`Installing ${resolved.length} items (including dependencies):`);
 
@@ -326,6 +368,18 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   }
 
   checkDrift(archive, resolved, version);
+
+  // The union covers both directions of drift: a package this CLI knows about
+  // and one only the release's own imports reveal.
+  const npmDeps = [
+    ...new Set([
+      ...collectNpmDeps(resolved),
+      ...packagesImportedBy(
+        archive,
+        resolved.flatMap((name) => registry[name].files),
+      ),
+    ]),
+  ].sort();
 
   const targetRoot = path.resolve(cwd, config.componentDir);
 

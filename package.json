@@ -50,8 +50,12 @@
     "soluid": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist/*.js",
+    "dist/commands/*.js"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
     "@floating-ui/dom": "^1.7.5",
     "@solidjs/router": "^0.15.4",
