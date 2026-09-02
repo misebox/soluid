@@ -331,7 +331,8 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
   // Ask before replacing files that differ locally. Committed work is safe in
   // git either way; this is about edits that have not been committed yet.
-  let overwrite = true;
+  // Without a terminal to ask, only --force may replace them.
+  let overwrite = force;
   if (interactive) {
     const preview = writeComponentFiles(archive, resolved, targetRoot, { overwrite: false, dryRun: true });
     if (preview.kept.length > 0) {

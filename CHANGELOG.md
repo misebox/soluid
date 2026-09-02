@@ -131,7 +131,7 @@ Components and the CLI are released separately, so they are listed separately.
 
 - `install` refuses a release that carries component files the registry does not know (an older CLI paired with a newer release could import a file that is never installed, as reported for `createScrollLock`) and one lacking files the registry expects; both print the drift and an upgrade hint instead of installing silently or halfway. This is a stopgap: a manifest shipped inside the release would remove the drift entirely.
 - `update` wrote the new `componentsVersion` before the install finished, so a failed install still left the newer version recorded; `install` writes it only once the files are on disk.
-- A piped or closed stdin made prompts hang, or made the CLI exit with code 13 in CI; prompts resolve to their default, and a non-terminal stdin is treated as `--no-interactive`.
+- A piped or closed stdin made prompts hang, or made the CLI exit with code 13 in CI; prompts resolve to their default, and a non-terminal stdin is treated as `--no-interactive`. Without a terminal, files that differ locally are kept unless `--force` is passed.
 - Interactive `install` printed every component line twice: the dry-run preview logged as well as the real run.
 - `add Button Button` wrote the name twice into the config.
 - Resolving the latest components version picked up pre-releases and drafts; they are skipped.

@@ -15,7 +15,7 @@ export interface CarouselProps extends CommonProps {
   label?: string;
   previousLabel?: string;
   nextLabel?: string;
-  /** Accessible label for a dot, given its 1-based position */
+  /** Accessible label for a slide and its dot, given the 1-based position */
   dotLabel?: (position: number, total: number) => string;
   children: JSX.Element;
 }

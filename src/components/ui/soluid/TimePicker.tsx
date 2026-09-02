@@ -8,16 +8,16 @@ import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
 
-/** Times are `HH:MM` on a 24-hour clock, matching `<input type="time">`. */
 /** Native button attributes minus the ones this component owns. */
 type TriggerAttributes = Omit<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
   "onChange" | "onClick" | "onKeyDown" | "type" | "class" | "size" | "value"
 >;
 
+/** Times are `HH:MM` on a 24-hour clock, matching `<input type="time">`. */
 export interface TimePickerControlProps extends InteractiveProps, TriggerAttributes {
   value?: string;
-  /** Submitted through a hidden field, since the trigger is a button */
+  /** Submitted through a visually hidden text input, since the trigger is a button; `required` applies to it */
   name?: string;
   onChange?: (value: string) => void;
   /** Minutes between offered times (default: 30) */

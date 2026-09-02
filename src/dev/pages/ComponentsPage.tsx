@@ -9,6 +9,7 @@ import apiData from "../api-data.json";
 // Code tab always shows the demo on screen.
 import codeExamples from "../code-examples.json";
 import { lang } from "../lang";
+import type { Lang } from "../lang";
 import { t } from "../locales";
 import { CATEGORIES, DEMOS, SUB_COMPONENTS } from "./componentDemos";
 
@@ -52,6 +53,16 @@ interface ComponentApi {
 }
 
 const data = apiData as ComponentApi[];
+
+/**
+ * A wrapper's props extend its control's (`ComboboxProps` extends
+ * `ComboboxControlProps`), and the locales describe inherited props under
+ * the control's name, so the lookup falls back to it.
+ */
+function propDescription(lang: Lang, apiName: string, propName: string): string {
+  const owners = [apiName, apiName.replace(/Props$/, "ControlProps"), apiName.replace(/Props$/, "InputProps")];
+  return owners.map((owner) => t(lang, `${owner}.${propName}`)).find((text) => text !== "") ?? "";
+}
 
 const propsFor = (componentName: string): ComponentApi[] => {
   const subs = SUB_COMPONENTS[componentName] ?? [componentName];
@@ -352,7 +363,7 @@ function ComponentCard(props: { name: string }) {
                                       <TypeCell prop={prop} />
                                     </td>
                                     <td>{prop.optional ? "" : "Yes"}</td>
-                                    <td class="api-table-desc">{(() => t(lang(), `${comp.name}.${prop.name}`))()}</td>
+                                    <td class="api-table-desc">{propDescription(lang(), comp.name, prop.name)}</td>
                                   </tr>
                                 )}
                               </For>

@@ -11,7 +11,7 @@ sh bin/setup-hooks.sh        # install git hooks (pre-commit, pre-push)
 bun run dev                  # start catalog dev server (localhost:5173)
 bun run typecheck            # type check
 bun run lint                 # lint (oxlint)
-bun run fmt                  # format (dprint)
+bun run fmt                  # format (oxfmt)
 bun run audit                # audit components (see below)
 bun run generate:api         # regenerate API data from component Props
 bun run build:catalog        # build catalog site to docs/

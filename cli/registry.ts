@@ -197,7 +197,7 @@ export const registry: Record<string, RegistryEntry> = {
     category: "components",
     files: ["soluid/Table.tsx", "soluid/Table.css"],
     dependencies: ["core"],
-    description: "Data table with sort, pagination, row selection",
+    description: "Data table with sort and row selection",
   },
   Card: {
     name: "Card",

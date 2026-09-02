@@ -25,7 +25,7 @@ function printHelp(): void {
   const options: [string, string][] = [
     [
       "--no-interactive",
-      "Skip the prompts. Missing npm packages are installed without asking, rather than only being printed.",
+      "Skip the prompts: files that differ locally are kept (pass --force to overwrite) and missing npm packages are installed without asking. Implied when stdin is not a terminal.",
     ],
     ["--force", "Overwrite files that differ locally, and skip every prompt."],
     ["--help, -h", "Show this help."],

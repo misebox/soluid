@@ -23,16 +23,16 @@ const DEFAULT_SWATCHES = [
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
-/** Colours are `#rrggbb`, the form `<input type="color">` accepts. */
 /** Native button attributes minus the ones this component owns. */
 type TriggerAttributes = Omit<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
   "onChange" | "onClick" | "type" | "class" | "size" | "value"
 >;
 
+/** Colours are `#rrggbb`, the form `<input type="color">` accepts. */
 export interface ColorPickerControlProps extends InteractiveProps, TriggerAttributes {
   value?: string;
-  /** Submitted through a hidden field, since the trigger is a button */
+  /** Submitted through a visually hidden text input, since the trigger is a button; `required` applies to it */
   name?: string;
   onChange?: (value: string) => void;
   /** Preset colours offered in the panel */

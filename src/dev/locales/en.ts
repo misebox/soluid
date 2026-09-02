@@ -166,7 +166,8 @@ export const en: Record<string, string> = {
   "ColorPickerControlProps.swatches": "Preset colours offered in the panel",
   "ColorPickerControlProps.required": "Mark the field as required",
   "ColorPickerControlProps.id": "Id for the trigger; a FormField label points at it",
-  "ColorPickerControlProps.name": "Form field name; the value is submitted through a hidden field",
+  "ColorPickerControlProps.name":
+    "Form field name; the value is submitted through a visually hidden text input, so required validation applies",
   "ColorPickerControlProps.panelLabel": "Accessible label for the panel",
   "ColorPickerControlProps.swatchLabel": "Builds the accessible label for a preset",
   "ColorPickerControlProps.customLabel": "Label for the native colour input",
@@ -227,7 +228,8 @@ export const en: Record<string, string> = {
   "DatePickerControlProps.placeholder": "Text shown while nothing is selected",
   "DatePickerControlProps.required": "Mark the field as required",
   "DatePickerControlProps.id": "Id for the trigger; a FormField label points at it",
-  "DatePickerControlProps.name": "Form field name",
+  "DatePickerControlProps.name":
+    "Form field name; the value is submitted through a visually hidden text input, so required validation applies",
   "DatePickerControlProps.format": "Formats the value for the field",
   "DatePickerControlProps.openLabel": "Accessible label for the calendar popover",
 
@@ -502,7 +504,8 @@ export const en: Record<string, string> = {
   "SelectInputProps.placeholder": "Placeholder option shown when nothing is selected",
   "TextFieldInputProps.value": "Current text value",
   "TextFieldInputProps.onInput": "Callback on every keystroke",
-  "TextFieldInputProps.type": "Input type: text, email, password, url or tel",
+  "TextFieldInputProps.type":
+    "Input type: text, email, password, url, tel, search, number, date, search, number or date",
   "TextAreaInputProps.value": "Current text value",
   "TextAreaInputProps.onInput": "Callback on every keystroke",
   "SelectProps.placeholder": "Placeholder text",
@@ -658,7 +661,7 @@ export const en: Record<string, string> = {
   "TextFieldProps.value": "Current text value",
   "TextFieldProps.onInput": "Callback when text changes",
   "TextFieldProps.placeholder": "Placeholder text",
-  "TextFieldProps.type": "Input type: text, email, password, url, tel",
+  "TextFieldProps.type": "Input type: text, email, password, url, tel, search, number, date",
   "TextFieldProps.label": "Field label",
   "TextFieldProps.error": "Error message",
   "TextFieldProps.hint": "Hint text",
@@ -681,7 +684,8 @@ export const en: Record<string, string> = {
   "TimePickerControlProps.placeholder": "Text shown while nothing is selected",
   "TimePickerControlProps.required": "Mark the field as required",
   "TimePickerControlProps.id": "Id for the trigger; a FormField label points at it",
-  "TimePickerControlProps.name": "Form field name; the value is submitted through a hidden field",
+  "TimePickerControlProps.name":
+    "Form field name; the value is submitted through a visually hidden text input, so required validation applies",
   "TimePickerControlProps.format": "Formats a time for display",
   "TimePickerControlProps.listLabel": "Accessible label for the list of times",
 
@@ -872,7 +876,7 @@ export const en: Record<string, string> = {
   "apiDesc.SpinnerProps": "Loading spinner",
   "apiDesc.StackProps": "Vertical flex layout with gap",
   "apiDesc.SwitchProps": "Toggle switch",
-  "apiDesc.TableProps": "Data table with sort, pagination, row selection",
+  "apiDesc.TableProps": "Data table with sort and row selection",
   "apiDesc.TabListProps": "",
   "apiDesc.TabPanelProps": "",
   "apiDesc.TabProps": "",

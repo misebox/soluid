@@ -184,3 +184,18 @@ test("update records the new version once the install went through", async () =>
 
   expect(loadConfig(proj)?.componentsVersion).toBe("1.2.3");
 });
+
+test("a non-interactive install keeps files that differ unless --force is passed", async () => {
+  stubArchiveFetch(await makeArchive(fixtureFor(["core", "Button"])));
+  writeConfig(["Button"]);
+  await install(proj, { interactive: false });
+  const file = path.join(proj, "src/ui/Button.tsx");
+  fs.writeFileSync(file, "// edited locally\n");
+
+  await install(proj, { interactive: false });
+  expect(fs.readFileSync(file, "utf-8")).toBe("// edited locally\n");
+  expect(logs.some((line) => line.includes("--force"))).toBe(true);
+
+  await install(proj, { interactive: false, force: true });
+  expect(fs.readFileSync(file, "utf-8")).not.toBe("// edited locally\n");
+});
