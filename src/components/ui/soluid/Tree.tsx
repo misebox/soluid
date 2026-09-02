@@ -150,17 +150,17 @@ export function Tree(props: TreeProps & Omit<JSX.HTMLAttributes<HTMLUListElement
     >
       <For each={visible()}>
         {(node) => (
-          <li
-            class="so-tree__item"
-            role="treeitem"
-            aria-level={levelOf(node)}
-            aria-expanded={isBranch(node) ? isExpanded(node) : undefined}
-            aria-selected={local.selected === node.id}
-            aria-disabled={node.disabled || undefined}
-          >
+          <li class="so-tree__item" role="none">
+            {/* The button is the treeitem: readers announce level and state
+                from the element that holds focus. */}
             <button
               type="button"
+              role="treeitem"
               id={rowId(node.id)}
+              aria-level={levelOf(node)}
+              aria-expanded={isBranch(node) ? isExpanded(node) : undefined}
+              aria-selected={local.selected === node.id}
+              aria-disabled={node.disabled || undefined}
               class={cls(
                 "so-tree__row",
                 local.selected === node.id && "so-tree__row--selected",

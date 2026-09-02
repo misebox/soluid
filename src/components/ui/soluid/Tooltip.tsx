@@ -1,4 +1,4 @@
-import { children, createEffect, createUniqueId, Show, splitProps } from "solid-js";
+import { children, createEffect, createSignal, createUniqueId, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { cls } from "./core/utils";
 
@@ -31,8 +31,28 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
 
   // The wrapper stays put whether or not there is content: swapping the trigger
   // between two parents would blur it.
+  // Escape hides the tip until the pointer or focus leaves (WCAG 1.4.13).
+  const [shown, setShown] = createSignal(false);
+  const [dismissed, setDismissed] = createSignal(false);
+  const leave = () => {
+    setShown(false);
+    setDismissed(false);
+  };
+
   return (
-    <span class={cls("so-tooltip-wrapper", local.class)} {...others}>
+    <span
+      class={cls("so-tooltip-wrapper", dismissed() && "so-tooltip-wrapper--dismissed", local.class)}
+      onMouseEnter={() => setShown(true)}
+      onMouseLeave={leave}
+      onFocusIn={() => setShown(true)}
+      onFocusOut={leave}
+      onKeyDown={(e) => {
+        if (e.key !== "Escape" || !shown() || dismissed()) return;
+        e.preventDefault();
+        setDismissed(true);
+      }}
+      {...others}
+    >
       {trigger()}
       <Show when={local.content}>
         <span id={tooltipId} class={cls("so-tooltip", `so-tooltip--${local.placement ?? "top"}`)} role="tooltip">

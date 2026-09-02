@@ -121,11 +121,11 @@ export function ContextMenu(props: ContextMenuProps & Omit<JSX.HTMLAttributes<HT
 
   createEffect(() => {
     if (!open()) return;
-    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
     onCleanup(claimEscape(menuId, panelRef()));
     onCleanup(() => {
-      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     });
   });

@@ -355,7 +355,7 @@ it("a press on a day in a DatePicker inside a Popover does not close the popover
   await settle();
   const day = q('[data-so-day="2026-05-12"]');
 
-  day.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  day.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, cancelable: true }));
   expect(pop()).toBe(true);
   day.click();
   await settle();
@@ -372,10 +372,10 @@ it("CommandPalette does not run a command again during its closing animation", a
   await settle();
   const option = q(".so-command__option");
 
-  option.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  option.click();
   await settle();
   expect(q(".so-command-backdrop").classList.contains("so-command-backdrop--closing")).toBe(true);
-  option.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  option.click();
   await settle();
 
   expect(onSelect).toHaveBeenCalledTimes(1);

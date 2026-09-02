@@ -236,3 +236,17 @@ body {
     border-top: 1px solid CanvasText;
   }
 }
+
+/* iOS Safari zooms into a field whose text is under 16px; on touch screens
+   the text inputs use at least that. */
+@media (pointer: coarse) {
+  .so-text-field__input,
+  .so-textarea__input,
+  .so-select__input,
+  .so-combobox__input,
+  .so-number-input__input,
+  .so-pin-input__box,
+  .so-color-picker__hex-input {
+    font-size: max(16px, 1em);
+  }
+}

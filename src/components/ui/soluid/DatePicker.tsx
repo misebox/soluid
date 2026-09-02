@@ -129,11 +129,11 @@ export function DatePickerControl(props: DatePickerControlProps) {
 
   createEffect(() => {
     if (!open()) return;
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     });
   });

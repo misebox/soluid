@@ -13,14 +13,32 @@
   font-size: var(--so-font-size-sm);
   line-height: var(--so-line-height);
   white-space: nowrap;
-  pointer-events: none;
+  /* Hidden, not just transparent: the tip must not catch pointer events
+     while it is not shown. */
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition:
+    opacity 0.15s,
+    visibility 0.15s;
+}
+
+/* Bridges the gap to the trigger, so the pointer can move onto the tip. */
+.so-tooltip::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
 }
 
 .so-tooltip-wrapper:hover .so-tooltip,
 .so-tooltip-wrapper:focus-within .so-tooltip {
+  visibility: visible;
   opacity: 1;
+}
+
+.so-tooltip-wrapper--dismissed:hover .so-tooltip,
+.so-tooltip-wrapper--dismissed:focus-within .so-tooltip {
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* --- Placements --- */

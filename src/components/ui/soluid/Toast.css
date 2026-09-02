@@ -10,22 +10,26 @@
 
 .so-toast-container--top-right {
   top: 0;
+  padding-top: max(var(--so-space-4), env(safe-area-inset-top));
   right: 0;
 }
 
 .so-toast-container--top-center {
   top: 0;
+  padding-top: max(var(--so-space-4), env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
 }
 
 .so-toast-container--bottom-right {
   bottom: 0;
+  padding-bottom: max(var(--so-space-4), env(safe-area-inset-bottom));
   right: 0;
 }
 
 .so-toast-container--bottom-center {
   bottom: 0;
+  padding-bottom: max(var(--so-space-4), env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
 }

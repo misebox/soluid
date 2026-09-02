@@ -64,7 +64,7 @@ it("Combobox drops its list and stops emitting once disabled", async () => {
 
   setDisabled(true);
   await settle();
-  document.querySelector(".so-combobox__option")?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  document.querySelector<HTMLElement>(".so-combobox__option")?.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(input.getAttribute("aria-expanded")).toBe("false");
@@ -78,7 +78,7 @@ it("TimePicker drops its list once disabled", async () => {
 
   setDisabled(true);
   await settle();
-  document.querySelector(".so-time-picker__option")?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  document.querySelector<HTMLElement>(".so-time-picker__option")?.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(document.querySelector(".so-time-picker__list")).toBeNull();

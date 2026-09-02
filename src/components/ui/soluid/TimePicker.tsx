@@ -160,8 +160,10 @@ export function TimePickerControl(props: TimePickerControlProps) {
         flip(),
         shift({ padding: 8 }),
         size({
-          apply({ rects, elements }) {
+          apply({ rects, elements, availableHeight }) {
             elements.floating.style.width = `${rects.reference.width}px`;
+            // A soft keyboard leaves little room; the list shrinks to what is left.
+            elements.floating.style.maxHeight = `${Math.min(224, availableHeight)}px`;
           },
         }),
       ],
@@ -207,9 +209,9 @@ export function TimePickerControl(props: TimePickerControlProps) {
 
   createEffect(() => {
     if (!open()) return;
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     onCleanup(claimEscape(listId, listRef()));
-    onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
+    onCleanup(() => document.removeEventListener("pointerdown", handleClickOutside));
   });
 
   return (
@@ -240,6 +242,8 @@ export function TimePickerControl(props: TimePickerControlProps) {
         type="button"
         id={ctx?.id ?? local.id}
         class="so-time-picker__trigger"
+        // aria-activedescendant is only valid on a combobox, not a plain button.
+        role="combobox"
         disabled={local.disabled}
         aria-required={local.required || undefined}
         aria-haspopup="listbox"
@@ -286,11 +290,10 @@ export function TimePickerControl(props: TimePickerControlProps) {
                   class={cls("so-time-picker__option", i() === active() && "so-time-picker__option--active")}
                   role="option"
                   aria-selected={time === local.value}
-                  // mousedown beats the trigger's blur, so the click is not lost.
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    commit(i());
-                  }}
+                  // mousedown is prevented so the trigger keeps focus; the pick
+                  // itself waits for click, so a touch scroll does not commit.
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => commit(i())}
                   onMouseEnter={() => setActive(i())}
                 >
                   {local.format?.(time) ?? time}

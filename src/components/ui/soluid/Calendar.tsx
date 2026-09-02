@@ -133,10 +133,14 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     local.onChange?.(iso);
   }
 
+  // The last focused day keeps the tab stop, so Shift+Tab returns to it.
+  const [focused, setFocused] = createSignal<string>();
+
   function focusDay(target: string): void {
     // A disabled day cannot take focus: moving there would drop focus to the
     // page and, across a month boundary, strand the grid on a month with no stop.
     if (isDisabled(target)) return;
+    setFocused(target);
     const targetMonth = target.slice(0, 7);
     if (targetMonth !== month()) goToMonth(targetMonth);
     // The cell may only exist after the month re-renders.
@@ -160,9 +164,15 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
     if (steps[e.key] !== undefined) {
       e.preventDefault();
       moveFocus(iso, steps[e.key]);
+    } else if (e.key === "Home" || e.key === "End") {
+      e.preventDefault();
+      const [y, m, d] = iso.split("-").map(Number);
+      const weekday = (new Date(Date.UTC(y, m - 1, d)).getUTCDay() - weekStart() + 7) % 7;
+      moveFocus(iso, e.key === "Home" ? -weekday : 6 - weekday);
     } else if (e.key === "PageUp" || e.key === "PageDown") {
       e.preventDefault();
-      moveMonth(iso, e.key === "PageUp" ? -1 : 1);
+      // Shift steps a year, as in the APG date picker.
+      moveMonth(iso, (e.key === "PageUp" ? -1 : 1) * (e.shiftKey ? 12 : 1));
     }
   }
 
@@ -173,6 +183,8 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
    */
   const tabStop = createMemo(() => {
     const reachable = (iso: string) => iso.slice(0, 7) === month() && !isDisabled(iso);
+    const current = focused();
+    if (current && reachable(current)) return current;
     if (local.value && reachable(local.value)) return local.value;
     if (reachable(today)) return today;
     return weeks().flat().map(toISO).find(reachable) ?? `${month()}-01`;
@@ -227,6 +239,7 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
                       <button
                         type="button"
                         data-so-day={iso}
+                        onFocus={() => setFocused(iso)}
                         class={cls(
                           "so-calendar__day",
                           isOutside(utc) && "so-calendar__day--outside",

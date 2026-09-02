@@ -109,11 +109,11 @@ export function Popover(props: PopoverProps & JSX.HTMLAttributes<HTMLSpanElement
   // the open state and disposes them with the component.
   createEffect(() => {
     if (!local.open) return;
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     });
   });

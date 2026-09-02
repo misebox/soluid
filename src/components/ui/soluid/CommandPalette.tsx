@@ -110,6 +110,8 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
+    // The Enter that confirms an IME composition is not a pick.
+    if (e.isComposing || e.keyCode === 229) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
       move(1);
@@ -225,10 +227,10 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
                           role="option"
                           aria-selected={item().index === active()}
                           aria-disabled={item().command.disabled || undefined}
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            run(item().command);
-                          }}
+                          // mousedown is prevented so the input keeps focus; the pick itself
+                          // waits for click, so a touch scroll does not run the command.
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => run(item().command)}
                           onMouseEnter={() => !item().command.disabled && setActive(item().index)}
                         >
                           <Show when={item().command.icon}>

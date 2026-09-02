@@ -214,7 +214,7 @@ it("Combobox reopens when the still-focused input is clicked after a selection",
   const input = root.querySelector<HTMLInputElement>("input");
   input?.focus();
   input?.click();
-  document.querySelectorAll('[role="option"]')[1]?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  document.querySelectorAll<HTMLElement>('[role="option"]')[1]?.click();
   expect(value()).toBe("b");
   expect(document.activeElement).toBe(input);
 

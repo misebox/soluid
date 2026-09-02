@@ -87,6 +87,7 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
   });
 
   const enabled = () => matches().filter((option) => !option.disabled);
+  const hasList = () => open() && matches().length > 0;
   const firstEnabled = () =>
     Math.max(
       0,
@@ -136,6 +137,8 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
+    // The Enter that confirms an IME composition is not a pick.
+    if (e.isComposing || e.keyCode === 229) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
       if (!open()) openList();
@@ -166,8 +169,10 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
         shift({ padding: 8 }),
         // Match the trigger width so the list lines up with the field.
         size({
-          apply({ rects, elements }) {
+          apply({ rects, elements, availableHeight }) {
             elements.floating.style.width = `${rects.reference.width}px`;
+            // A soft keyboard leaves little room; the list shrinks to what is left.
+            elements.floating.style.maxHeight = `${Math.min(240, availableHeight)}px`;
           },
         }),
       ],
@@ -196,9 +201,9 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
 
   createEffect(() => {
     if (!open()) return;
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     onCleanup(claimEscape(listId, listRef()));
-    onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
+    onCleanup(() => document.removeEventListener("pointerdown", handleClickOutside));
   });
 
   return (
@@ -216,9 +221,9 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
         value={inputValue()}
         placeholder={local.placeholder}
         disabled={local.disabled}
-        aria-expanded={open()}
-        aria-controls={open() ? listId : undefined}
-        aria-activedescendant={open() ? optionId(active()) : undefined}
+        aria-expanded={hasList()}
+        aria-controls={hasList() ? listId : undefined}
+        aria-activedescendant={hasList() ? optionId(active()) : undefined}
         aria-autocomplete="list"
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
@@ -249,7 +254,11 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
           <ul ref={setListRef} id={listId} class="so-combobox__list" data-density={local.density} role="listbox">
             <Show
               when={matches().length > 0}
-              fallback={<li class="so-combobox__empty">{local.emptyLabel ?? "No results"}</li>}
+              fallback={
+                <li class="so-combobox__empty" role="presentation">
+                  {local.emptyLabel ?? "No results"}
+                </li>
+              }
             >
               <For each={matches()}>
                 {(option, i) => (
@@ -263,12 +272,10 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
                     role="option"
                     aria-selected={option.value === local.value}
                     aria-disabled={option.disabled || undefined}
-                    // mousedown fires before the input's blur, so the click is
-                    // not lost to the list closing first.
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      commit(option);
-                    }}
+                    // mousedown is prevented so the input keeps focus; the pick
+                    // itself waits for click, so a touch scroll does not commit.
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => commit(option)}
                     onMouseEnter={() => !option.disabled && setActive(i())}
                   >
                     {option.label}

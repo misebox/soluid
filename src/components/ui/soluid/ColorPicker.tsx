@@ -1,7 +1,7 @@
 import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
-import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, getFocusableElements, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { Portal } from "solid-js/web";
@@ -112,8 +112,16 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
       panel.style.top = `${y}px`;
       // Until this runs the panel sits at the document origin, so the CSS keeps
       // it hidden and nothing can focus or measure it there.
+      const firstPlacement = panel.dataset.soPlaced === undefined;
       panel.dataset.soPlaced = "";
+      if (firstPlacement) focusPanel(panel);
     });
+  }
+
+  // The panel lives at the end of the document, outside the Tab order, so
+  // focus is moved in by hand: the first control, else the panel itself.
+  function focusPanel(panel: HTMLElement): void {
+    (getFocusableElements(panel)[0] ?? panel).focus();
   }
 
   createEffect(() => {
@@ -123,7 +131,29 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
-    if (e.key === "Escape" && takeEscape(panelId, e)) close();
+    if (e.key === "Escape") {
+      if (takeEscape(panelId, e)) close();
+      return;
+    }
+    if (e.key !== "Tab") return;
+
+    const panel = panelRef();
+    const active = document.activeElement;
+    if (!panel || !(active instanceof HTMLElement)) return;
+
+    if (active === triggerRef && !e.shiftKey) {
+      e.preventDefault();
+      focusPanel(panel);
+      return;
+    }
+    if (!panel.contains(active)) return;
+
+    const items = getFocusableElements(panel);
+    const atEdge = e.shiftKey ? active === items[0] : active === items[items.length - 1];
+    if (!atEdge && items.length > 0) return;
+    // Leaving the panel: close it and carry on from the trigger.
+    if (e.shiftKey) e.preventDefault();
+    close();
   }
 
   function handleClickOutside(e: MouseEvent): void {
@@ -137,11 +167,11 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
 
   createEffect(() => {
     if (!open()) return;
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     });
   });
@@ -201,6 +231,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
             id={panelId}
             class="so-color-picker__panel"
             role="dialog"
+            tabIndex={-1}
             aria-label={local.panelLabel ?? "Choose a colour"}
           >
             <div class="so-color-picker__swatches">
