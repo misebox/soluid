@@ -3,6 +3,7 @@ import type { Placement } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -52,8 +53,7 @@ export function Popover(props: PopoverProps) {
   });
 
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Escape") {
-      e.stopPropagation();
+    if (e.key === "Escape" && takeEscape(panelId, e)) {
       local.onOpenChange(false);
       triggerRef?.focus();
     }
@@ -73,6 +73,7 @@ export function Popover(props: PopoverProps) {
     if (!local.open) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
+    onCleanup(claimEscape(panelId));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);

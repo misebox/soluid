@@ -10,6 +10,25 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.so-command-backdrop--closing {
+  animation: so-command-backdrop-out 0.15s ease-in forwards;
+}
+
+@keyframes so-command-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .so-command-backdrop--closing {
+    animation: none;
+  }
+}
+
 .so-command {
   display: flex;
   flex-direction: column;

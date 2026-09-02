@@ -1,4 +1,3 @@
-import { debounce } from "@solid-primitives/scheduled";
 import { createStore, produce } from "solid-js/store";
 import type { FeedbackVariant } from "./types";
 
@@ -35,7 +34,10 @@ let toastCounter = 0;
 export function createToast(options: ToastOptions = {}): ToastReturn {
   const defaultDuration = options.defaultDuration ?? 5000;
   const [toasts, setToasts] = createStore<Toast[]>([]);
-  const timers = new Map<string, ReturnType<typeof debounce>>();
+  // Plain timers: a scheduled primitive registers its clear on whatever owner
+  // `add` runs under, so a toast added from an effect would lose its
+  // auto-dismiss when that effect re-ran or unmounted.
+  const timers = new Map<string, ReturnType<typeof setTimeout>>();
 
   function remove(id: string): void {
     setToasts(
@@ -50,8 +52,8 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
 
   function dismiss(id: string): void {
     const timer = timers.get(id);
-    if (timer) {
-      timer.clear();
+    if (timer !== undefined) {
+      clearTimeout(timer);
       timers.delete(id);
     }
 
@@ -88,9 +90,10 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
     );
 
     if (duration > 0) {
-      const scheduledDismiss = debounce(() => dismiss(id), duration);
-      timers.set(id, scheduledDismiss);
-      scheduledDismiss();
+      timers.set(
+        id,
+        setTimeout(() => dismiss(id), duration),
+      );
     }
 
     return id;

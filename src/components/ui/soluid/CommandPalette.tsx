@@ -83,6 +83,7 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
   });
 
   const selectable = () => matches().filter((command) => !command.disabled);
+  const hasList = () => selectable().length > 0;
 
   function move(offset: number): void {
     const list = matches();
@@ -117,9 +118,6 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
     } else if (e.key === "Enter") {
       e.preventDefault();
       run(matches()[active()]);
-    } else if (e.key === "Escape") {
-      e.preventDefault();
-      local.onOpenChange(false);
     }
   }
 
@@ -149,10 +147,11 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
     <Show when={overlay.mounted()}>
       <Portal>
         <div
-          class={cls("so-command-backdrop", local.class)}
+          class={cls("so-command-backdrop", overlay.closing() && "so-command-backdrop--closing", local.class)}
           data-density={local.density}
           on:mousedown={overlay.handleBackdropMouseDown}
           on:click={overlay.handleBackdropClick}
+          onAnimationEnd={overlay.handleAnimationEnd}
           {...others}
         >
           <div
@@ -184,9 +183,9 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
                 autocomplete="off"
                 placeholder={local.placeholder}
                 value={query()}
-                aria-expanded={true}
-                aria-controls={listId}
-                aria-activedescendant={optionId(active())}
+                aria-expanded={hasList()}
+                aria-controls={hasList() ? listId : undefined}
+                aria-activedescendant={hasList() ? optionId(active()) : undefined}
                 aria-autocomplete="list"
                 onInput={(e) => {
                   setQuery(e.currentTarget.value);
@@ -196,10 +195,7 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
               />
             </div>
 
-            <Show
-              when={selectable().length > 0}
-              fallback={<p class="so-command__empty">{local.emptyLabel ?? "No results"}</p>}
-            >
+            <Show when={hasList()} fallback={<p class="so-command__empty">{local.emptyLabel ?? "No results"}</p>}>
               <ul id={listId} class="so-command__list" role="listbox" aria-label={local.label}>
                 <For each={rows()}>
                   {(row) => (

@@ -71,7 +71,9 @@ export function createOverlay(options: CreateOverlayOptions): OverlayReturn {
   }
 
   function handleBackdropClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget && mouseDownOnBackdrop) {
+    // The backdrop stays on screen through the closing animation; a click
+    // there must not report the close a second time.
+    if (e.target === e.currentTarget && mouseDownOnBackdrop && options.isOpen()) {
       options.onClose();
     }
     mouseDownOnBackdrop = false;

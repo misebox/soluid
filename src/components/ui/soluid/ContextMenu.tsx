@@ -3,6 +3,7 @@ import type { VirtualElement } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import { claimEscape, takeEscape } from "./core/createFocusTrap";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -72,7 +73,12 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     if (!panel) return;
 
     if (e.key === "Escape") {
-      e.stopPropagation();
+      if (!takeEscape(menuId, e)) return;
+      close();
+      return;
+    }
+
+    if (e.key === "Tab") {
       close();
       return;
     }
@@ -81,7 +87,10 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     if (items.length === 0) return;
     const index = items.indexOf(document.activeElement as HTMLElement);
 
-    if (e.key === "ArrowDown") {
+    // MenuItem has already run onSelect for this key; the menu goes away after it.
+    if ((e.key === "Enter" || e.key === " ") && index !== -1) {
+      close();
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
       items[index < items.length - 1 ? index + 1 : 0].focus();
     } else if (e.key === "ArrowUp") {
@@ -105,6 +114,7 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     if (!open()) return;
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
+    onCleanup(claimEscape(menuId));
     onCleanup(() => {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
@@ -129,7 +139,16 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
       {local.children}
       <Show when={open()}>
         <Portal>
-          <div ref={setPanelRef} id={menuId} class="so-context-menu" role="menu" aria-label={local.label}>
+          <div
+            ref={setPanelRef}
+            id={menuId}
+            class="so-context-menu"
+            role="menu"
+            aria-label={local.label}
+            tabIndex={-1}
+            // A pick closes the menu; MenuItem has run onSelect by the time this bubbles up.
+            onClick={(e) => e.target instanceof Element && e.target.closest(ITEM_SELECTOR) && close()}
+          >
             {local.content}
           </div>
         </Portal>

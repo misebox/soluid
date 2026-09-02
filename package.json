@@ -56,7 +56,6 @@
     "@floating-ui/dom": "^1.7.5",
     "@solid-primitives/active-element": "^2.1.5",
     "@solid-primitives/event-listener": "^2.4.5",
-    "@solid-primitives/scheduled": "^1.5.3",
     "@solidjs/router": "^0.15.4",
     "@types/node": "^20.19.34",
     "axe-core": "^4.12.1",

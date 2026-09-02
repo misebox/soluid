@@ -28,7 +28,7 @@ export const registry: Record<string, RegistryEntry> = {
       "soluid/core/createScrollLock.ts",
     ],
     dependencies: [],
-    npmDependencies: ["@solid-primitives/event-listener", "@solid-primitives/scheduled"],
+    npmDependencies: ["@solid-primitives/event-listener"],
     description: "Type definitions, CSS tokens, theme utilities, primitives",
   },
 
