@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For, type JSX } from "solid-js";
+import { createMemo, createSignal, For, Show, type JSX } from "solid-js";
 
 import { Accordion, AccordionItem } from "../../components/ui/soluid/Accordion";
 import { Alert } from "../../components/ui/soluid/Alert";
@@ -294,16 +294,30 @@ function BadgeDemo(): JSX.Element {
   );
 }
 
+const REMOVABLE_TAGS = [
+  { id: "removable", variant: "primary", label: "Removable" },
+  { id: "error", variant: "danger", label: "Error" },
+] as const;
+
 function TagDemo(): JSX.Element {
+  const [removed, setRemoved] = createSignal<string[]>([]);
+  const shown = () => REMOVABLE_TAGS.filter((tag) => !removed().includes(tag.id));
+
   return (
     <div class="catalog-row">
-      <Tag variant="primary" onRemove={() => {}}>
-        Removable
-      </Tag>
+      <For each={shown()}>
+        {(tag) => (
+          <Tag variant={tag.variant} onRemove={() => setRemoved((ids) => [...ids, tag.id])}>
+            {tag.label}
+          </Tag>
+        )}
+      </For>
       <Tag variant="success">Status: OK</Tag>
-      <Tag variant="danger" onRemove={() => {}}>
-        Error
-      </Tag>
+      <Show when={removed().length > 0}>
+        <Button size="sm" variant="neutral" onClick={() => setRemoved([])}>
+          Bring them back
+        </Button>
+      </Show>
     </div>
   );
 }
@@ -481,6 +495,7 @@ function ComboboxDemo(): JSX.Element {
 
 function SliderDemo(): JSX.Element {
   const [volume, setVolume] = createSignal(40);
+  const [rating, setRating] = createSignal(3);
   return (
     <Stack gap={4}>
       <Slider
@@ -492,7 +507,7 @@ function SliderDemo(): JSX.Element {
         showValue
         formatValue={(v) => `${v}%`}
       />
-      <Slider label="Rating" value={3} onInput={() => {}} min={1} max={5} step={1} size="sm" showValue />
+      <Slider label="Rating" value={rating()} onInput={setRating} min={1} max={5} step={1} size="sm" showValue />
     </Stack>
   );
 }
@@ -711,10 +726,22 @@ function SelectDemo(): JSX.Element {
 
 function CheckboxDemo(): JSX.Element {
   const [checked, setChecked] = createSignal(false);
+  // A mixed checkbox resolves to a plain one the moment it is clicked, the way
+  // a "select all" box behaves. Pinning `indeterminate` would freeze the demo.
+  const [mixed, setMixed] = createSignal(true);
+  const [partial, setPartial] = createSignal(true);
   return (
     <div class="catalog-row">
       <Checkbox checked={checked()} onChange={setChecked} label="Accept terms" />
-      <Checkbox checked indeterminate label="Indeterminate" />
+      <Checkbox
+        checked={partial()}
+        indeterminate={mixed()}
+        onChange={(next) => {
+          setMixed(false);
+          setPartial(next);
+        }}
+        label="Indeterminate"
+      />
       <Checkbox disabled label="Disabled" />
     </div>
   );
@@ -971,14 +998,25 @@ function AccordionDemo(): JSX.Element {
 }
 
 function AlertDemo(): JSX.Element {
+  const [dismissed, setDismissed] = createSignal(false);
+
   return (
     <Stack gap={2}>
       <Alert variant="info">Informational message.</Alert>
       <Alert variant="success">Operation completed successfully.</Alert>
       <Alert variant="warning">Please check your input.</Alert>
-      <Alert variant="danger" onDismiss={() => {}}>
-        An error occurred. Please try again.
-      </Alert>
+      <Show
+        when={!dismissed()}
+        fallback={
+          <Button size="sm" variant="neutral" onClick={() => setDismissed(false)}>
+            Bring the dismissible alert back
+          </Button>
+        }
+      >
+        <Alert variant="danger" onDismiss={() => setDismissed(true)}>
+          An error occurred. Please try again.
+        </Alert>
+      </Show>
     </Stack>
   );
 }
