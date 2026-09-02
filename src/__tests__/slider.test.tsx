@@ -50,3 +50,27 @@ it("measures progress from min, not from zero", () => {
 
   expect(input.style.getPropertyValue("--so-slider-progress")).toBe("50%");
 });
+
+it("puts the thumb back when the parent keeps the old value", async () => {
+  // Otherwise the thumb sits where the drag ended while the filled track and
+  // the readout still show the value the model holds.
+  const input = mount(() => <Slider label="s" value={3} min={1} max={5} step={1} onInput={() => {}} />);
+
+  input.value = "5";
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  await Promise.resolve();
+
+  expect(input.value).toBe("3");
+});
+
+it("leaves the thumb alone when the parent accepts the new value", async () => {
+  const [value, setValue] = createSignal(3);
+  const input = mount(() => <Slider label="s" value={value()} min={1} max={5} step={1} onInput={setValue} />);
+
+  input.value = "5";
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  await Promise.resolve();
+
+  expect(value()).toBe(5);
+  expect(input.value).toBe("5");
+});

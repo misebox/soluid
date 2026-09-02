@@ -117,11 +117,5 @@ export function createTheme(colors: ColorDefinition[]): ThemeResult {
 
   const cssText = lines.length > 0 ? `:root {\n${lines.join("\n")}\n}` : "";
 
-  // Warned unconditionally: import.meta.env exists only under a bundler, and
-  // this file is copied into projects that may not have one.
-  for (const warning of warnings) {
-    console.warn(warning);
-  }
-
   return { cssText, warnings };
 }

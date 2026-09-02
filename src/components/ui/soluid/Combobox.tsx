@@ -202,7 +202,7 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("pointerdown", handleClickOutside);
-    onCleanup(claimEscape(listId, listRef()));
+    onCleanup(claimEscape(listId, listRef(), inputRef));
     onCleanup(() => document.removeEventListener("pointerdown", handleClickOutside));
   });
 

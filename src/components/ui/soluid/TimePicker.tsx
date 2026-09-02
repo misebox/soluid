@@ -7,6 +7,7 @@ import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
+import { VisuallyHidden } from "./VisuallyHidden";
 
 /** Native button attributes minus the ones this component owns. */
 type TriggerAttributes = Omit<
@@ -91,6 +92,8 @@ export function TimePickerControl(props: TimePickerControlProps) {
   });
 
   const display = () => (local.value ? (local.format?.(local.value) ?? local.value) : "");
+  // min, max and step can leave no time to offer; then there is no list.
+  const hasList = () => open() && options().length > 0;
 
   // step/min/max can change while the list is open; keep the highlight on a row that exists.
   createEffect(() => {
@@ -212,7 +215,7 @@ export function TimePickerControl(props: TimePickerControlProps) {
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("pointerdown", handleClickOutside);
-    onCleanup(claimEscape(listId, listRef()));
+    onCleanup(claimEscape(listId, listRef(), triggerRef));
     onCleanup(() => document.removeEventListener("pointerdown", handleClickOutside));
   });
 
@@ -225,17 +228,18 @@ export function TimePickerControl(props: TimePickerControlProps) {
           text input rather than hidden so `required` takes part in validation. */}
       <Show when={local.name}>
         {(name) => (
-          <input
-            class="so-visually-hidden"
-            type="text"
-            tabIndex={-1}
-            aria-hidden="true"
-            name={name()}
-            value={local.value ?? ""}
-            required={local.required}
-            disabled={local.disabled}
-            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
-          />
+          <VisuallyHidden>
+            <input
+              type="text"
+              tabIndex={-1}
+              aria-hidden="true"
+              name={name()}
+              value={local.value ?? ""}
+              required={local.required}
+              disabled={local.disabled}
+              onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+            />
+          </VisuallyHidden>
         )}
       </Show>
       <button
@@ -249,9 +253,9 @@ export function TimePickerControl(props: TimePickerControlProps) {
         disabled={local.disabled}
         aria-required={local.required || undefined}
         aria-haspopup="listbox"
-        aria-expanded={open()}
-        aria-controls={open() ? listId : undefined}
-        aria-activedescendant={open() ? optionId(active()) : undefined}
+        aria-expanded={hasList()}
+        aria-controls={hasList() ? listId : undefined}
+        aria-activedescendant={hasList() ? optionId(active()) : undefined}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onClick={() => (open() ? close() : openList())}

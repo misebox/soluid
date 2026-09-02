@@ -114,7 +114,7 @@ export function Popover(props: PopoverProps & JSX.HTMLAttributes<HTMLSpanElement
     if (!local.open) return;
     document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId, panelRef()));
+    onCleanup(claimEscape(panelId, panelRef(), triggerRef));
     onCleanup(() => {
       document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);

@@ -502,3 +502,50 @@ it("a press on a day in a DatePicker inside a Menu does not close the menu", asy
 
   expect(open()).toBe(true);
 });
+
+it("Escape answers for the overlay the keyboard is in, not one open elsewhere", async () => {
+  const [dialogOpen, setDialogOpen] = createSignal(true);
+  const [popoverOpen, setPopoverOpen] = createSignal(false);
+  mount(() => (
+    <>
+      <Dialog open={dialogOpen()} onClose={() => setDialogOpen(false)}>
+        <DialogBody>
+          <button>inside the dialog</button>
+        </DialogBody>
+      </Dialog>
+      <Popover open={popoverOpen()} onOpenChange={setPopoverOpen} content={<button>pop</button>}>
+        Open
+      </Popover>
+    </>
+  ));
+  await settle();
+  setPopoverOpen(true);
+  await settle();
+  // Focus is back in the dialog, which is the overlay being used.
+  q<HTMLButtonElement>(".so-dialog button").focus();
+
+  keydown(document.activeElement ?? document, "Escape");
+
+  expect(dialogOpen()).toBe(false);
+  expect(popoverOpen()).toBe(true);
+});
+
+it("Tab elsewhere on the page leaves an open Menu alone", async () => {
+  const [menuOpen, setMenuOpen] = createSignal(true);
+  mount(() => (
+    <>
+      <Menu open={menuOpen()} onOpenChange={setMenuOpen} trigger="Actions">
+        <MenuItem>Edit</MenuItem>
+      </Menu>
+      <button id="elsewhere">elsewhere</button>
+    </>
+  ));
+  await settle();
+  const elsewhere = q<HTMLButtonElement>("#elsewhere");
+  elsewhere.focus();
+
+  keydown(elsewhere, "Tab");
+
+  expect(menuOpen()).toBe(true);
+  expect(document.activeElement).toBe(elsewhere);
+});

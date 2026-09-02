@@ -5,6 +5,7 @@ import { render } from "solid-js/web";
 import { afterEach, expect, it, vi } from "vitest";
 import { Carousel } from "../components/ui/soluid/Carousel";
 import { Pagination } from "../components/ui/soluid/Pagination";
+import { SegmentedControl } from "../components/ui/soluid/SegmentedControl";
 import { Tab, TabList, TabPanel, Tabs } from "../components/ui/soluid/Tabs";
 import { Tree } from "../components/ui/soluid/Tree";
 import type { TreeNode } from "../components/ui/soluid/Tree";
@@ -331,4 +332,15 @@ it("Tree flattens its rows once per change, not once per row", () => {
 
   // A plain accessor would re-flatten for every row that reads its level.
   expect(reads).toBeLessThanOrEqual(2);
+});
+
+it("SegmentedControl keeps a tab stop when its options are a derived array", () => {
+  // A derived array hands <For> and the tab-stop filter different objects.
+  const options = () => [
+    { value: "a", label: "A" },
+    { value: "b", label: "B" },
+  ];
+  const root = mount(() => <SegmentedControl options={options()} value="a" onChange={() => {}} />);
+
+  expect(root.querySelector('[role="radio"][tabindex="0"]')).not.toBeNull();
 });

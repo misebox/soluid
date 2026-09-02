@@ -1,3 +1,4 @@
+import { getOwner, onCleanup } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import type { FeedbackVariant } from "./types";
 
@@ -69,6 +70,14 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
 
     // Remove after exit animation
     setTimeout(() => remove(id), EXIT_DURATION);
+  }
+
+  // Timers outlive the store otherwise, and fire into a disposed component.
+  if (getOwner()) {
+    onCleanup(() => {
+      for (const timer of timers.values()) clearTimeout(timer);
+      timers.clear();
+    });
   }
 
   function add(input: ToastInput): string {

@@ -32,12 +32,16 @@ interface EscapeOwner {
   id: string;
   /** Opening order; a higher number sits on top. */
   layer: number;
+  /** The overlay itself, and whatever opened it. */
+  panel?: HTMLElement;
+  anchor?: HTMLElement;
 }
 
 /**
  * Everything that closes on Escape — traps, menus, popovers, picker panels —
- * oldest first. Only the newest acts on the key, so a Menu open inside a
- * Dialog does not take the Dialog down with it.
+ * oldest first. The newest one the keyboard is actually in acts on the key, so
+ * a Menu inside a Dialog does not take the Dialog down with it, and a Popover
+ * open elsewhere on the page does not answer for the Dialog you are typing in.
  */
 const escapeOwners: EscapeOwner[] = [];
 let layerCount = 0;
@@ -45,13 +49,15 @@ let layerCount = 0;
 /**
  * Claims Escape for `id` while it is open. The returned function gives it back.
  * `panel` is stamped with its layer, which is what lets an overlay underneath
- * tell a press inside a nested panel from a press outside.
+ * tell a press inside a nested panel from a press outside. `anchor` is whatever
+ * opened the overlay; for a picker whose focus stays on its trigger, that is
+ * the only way to tell the keyboard is still in it.
  */
-export function claimEscape(id: string, panel?: HTMLElement): () => void {
+export function claimEscape(id: string, panel?: HTMLElement, anchor?: HTMLElement): () => void {
   // A panel claiming again after an aborted close keeps its place, so it does
   // not jump above an overlay that opened inside it in the meantime.
   const stamped = Number(panel?.dataset.soLayer);
-  const owner: EscapeOwner = { id, layer: stamped > 0 ? stamped : ++layerCount };
+  const owner: EscapeOwner = { id, layer: stamped > 0 ? stamped : ++layerCount, panel, anchor };
   if (panel) panel.dataset.soLayer = String(owner.layer);
   const above = escapeOwners.findIndex((other) => other.layer > owner.layer);
   escapeOwners.splice(above === -1 ? escapeOwners.length : above, 0, owner);
@@ -74,11 +80,19 @@ export function isInsideNewerLayer(id: string, e: Event): boolean {
 }
 
 /**
- * Whether `id` should act on this Escape: it is the newest owner and no other
- * handler has taken the key yet. Marks the event taken.
+ * Whether `id` should act on this Escape: it is the newest owner the keyboard
+ * is in, and no other handler has taken the key yet. Marks the event taken.
  */
 export function takeEscape(id: string, e: KeyboardEvent): boolean {
-  if (e.defaultPrevented || escapeOwners[escapeOwners.length - 1]?.id !== id) return false;
+  if (e.defaultPrevented) return false;
+  const active = document.activeElement;
+  const holdsFocus = (owner: EscapeOwner) =>
+    owner.panel?.contains(active) === true || owner.anchor?.contains(active) === true;
+  // Focus can sit outside every overlay, after a backdrop click; then the
+  // newest overall answers, as it did before.
+  const reachable = escapeOwners.filter(holdsFocus);
+  const candidates = reachable.length > 0 ? reachable : escapeOwners;
+  if (candidates[candidates.length - 1]?.id !== id) return false;
   e.preventDefault();
   return true;
 }
@@ -119,7 +133,7 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     const restoreTo = active instanceof HTMLElement && !container.contains(active) ? active : undefined;
 
     openTraps.push(id);
-    const releaseEscape = claimEscape(id, container);
+    const releaseEscape = claimEscape(id, container, container);
     onCleanup(() => {
       const index = openTraps.lastIndexOf(id);
       const wasOnTop = index === openTraps.length - 1;

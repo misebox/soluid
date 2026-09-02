@@ -8,6 +8,7 @@ import type { InteractiveProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
+import { VisuallyHidden } from "./VisuallyHidden";
 
 /** Native button attributes minus the ones this component owns. */
 type TriggerAttributes = Omit<
@@ -131,7 +132,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     if (!open()) return;
     document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId, panelRef()));
+    onCleanup(claimEscape(panelId, panelRef(), triggerRef));
     onCleanup(() => {
       document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -153,17 +154,18 @@ export function DatePickerControl(props: DatePickerControlProps) {
           `required` would never fire. */}
       <Show when={local.name}>
         {(name) => (
-          <input
-            class="so-visually-hidden"
-            type="text"
-            tabIndex={-1}
-            aria-hidden="true"
-            name={name()}
-            value={local.value ?? ""}
-            required={local.required}
-            disabled={local.disabled}
-            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
-          />
+          <VisuallyHidden>
+            <input
+              type="text"
+              tabIndex={-1}
+              aria-hidden="true"
+              name={name()}
+              value={local.value ?? ""}
+              required={local.required}
+              disabled={local.disabled}
+              onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+            />
+          </VisuallyHidden>
         )}
       </Show>
       <button

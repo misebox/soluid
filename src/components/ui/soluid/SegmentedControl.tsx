@@ -110,7 +110,7 @@ export function SegmentedControl<T extends string = string>(
             role="radio"
             aria-checked={local.value === option.value}
             disabled={option.disabled}
-            tabIndex={option === tabStop() ? 0 : -1}
+            tabIndex={option.value === tabStop()?.value ? 0 : -1}
             onClick={() => local.onChange(option.value)}
           >
             {option.label}

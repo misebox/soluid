@@ -90,15 +90,17 @@ export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
       return;
     }
 
+    const panel = panelRef();
+    if (!panel) return;
+
     // Tab leaves the menu: close it and let the key carry on from the trigger.
+    // Only when the keyboard is in the menu; the listener is on the document.
     if (e.key === "Tab") {
+      if (!panel.contains(document.activeElement)) return;
       local.onOpenChange(false);
       triggerRef?.focus();
       return;
     }
-
-    const panel = panelRef();
-    if (!panel) return;
 
     const items = Array.from(panel.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
     if (items.length === 0) return;
@@ -138,7 +140,7 @@ export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
     if (!local.open) return;
     document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(menuId, panelRef()));
+    onCleanup(claimEscape(menuId, panelRef(), triggerRef));
     onCleanup(() => {
       document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);

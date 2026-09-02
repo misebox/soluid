@@ -62,7 +62,16 @@ export function SliderInput(props: SliderInputProps) {
   };
 
   const handleInput: JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
-    local.onInput?.(e.currentTarget.valueAsNumber);
+    const input = e.currentTarget;
+    local.onInput?.(input.valueAsNumber);
+    // Updates made in an event handler are batched, so the model has only
+    // settled a microtask later. A parent that keeps the old value would
+    // otherwise leave the thumb where the drag ended while the filled track
+    // and the readout still show the value it kept.
+    queueMicrotask(() => {
+      const settled = String(current());
+      if (input.value !== settled) input.value = settled;
+    });
   };
 
   return (

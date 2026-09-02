@@ -7,6 +7,7 @@ import { cls } from "./core/utils";
 import { Portal } from "solid-js/web";
 import { FormField } from "./FormField";
 import { useFormField } from "./FormFieldContext";
+import { VisuallyHidden } from "./VisuallyHidden";
 
 const DEFAULT_SWATCHES = [
   "#0f172a",
@@ -169,7 +170,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     if (!open()) return;
     document.addEventListener("pointerdown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId, panelRef()));
+    onCleanup(claimEscape(panelId, panelRef(), triggerRef));
     onCleanup(() => {
       document.removeEventListener("pointerdown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -192,17 +193,18 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
           text input rather than hidden so `required` takes part in validation. */}
       <Show when={local.name}>
         {(name) => (
-          <input
-            class="so-visually-hidden"
-            type="text"
-            tabIndex={-1}
-            aria-hidden="true"
-            name={name()}
-            value={local.value ?? ""}
-            required={local.required}
-            disabled={local.disabled}
-            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
-          />
+          <VisuallyHidden>
+            <input
+              type="text"
+              tabIndex={-1}
+              aria-hidden="true"
+              name={name()}
+              value={local.value ?? ""}
+              required={local.required}
+              disabled={local.disabled}
+              onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+            />
+          </VisuallyHidden>
         )}
       </Show>
       <button

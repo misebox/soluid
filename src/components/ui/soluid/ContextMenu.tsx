@@ -86,8 +86,9 @@ export function ContextMenu(props: ContextMenuProps & Omit<JSX.HTMLAttributes<HT
       return;
     }
 
+    // Only when the keyboard is in the menu; the listener is on the document.
     if (e.key === "Tab") {
-      close();
+      if (panel.contains(document.activeElement)) close();
       return;
     }
 
@@ -123,7 +124,7 @@ export function ContextMenu(props: ContextMenuProps & Omit<JSX.HTMLAttributes<HT
     if (!open()) return;
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(menuId, panelRef()));
+    onCleanup(claimEscape(menuId, panelRef(), region));
     onCleanup(() => {
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
