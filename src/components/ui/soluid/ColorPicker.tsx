@@ -211,6 +211,9 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
         type="button"
         id={ctx?.id ?? local.id}
         class="so-color-picker__trigger"
+        // A combobox like the TimePicker trigger: a plain button may carry neither
+        // aria-required nor an active descendant.
+        role="combobox"
         disabled={local.disabled}
         aria-required={local.required || undefined}
         aria-haspopup="dialog"

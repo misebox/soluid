@@ -82,8 +82,9 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
     return result;
   });
 
-  const selectable = () => matches().filter((command) => !command.disabled);
-  const hasList = () => selectable().length > 0;
+  // Memos: four attributes read `hasList`, one of them per arrow key.
+  const selectable = createMemo(() => matches().filter((command) => !command.disabled));
+  const hasList = createMemo(() => selectable().length > 0);
 
   // Commands can change while the palette is open; keep the highlight on a row that exists.
   createEffect(() => {
@@ -168,7 +169,7 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
             class="so-command"
             role="dialog"
             aria-modal="true"
-            aria-label={local.label}
+            aria-label={local.label ?? "Search commands"}
           >
             <div class="so-command__search">
               <svg
@@ -189,6 +190,7 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
                 class="so-command__input"
                 type="text"
                 role="combobox"
+                aria-label={local.label ?? "Search commands"}
                 autocomplete="off"
                 placeholder={local.placeholder}
                 value={query()}

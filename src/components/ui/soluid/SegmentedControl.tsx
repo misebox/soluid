@@ -1,4 +1,4 @@
-import { For, splitProps } from "solid-js";
+import { createMemo, For, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
@@ -45,9 +45,11 @@ export function SegmentedControl<T extends string = string>(
     "fullWidth",
   ]);
 
-  const selectable = () => local.options.filter((option) => !option.disabled);
+  // Memos: every segment reads `tabStop`, so a plain accessor would re-filter
+  // the whole list once per segment.
+  const selectable = createMemo(() => local.options.filter((option) => !option.disabled));
   // Exactly one tab stop: the selection, else the first enabled segment.
-  const tabStop = () => selectable().find((option) => option.value === local.value) ?? selectable()[0];
+  const tabStop = createMemo(() => selectable().find((option) => option.value === local.value) ?? selectable()[0]);
 
   let root: HTMLDivElement | undefined;
 

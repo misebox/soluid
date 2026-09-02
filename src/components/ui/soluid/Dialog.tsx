@@ -17,6 +17,8 @@ import { cls } from "./core/utils";
 interface DialogIds {
   titleId: string;
   descriptionId: string;
+  /** Set by DialogHeader, so aria-labelledby only points at an element that exists. */
+  setTitled: (present: boolean) => void;
   /** Set by DialogDescription, so aria-describedby only points at an element that exists. */
   setDescribed: (present: boolean) => void;
 }
@@ -62,6 +64,7 @@ export function Dialog(props: DialogProps & DialogAttributes) {
   const id = createUniqueId();
   const titleId = `so-dialog-title-${id}`;
   const descriptionId = `so-dialog-description-${id}`;
+  const [titled, setTitled] = createSignal(false);
   const [described, setDescribed] = createSignal(false);
 
   const overlay = createOverlay({
@@ -72,7 +75,7 @@ export function Dialog(props: DialogProps & DialogAttributes) {
   return (
     <Show when={overlay.mounted()}>
       <Portal>
-        <DialogContext.Provider value={{ titleId, descriptionId, setDescribed }}>
+        <DialogContext.Provider value={{ titleId, descriptionId, setTitled, setDescribed }}>
           <div
             class={cls("so-dialog-backdrop", overlay.closing() && "so-dialog-backdrop--closing")}
             on:mousedown={overlay.handleBackdropMouseDown}
@@ -89,7 +92,7 @@ export function Dialog(props: DialogProps & DialogAttributes) {
               )}
               role="dialog"
               aria-modal="true"
-              aria-labelledby={titleId}
+              aria-labelledby={titled() ? titleId : undefined}
               aria-describedby={described() ? descriptionId : undefined}
               data-density={local.density}
               {...others}
@@ -106,6 +109,9 @@ export function Dialog(props: DialogProps & DialogAttributes) {
 export function DialogHeader(props: DialogHeaderProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "id">) {
   const [local, others] = splitProps(props, ["class", "children"]);
   const ids = useContext(DialogContext);
+
+  onMount(() => ids?.setTitled(true));
+  onCleanup(() => ids?.setTitled(false));
 
   return (
     <div id={ids?.titleId} class={cls("so-dialog__header", local.class)} {...others}>

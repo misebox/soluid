@@ -136,7 +136,8 @@ export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivE
         <tbody>
           <For each={local.data}>
             {(row, i) => {
-              const key = () => getRowKey(row, i());
+              // A memo: the row class, its checkbox and its label all read it.
+              const key = createMemo(() => getRowKey(row, i()));
               return (
                 <tr class={cls("so-table__row", local.selectedKeys?.has(key()) && "so-table__row--selected")}>
                   <Show when={local.selectable}>

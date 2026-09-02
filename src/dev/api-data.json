@@ -1348,7 +1348,8 @@
       {
         "name": "label",
         "type": "string",
-        "optional": true
+        "optional": true,
+        "default": "\"Search commands\""
       },
       {
         "name": "filter",
@@ -2838,6 +2839,11 @@
         "optional": false
       },
       {
+        "name": "label",
+        "type": "string",
+        "optional": true
+      },
+      {
         "name": "onOpenChange",
         "type": "(open: boolean) => void",
         "optional": false
@@ -3901,7 +3907,7 @@
   },
   {
     "name": "TableProps",
-    "description": "Data table with sort, pagination, row selection",
+    "description": "Data table with sort and row selection",
     "dependencies": [
       "core"
     ],

@@ -35,8 +35,9 @@ describe("registry", () => {
   });
 
   test("collects npm dependencies", () => {
-    const deps = collectNpmDeps(["core"]);
-    expect(deps).toContain("@solid-primitives/event-listener");
+    expect(collectNpmDeps(["Menu"])).toContain("@floating-ui/dom");
+    // core is plain Solid; a component that needs nothing contributes nothing.
+    expect(collectNpmDeps(["core"])).toEqual([]);
   });
 
   test("allComponentNames excludes core", () => {

@@ -9,6 +9,8 @@ import { cls } from "./core/utils";
 
 export interface PopoverProps extends CommonProps {
   open: boolean;
+  /** Accessible label for the panel */
+  label?: string;
   onOpenChange: (open: boolean) => void;
   placement?: Placement;
   children: JSX.Element;
@@ -21,6 +23,7 @@ export function Popover(props: PopoverProps & JSX.HTMLAttributes<HTMLSpanElement
     "density",
     "open",
     "onOpenChange",
+    "label",
     "placement",
     "content",
     "children",
@@ -142,6 +145,7 @@ export function Popover(props: PopoverProps & JSX.HTMLAttributes<HTMLSpanElement
             id={panelId}
             class="so-popover"
             role="dialog"
+            aria-label={local.label}
             tabIndex={-1}
             data-density={local.density}
           >

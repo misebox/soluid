@@ -8,6 +8,7 @@ import { ContextMenu } from "../components/ui/soluid/ContextMenu";
 import { createToast } from "../components/ui/soluid/core/createToast";
 import { DatePickerControl } from "../components/ui/soluid/DatePicker";
 import { Dialog, DialogBody, DialogHeader } from "../components/ui/soluid/Dialog";
+import { Drawer } from "../components/ui/soluid/Drawer";
 import { Menu, MenuItem } from "../components/ui/soluid/Menu";
 import { Popover } from "../components/ui/soluid/Popover";
 
@@ -422,4 +423,50 @@ it("disposing a Dialog during its closing animation leaves no timer behind", asy
   vi.advanceTimersByTime(1);
 
   expect(vi.getTimerCount()).toBe(0);
+});
+
+it("closed overlays hold no listener on the document", async () => {
+  const added = new Map<string, number>();
+  const realAdd = document.addEventListener.bind(document);
+  const realRemove = document.removeEventListener.bind(document);
+  const count = (type: string, by: number) => added.set(type, (added.get(type) ?? 0) + by);
+  document.addEventListener = ((type: string, ...rest: unknown[]) => {
+    count(type, 1);
+    return (realAdd as (...args: unknown[]) => void)(type, ...rest);
+  }) as typeof document.addEventListener;
+  document.removeEventListener = ((type: string, ...rest: unknown[]) => {
+    count(type, -1);
+    return (realRemove as (...args: unknown[]) => void)(type, ...rest);
+  }) as typeof document.removeEventListener;
+  cleanups.push(() => {
+    document.addEventListener = realAdd;
+    document.removeEventListener = realRemove;
+  });
+
+  const [open, setOpen] = createSignal(false);
+  mount(() => (
+    <>
+      {Array.from({ length: 20 }, () => (
+        <Dialog open={open()} onClose={() => setOpen(false)}>
+          <DialogBody>row</DialogBody>
+        </Dialog>
+      ))}
+      <Drawer open={open()} onClose={() => setOpen(false)}>
+        body
+      </Drawer>
+    </>
+  ));
+  await settle();
+
+  // A page can hold one closed Dialog per table row; none of them should be
+  // routing every keystroke through a handler of its own.
+  expect(added.get("keydown") ?? 0).toBe(0);
+
+  setOpen(true);
+  await settle();
+  expect(added.get("keydown") ?? 0).toBeGreaterThan(0);
+
+  setOpen(false);
+  await settle();
+  expect(added.get("keydown") ?? 0).toBe(0);
 });

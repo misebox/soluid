@@ -1,4 +1,3 @@
-import { makeEventListener } from "@solid-primitives/event-listener";
 import { createEffect, createUniqueId, onCleanup } from "solid-js";
 import type { Accessor } from "solid-js";
 import { isServer } from "solid-js/web";
@@ -184,8 +183,12 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     }
   }
 
-  // Guarded because `document` is evaluated here, at component setup: without
-  // this, rendering a Dialog or Drawer on the server throws before the listener
-  // is even reached. There is nothing to listen for there anyway.
-  if (!isServer) makeEventListener(document, "keydown", handleKeyDown);
+  // Only while the overlay is open: a page holding one closed Dialog per table
+  // row would otherwise route every keystroke through a handler per row. The
+  // effect also keeps `document` off the server, where there is nothing to hear.
+  createEffect(() => {
+    if (isServer || !options.isActive()) return;
+    document.addEventListener("keydown", handleKeyDown);
+    onCleanup(() => document.removeEventListener("keydown", handleKeyDown));
+  });
 }

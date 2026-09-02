@@ -82,10 +82,7 @@ function writeConfig(components: string[], extra: Record<string, unknown> = {}) 
       ...extra,
     }),
   );
-  fs.writeFileSync(
-    path.join(proj, "package.json"),
-    JSON.stringify({ dependencies: { "@solid-primitives/event-listener": "1" } }),
-  );
+  fs.writeFileSync(path.join(proj, "package.json"), JSON.stringify({ dependencies: { "@floating-ui/dom": "1" } }));
 }
 
 async function exitCodeOf(run: () => Promise<void>): Promise<unknown> {

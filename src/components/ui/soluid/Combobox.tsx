@@ -251,7 +251,14 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
       </svg>
       <Show when={open()}>
         <Portal>
-          <ul ref={setListRef} id={listId} class="so-combobox__list" data-density={local.density} role="listbox">
+          <ul
+            ref={setListRef}
+            id={listId}
+            class="so-combobox__list"
+            data-density={local.density}
+            // An empty listbox is invalid ARIA; the live region announces that state instead.
+            role={matches().length > 0 ? "listbox" : "presentation"}
+          >
             <Show
               when={matches().length > 0}
               fallback={

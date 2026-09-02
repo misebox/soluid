@@ -172,6 +172,9 @@ export function DatePickerControl(props: DatePickerControlProps) {
         type="button"
         id={ctx?.id ?? local.id}
         class="so-date-picker__trigger"
+        // A combobox like the TimePicker trigger: a plain button may carry neither
+        // aria-required nor an active descendant.
+        role="combobox"
         disabled={local.disabled}
         aria-required={local.required || undefined}
         aria-haspopup="dialog"

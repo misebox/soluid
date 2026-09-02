@@ -1,4 +1,4 @@
-import { For, Show, splitProps } from "solid-js";
+import { createMemo, For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps, Size } from "./core/types";
 import { cls } from "./core/utils";
@@ -52,10 +52,11 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
   ]);
 
   const max = () => local.max ?? 5;
-  const items = () => Array.from({ length: max() }, (_, i) => i + 1);
+  // A memo: every star reads `tabStop`, which would otherwise rebuild the list.
+  const items = createMemo(() => Array.from({ length: max() }, (_, i) => i + 1));
   // Exactly one tab stop: the selected item, else the first, so the group stays
   // reachable when the value is 0, fractional or above max.
-  const tabStop = () => (items().includes(local.value) ? local.value : 1);
+  const tabStop = createMemo(() => (items().includes(local.value) ? local.value : 1));
   const itemLabel = (value: number) => local.itemLabel?.(value, max()) ?? `${value} of ${max()}`;
 
   let root: HTMLDivElement | undefined;
