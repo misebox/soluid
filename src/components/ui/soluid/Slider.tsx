@@ -63,15 +63,17 @@ export function SliderInput(props: SliderInputProps) {
 
   return (
     <div class={cls("so-slider", `so-slider--${local.size ?? "md"}`, local.class)}>
+      {/* A range input clamps and snaps `value` against the bounds it has when the
+          value lands, so `min`, `max` and `step` must be set before it. */}
       <input
         {...others}
         id={ctx?.id ?? local.id}
         class="so-slider__input"
         type="range"
-        value={current()}
         min={min()}
         max={max()}
         step={local.step}
+        value={current()}
         style={{ "--so-slider-progress": `${progress()}%` }}
         aria-valuetext={local.formatValue ? display() : undefined}
         aria-invalid={ctx?.hasError || undefined}
