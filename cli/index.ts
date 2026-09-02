@@ -45,6 +45,10 @@ function printHelp(): void {
   for (const line of pad(options)) console.log(line);
 }
 
+// Prompts need a terminal: with stdin piped or closed (CI) they would hang or
+// exit without doing anything.
+const interactive = !args.includes("--no-interactive") && process.stdin.isTTY === true;
+
 // Checked before dispatch: `soluid install --help` used to run the install.
 if (args.includes("--help") || args.includes("-h")) {
   printHelp();
@@ -53,10 +57,10 @@ if (args.includes("--help") || args.includes("-h")) {
 
 switch (command) {
   case "init":
-    await init(cwd, { interactive: !args.includes("--no-interactive") });
+    await init(cwd, { interactive });
     break;
   case "install":
-    await install(cwd, { interactive: !args.includes("--no-interactive"), force: args.includes("--force") });
+    await install(cwd, { interactive, force: args.includes("--force") });
     break;
   case "add":
     if (rest.length === 0) {
@@ -73,7 +77,7 @@ switch (command) {
     remove(cwd, rest);
     break;
   case "update":
-    await update(cwd, { interactive: !args.includes("--no-interactive"), force: args.includes("--force") });
+    await update(cwd, { interactive, force: args.includes("--force") });
     break;
   case "list": {
     const filter = args.includes("--installed")

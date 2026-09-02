@@ -9,6 +9,7 @@ import {
   COLOR_OVERRIDE_KEYS,
   type ColorOverrideKey,
   fetchVersionOrExit,
+  PROJECT_NAME,
   RELEASE_URL,
   requireConfig,
   saveConfig,
@@ -124,10 +125,7 @@ function writeComponentFiles(
 
     for (const file of entry.files) {
       const content = archive.get(file);
-      if (content === undefined) {
-        console.warn(`  SKIP (not in archive): ${file}`);
-        continue;
-      }
+      if (content === undefined) continue;
 
       const localPath = stripPrefix(file);
 
@@ -171,6 +169,7 @@ function writeComponentFiles(
       }
     }
 
+    if (options.dryRun) continue;
     if (status === "added") {
       console.log(`  + ${name}`);
     } else if (status === "updated") {
@@ -255,6 +254,32 @@ interface InstallOptions {
   interactive?: boolean;
   /** Overwrite locally changed files, and skip every prompt. */
   force?: boolean;
+  /** Install this release instead of the one in the config; recorded once it succeeds. */
+  version?: string;
+}
+
+/**
+ * The file manifest ships with the CLI while the files ship with the release,
+ * so the two can drift: a release can carry files this CLI has never heard of
+ * (its components would import something never installed), or lack files this
+ * CLI expects. Either way the install would be broken, so stop here.
+ */
+function checkDrift(archive: Map<string, string>, resolved: string[], version: string): void {
+  const known = new Set(Object.values(registry).flatMap((entry) => entry.files));
+  const unknown = [...archive.keys()].filter((file) => /^soluid\/.*\.tsx?$/.test(file) && !known.has(file));
+  if (unknown.length > 0) {
+    console.error(`components v${version} contains files this CLI does not know:\n  ${unknown.join("\n  ")}`);
+    console.error(`Upgrade the CLI: npx ${PROJECT_NAME}@latest install`);
+    process.exit(1);
+  }
+  const missing = resolved.flatMap((name) => registry[name].files.filter((file) => !archive.has(file)));
+  if (missing.length > 0) {
+    console.error(`components v${version} lacks files this CLI expects:\n  ${missing.join("\n  ")}`);
+    console.error(
+      `Set componentsVersion to a newer release, or use the matching CLI: npx ${PROJECT_NAME}@<version> install`,
+    );
+    process.exit(1);
+  }
 }
 
 export async function install(cwd: string, options: InstallOptions = {}): Promise<void> {
@@ -271,7 +296,8 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
   const invalid = config.components.filter((name) => !registry[name]);
   if (invalid.length > 0) {
-    console.error(`Unknown components: ${invalid.join(", ")}`);
+    console.error(`Unknown components: ${invalid.join(", ")} (not in this CLI's registry)`);
+    console.error(`Upgrade the CLI: npx ${PROJECT_NAME}@latest install`);
     process.exit(1);
     return;
   }
@@ -281,7 +307,7 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
   console.log(`Installing ${resolved.length} items (including dependencies):`);
 
-  let version = config.componentsVersion;
+  let version = options.version ?? config.componentsVersion;
   if (!version) {
     console.log("No componentsVersion in config, fetching latest...");
     version = await fetchVersionOrExit();
@@ -298,6 +324,8 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
     process.exit(1);
     return;
   }
+
+  checkDrift(archive, resolved, version);
 
   const targetRoot = path.resolve(cwd, config.componentDir);
 
@@ -322,6 +350,19 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
   generateBarrelIndex(installedModules, targetRoot);
   writeConcatenatedCss(cssChunks, config.cssPath, cwd, config);
+
+  if (config.componentsVersion !== version) {
+    config.componentsVersion = version;
+    saveConfig(cwd, config);
+  }
+
+  // Files of components dropped from the config are the user's now; say so
+  // rather than deleting them.
+  const wanted = new Set(resolved.flatMap((name) => registry[name].files.map(stripPrefix)));
+  const stale = Object.values(registry)
+    .flatMap((entry) => entry.files.map(stripPrefix))
+    .filter((file) => !wanted.has(file) && !file.endsWith(".css") && fs.existsSync(path.join(targetRoot, file)));
+  if (stale.length > 0) console.log(`Not in config, left in place: ${stale.join(", ")}`);
 
   if (addedCount === 0 && updatedCount === 0) {
     console.log("\nAll components are up to date.");

@@ -1,4 +1,4 @@
-import { fetchVersionOrExit, requireConfig, saveConfig } from "../config.js";
+import { fetchVersionOrExit, requireConfig } from "../config.js";
 import { install } from "./install.js";
 
 interface UpdateOptions {
@@ -21,8 +21,6 @@ export async function update(cwd: string, options: UpdateOptions = {}): Promise<
   }
 
   console.log(`Updating: ${currentVersion} -> ${latestVersion}`);
-  config.componentsVersion = latestVersion;
-  saveConfig(cwd, config);
-
-  await install(cwd, { interactive: options.interactive, force: options.force });
+  // The config records the new version only once the install has gone through.
+  await install(cwd, { interactive: options.interactive, force: options.force, version: latestVersion });
 }

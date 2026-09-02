@@ -58,9 +58,9 @@ export async function fetchLatestComponentsVersion(): Promise<string> {
   if (!res.ok) {
     throw new Error(`Failed to fetch releases: ${res.status}`);
   }
-  const releases = (await res.json()) as Array<{ tag_name: string }>;
+  const releases = (await res.json()) as Array<{ tag_name: string; prerelease?: boolean; draft?: boolean }>;
   for (const r of releases) {
-    if (r.tag_name.startsWith("components-v")) {
+    if (!r.prerelease && !r.draft && r.tag_name.startsWith("components-v")) {
       return r.tag_name.replace("components-v", "");
     }
   }

@@ -17,6 +17,7 @@ export function add(cwd: string, names: string[]): void {
     if (!existing.has(name)) {
       config.components.push(name);
       added.push(name);
+      existing.add(name);
     }
   }
 

@@ -1,4 +1,5 @@
-import * as path from "node:path";
+// Import specifiers are always POSIX, whatever the host separator is.
+import { posix as path } from "node:path";
 
 /**
  * Rewrite internal soluid relative imports for the user's project.

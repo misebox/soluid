@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { rewriteImports } from "../rewrite-imports.js";
 
 describe("rewriteImports", () => {
@@ -25,4 +25,17 @@ describe("rewriteImports", () => {
     const result = rewriteImports(input, "index.ts");
     expect(result).toBe(`export { Button } from "./Button";`);
   });
+});
+
+test("keeps POSIX separators whatever the host path module uses", async () => {
+  vi.doMock("node:path", async () => {
+    const actual = await vi.importActual<typeof import("node:path")>("node:path");
+    return { ...actual.win32, posix: actual.posix, default: actual.win32 };
+  });
+  vi.resetModules();
+  const { rewriteImports: rewrite } = await import("../rewrite-imports.js");
+
+  expect(rewrite('import { x } from "../Button";', "core/utils.ts")).toBe('import { x } from "../Button";');
+  expect(rewrite('import { t } from "./core/types";', "Button.tsx")).toBe('import { t } from "./core/types";');
+  vi.doUnmock("node:path");
 });
