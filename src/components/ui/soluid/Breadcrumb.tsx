@@ -16,7 +16,7 @@ export interface BreadcrumbItemProps {
   children: JSX.Element;
 }
 
-export function Breadcrumb(props: BreadcrumbProps) {
+export function Breadcrumb(props: BreadcrumbProps & Omit<JSX.HTMLAttributes<HTMLElement>, "aria-label">) {
   const [local, others] = splitProps(props, ["class", "density", "label", "children"]);
 
   return (
@@ -31,7 +31,7 @@ export function Breadcrumb(props: BreadcrumbProps) {
   );
 }
 
-export function BreadcrumbItem(props: BreadcrumbItemProps) {
+export function BreadcrumbItem(props: BreadcrumbItemProps & Omit<JSX.LiHTMLAttributes<HTMLLIElement>, "aria-current">) {
   const [local, others] = splitProps(props, ["href", "current", "class", "children"]);
 
   return (

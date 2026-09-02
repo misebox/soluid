@@ -1,4 +1,5 @@
 import { createSignal, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import type { Size, Variant } from "./core/types";
 import { cls } from "./core/utils";
@@ -20,7 +21,8 @@ function getInitials(name: string): string {
     .join("");
 }
 
-export function Avatar(props: AvatarProps) {
+// role and aria-label are omitted because both are derived from alt and name.
+export function Avatar(props: AvatarProps & Omit<JSX.HTMLAttributes<HTMLSpanElement>, "role" | "aria-label">) {
   const [local, others] = splitProps(props, ["class", "density", "src", "alt", "name", "size", "variant"]);
 
   // Remember which src failed so a new src gets its chance to load.

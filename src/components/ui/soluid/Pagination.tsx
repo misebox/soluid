@@ -1,4 +1,5 @@
 import { For, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -59,7 +60,8 @@ function buildPageList(current: number, total: number, maxVisible: number): (num
   return pages;
 }
 
-export function Pagination(props: PaginationProps) {
+// onChange is omitted because PaginationProps redefines it with the page number.
+export function Pagination(props: PaginationProps & Omit<JSX.HTMLAttributes<HTMLElement>, "onChange" | "aria-label">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

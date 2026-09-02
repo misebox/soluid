@@ -5,6 +5,12 @@ import { cls } from "./core/utils";
 import { RadioGroupContext } from "./RadioGroupContext";
 import type { RadioGroupContextValue } from "./RadioGroupContext";
 
+/** Native fieldset attributes minus the ones this component owns. */
+type RadioGroupAttributes = Omit<
+  JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
+  "onChange" | "role" | "aria-invalid" | "aria-describedby"
+>;
+
 export interface RadioGroupProps extends CommonProps {
   value?: string;
   onChange?: (value: string) => void;
@@ -15,7 +21,8 @@ export interface RadioGroupProps extends CommonProps {
   children: JSX.Element;
 }
 
-export function RadioGroup(props: RadioGroupProps) {
+// onChange is omitted because RadioGroupProps redefines it with the selected value.
+export function RadioGroup(props: RadioGroupProps & RadioGroupAttributes) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

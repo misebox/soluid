@@ -10,7 +10,8 @@ export interface EmptyStateProps extends CommonProps {
   action?: JSX.Element;
 }
 
-export function EmptyState(props: EmptyStateProps) {
+// title is omitted because EmptyStateProps uses it for the heading, not the tooltip.
+export function EmptyState(props: EmptyStateProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "title">) {
   const [local, others] = splitProps(props, ["class", "density", "title", "description", "icon", "action"]);
 
   return (

@@ -30,7 +30,8 @@ export interface TableProps<T> extends CommonProps {
   selectRowLabel?: (row: T, index: number) => string;
 }
 
-export function Table<T>(props: TableProps<T>) {
+// onSelect is omitted because TableProps redefines it with the selected keys.
+export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onSelect">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

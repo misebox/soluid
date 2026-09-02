@@ -23,6 +23,12 @@ interface DialogIds {
 
 const DialogContext = createContext<DialogIds>();
 
+/** Native div attributes minus the dialog semantics this component owns. */
+type DialogAttributes = Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "role" | "aria-modal" | "aria-labelledby" | "aria-describedby"
+>;
+
 export interface DialogProps extends CommonProps {
   open: boolean;
   onClose: () => void;
@@ -50,7 +56,7 @@ export interface DialogDescriptionProps {
   children: JSX.Element;
 }
 
-export function Dialog(props: DialogProps) {
+export function Dialog(props: DialogProps & DialogAttributes) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "size", "children"]);
 
   const id = createUniqueId();
@@ -97,7 +103,7 @@ export function Dialog(props: DialogProps) {
   );
 }
 
-export function DialogHeader(props: DialogHeaderProps) {
+export function DialogHeader(props: DialogHeaderProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "id">) {
   const [local, others] = splitProps(props, ["class", "children"]);
   const ids = useContext(DialogContext);
 
@@ -108,7 +114,7 @@ export function DialogHeader(props: DialogHeaderProps) {
   );
 }
 
-export function DialogBody(props: DialogBodyProps) {
+export function DialogBody(props: DialogBodyProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   return (
@@ -118,7 +124,7 @@ export function DialogBody(props: DialogBodyProps) {
   );
 }
 
-export function DialogFooter(props: DialogFooterProps) {
+export function DialogFooter(props: DialogFooterProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   return (
@@ -134,7 +140,9 @@ export function DialogFooter(props: DialogFooterProps) {
  * Screen readers announce the title on open; without a description the user
  * hears the name of the dialog and nothing about what it does.
  */
-export function DialogDescription(props: DialogDescriptionProps) {
+export function DialogDescription(
+  props: DialogDescriptionProps & Omit<JSX.HTMLAttributes<HTMLParagraphElement>, "id">,
+) {
   const [local, others] = splitProps(props, ["class", "children"]);
   const ids = useContext(DialogContext);
 

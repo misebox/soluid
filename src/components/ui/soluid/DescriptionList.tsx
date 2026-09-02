@@ -10,7 +10,7 @@ export interface DescriptionListProps extends CommonProps {
   columns?: DescriptionListColumns;
 }
 
-export function DescriptionList(props: DescriptionListProps) {
+export function DescriptionList(props: DescriptionListProps & JSX.HTMLAttributes<HTMLDListElement>) {
   const [local, others] = splitProps(props, ["class", "density", "items", "columns"]);
 
   return (

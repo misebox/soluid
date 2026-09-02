@@ -15,7 +15,8 @@ export interface FormFieldProps extends CommonProps {
   children: JSX.Element;
 }
 
-export function FormField(props: FormFieldProps) {
+// id is omitted because FormFieldProps uses it for the control, not the wrapper.
+export function FormField(props: FormFieldProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "id">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

@@ -1,4 +1,5 @@
 import { splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import type { CommonProps, Size, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -9,7 +10,7 @@ export interface SpinnerProps extends CommonProps {
   label?: string;
 }
 
-export function Spinner(props: SpinnerProps) {
+export function Spinner(props: SpinnerProps & Omit<JSX.HTMLAttributes<HTMLSpanElement>, "role" | "aria-label">) {
   const [local, others] = splitProps(props, ["class", "density", "size", "variant", "label"]);
 
   return (

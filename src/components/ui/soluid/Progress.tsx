@@ -1,6 +1,13 @@
 import { For, Show, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import type { CommonProps, FeedbackVariant, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
+
+/** Native div attributes minus the progressbar semantics this component owns. */
+type ProgressAttributes = Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "role" | "aria-valuenow" | "aria-valuemin" | "aria-valuemax"
+>;
 
 export interface ProgressSegment {
   value: number;
@@ -26,7 +33,7 @@ function clamp(n: number): number {
   return Math.max(0, Math.min(100, n));
 }
 
-export function Progress(props: ProgressProps) {
+export function Progress(props: ProgressProps & ProgressAttributes) {
   const [local, others] = splitProps(props, ["class", "density", "value", "variant", "segments", "size", "aria-label"]);
 
   const isSegmented = () => Array.isArray(local.segments) && local.segments.length > 0;

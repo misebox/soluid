@@ -15,7 +15,7 @@ export interface AccordionItemProps {
   children: JSX.Element;
 }
 
-export function Accordion(props: AccordionProps) {
+export function Accordion(props: AccordionProps & JSX.HTMLAttributes<HTMLDivElement>) {
   const [local, others] = splitProps(props, ["class", "density", "children"]);
 
   return (
@@ -25,7 +25,10 @@ export function Accordion(props: AccordionProps) {
   );
 }
 
-export function AccordionItem(props: AccordionItemProps) {
+// title is omitted because AccordionItemProps uses it for the heading, not the tooltip.
+export function AccordionItem(
+  props: AccordionItemProps & Omit<JSX.DetailsHtmlAttributes<HTMLDetailsElement>, "title">,
+) {
   const [local, others] = splitProps(props, ["title", "open", "disabled", "class", "children"]);
 
   return (

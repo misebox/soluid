@@ -52,7 +52,14 @@ export interface TabPanelProps {
   children: JSX.Element;
 }
 
-export function Tabs(props: TabsProps) {
+/** Native button attributes minus the tab semantics this component owns. */
+type TabAttributes = Omit<
+  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
+  "type" | "role" | "id" | "aria-selected" | "aria-controls" | "onClick" | "tabIndex"
+>;
+
+// onChange is omitted because TabsProps redefines it with the tab value.
+export function Tabs(props: TabsProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "onChange">) {
   const [local, others] = splitProps(props, ["class", "density", "value", "onChange", "children"]);
 
   const baseId = `so-tabs-${createUniqueId()}`;
@@ -91,7 +98,9 @@ export function Tabs(props: TabsProps) {
   );
 }
 
-export function TabList(props: TabListProps) {
+export function TabList(
+  props: TabListProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "role" | "aria-orientation" | "onKeyDown">,
+) {
   const [local, others] = splitProps(props, ["class", "children"]);
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -134,7 +143,7 @@ export function TabList(props: TabListProps) {
   );
 }
 
-export function Tab(props: TabProps) {
+export function Tab(props: TabProps & TabAttributes) {
   const [local, others] = splitProps(props, ["value", "disabled", "class", "children"]);
 
   const ctx = useTabsContext();
@@ -162,7 +171,9 @@ export function Tab(props: TabProps) {
   );
 }
 
-export function TabPanel(props: TabPanelProps) {
+export function TabPanel(
+  props: TabPanelProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "role" | "id" | "aria-labelledby">,
+) {
   const [local, others] = splitProps(props, ["value", "class", "children"]);
   const ctx = useTabsContext();
 

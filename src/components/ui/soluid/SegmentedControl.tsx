@@ -1,6 +1,14 @@
 import { For, splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
+
+// onChange is omitted because SegmentedControlProps redefines it with the
+// chosen value; the rest are the radiogroup semantics this component owns.
+type SegmentedControlAttributes = Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "onChange" | "role" | "aria-label" | "onKeyDown"
+>;
 
 export interface SegmentedControlOption<T extends string = string> {
   value: T;
@@ -23,7 +31,9 @@ export interface SegmentedControlProps<T extends string = string> extends Common
  * Exclusive choice between a small set of options, rendered as a radio group
  * so arrow keys move the selection the way assistive tech expects.
  */
-export function SegmentedControl<T extends string = string>(props: SegmentedControlProps<T>) {
+export function SegmentedControl<T extends string = string>(
+  props: SegmentedControlProps<T> & SegmentedControlAttributes,
+) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

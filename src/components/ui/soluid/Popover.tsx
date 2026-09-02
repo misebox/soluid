@@ -15,7 +15,7 @@ export interface PopoverProps extends CommonProps {
   content: JSX.Element;
 }
 
-export function Popover(props: PopoverProps) {
+export function Popover(props: PopoverProps & JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, others] = splitProps(props, [
     "class",
     "density",

@@ -9,6 +9,9 @@ const DrawerContext = createContext<string>();
 
 export type DrawerSide = "left" | "right";
 
+/** Native div attributes minus the dialog semantics this component owns. */
+type DrawerAttributes = Omit<JSX.HTMLAttributes<HTMLDivElement>, "role" | "aria-modal" | "aria-labelledby">;
+
 export interface DrawerProps extends CommonProps {
   open: boolean;
   onClose: () => void;
@@ -22,7 +25,7 @@ export interface DrawerHeaderProps {
   children: JSX.Element;
 }
 
-export function Drawer(props: DrawerProps) {
+export function Drawer(props: DrawerProps & DrawerAttributes) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "side", "size", "children"]);
 
   const titleId = `so-drawer-title-${createUniqueId()}`;
@@ -66,7 +69,7 @@ export function Drawer(props: DrawerProps) {
   );
 }
 
-export function DrawerHeader(props: DrawerHeaderProps) {
+export function DrawerHeader(props: DrawerHeaderProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "id">) {
   const [local, others] = splitProps(props, ["class", "children"]);
   const titleId = useContext(DrawerContext);
 

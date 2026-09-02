@@ -26,9 +26,16 @@ export interface MenuSeparatorProps {
   class?: string;
 }
 
+// onSelect is omitted because MenuItemProps redefines it without the event;
+// the rest are the item's own menuitem semantics.
+type MenuItemAttributes = Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "role" | "tabIndex" | "aria-disabled" | "onClick" | "onKeyDown" | "onSelect"
+>;
+
 const ITEM_SELECTOR = '[role="menuitem"]:not([aria-disabled="true"])';
 
-export function Menu(props: MenuProps) {
+export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
@@ -177,7 +184,7 @@ export function Menu(props: MenuProps) {
   );
 }
 
-export function MenuItem(props: MenuItemProps) {
+export function MenuItem(props: MenuItemProps & MenuItemAttributes) {
   const [local, others] = splitProps(props, ["class", "disabled", "onSelect", "children"]);
 
   function handleClick() {
@@ -208,7 +215,7 @@ export function MenuItem(props: MenuItemProps) {
   );
 }
 
-export function MenuSeparator(props: MenuSeparatorProps) {
+export function MenuSeparator(props: MenuSeparatorProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "role">) {
   const [local, others] = splitProps(props, ["class"]);
 
   return <div class={cls("so-menu-separator", local.class)} role="separator" {...others} />;

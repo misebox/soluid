@@ -11,7 +11,7 @@ export interface AlertProps extends CommonProps {
   dismissLabel?: string;
 }
 
-export function Alert(props: AlertProps) {
+export function Alert(props: AlertProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "role">) {
   const [local, others] = splitProps(props, ["class", "density", "variant", "children", "onDismiss", "dismissLabel"]);
 
   return (

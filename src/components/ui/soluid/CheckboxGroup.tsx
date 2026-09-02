@@ -5,6 +5,12 @@ import type { CheckboxGroupContextValue } from "./CheckboxGroupContext";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
+/** Native fieldset attributes minus the ones this component owns. */
+type CheckboxGroupAttributes = Omit<
+  JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
+  "onChange" | "role" | "aria-invalid" | "aria-describedby"
+>;
+
 export interface CheckboxGroupProps extends CommonProps {
   value?: string[];
   onChange?: (value: string[]) => void;
@@ -14,7 +20,8 @@ export interface CheckboxGroupProps extends CommonProps {
   children: JSX.Element;
 }
 
-export function CheckboxGroup(props: CheckboxGroupProps) {
+// onChange is omitted because CheckboxGroupProps redefines it with the selected values.
+export function CheckboxGroup(props: CheckboxGroupProps & CheckboxGroupAttributes) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
