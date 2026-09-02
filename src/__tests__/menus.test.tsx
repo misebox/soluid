@@ -6,6 +6,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { CommandPalette } from "../components/ui/soluid/CommandPalette";
 import { ContextMenu } from "../components/ui/soluid/ContextMenu";
 import { createToast } from "../components/ui/soluid/core/createToast";
+import { DatePickerControl } from "../components/ui/soluid/DatePicker";
 import { Dialog, DialogBody, DialogHeader } from "../components/ui/soluid/Dialog";
 import { Menu, MenuItem } from "../components/ui/soluid/Menu";
 import { Popover } from "../components/ui/soluid/Popover";
@@ -268,4 +269,152 @@ it("toast auto-dismiss survives disposal of the owner that added it", () => {
   vi.advanceTimersByTime(1000 + 150 + 1);
 
   expect(store.toasts.length).toBe(0);
+});
+
+it("Popover moves focus into its panel when it opens", async () => {
+  const [open, setOpen] = createSignal(false);
+  mount(() => (
+    <Popover open={open()} onOpenChange={setOpen} content={<button>inside</button>}>
+      Open
+    </Popover>
+  ));
+  q(".so-popover-trigger").focus();
+
+  setOpen(true);
+  await settle();
+
+  expect(document.activeElement?.textContent).toBe("inside");
+});
+
+it("Popover takes focus itself when its content has no controls", async () => {
+  const [open, setOpen] = createSignal(false);
+  mount(() => (
+    <Popover open={open()} onOpenChange={setOpen} content={<p>Just text</p>}>
+      Open
+    </Popover>
+  ));
+
+  setOpen(true);
+  await settle();
+
+  expect(document.activeElement?.classList.contains("so-popover")).toBe(true);
+});
+
+it("Popover closes and returns to the trigger when Tab leaves its last control", async () => {
+  const [open, setOpen] = createSignal(false);
+  mount(() => (
+    <Popover open={open()} onOpenChange={setOpen} content={<button>inside</button>}>
+      Open
+    </Popover>
+  ));
+  setOpen(true);
+  await settle();
+  const inside = document.activeElement as HTMLElement;
+
+  keydown(inside, "Tab");
+  await settle();
+
+  expect(open()).toBe(false);
+  expect(document.activeElement).toBe(q(".so-popover-trigger"));
+});
+
+it("Popover enters its panel when Tab is pressed on the trigger", async () => {
+  const [open, setOpen] = createSignal(false);
+  mount(() => (
+    <Popover open={open()} onOpenChange={setOpen} content={<button>inside</button>}>
+      Open
+    </Popover>
+  ));
+  setOpen(true);
+  await settle();
+  const trigger = q<HTMLButtonElement>(".so-popover-trigger");
+  trigger.focus();
+
+  const e = new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true });
+  trigger.dispatchEvent(e);
+
+  expect(e.defaultPrevented).toBe(true);
+  expect(document.activeElement?.textContent).toBe("inside");
+});
+
+it("a press on a day in a DatePicker inside a Popover does not close the popover", async () => {
+  const onChange = vi.fn();
+  const [pop, setPop] = createSignal(true);
+  mount(() => (
+    <Popover open={pop()} onOpenChange={setPop} content={<DatePickerControl value="2026-05-10" onChange={onChange} />}>
+      open
+    </Popover>
+  ));
+  await settle();
+  q(".so-date-picker__trigger").click();
+  await settle();
+  const day = q('[data-so-day="2026-05-12"]');
+
+  day.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  expect(pop()).toBe(true);
+  day.click();
+  await settle();
+
+  expect(onChange).toHaveBeenCalledWith("2026-05-12");
+});
+
+it("CommandPalette does not run a command again during its closing animation", async () => {
+  const onSelect = vi.fn();
+  const [open, setOpen] = createSignal(true);
+  mount(() => (
+    <CommandPalette open={open()} onOpenChange={setOpen} commands={[{ id: "a", label: "Alpha" }]} onSelect={onSelect} />
+  ));
+  await settle();
+  const option = q(".so-command__option");
+
+  option.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  await settle();
+  expect(q(".so-command-backdrop").classList.contains("so-command-backdrop--closing")).toBe(true);
+  option.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+  await settle();
+
+  expect(onSelect).toHaveBeenCalledTimes(1);
+});
+
+it("a Dialog reopened inside its closing window stays underneath a Popover open inside it", async () => {
+  const [dlg, setDlg] = createSignal(true);
+  const [pop, setPop] = createSignal(false);
+  mount(() => (
+    <Dialog open={dlg()} onClose={() => setDlg(false)}>
+      <DialogBody>
+        <Popover open={pop()} onOpenChange={setPop} content={<button>inside</button>}>
+          Open
+        </Popover>
+      </DialogBody>
+    </Dialog>
+  ));
+  await settle();
+  setPop(true);
+  await settle();
+  setDlg(false);
+  await settle();
+  setDlg(true);
+  await settle();
+
+  keydown(document, "Escape");
+
+  expect(pop()).toBe(false);
+  expect(dlg()).toBe(true);
+});
+
+it("disposing a Dialog during its closing animation leaves no timer behind", async () => {
+  vi.useFakeTimers();
+  const [open, setOpen] = createSignal(true);
+  const host = document.createElement("div");
+  document.body.append(host);
+  const dispose = render(() => dialog(open, () => setOpen(false), <button>inside</button>), host);
+  await settle();
+  setOpen(false);
+  await settle();
+
+  dispose();
+  host.remove();
+  vi.advanceTimersByTime(1);
+
+  expect(vi.getTimerCount()).toBe(0);
 });

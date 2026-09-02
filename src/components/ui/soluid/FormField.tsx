@@ -7,6 +7,8 @@ import type { FormFieldContextValue } from "./FormFieldContext";
 
 export interface FormFieldProps extends CommonProps {
   label: string;
+  /** Id of the control the label points at; generated when omitted */
+  id?: string;
   error?: string;
   hint?: string;
   required?: boolean;
@@ -14,16 +16,25 @@ export interface FormFieldProps extends CommonProps {
 }
 
 export function FormField(props: FormFieldProps) {
-  const [local, others] = splitProps(props, ["class", "density", "label", "error", "hint", "required", "children"]);
+  const [local, others] = splitProps(props, [
+    "class",
+    "density",
+    "label",
+    "id",
+    "error",
+    "hint",
+    "required",
+    "children",
+  ]);
 
   const id = createUniqueId();
-  const fieldId = `so-field-${id}`;
+  const fieldId = () => local.id ?? `so-field-${id}`;
   const errorId = `so-field-error-${id}`;
   const hintId = `so-field-hint-${id}`;
 
   const context: FormFieldContextValue = {
     get id() {
-      return fieldId;
+      return fieldId();
     },
     get errorId() {
       return errorId;
@@ -43,7 +54,7 @@ export function FormField(props: FormFieldProps) {
         data-density={local.density}
         {...others}
       >
-        <label class="so-form-field__label" for={fieldId}>
+        <label class="so-form-field__label" for={fieldId()}>
           {local.label}
           <Show when={local.required}>
             <span class="so-form-field__required" aria-hidden="true">

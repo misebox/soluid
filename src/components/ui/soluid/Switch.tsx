@@ -33,6 +33,8 @@ export function Switch(props: SwitchProps) {
     "error",
     "hint",
     "children",
+    "name",
+    "value",
   ]);
 
   const id = createUniqueId();
@@ -80,6 +82,11 @@ export function Switch(props: SwitchProps) {
           local.class,
         )}
       >
+        {/* The track is a button, so the form needs a field of its own; like a
+            checkbox it only submits while on. */}
+        <Show when={local.name && toggle.pressed()}>
+          <input type="hidden" name={local.name} value={local.value == null ? "on" : String(local.value)} />
+        </Show>
         <button
           {...others}
           type="button"

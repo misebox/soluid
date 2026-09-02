@@ -103,6 +103,7 @@ export function Select<T extends string = string>(props: SelectProps<T>) {
       {(label) => (
         <FormField
           label={label()}
+          id={input.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

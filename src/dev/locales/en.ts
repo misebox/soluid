@@ -165,7 +165,7 @@ export const en: Record<string, string> = {
   "ColorPickerControlProps.onChange": "Callback when the colour changes",
   "ColorPickerControlProps.swatches": "Preset colours offered in the panel",
   "ColorPickerControlProps.required": "Mark the field as required",
-  "ColorPickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "ColorPickerControlProps.id": "Id for the trigger; a FormField label points at it",
   "ColorPickerControlProps.panelLabel": "Accessible label for the panel",
   "ColorPickerControlProps.swatchLabel": "Builds the accessible label for a preset",
   "ColorPickerControlProps.customLabel": "Label for the native colour input",
@@ -192,7 +192,7 @@ export const en: Record<string, string> = {
   "ComboboxControlProps.options": "Array of selectable options",
   "ComboboxControlProps.placeholder": "Placeholder shown when nothing is selected",
   "ComboboxControlProps.required": "Mark the input as required",
-  "ComboboxControlProps.id": "Id for the input when used outside a FormField",
+  "ComboboxControlProps.id": "Id for the input; a FormField label points at it",
   "ComboboxControlProps.emptyLabel": "Text shown when the query matches nothing",
   "ComboboxControlProps.filter": "Overrides the default case-insensitive substring match",
 
@@ -224,7 +224,7 @@ export const en: Record<string, string> = {
   "DatePickerControlProps.locale": "BCP 47 tag for month and weekday names",
   "DatePickerControlProps.placeholder": "Text shown while nothing is selected",
   "DatePickerControlProps.required": "Mark the field as required",
-  "DatePickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "DatePickerControlProps.id": "Id for the trigger; a FormField label points at it",
   "DatePickerControlProps.name": "Form field name",
   "DatePickerControlProps.format": "Formats the value for the field",
   "DatePickerControlProps.openLabel": "Accessible label for the calendar popover",
@@ -303,6 +303,7 @@ export const en: Record<string, string> = {
 
   // FormFieldProps
   "FormFieldProps.label": "Field label",
+  "FormFieldProps.id": "Id of the control the label points at; generated when omitted",
   "FormFieldProps.error": "Error message",
   "FormFieldProps.hint": "Hint text",
   "FormFieldProps.required": "Show required indicator",
@@ -677,7 +678,7 @@ export const en: Record<string, string> = {
   "TimePickerControlProps.max": "Latest offered time, inclusive",
   "TimePickerControlProps.placeholder": "Text shown while nothing is selected",
   "TimePickerControlProps.required": "Mark the field as required",
-  "TimePickerControlProps.id": "Id for the trigger when used outside a FormField",
+  "TimePickerControlProps.id": "Id for the trigger; a FormField label points at it",
   "TimePickerControlProps.format": "Formats a time for display",
   "TimePickerControlProps.listLabel": "Accessible label for the list of times",
 

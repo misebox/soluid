@@ -3,7 +3,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Calendar } from "./Calendar";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, getFocusableElements, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -50,6 +50,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
     "format",
     "openLabel",
     "name",
+    "required",
   ]);
 
   const ctx = useFormField();
@@ -94,13 +95,29 @@ export function DatePickerControl(props: DatePickerControlProps) {
   });
 
   function handleKeyDown(e: KeyboardEvent): void {
-    if (e.key === "Escape" && takeEscape(panelId, e)) close();
+    if (e.key === "Escape") {
+      if (takeEscape(panelId, e)) close();
+      return;
+    }
+    if (e.key !== "Tab") return;
+
+    const panel = panelRef();
+    const active = document.activeElement;
+    if (!panel || !(active instanceof HTMLElement) || !panel.contains(active)) return;
+    // Leaving the panel: close it and carry on from the trigger. Backwards
+    // that means landing on the trigger itself.
+    const items = getFocusableElements(panel);
+    const atEdge = e.shiftKey ? active === items[0] : active === items[items.length - 1];
+    if (!atEdge && items.length > 0) return;
+    if (e.shiftKey) e.preventDefault();
+    close();
   }
 
   function handleClickOutside(e: MouseEvent): void {
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
     if (panelRef()?.contains(target)) return;
+    if (isInsideNewerLayer(panelId, e)) return;
     setOpen(false);
   }
 
@@ -108,11 +125,16 @@ export function DatePickerControl(props: DatePickerControlProps) {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId));
+    onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     });
+  });
+
+  // Disabled while open: drop the panel, or it keeps taking picks.
+  createEffect(() => {
+    if (local.disabled) setOpen(false);
   });
 
   return (
@@ -120,8 +142,24 @@ export function DatePickerControl(props: DatePickerControlProps) {
       class={cls("so-date-picker", `so-date-picker--${local.size ?? "md"}`, local.class)}
       data-density={local.density}
     >
-      {/* The trigger is a button, so the form needs its own field to submit. */}
-      <Show when={local.name}>{(name) => <input type="hidden" name={name()} value={local.value ?? ""} />}</Show>
+      {/* The trigger is a button, so the form needs its own field to submit. Not
+          type="hidden": hidden inputs are barred from constraint validation, so
+          `required` would never fire. */}
+      <Show when={local.name}>
+        {(name) => (
+          <input
+            class="so-visually-hidden"
+            type="text"
+            tabIndex={-1}
+            aria-hidden="true"
+            name={name()}
+            value={local.value ?? ""}
+            required={local.required}
+            disabled={local.disabled}
+            onInput={(e) => (e.currentTarget.value = local.value ?? "")}
+          />
+        )}
+      </Show>
       <button
         {...others}
         ref={triggerRef}
@@ -129,6 +167,7 @@ export function DatePickerControl(props: DatePickerControlProps) {
         id={ctx?.id ?? local.id}
         class="so-date-picker__trigger"
         disabled={local.disabled}
+        aria-required={local.required || undefined}
         aria-haspopup="dialog"
         aria-expanded={open()}
         aria-controls={open() ? panelId : undefined}
@@ -195,6 +234,7 @@ export function DatePicker(props: DatePickerProps & Omit<JSX.HTMLAttributes<HTML
       {(label) => (
         <FormField
           label={label()}
+          id={control.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

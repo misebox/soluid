@@ -98,6 +98,7 @@ export function Slider(props: SliderProps) {
       {(label) => (
         <FormField
           label={label()}
+          id={input.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

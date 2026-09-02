@@ -57,13 +57,15 @@ export function Checkbox(props: CheckboxProps) {
     return local.checked ?? internal();
   };
 
-  const handleChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = () => {
+  const handleChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (e) => {
     const next = !isChecked();
     setInternal(next);
     if (group && local.value != null) {
       group.onChange(local.value, next);
     }
     local.onChange?.(next);
+    // A controlled parent may keep the old value; the box must follow the model.
+    e.currentTarget.checked = isChecked();
   };
 
   const describedBy = () => {

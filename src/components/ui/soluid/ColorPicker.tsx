@@ -1,6 +1,6 @@
 import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -55,6 +55,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     "density",
     "id",
     "disabled",
+    "required",
     "panelLabel",
     "swatchLabel",
     "customLabel",
@@ -118,6 +119,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
     if (panelRef()?.contains(target)) return;
+    if (isInsideNewerLayer(panelId, e)) return;
     setOpen(false);
     setDraft(null);
   }
@@ -126,11 +128,18 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId));
+    onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     });
+  });
+
+  // Disabled while open: drop the panel, or it keeps taking picks.
+  createEffect(() => {
+    if (!local.disabled) return;
+    setOpen(false);
+    setDraft(null);
   });
 
   return (
@@ -145,6 +154,7 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
         id={ctx?.id ?? local.id}
         class="so-color-picker__trigger"
         disabled={local.disabled}
+        aria-required={local.required || undefined}
         aria-haspopup="dialog"
         aria-expanded={open()}
         aria-controls={open() ? panelId : undefined}
@@ -227,6 +237,7 @@ export function ColorPicker(props: ColorPickerProps) {
       {(label) => (
         <FormField
           label={label()}
+          id={control.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

@@ -3,7 +3,7 @@ import type { Placement } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -119,6 +119,7 @@ export function Menu(props: MenuProps) {
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
     if (panel?.contains(target)) return;
+    if (isInsideNewerLayer(menuId, e)) return;
     local.onOpenChange(false);
   }
 
@@ -128,7 +129,7 @@ export function Menu(props: MenuProps) {
     if (!local.open) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(menuId));
+    onCleanup(claimEscape(menuId, panelRef()));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -154,7 +155,17 @@ export function Menu(props: MenuProps) {
       </button>
       <Show when={local.open}>
         <Portal>
-          <div ref={setPanelRef} id={menuId} class="so-menu" role="menu">
+          <div
+            ref={(el) => {
+              setPanelRef(el);
+              // Closed while focus was inside (an item was picked): hand focus
+              // back to the trigger instead of dropping it on <body>.
+              onCleanup(() => el.contains(document.activeElement) && triggerRef?.focus());
+            }}
+            id={menuId}
+            class="so-menu"
+            role="menu"
+          >
             {local.children}
           </div>
         </Portal>

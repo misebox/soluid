@@ -1,7 +1,7 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -53,6 +53,7 @@ export function TimePickerControl(props: TimePickerControlProps) {
     "density",
     "id",
     "disabled",
+    "required",
     "format",
     "listLabel",
   ]);
@@ -78,6 +79,16 @@ export function TimePickerControl(props: TimePickerControlProps) {
   });
 
   const display = () => (local.value ? (local.format?.(local.value) ?? local.value) : "");
+
+  // step/min/max can change while the list is open; keep the highlight on a row that exists.
+  createEffect(() => {
+    if (active() >= options().length) setActive(Math.max(0, options().length - 1));
+  });
+
+  // Disabled while the list is open: drop it, or it keeps taking picks.
+  createEffect(() => {
+    if (local.disabled) setOpen(false);
+  });
 
   function openList(): void {
     if (local.disabled) return;
@@ -180,13 +191,14 @@ export function TimePickerControl(props: TimePickerControlProps) {
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
     if (listRef()?.contains(target)) return;
+    if (isInsideNewerLayer(listId, e)) return;
     setOpen(false);
   }
 
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
-    onCleanup(claimEscape(listId));
+    onCleanup(claimEscape(listId, listRef()));
     onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
   });
 
@@ -202,6 +214,7 @@ export function TimePickerControl(props: TimePickerControlProps) {
         id={ctx?.id ?? local.id}
         class="so-time-picker__trigger"
         disabled={local.disabled}
+        aria-required={local.required || undefined}
         aria-haspopup="listbox"
         aria-expanded={open()}
         aria-controls={open() ? listId : undefined}
@@ -270,6 +283,7 @@ export function TimePicker(props: TimePickerProps) {
       {(label) => (
         <FormField
           label={label()}
+          id={control.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

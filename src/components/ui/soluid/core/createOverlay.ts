@@ -1,4 +1,4 @@
-import { createEffect, createSignal, on } from "solid-js";
+import { createEffect, createSignal, on, onCleanup } from "solid-js";
 import type { Accessor } from "solid-js";
 import { createFocusTrap } from "./createFocusTrap";
 import { createScrollLock } from "./createScrollLock";
@@ -22,6 +22,7 @@ export function createOverlay(options: CreateOverlayOptions): OverlayReturn {
   const [mounted, setMounted] = createSignal(false);
   const [closing, setClosing] = createSignal(false);
   let closingTimer: ReturnType<typeof setTimeout> | undefined;
+  onCleanup(() => clearTimeout(closingTimer));
 
   createEffect(
     on(options.isOpen, (open) => {

@@ -156,6 +156,7 @@ export function NumberInput(props: NumberInputProps) {
   return (
     <FormField
       label={field.label}
+      id={control.id}
       error={field.error}
       hint={field.hint}
       required={field.required}

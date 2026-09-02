@@ -24,20 +24,49 @@ export interface FocusTrapOptions {
 /** Open traps, oldest first. Tab is steered by the last one only. */
 const openTraps: string[] = [];
 
+interface EscapeOwner {
+  id: string;
+  /** Opening order; a higher number sits on top. */
+  layer: number;
+}
+
 /**
  * Everything that closes on Escape — traps, menus, popovers, picker panels —
  * oldest first. Only the newest acts on the key, so a Menu open inside a
  * Dialog does not take the Dialog down with it.
  */
-const escapeOwners: string[] = [];
+const escapeOwners: EscapeOwner[] = [];
+let layerCount = 0;
 
-/** Claims Escape for `id` while it is open. The returned function gives it back. */
-export function claimEscape(id: string): () => void {
-  escapeOwners.push(id);
+/**
+ * Claims Escape for `id` while it is open. The returned function gives it back.
+ * `panel` is stamped with its layer, which is what lets an overlay underneath
+ * tell a press inside a nested panel from a press outside.
+ */
+export function claimEscape(id: string, panel?: HTMLElement): () => void {
+  // A panel claiming again after an aborted close keeps its place, so it does
+  // not jump above an overlay that opened inside it in the meantime.
+  const stamped = Number(panel?.dataset.soLayer);
+  const owner: EscapeOwner = { id, layer: stamped > 0 ? stamped : ++layerCount };
+  if (panel) panel.dataset.soLayer = String(owner.layer);
+  const above = escapeOwners.findIndex((other) => other.layer > owner.layer);
+  escapeOwners.splice(above === -1 ? escapeOwners.length : above, 0, owner);
   return () => {
-    const index = escapeOwners.lastIndexOf(id);
+    const index = escapeOwners.indexOf(owner);
     if (index !== -1) escapeOwners.splice(index, 1);
   };
+}
+
+/**
+ * Whether the event started inside an overlay opened after `id`. Nested panels
+ * are portaled out of their parent's DOM, so `contains` cannot tell a press on
+ * a day in a DatePicker inside a Popover from a press outside the Popover. The
+ * event path is used rather than the live tree because the inner panel may
+ * already have closed itself on this same event.
+ */
+export function isInsideNewerLayer(id: string, e: Event): boolean {
+  const own = escapeOwners.find((owner) => owner.id === id)?.layer ?? Number.POSITIVE_INFINITY;
+  return e.composedPath().some((node) => node instanceof HTMLElement && Number(node.dataset.soLayer) > own);
 }
 
 /**
@@ -45,14 +74,18 @@ export function claimEscape(id: string): () => void {
  * handler has taken the key yet. Marks the event taken.
  */
 export function takeEscape(id: string, e: KeyboardEvent): boolean {
-  if (e.defaultPrevented || escapeOwners[escapeOwners.length - 1] !== id) return false;
+  if (e.defaultPrevented || escapeOwners[escapeOwners.length - 1]?.id !== id) return false;
   e.preventDefault();
   return true;
 }
 
-function getFocusableElements(container: HTMLElement): HTMLElement[] {
+export function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    (el) => !el.hasAttribute("hidden") && el.getAttribute("aria-hidden") !== "true",
+    (el) =>
+      !el.hasAttribute("hidden") &&
+      el.getAttribute("aria-hidden") !== "true" &&
+      // Roving-tabindex widgets park their other items at -1; Tab skips those.
+      el.getAttribute("tabindex") !== "-1",
   );
 }
 
@@ -82,7 +115,7 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     const restoreTo = active instanceof HTMLElement && !container.contains(active) ? active : undefined;
 
     openTraps.push(id);
-    const releaseEscape = claimEscape(id);
+    const releaseEscape = claimEscape(id, container);
     onCleanup(() => {
       const index = openTraps.lastIndexOf(id);
       const wasOnTop = index === openTraps.length - 1;
@@ -113,6 +146,12 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     const container = options.container();
     if (!container) return;
 
+    const active = document.activeElement;
+    // A menu, popover or picker panel opened from inside is portaled outside
+    // the container and claimed Escape after this trap did; while focus sits
+    // in it, Tab belongs to that layer.
+    if (!container.contains(active) && escapeOwners[escapeOwners.length - 1]?.id !== id) return;
+
     const focusable = getFocusableElements(container);
     if (focusable.length === 0) {
       e.preventDefault();
@@ -121,7 +160,6 @@ export function createFocusTrap(options: FocusTrapOptions): void {
 
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    const active = document.activeElement;
 
     // Focus can sit outside the overlay — a click on the backdrop, or a trap
     // that opened with nothing focusable. Tab has to pull it back in rather

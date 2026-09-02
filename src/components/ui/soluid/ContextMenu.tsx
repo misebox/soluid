@@ -3,7 +3,7 @@ import type { VirtualElement } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -43,8 +43,11 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
   }
 
   function close(): void {
+    // Reclaim focus only if it is still ours; a pick may have opened a dialog.
+    const active = document.activeElement;
+    const focusWithin = !!panelRef()?.contains(active) || active === document.body;
     setOpen(false);
-    region?.focus();
+    if (focusWithin) region?.focus();
   }
 
   function updatePosition(): void {
@@ -85,7 +88,8 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
 
     const items = Array.from(panel.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
     if (items.length === 0) return;
-    const index = items.indexOf(document.activeElement as HTMLElement);
+    // e.target, not activeElement: MenuItem's onSelect has run and may have moved focus.
+    const index = items.indexOf(e.target as HTMLElement);
 
     // MenuItem has already run onSelect for this key; the menu goes away after it.
     if ((e.key === "Enter" || e.key === " ") && index !== -1) {
@@ -106,7 +110,7 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
   }
 
   function handlePointerDown(e: MouseEvent): void {
-    if (panelRef()?.contains(e.target as Node)) return;
+    if (panelRef()?.contains(e.target as Node) || isInsideNewerLayer(menuId, e)) return;
     setOpen(false);
   }
 
@@ -114,7 +118,7 @@ export function ContextMenu(props: ContextMenuProps & JSX.HTMLAttributes<HTMLDiv
     if (!open()) return;
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(menuId));
+    onCleanup(claimEscape(menuId, panelRef()));
     onCleanup(() => {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);

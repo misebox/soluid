@@ -165,7 +165,7 @@ export const ja: Record<string, string> = {
   "ColorPickerControlProps.onChange": "色が変わったときのコールバック",
   "ColorPickerControlProps.swatches": "パネルに並べるプリセット色",
   "ColorPickerControlProps.required": "入力を必須にする",
-  "ColorPickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "ColorPickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
   "ColorPickerControlProps.panelLabel": "パネルのアクセシブルラベル",
   "ColorPickerControlProps.swatchLabel": "プリセット色のアクセシブルラベルを生成する関数",
   "ColorPickerControlProps.customLabel": "ネイティブカラー入力のラベル",
@@ -192,7 +192,7 @@ export const ja: Record<string, string> = {
   "ComboboxControlProps.options": "選択可能なオプションの配列",
   "ComboboxControlProps.placeholder": "未選択時に表示されるプレースホルダー",
   "ComboboxControlProps.required": "入力を必須にする",
-  "ComboboxControlProps.id": "FormField の外で使う場合の input の id",
+  "ComboboxControlProps.id": "input の id。FormField のラベルはこれを指す",
   "ComboboxControlProps.emptyLabel": "検索結果が0件のときに表示するテキスト",
   "ComboboxControlProps.filter": "既定の大文字小文字を無視した部分一致を上書きする関数",
 
@@ -224,7 +224,7 @@ export const ja: Record<string, string> = {
   "DatePickerControlProps.locale": "月名・曜日名に使う BCP 47 タグ",
   "DatePickerControlProps.placeholder": "未選択時に表示するテキスト",
   "DatePickerControlProps.required": "入力を必須にする",
-  "DatePickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "DatePickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
   "DatePickerControlProps.name": "フォーム項目名",
   "DatePickerControlProps.format": "フィールド表示用に値を整形する関数",
   "DatePickerControlProps.openLabel": "カレンダーポップオーバーのアクセシブルラベル",
@@ -303,6 +303,7 @@ export const ja: Record<string, string> = {
 
   // FormFieldProps
   "FormFieldProps.label": "フィールドラベル",
+  "FormFieldProps.id": "ラベルが指すコントロールの id。省略時は自動生成",
   "FormFieldProps.error": "エラーメッセージ",
   "FormFieldProps.hint": "ヒントテキスト",
   "FormFieldProps.required": "必須インジケーターを表示",
@@ -677,7 +678,7 @@ export const ja: Record<string, string> = {
   "TimePickerControlProps.max": "候補の最も遅い時刻（含む）",
   "TimePickerControlProps.placeholder": "未選択時に表示するテキスト",
   "TimePickerControlProps.required": "入力を必須にする",
-  "TimePickerControlProps.id": "FormField の外で使う場合のトリガーの id",
+  "TimePickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
   "TimePickerControlProps.format": "表示用に時刻を整形する関数",
   "TimePickerControlProps.listLabel": "時刻候補リストのアクセシブルラベル",
 

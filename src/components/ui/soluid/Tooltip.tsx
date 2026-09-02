@@ -29,14 +29,16 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
     }
   });
 
+  // The wrapper stays put whether or not there is content: swapping the trigger
+  // between two parents would blur it.
   return (
-    <Show when={local.content} fallback={trigger()}>
-      <span class={cls("so-tooltip-wrapper", local.class)} {...others}>
-        {trigger()}
+    <span class={cls("so-tooltip-wrapper", local.class)} {...others}>
+      {trigger()}
+      <Show when={local.content}>
         <span id={tooltipId} class={cls("so-tooltip", `so-tooltip--${local.placement ?? "top"}`)} role="tooltip">
           {local.content}
         </span>
-      </span>
-    </Show>
+      </Show>
+    </span>
   );
 }

@@ -92,6 +92,7 @@ export function SearchField(props: SearchFieldProps) {
       {(label) => (
         <FormField
           label={label()}
+          id={control.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

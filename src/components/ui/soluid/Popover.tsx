@@ -3,7 +3,7 @@ import type { Placement } from "@floating-ui/dom";
 import { createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, getFocusableElements, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
@@ -50,13 +50,46 @@ export function Popover(props: PopoverProps) {
     const panel = panelRef();
     if (!local.open || !triggerRef || !panel) return;
     onCleanup(autoUpdate(triggerRef, panel, updatePosition));
+    // The panel lives at the end of the document, outside the Tab order, so
+    // focus is moved in by hand: the first control, else the panel itself.
+    focusPanel(panel);
   });
 
+  function focusPanel(panel: HTMLElement): void {
+    (getFocusableElements(panel)[0] ?? panel).focus();
+  }
+
+  function close(): void {
+    local.onOpenChange(false);
+    triggerRef?.focus();
+  }
+
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Escape" && takeEscape(panelId, e)) {
-      local.onOpenChange(false);
-      triggerRef?.focus();
+    if (e.key === "Escape") {
+      if (takeEscape(panelId, e)) close();
+      return;
     }
+    if (e.key !== "Tab") return;
+
+    const panel = panelRef();
+    const active = document.activeElement;
+    if (!panel || !(active instanceof HTMLElement)) return;
+
+    if (active === triggerRef && !e.shiftKey) {
+      e.preventDefault();
+      focusPanel(panel);
+      return;
+    }
+    if (!panel.contains(active)) return;
+
+    const items = getFocusableElements(panel);
+    const atEdge = e.shiftKey ? active === items[0] : active === items[items.length - 1];
+    if (!atEdge && items.length > 0) return;
+    // Leaving the panel: close it and carry on from the trigger. Backwards
+    // that means landing on the trigger itself; forwards the browser moves on
+    // from the trigger once it has focus.
+    if (e.shiftKey) e.preventDefault();
+    close();
   }
 
   function handleClickOutside(e: MouseEvent) {
@@ -64,6 +97,7 @@ export function Popover(props: PopoverProps) {
     const target = e.target as Node;
     if (triggerRef?.contains(target)) return;
     if (panel?.contains(target)) return;
+    if (isInsideNewerLayer(panelId, e)) return;
     local.onOpenChange(false);
   }
 
@@ -73,7 +107,7 @@ export function Popover(props: PopoverProps) {
     if (!local.open) return;
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-    onCleanup(claimEscape(panelId));
+    onCleanup(claimEscape(panelId, panelRef()));
     onCleanup(() => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
@@ -99,7 +133,7 @@ export function Popover(props: PopoverProps) {
       </button>
       <Show when={local.open}>
         <Portal>
-          <div ref={setPanelRef} id={panelId} class="so-popover" role="dialog">
+          <div ref={setPanelRef} id={panelId} class="so-popover" role="dialog" tabIndex={-1}>
             {local.content}
           </div>
         </Portal>

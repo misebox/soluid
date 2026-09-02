@@ -43,7 +43,8 @@ export function Tag(props: TagProps & JSX.HTMLAttributes<HTMLSpanElement>) {
           type="button"
           class="so-tag__remove"
           aria-label={local.removeLabel ?? "Remove"}
-          onClick={local.onRemove}
+          // Called through, so a new callback does not recreate the button.
+          onClick={() => local.onRemove?.()}
         >
           &#x2715;
         </button>

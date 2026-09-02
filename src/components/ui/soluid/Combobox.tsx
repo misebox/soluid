@@ -1,7 +1,7 @@
 import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 import { createEffect, createMemo, createSignal, createUniqueId, For, onCleanup, Show, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
-import { claimEscape, takeEscape } from "./core/createFocusTrap";
+import { claimEscape, isInsideNewerLayer, takeEscape } from "./core/createFocusTrap";
 import type { InteractiveProps } from "./core/types";
 import { cls } from "./core/utils";
 import { FormField } from "./FormField";
@@ -90,6 +90,17 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
     setOpen(true);
   }
 
+  // Options can be replaced while the list is open (async loading); the
+  // highlight must still land on a row that exists.
+  createEffect(() => {
+    if (matches().length > 0 && active() >= matches().length) setActive(firstEnabled());
+  });
+
+  // Disabled while the list is open: drop it, or it keeps taking picks.
+  createEffect(() => {
+    if (local.disabled) closeList();
+  });
+
   function closeList(): void {
     setOpen(false);
     setQuery("");
@@ -169,13 +180,14 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
     const target = e.target as Node;
     if (inputRef?.contains(target)) return;
     if (listRef()?.contains(target)) return;
+    if (isInsideNewerLayer(listId, e)) return;
     closeList();
   }
 
   createEffect(() => {
     if (!open()) return;
     document.addEventListener("mousedown", handleClickOutside);
-    onCleanup(claimEscape(listId));
+    onCleanup(claimEscape(listId, listRef()));
     onCleanup(() => document.removeEventListener("mousedown", handleClickOutside));
   });
 
@@ -273,6 +285,7 @@ export function Combobox<T extends string = string>(props: ComboboxProps<T>) {
       {(label) => (
         <FormField
           label={label()}
+          id={control.id}
           error={field.error}
           hint={field.hint}
           required={field.required}

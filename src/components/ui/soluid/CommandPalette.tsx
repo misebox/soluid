@@ -85,6 +85,11 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
   const selectable = () => matches().filter((command) => !command.disabled);
   const hasList = () => selectable().length > 0;
 
+  // Commands can change while the palette is open; keep the highlight on a row that exists.
+  createEffect(() => {
+    if (matches().length > 0 && active() >= matches().length) setActive(0);
+  });
+
   function move(offset: number): void {
     const list = matches();
     if (list.length === 0) return;
@@ -97,7 +102,9 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
   }
 
   function run(command: Command | undefined): void {
-    if (!command || command.disabled) return;
+    // The list stays on screen through the closing animation; a second press
+    // there must not run the command again.
+    if (!local.open || !command || command.disabled) return;
     local.onSelect(command);
     local.onOpenChange(false);
   }

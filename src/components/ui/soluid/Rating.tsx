@@ -53,6 +53,9 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
 
   const max = () => local.max ?? 5;
   const items = () => Array.from({ length: max() }, (_, i) => i + 1);
+  // Exactly one tab stop: the selected item, else the first, so the group stays
+  // reachable when the value is 0, fractional or above max.
+  const tabStop = () => (items().includes(local.value) ? local.value : 1);
   const itemLabel = (value: number) => local.itemLabel?.(value, max()) ?? `${value} of ${max()}`;
 
   let root: HTMLDivElement | undefined;
@@ -113,8 +116,7 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
               aria-checked={item === local.value}
               aria-label={itemLabel(item)}
               disabled={local.disabled}
-              // Only the selected item is a tab stop; arrow keys move within.
-              tabIndex={item === local.value || (local.value === 0 && item === 1) ? 0 : -1}
+              tabIndex={item === tabStop() ? 0 : -1}
               onClick={() => select(item)}
             >
               <Star filled={item <= local.value} />
