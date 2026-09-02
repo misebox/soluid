@@ -294,14 +294,13 @@ function BadgeDemo(): JSX.Element {
   );
 }
 
-const REMOVABLE_TAGS = [
-  { id: "removable", variant: "primary", label: "Removable" },
-  { id: "error", variant: "danger", label: "Error" },
-] as const;
-
 function TagDemo(): JSX.Element {
+  const removable = [
+    { id: "removable", variant: "primary", label: "Removable" },
+    { id: "error", variant: "danger", label: "Error" },
+  ] as const;
   const [removed, setRemoved] = createSignal<string[]>([]);
-  const shown = () => REMOVABLE_TAGS.filter((tag) => !removed().includes(tag.id));
+  const shown = () => removable.filter((tag) => !removed().includes(tag.id));
 
   return (
     <div class="catalog-row">
