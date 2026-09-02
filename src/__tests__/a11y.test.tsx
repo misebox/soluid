@@ -130,8 +130,8 @@ it("a CommandPalette names its search box and its dialog without being told to",
   ));
   await Promise.resolve();
 
-  expect(document.querySelector(".so-command__input")?.getAttribute("aria-label")).toBeTruthy();
-  expect(document.querySelector(".so-command")?.getAttribute("aria-label")).toBeTruthy();
+  expect(document.querySelector(".so-command__input")?.getAttribute("aria-label")).toBe("Search commands");
+  expect(document.querySelector(".so-command")?.getAttribute("aria-label")).toBe("Search commands");
   expect(await violationsIn(root)).toEqual([]);
 });
 

@@ -247,3 +247,15 @@ it("Menu closes on a pointer press outside, which touch always delivers", async 
 
   expect(open()).toBe(false);
 });
+
+it("Combobox closes on a pointer press outside, which is all touch delivers", () => {
+  mount(() => <ComboboxControl options={letters} />);
+  const input = q<HTMLInputElement>(".so-combobox__input");
+  input.focus();
+  input.click();
+  expect(document.querySelector(".so-combobox__list")).not.toBeNull();
+
+  document.body.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+
+  expect(document.querySelector(".so-combobox__list")).toBeNull();
+});

@@ -240,3 +240,95 @@ it("Carousel keeps off-screen slides out of the Tab order", () => {
 
   expect(inert).toEqual([true, false, true]);
 });
+
+it("Tabs ArrowLeft from the first tab wraps to the last", () => {
+  const [value, setValue] = createSignal("a");
+  const root = mount(() => (
+    <Tabs value={value()} onChange={setValue}>
+      <TabList>
+        <Tab value="a">A</Tab>
+        <Tab value="b">B</Tab>
+        <Tab value="c">C</Tab>
+      </TabList>
+    </Tabs>
+  ));
+  const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+  tabs[0].focus();
+
+  press(tabs[0], "ArrowLeft");
+
+  expect(document.activeElement).toBe(tabs[2]);
+  expect(value()).toBe("c");
+});
+
+it("Tabs arrow keys step over a disabled tab", () => {
+  const [value, setValue] = createSignal("a");
+  const root = mount(() => (
+    <Tabs value={value()} onChange={setValue}>
+      <TabList>
+        <Tab value="a">A</Tab>
+        <Tab value="b" disabled>
+          B
+        </Tab>
+        <Tab value="c">C</Tab>
+      </TabList>
+    </Tabs>
+  ));
+  const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+  tabs[0].focus();
+
+  press(tabs[0], "ArrowRight");
+
+  expect(document.activeElement).toBe(tabs[2]);
+  expect(value()).toBe("c");
+});
+
+it("Pagination disables Next on the last page", () => {
+  const root = mount(() => <Pagination page={5} totalPages={5} onChange={() => {}} />);
+  const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>(".so-pagination__button"));
+
+  expect(buttons[buttons.length - 1].disabled).toBe(true);
+});
+
+it("Tree puts its tab stop on the first row the keyboard can reach", () => {
+  const nodes: TreeNode[] = [
+    { id: "a", label: "A", disabled: true },
+    { id: "b", label: "B" },
+  ];
+  const root = mount(() => <Tree nodes={nodes} expanded={[]} onExpandedChange={() => {}} />);
+
+  expect(row(root, "A")?.tabIndex).toBe(-1);
+  expect(row(root, "B")?.tabIndex).toBe(0);
+});
+
+it("Tree ArrowRight on an open branch moves into its first child", () => {
+  const nodes: TreeNode[] = [{ id: "a", label: "A", children: [{ id: "a1", label: "A1" }] }];
+  const root = mount(() => <Tree nodes={nodes} expanded={["a"]} onExpandedChange={() => {}} />);
+  row(root, "A")?.focus();
+
+  press(row(root, "A"), "ArrowRight");
+
+  expect(document.activeElement).toBe(row(root, "A1"));
+});
+
+it("Tree flattens its rows once per change, not once per row", () => {
+  const nodes: TreeNode[] = [
+    { id: "a", label: "A", children: [{ id: "a1", label: "A1" }] },
+    { id: "b", label: "B" },
+    { id: "c", label: "C" },
+  ];
+  let reads = 0;
+  const props = {
+    get nodes() {
+      reads += 1;
+      return nodes;
+    },
+    expanded: ["a"],
+    onExpandedChange: () => {},
+  };
+
+  mount(() => <Tree {...props} />);
+
+  // A plain accessor would re-flatten for every row that reads its level.
+  expect(reads).toBeLessThanOrEqual(2);
+});

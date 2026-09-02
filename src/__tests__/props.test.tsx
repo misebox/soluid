@@ -62,9 +62,11 @@ it("Combobox drops its list and stops emitting once disabled", async () => {
   input.focus();
   input.click();
 
+  // Captured before disabling: clicking a node that is already gone proves nothing.
+  const option = q<HTMLElement>(".so-combobox__option");
   setDisabled(true);
   await settle();
-  document.querySelector<HTMLElement>(".so-combobox__option")?.click();
+  option.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(input.getAttribute("aria-expanded")).toBe("false");
@@ -76,9 +78,10 @@ it("TimePicker drops its list once disabled", async () => {
   mount(() => <TimePickerControl value="09:00" onChange={onChange} disabled={disabled()} />);
   q<HTMLButtonElement>(".so-time-picker__trigger").click();
 
+  const option = q<HTMLElement>(".so-time-picker__option");
   setDisabled(true);
   await settle();
-  document.querySelector<HTMLElement>(".so-time-picker__option")?.click();
+  option.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(document.querySelector(".so-time-picker__list")).toBeNull();
@@ -91,9 +94,10 @@ it("DatePicker drops its panel once disabled", async () => {
   q<HTMLButtonElement>(".so-date-picker__trigger").click();
   await settle();
 
+  const day = q<HTMLButtonElement>('[data-so-day="2026-05-20"]');
   setDisabled(true);
   await settle();
-  document.querySelector<HTMLButtonElement>('[data-so-day="2026-05-20"]')?.click();
+  day.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(document.querySelector(".so-date-picker__panel")).toBeNull();
@@ -105,9 +109,10 @@ it("ColorPicker drops its panel once disabled", async () => {
   mount(() => <ColorPickerControl value="#ff0000" onChange={onChange} disabled={disabled()} />);
   q<HTMLButtonElement>(".so-color-picker__trigger").click();
 
+  const swatch = q<HTMLButtonElement>(".so-color-picker__swatch");
   setDisabled(true);
   await settle();
-  document.querySelector<HTMLButtonElement>(".so-color-picker__swatch")?.click();
+  swatch.click();
 
   expect(onChange).not.toHaveBeenCalled();
   expect(document.querySelector(".so-color-picker__panel")).toBeNull();

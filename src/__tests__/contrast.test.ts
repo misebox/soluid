@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { expect, it } from "vitest";
+import { mergeStyle } from "../components/ui/soluid/core/utils";
 
 // Read from disk: Vite hands a `?raw` CSS import back empty under the test transform.
 const css = readFileSync("src/components/ui/soluid/core/soluid.css", "utf-8");
@@ -71,5 +72,28 @@ it("chevrons that name a direction are mirrored when the text runs the other way
   ] as const) {
     const rules = readFileSync(`src/components/ui/soluid/${file}`, "utf-8");
     expect(rules, file).toContain(`[dir="rtl"] ${selector}`);
+  }
+});
+
+it("mergeStyle lets the caller override the component's own declaration", () => {
+  expect(mergeStyle({ color: "red" }, { color: "blue" })).toEqual({ color: "blue" });
+  expect(mergeStyle({ color: "red" }, "color:blue")).toBe("color:red;color:blue");
+});
+
+it("inline-axis offsets are written as logical properties", () => {
+  // Physical left/right are right for a Drawer side or a floating-ui anchor,
+  // but these follow the text direction.
+  for (const [file, selector] of [
+    ["SearchField.css", ".so-search-field__icon"],
+    ["SearchField.css", ".so-search-field__clear"],
+    ["Select.css", ".so-select__arrow"],
+    ["Carousel.css", ".so-carousel__nav--prev"],
+    ["Carousel.css", ".so-carousel__nav--next"],
+  ] as const) {
+    const rules = readFileSync(`src/components/ui/soluid/${file}`, "utf-8");
+    const block = rules.slice(rules.indexOf(`${selector} {`));
+    const body = block.slice(0, block.indexOf("}"));
+    expect(body, `${file} ${selector}`).toMatch(/inset-inline-(start|end):/);
+    expect(body, `${file} ${selector}`).not.toMatch(/^\s*(left|right):/m);
   }
 });

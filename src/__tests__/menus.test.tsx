@@ -470,3 +470,35 @@ it("closed overlays hold no listener on the document", async () => {
   await settle();
   expect(added.get("keydown") ?? 0).toBe(0);
 });
+
+it("Menu ArrowDown wraps from the last item to the first", async () => {
+  mount(() => (
+    <Menu open onOpenChange={() => {}} trigger="open">
+      <MenuItem>One</MenuItem>
+      <MenuItem>Two</MenuItem>
+    </Menu>
+  ));
+  await settle();
+  const items = [...document.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+  items[items.length - 1].focus();
+
+  keydown(document, "ArrowDown");
+
+  expect(document.activeElement).toBe(items[0]);
+});
+
+it("a press on a day in a DatePicker inside a Menu does not close the menu", async () => {
+  const [open, setOpen] = createSignal(true);
+  mount(() => (
+    <Menu open={open()} onOpenChange={setOpen} trigger="open">
+      <DatePickerControl value="2026-05-10" onChange={() => {}} />
+    </Menu>
+  ));
+  await settle();
+  q(".so-date-picker__trigger").click();
+  await settle();
+
+  q('[data-so-day="2026-05-12"]').dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, cancelable: true }));
+
+  expect(open()).toBe(true);
+});

@@ -38,3 +38,15 @@ it("keeps the value when the bounds change with it", () => {
 
   expect(input.value).toBe("500");
 });
+
+it("paints the track from min rather than from zero when there is no value", () => {
+  const input = mount(() => <Slider label="s" min={10} max={110} />);
+
+  expect(input.style.getPropertyValue("--so-slider-progress")).toBe("0%");
+});
+
+it("measures progress from min, not from zero", () => {
+  const input = mount(() => <Slider label="s" min={100} max={200} value={150} />);
+
+  expect(input.style.getPropertyValue("--so-slider-progress")).toBe("50%");
+});

@@ -60,3 +60,23 @@ it("moves to the month of a value that arrives after mount", () => {
 
   expect(root.querySelector('[data-so-day="2026-03-15"]')?.getAttribute("aria-selected")).toBe("true");
 });
+
+it("lays the grid out from the configured first weekday", () => {
+  const root = mount(() => <Calendar month="2026-09" weekStartsOn={1} />);
+
+  // 2026-09-01 is a Tuesday, so a Monday-first grid opens on 2026-08-31.
+  expect(root.querySelector<HTMLButtonElement>(".so-calendar__day")?.dataset.soDay).toBe("2026-08-31");
+});
+
+it("keeps focus on the day it arrows to across a month boundary", async () => {
+  const [month, setMonth] = createSignal("2026-09");
+  const root = mount(() => <Calendar month={month()} onMonthChange={setMonth} />);
+  const first = root.querySelector<HTMLButtonElement>('[data-so-day="2026-09-01"]');
+  first?.focus();
+
+  press(first as Element, "ArrowLeft");
+  await Promise.resolve();
+
+  expect(month()).toBe("2026-08");
+  expect((document.activeElement as HTMLElement)?.dataset.soDay).toBe("2026-08-31");
+});
