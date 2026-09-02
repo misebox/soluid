@@ -353,8 +353,6 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   if (!version) {
     console.log("No componentsVersion in config, fetching latest...");
     version = await fetchVersionOrExit();
-    config.componentsVersion = version;
-    saveConfig(cwd, config);
     console.log(`Using components v${version}`);
   }
 

@@ -11,6 +11,16 @@ import { registry } from "../registry.js";
 
 vi.mock("../prompt.js", () => ({ prompt: async (_q: string, d: string) => d, confirm: async () => true }));
 
+// The install runs the project's package manager; a test must not reach the
+// network. Hoisted because vi.mock's factory runs before the module body.
+const { packageManagerRuns } = vi.hoisted(() => ({ packageManagerRuns: [] as string[] }));
+vi.mock("node:child_process", () => {
+  const execSync = (command: string) => {
+    packageManagerRuns.push(command);
+  };
+  return { execSync, default: { execSync } };
+});
+
 class ExitError extends Error {
   constructor(public code: unknown) {
     super(`exit ${code}`);
@@ -24,6 +34,7 @@ let logs: string[];
 let errors: string[];
 
 beforeEach(() => {
+  packageManagerRuns.length = 0;
   proj = fs.mkdtempSync(path.join(os.tmpdir(), "soluid-install-"));
   logs = [];
   errors = [];
@@ -249,4 +260,5 @@ test("npm packages are taken from the release, not only from this CLI's registry
   await install(proj, { interactive: false });
 
   expect(logs.join("\n")).toContain("@solid-primitives/scheduled");
+  expect(packageManagerRuns.join(" ")).toContain("@solid-primitives/scheduled");
 });

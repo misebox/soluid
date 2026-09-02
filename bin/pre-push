@@ -1,10 +1,10 @@
 #!/bin/sh
 set -e
 
-echo "[pre-commit] typecheck"
+echo "[pre-push] typecheck"
 bun run typecheck
 
-echo "[pre-commit] test"
+echo "[pre-push] test"
 bun run test
 
 echo "[pre-push] build:cli"

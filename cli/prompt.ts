@@ -6,8 +6,10 @@ export function prompt(question: string, defaultValue: string): Promise<string> 
     // stdin at end of file (CI, a closed pipe) never answers; take the default.
     rl.once("close", () => resolve(defaultValue));
     rl.question(`${question} (${defaultValue}) `, (answer) => {
-      rl.close();
+      // Resolve before closing: close() emits "close" synchronously, and the
+      // fallback above would settle the promise with the default first.
       resolve(answer.trim() || defaultValue);
+      rl.close();
     });
   });
 }
@@ -17,8 +19,8 @@ export function confirm(question: string): Promise<boolean> {
   return new Promise((resolve) => {
     rl.once("close", () => resolve(false));
     rl.question(question, (answer) => {
-      rl.close();
       resolve(answer.trim().toLowerCase() === "y");
+      rl.close();
     });
   });
 }
