@@ -54,21 +54,23 @@ export function SelectInput<T extends string = string>(props: SelectInputProps<T
         {...others}
         id={ctx?.id ?? local.id}
         class={cls("so-select__input", `so-select__input--${local.size ?? "md"}`)}
-        value={local.value ?? ""}
         aria-invalid={ctx?.hasError || undefined}
         aria-describedby={ctx?.hasError ? ctx.errorId : ctx?.hintId}
         onChange={handleChange}
       >
+        {/* `value` on <select> is applied before the options exist, so the browser
+            falls back to the first option; selecting per option also survives
+            the option list being replaced. */}
         <Show when={local.placeholder}>
           {(placeholder) => (
-            <option value="" disabled>
+            <option value="" disabled selected={!local.value}>
               {placeholder()}
             </option>
           )}
         </Show>
         <For each={local.options}>
           {(option) => (
-            <option value={option.value} disabled={option.disabled}>
+            <option value={option.value} disabled={option.disabled} selected={option.value === local.value}>
               {option.label}
             </option>
           )}
