@@ -49,12 +49,16 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
     const next = local.index + delta;
     if (local.loop) {
       local.onIndexChange((next + total) % total);
-    } else if (next >= 0 && next < total) {
-      local.onIndexChange(next);
+      return;
     }
+    // Clamped rather than dropped, so an index past the end can still come back.
+    const clamped = Math.min(Math.max(next, 0), total - 1);
+    if (clamped !== local.index) local.onIndexChange(clamped);
   }
 
   function handleKeyDown(e: KeyboardEvent): void {
+    // Arrow keys inside a text field or slider belong to that control.
+    if (e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]")) return;
     if (e.key === "ArrowLeft") {
       e.preventDefault();
       go(-1);
@@ -68,6 +72,7 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
   // onIndexChange while `syncing` keeps our own programmatic scroll from
   // being mistaken for one.
   let syncing = false;
+  let syncTimer: ReturnType<typeof setTimeout> | undefined;
 
   function scrollToIndex(index: number): void {
     if (!viewport || viewport.clientWidth === 0) return;
@@ -76,8 +81,11 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
       left: viewport.clientWidth * index,
       behavior: prefersReducedMotion() ? "auto" : "smooth",
     });
-    setTimeout(() => (syncing = false), 400);
+    // One timer per scroll, so a second move does not end the first window early.
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => (syncing = false), 400);
   }
+  onCleanup(() => clearTimeout(syncTimer));
 
   onMount(() => {
     if (!viewport) return;

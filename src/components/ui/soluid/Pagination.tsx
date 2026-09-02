@@ -39,6 +39,9 @@ function buildPageList(current: number, total: number, maxVisible: number): (num
   if (current >= total - side - 1) {
     start = Math.max(2, total - maxVisible + 3);
   }
+  // The current page is always shown, even when maxVisible leaves no room for it.
+  start = Math.min(start, Math.max(current, 2));
+  end = Math.max(end, Math.min(current, total - 1));
 
   if (start > 2) {
     pages.push("ellipsis");

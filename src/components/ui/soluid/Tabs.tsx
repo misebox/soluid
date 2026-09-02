@@ -1,12 +1,29 @@
-import { createContext, createUniqueId, Show, splitProps, useContext } from "solid-js";
+import {
+  createContext,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  onCleanup,
+  Show,
+  splitProps,
+  useContext,
+} from "solid-js";
 import type { Accessor, JSX } from "solid-js";
 import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
+
+interface TabRecord {
+  value: () => string;
+  disabled: () => boolean | undefined;
+}
 
 interface TabsContextValue {
   value: Accessor<string>;
   onChange: (value: string) => void;
   baseId: string;
+  register: (tab: TabRecord) => void;
+  /** Value of the one tab the Tab key lands on */
+  tabStop: Accessor<string | undefined>;
 }
 
 const TabsContext = createContext<TabsContextValue>();
@@ -48,10 +65,24 @@ export function Tabs(props: TabsProps) {
 
   const baseId = `so-tabs-${createUniqueId()}`;
 
+  const [tabs, setTabs] = createSignal<TabRecord[]>([]);
+
+  // The selected tab, unless it cannot take focus; then the first enabled one,
+  // so the list stays reachable by keyboard.
+  const tabStop = createMemo(() => {
+    const enabled = tabs().filter((tab) => !tab.disabled());
+    return (enabled.find((tab) => tab.value() === local.value) ?? enabled[0])?.value();
+  });
+
   const context: TabsContextValue = {
     value: () => local.value,
     onChange: (v: string) => local.onChange(v),
     baseId,
+    register(tab) {
+      setTabs((list) => [...list, tab]);
+      onCleanup(() => setTabs((list) => list.filter((it) => it !== tab)));
+    },
+    tabStop,
   };
 
   return (
@@ -110,6 +141,7 @@ export function Tab(props: TabProps) {
   const [local, others] = splitProps(props, ["value", "disabled", "class", "children"]);
 
   const ctx = useTabsContext();
+  ctx.register({ value: () => local.value, disabled: () => local.disabled });
 
   return (
     <button
@@ -125,7 +157,7 @@ export function Tab(props: TabProps) {
           ctx.onChange(local.value);
         }
       }}
-      tabIndex={ctx.value() === local.value ? 0 : -1}
+      tabIndex={ctx.tabStop() === local.value ? 0 : -1}
       {...others}
     >
       {local.children}
