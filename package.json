@@ -1,8 +1,8 @@
 {
   "name": "soluid",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
-  "description": "CLI that installs SolidJS UI components directly into your project \u2014 own the code, no runtime dependency",
+  "description": "CLI that installs SolidJS UI components directly into your project — own the code, no runtime dependency",
   "license": "MIT",
   "scripts": {
     "dev": "bun run precatalog && vite --open /soluid/ --base /soluid",
