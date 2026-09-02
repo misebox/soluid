@@ -226,3 +226,17 @@ it("Pagination never renders two ellipses in a row", () => {
 
   expect(texts.some((t, i) => t === "…" && texts[i + 1] === "…")).toBe(false);
 });
+
+it("Carousel keeps off-screen slides out of the Tab order", () => {
+  const root = mount(() => (
+    <Carousel index={1} onIndexChange={() => {}}>
+      {slides(3)}
+    </Carousel>
+  ));
+  // jsdom has no `inert` IDL property, so the value Solid assigned is read back directly.
+  const inert = Array.from(root.querySelectorAll<HTMLElement & { inert?: boolean }>(".so-carousel__slide")).map(
+    (el) => el.inert === true,
+  );
+
+  expect(inert).toEqual([true, false, true]);
+});

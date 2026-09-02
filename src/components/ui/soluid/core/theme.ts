@@ -15,6 +15,11 @@ interface ThemeResult {
   warnings: string[];
 }
 
+/** Expands the `#abc` shorthand to `#aabbcc`; longer forms pass through. */
+function expandHex(hex: string): string {
+  return hex.length === 4 ? `#${hex.slice(1).replace(/./g, "$&$&")}` : hex;
+}
+
 function hexToHsl(hex: string): [number, number, number] {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
@@ -101,7 +106,8 @@ export function createTheme(colors: ColorDefinition[]): ThemeResult {
   const lines: string[] = [];
 
   for (const { name, base } of colors) {
-    const roles = generateRoles(base);
+    // Every parser below reads two digits per channel.
+    const roles = generateRoles(expandHex(base));
     checkContrast(name, roles, warnings);
 
     for (const [role, value] of Object.entries(roles)) {

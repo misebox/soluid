@@ -20,7 +20,8 @@ export interface CarouselProps extends CommonProps {
   children: JSX.Element;
 }
 
-export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">) {
+// onKeyDown is omitted because the arrow keys are the component's own.
+export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "children" | "onKeyDown">) {
   const [local, others] = splitProps(props, [
     "class",
     "density",
@@ -124,7 +125,9 @@ export function Carousel(props: CarouselProps & Omit<JSX.HTMLAttributes<HTMLDivE
               class="so-carousel__slide"
               role="group"
               aria-roledescription="slide"
+              // Off-screen slides are hidden from readers and, with inert, from Tab too.
               aria-hidden={i() !== local.index}
+              inert={i() !== local.index}
               aria-label={local.dotLabel?.(i() + 1, count()) ?? `${i() + 1} / ${count()}`}
             >
               {slide}
