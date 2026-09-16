@@ -5,14 +5,14 @@ import { cls } from "./core/utils";
 
 export interface BreadcrumbProps extends CommonProps {
   /** Accessible label for the navigation landmark (default: "Breadcrumb") */
-  label?: string;
+  label?: string | undefined;
   children: JSX.Element;
 }
 
 export interface BreadcrumbItemProps {
-  href?: string;
-  current?: boolean;
-  class?: string;
+  href?: string | undefined;
+  current?: boolean | undefined;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

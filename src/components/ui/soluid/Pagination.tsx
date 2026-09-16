@@ -7,19 +7,19 @@ export interface PaginationProps extends CommonProps {
   page: number;
   totalPages: number;
   onChange: (page: number) => void;
-  size?: SmallSize;
+  size?: SmallSize | undefined;
   /** Show numbered page buttons (default: false for backward compatibility) */
-  showPages?: boolean;
+  showPages?: boolean | undefined;
   /** Max visible page buttons before ellipsis (default: 5) */
-  maxVisible?: number;
+  maxVisible?: number | undefined;
   /** Accessible label for the navigation landmark (default: "Pagination") */
-  label?: string;
+  label?: string | undefined;
   /** Label for the previous-page button. Sets both its text and aria-label. */
-  previousLabel?: string;
+  previousLabel?: string | undefined;
   /** Label for the next-page button. Sets both its text and aria-label. */
-  nextLabel?: string;
+  nextLabel?: string | undefined;
   /** Accessible label for a numbered page button (default: `Page {n}`) */
-  pageLabel?: (page: number) => string;
+  pageLabel?: ((page: number) => string) | undefined;
 }
 
 function buildPageList(current: number, total: number, maxVisible: number): (number | "ellipsis")[] {

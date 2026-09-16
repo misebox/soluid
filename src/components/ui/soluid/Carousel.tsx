@@ -8,15 +8,15 @@ export interface CarouselProps extends CommonProps {
   index: number;
   onIndexChange: (index: number) => void;
   /** Wrap around at either end (default: false) */
-  loop?: boolean;
+  loop?: boolean | undefined;
   /** Hide the dot indicators */
-  hideDots?: boolean;
+  hideDots?: boolean | undefined;
   /** Accessible label for the carousel region */
-  label?: string;
-  previousLabel?: string;
-  nextLabel?: string;
+  label?: string | undefined;
+  previousLabel?: string | undefined;
+  nextLabel?: string | undefined;
   /** Accessible label for a slide and its dot, given the 1-based position */
-  dotLabel?: (position: number, total: number) => string;
+  dotLabel?: ((position: number, total: number) => string) | undefined;
   children: JSX.Element;
 }
 

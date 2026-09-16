@@ -9,14 +9,14 @@ import { useFormField } from "./FormFieldContext";
 type TextAreaAttributes = Omit<JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, "value" | "onInput" | "class">;
 
 export interface TextAreaInputProps extends InteractiveProps, TextAreaAttributes {
-  value?: string;
-  onInput?: (value: string) => void;
+  value?: string | undefined;
+  onInput?: ((value: string) => void) | undefined;
 }
 
 export interface TextAreaProps extends TextAreaInputProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function TextAreaInput(props: TextAreaInputProps) {

@@ -4,7 +4,7 @@ import type { CommonProps, SmallSize } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface KbdProps extends CommonProps {
-  size?: SmallSize;
+  size?: SmallSize | undefined;
   children: JSX.Element;
 }
 

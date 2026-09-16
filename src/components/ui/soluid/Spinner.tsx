@@ -4,10 +4,10 @@ import type { CommonProps, Size, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface SpinnerProps extends CommonProps {
-  size?: Size;
-  variant?: Variant;
+  size?: Size | undefined;
+  variant?: Variant | undefined;
   /** Accessible label announced while loading (default: "Loading") */
-  label?: string;
+  label?: string | undefined;
 }
 
 export function Spinner(props: SpinnerProps & Omit<JSX.HTMLAttributes<HTMLSpanElement>, "role" | "aria-label">) {

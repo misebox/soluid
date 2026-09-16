@@ -9,13 +9,13 @@ export interface Command {
   id: string;
   label: string;
   /** Optional heading the command is filed under */
-  group?: string;
+  group?: string | undefined;
   /** Extra words the query should match, e.g. synonyms */
-  keywords?: string;
+  keywords?: string | undefined;
   /** Shortcut shown on the right, e.g. "⌘K" */
-  shortcut?: string;
-  icon?: JSX.Element;
-  disabled?: boolean;
+  shortcut?: string | undefined;
+  icon?: JSX.Element | undefined;
+  disabled?: boolean | undefined;
 }
 
 export interface CommandPaletteProps extends CommonProps {
@@ -23,13 +23,13 @@ export interface CommandPaletteProps extends CommonProps {
   onOpenChange: (open: boolean) => void;
   commands: Command[];
   onSelect: (command: Command) => void;
-  placeholder?: string;
+  placeholder?: string | undefined;
   /** Shown when nothing matches (default: "No results") */
-  emptyLabel?: string;
+  emptyLabel?: string | undefined;
   /** Accessible label for the dialog */
-  label?: string;
+  label?: string | undefined;
   /** Overrides the default case-insensitive match over label and keywords */
-  filter?: (command: Command, query: string) => boolean;
+  filter?: ((command: Command, query: string) => boolean) | undefined;
 }
 
 function defaultFilter(command: Command, query: string): boolean {
@@ -97,7 +97,7 @@ export function CommandPalette(props: CommandPaletteProps & Omit<JSX.HTMLAttribu
     let next = active();
     for (let i = 0; i < list.length; i++) {
       next = (next + offset + list.length) % list.length;
-      if (!list[next].disabled) break;
+      if (!list[next]?.disabled) break;
     }
     setActive(next);
   }

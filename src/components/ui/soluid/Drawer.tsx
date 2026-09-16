@@ -15,13 +15,13 @@ type DrawerAttributes = Omit<JSX.HTMLAttributes<HTMLDivElement>, "role" | "aria-
 export interface DrawerProps extends CommonProps {
   open: boolean;
   onClose: () => void;
-  side?: DrawerSide;
-  size?: Size;
+  side?: DrawerSide | undefined;
+  size?: Size | undefined;
   children: JSX.Element;
 }
 
 export interface DrawerHeaderProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

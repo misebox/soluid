@@ -4,9 +4,9 @@ import type { ButtonVariant, VariantProps } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface ButtonProps extends VariantProps<ButtonVariant> {
-  iconLeft?: JSX.Element;
-  iconRight?: JSX.Element;
-  loading?: boolean;
+  iconLeft?: JSX.Element | undefined;
+  iconRight?: JSX.Element | undefined;
+  loading?: boolean | undefined;
   children: JSX.Element;
 }
 

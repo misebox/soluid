@@ -10,20 +10,20 @@ import { cls } from "./core/utils";
 export interface MenuProps extends CommonProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  placement?: Placement;
+  placement?: Placement | undefined;
   trigger: JSX.Element;
   children: JSX.Element;
 }
 
 export interface MenuItemProps {
-  class?: string;
-  disabled?: boolean;
-  onSelect?: () => void;
+  class?: string | undefined;
+  disabled?: boolean | undefined;
+  onSelect?: (() => void) | undefined;
   children: JSX.Element;
 }
 
 export interface MenuSeparatorProps {
-  class?: string;
+  class?: string | undefined;
 }
 
 // onSelect is omitted because MenuItemProps redefines it without the event;
@@ -111,17 +111,17 @@ export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       const next = idx < items.length - 1 ? idx + 1 : 0;
-      items[next].focus();
+      items[next]?.focus();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       const prev = idx > 0 ? idx - 1 : items.length - 1;
-      items[prev].focus();
+      items[prev]?.focus();
     } else if (e.key === "Home") {
       e.preventDefault();
-      items[0].focus();
+      items[0]?.focus();
     } else if (e.key === "End") {
       e.preventDefault();
-      items[items.length - 1].focus();
+      items.at(-1)?.focus();
     }
   }
 

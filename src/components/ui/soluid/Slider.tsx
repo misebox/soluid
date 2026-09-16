@@ -12,21 +12,21 @@ type RangeAttributes = Omit<
 >;
 
 export interface SliderInputProps extends InteractiveProps, RangeAttributes {
-  value?: number;
-  onInput?: (value: number) => void;
-  min?: number;
-  max?: number;
-  step?: number;
+  value?: number | undefined;
+  onInput?: ((value: number) => void) | undefined;
+  min?: number | undefined;
+  max?: number | undefined;
+  step?: number | undefined;
   /** Show the current value next to the track */
-  showValue?: boolean;
+  showValue?: boolean | undefined;
   /** Formats the value for display and for aria-valuetext */
-  formatValue?: (value: number) => string;
+  formatValue?: ((value: number) => string) | undefined;
 }
 
 export interface SliderProps extends SliderInputProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function SliderInput(props: SliderInputProps) {

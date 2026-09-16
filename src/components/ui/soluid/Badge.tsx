@@ -4,9 +4,9 @@ import type { CommonProps, Fill, SmallSize, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface BadgeProps extends CommonProps {
-  variant?: Variant;
-  fill?: Fill;
-  size?: SmallSize;
+  variant?: Variant | undefined;
+  fill?: Fill | undefined;
+  size?: SmallSize | undefined;
   children: JSX.Element;
 }
 

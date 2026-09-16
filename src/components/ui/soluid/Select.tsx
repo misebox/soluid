@@ -14,20 +14,20 @@ type SelectAttributes = Omit<
 export interface SelectOption<T extends string = string> {
   value: T;
   label: string;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }
 
 export interface SelectInputProps<T extends string = string> extends InteractiveProps, SelectAttributes {
-  value?: T;
-  onChange?: (value: T) => void;
+  value?: T | undefined;
+  onChange?: ((value: T) => void) | undefined;
   options: SelectOption<T>[];
-  placeholder?: string;
+  placeholder?: string | undefined;
 }
 
 export interface SelectProps<T extends string = string> extends SelectInputProps<T> {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function SelectInput<T extends string = string>(props: SelectInputProps<T>) {

@@ -6,9 +6,9 @@ import { cls } from "./core/utils";
 export type SkeletonVariant = "text" | "circle" | "rect";
 
 export interface SkeletonProps extends CommonProps {
-  variant?: SkeletonVariant;
-  width?: string;
-  height?: string;
+  variant?: SkeletonVariant | undefined;
+  width?: string | undefined;
+  height?: string | undefined;
 }
 
 // style is omitted because the sizing is set after the spread; aria-hidden

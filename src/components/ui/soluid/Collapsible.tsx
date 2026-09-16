@@ -8,7 +8,7 @@ export interface CollapsibleProps extends CommonProps {
   onOpenChange: (open: boolean) => void;
   /** Trigger content. Pass a string for the default styling. */
   title: JSX.Element;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
   children: JSX.Element;
 }
 

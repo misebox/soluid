@@ -6,22 +6,22 @@ import { cls } from "./core/utils";
 export type CardVariant = "outlined" | "elevated";
 
 export interface CardProps extends CommonProps {
-  variant?: CardVariant;
+  variant?: CardVariant | undefined;
   children: JSX.Element;
 }
 
 export interface CardHeaderProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface CardBodyProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface CardFooterProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

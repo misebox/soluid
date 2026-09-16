@@ -12,21 +12,21 @@ type NumberAttributes = Omit<
 >;
 
 interface NumberControlProps extends InteractiveProps, NumberAttributes {
-  value?: number;
-  onInput?: (value: number) => void;
+  value?: number | undefined;
+  onInput?: ((value: number) => void) | undefined;
   /** Runs after the typed value has been clamped into [min, max]. */
-  onBlur?: (event: FocusEvent) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  decrementLabel?: string;
-  incrementLabel?: string;
+  onBlur?: ((event: FocusEvent) => void) | undefined;
+  min?: number | undefined;
+  max?: number | undefined;
+  step?: number | undefined;
+  decrementLabel?: string | undefined;
+  incrementLabel?: string | undefined;
 }
 
 export interface NumberInputProps extends NumberControlProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 /**

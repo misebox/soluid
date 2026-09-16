@@ -18,18 +18,18 @@ export interface PinInputProps extends CommonProps {
   value: string[];
   onChange: (value: string[]) => void;
   /** Number of boxes (default: 6) */
-  length?: number;
+  length?: number | undefined;
   /** Characters accepted (default: "numeric") */
-  type?: PinInputType;
+  type?: PinInputType | undefined;
   /** Render entered characters as dots */
-  mask?: boolean;
-  disabled?: boolean;
+  mask?: boolean | undefined;
+  disabled?: boolean | undefined;
   /** Accessible label for the group */
-  label?: string;
+  label?: string | undefined;
   /** Accessible label for each box (default: `Character {n} of {length}`) */
-  itemLabel?: (position: number, length: number) => string;
+  itemLabel?: ((position: number, length: number) => string) | undefined;
   /** Called with the joined value once every box is filled */
-  onComplete?: (value: string) => void;
+  onComplete?: ((value: string) => void) | undefined;
 }
 
 // onChange is omitted because PinInputProps redefines it with the box array.
@@ -97,7 +97,7 @@ export function PinInput(props: PinInputProps & Omit<JSX.HTMLAttributes<HTMLDivE
   const handleInput =
     (index: number): JSX.InputEventHandlerUnion<HTMLInputElement, InputEvent> =>
     (e) => {
-      const current = chars()[index];
+      const current = chars()[index] ?? "";
       const raw = e.currentTarget.value;
       e.currentTarget.value = current;
       if (raw === "") {

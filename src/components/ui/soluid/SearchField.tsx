@@ -12,17 +12,17 @@ type SearchAttributes = Omit<
 >;
 
 export interface SearchFieldProps extends InteractiveProps, SearchAttributes {
-  value?: string;
-  onInput?: (value: string) => void;
+  value?: string | undefined;
+  onInput?: ((value: string) => void) | undefined;
   /** Called when Enter is pressed */
-  onSearch?: (value: string) => void;
+  onSearch?: ((value: string) => void) | undefined;
   /** Called when the clear button is pressed; also fires onInput("") */
-  onClear?: () => void;
+  onClear?: (() => void) | undefined;
   /** Accessible label for the clear button (default: "Clear search") */
-  clearLabel?: string;
-  label?: string;
-  error?: string;
-  hint?: string;
+  clearLabel?: string | undefined;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 function SearchControl(props: SearchFieldProps) {

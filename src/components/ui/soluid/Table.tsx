@@ -8,26 +8,26 @@ export type SortDirection = "asc" | "desc";
 export interface Column<T> {
   key: string;
   header: string;
-  width?: string;
-  sortable?: boolean;
-  align?: TextAlign;
-  render?: (value: unknown, row: T) => JSX.Element;
+  width?: string | undefined;
+  sortable?: boolean | undefined;
+  align?: TextAlign | undefined;
+  render?: ((value: unknown, row: T) => JSX.Element) | undefined;
 }
 
 export interface TableProps<T> extends CommonProps {
   columns: Column<T>[];
   data: T[];
-  sortKey?: string;
-  sortDirection?: SortDirection;
-  onSort?: (key: string, direction: SortDirection) => void;
-  selectable?: boolean;
-  selectedKeys?: Set<string>;
-  onSelect?: (keys: Set<string>) => void;
-  rowKey?: (row: T) => string;
+  sortKey?: string | undefined;
+  sortDirection?: SortDirection | undefined;
+  onSort?: ((key: string, direction: SortDirection) => void) | undefined;
+  selectable?: boolean | undefined;
+  selectedKeys?: Set<string> | undefined;
+  onSelect?: ((keys: Set<string>) => void) | undefined;
+  rowKey?: ((row: T) => string) | undefined;
   /** Accessible label for the select-all checkbox (default: "Select all rows") */
-  selectAllLabel?: string;
+  selectAllLabel?: string | undefined;
   /** Accessible label for a row checkbox (default: `Select row {key}`) */
-  selectRowLabel?: (row: T, index: number) => string;
+  selectRowLabel?: ((row: T, index: number) => string) | undefined;
 }
 
 // onSelect is omitted because TableProps redefines it with the selected keys.

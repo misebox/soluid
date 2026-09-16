@@ -5,11 +5,11 @@ import { cls } from "./core/utils";
 
 export interface AvatarGroupProps extends CommonProps {
   /** Avatars to show before collapsing the rest into a +N chip */
-  max?: number;
+  max?: number | undefined;
   /** Size of the overflow chip; match the Avatar size you pass in */
-  size?: Size;
+  size?: Size | undefined;
   /** Accessible label for the overflow chip, given the hidden count */
-  overflowLabel?: (count: number) => string;
+  overflowLabel?: ((count: number) => string) | undefined;
   children: JSX.Element;
 }
 

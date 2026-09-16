@@ -5,17 +5,17 @@ import { cls } from "./core/utils";
 
 export interface RatingProps extends CommonProps {
   value: number;
-  onChange?: (value: number) => void;
+  onChange?: ((value: number) => void) | undefined;
   /** Number of items (default: 5) */
-  max?: number;
+  max?: number | undefined;
   /** Render as a static indicator with no controls */
-  readOnly?: boolean;
-  disabled?: boolean;
-  size?: Size;
+  readOnly?: boolean | undefined;
+  disabled?: boolean | undefined;
+  size?: Size | undefined;
   /** Accessible label for the group */
-  label?: string;
+  label?: string | undefined;
   /** Accessible label for each item (default: `{n} of {max}`) */
-  itemLabel?: (value: number, max: number) => string;
+  itemLabel?: ((value: number, max: number) => string) | undefined;
 }
 
 function Star(props: { filled: boolean }) {

@@ -12,11 +12,11 @@ type CheckboxGroupAttributes = Omit<
 >;
 
 export interface CheckboxGroupProps extends CommonProps {
-  value?: string[];
-  onChange?: (value: string[]) => void;
-  label?: string;
-  error?: string;
-  hint?: string;
+  value?: string[] | undefined;
+  onChange?: ((value: string[]) => void) | undefined;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
   children: JSX.Element;
 }
 

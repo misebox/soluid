@@ -4,12 +4,12 @@ import type { CommonProps, Fill, SmallSize, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface TagProps extends CommonProps {
-  variant?: Variant;
-  fill?: Fill;
-  size?: SmallSize;
-  onRemove?: () => void;
+  variant?: Variant | undefined;
+  fill?: Fill | undefined;
+  size?: SmallSize | undefined;
+  onRemove?: (() => void) | undefined;
   /** Accessible label for the remove button (default: "Remove") */
-  removeLabel?: string;
+  removeLabel?: string | undefined;
   children: JSX.Element;
 }
 

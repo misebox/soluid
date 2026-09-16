@@ -44,20 +44,20 @@ export interface TabsProps extends CommonProps {
 }
 
 export interface TabListProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface TabProps {
   value: string;
-  disabled?: boolean;
-  class?: string;
+  disabled?: boolean | undefined;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface TabPanelProps {
   value: string;
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
@@ -134,8 +134,8 @@ export function TabList(
 
     if (next != null) {
       e.preventDefault();
-      tabs[next].focus();
-      tabs[next].click();
+      tabs[next]?.focus();
+      tabs[next]?.click();
     }
   }
 

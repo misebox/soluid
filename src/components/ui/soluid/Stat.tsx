@@ -9,12 +9,12 @@ export interface StatProps extends CommonProps {
   label: string;
   value: JSX.Element;
   /** Secondary text under the value */
-  hint?: string;
+  hint?: string | undefined;
   /** Change indicator, e.g. "+12.5%" */
-  delta?: string;
+  delta?: string | undefined;
   /** Colour of the change indicator (default: "neutral") */
-  deltaTone?: DeltaTone;
-  icon?: JSX.Element;
+  deltaTone?: DeltaTone | undefined;
+  icon?: JSX.Element | undefined;
 }
 
 export function Stat(props: StatProps & JSX.HTMLAttributes<HTMLDivElement>) {

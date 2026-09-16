@@ -7,9 +7,9 @@ export type ContainerSize = "sm" | "md" | "lg" | "xl" | "full";
 
 export interface ContainerProps extends CommonProps {
   /** Maximum content width (default: "lg") */
-  size?: ContainerSize;
+  size?: ContainerSize | undefined;
   /** Horizontal padding inside the container (default: true) */
-  padded?: boolean;
+  padded?: boolean | undefined;
   children: JSX.Element;
 }
 

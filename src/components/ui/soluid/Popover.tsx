@@ -10,9 +10,9 @@ import { cls } from "./core/utils";
 export interface PopoverProps extends CommonProps {
   open: boolean;
   /** Accessible label for the panel */
-  label?: string;
+  label?: string | undefined;
   onOpenChange: (open: boolean) => void;
-  placement?: Placement;
+  placement?: Placement | undefined;
   children: JSX.Element;
   content: JSX.Element;
 }

@@ -4,9 +4,9 @@ import type { Align, CommonProps, Gap, Justify } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface StackProps extends CommonProps {
-  gap?: Gap;
-  align?: Align;
-  justify?: Justify;
+  gap?: Gap | undefined;
+  align?: Align | undefined;
+  justify?: Justify | undefined;
   children: JSX.Element;
 }
 

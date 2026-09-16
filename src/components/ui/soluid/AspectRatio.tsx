@@ -5,7 +5,7 @@ import { cls, mergeStyle } from "./core/utils";
 
 export interface AspectRatioProps extends CommonProps {
   /** Width divided by height, e.g. 16 / 9 (default: 1) */
-  ratio?: number;
+  ratio?: number | undefined;
   children: JSX.Element;
 }
 

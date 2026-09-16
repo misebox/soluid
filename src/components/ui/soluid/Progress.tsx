@@ -11,19 +11,19 @@ type ProgressAttributes = Omit<
 
 export interface ProgressSegment {
   value: number;
-  variant?: FeedbackVariant;
+  variant?: FeedbackVariant | undefined;
 }
 
 export interface ProgressProps extends CommonProps {
-  value?: number;
-  variant?: FeedbackVariant;
+  value?: number | undefined;
+  variant?: FeedbackVariant | undefined;
   /**
    * Multi-segment mode. When provided, segments render side-by-side and
    * `value` / `variant` are ignored. Each segment's `value` is a percentage
    * 0-100; the sum may be less than 100 (the remainder shows the empty track).
    */
-  segments?: ProgressSegment[];
-  size?: SmallSize;
+  segments?: ProgressSegment[] | undefined;
+  size?: SmallSize | undefined;
   /** Required: role="progressbar" is meaningless to a screen reader without a name. */
   "aria-label": string;
 }

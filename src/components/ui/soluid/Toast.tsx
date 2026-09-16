@@ -12,9 +12,9 @@ export interface ToastContainerProps extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   "children" | "aria-live" | "aria-relevant"
 > {
-  position?: ToastPosition;
+  position?: ToastPosition | undefined;
   /** Accessible label for each toast's dismiss button (default: "Dismiss") */
-  dismissLabel?: string;
+  dismissLabel?: string | undefined;
 }
 
 // Global toast store

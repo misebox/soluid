@@ -5,9 +5,9 @@ import { cls } from "./core/utils";
 export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
 export interface TooltipProps {
-  content?: string;
-  placement?: TooltipPlacement;
-  class?: string;
+  content?: string | undefined;
+  placement?: TooltipPlacement | undefined;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

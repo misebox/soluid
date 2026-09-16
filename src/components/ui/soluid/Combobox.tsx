@@ -12,7 +12,7 @@ import { VisuallyHidden } from "./VisuallyHidden";
 export interface ComboboxOption<T extends string = string> {
   value: T;
   label: string;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }
 
 /** Native input attributes minus the ones this component owns. */
@@ -22,24 +22,24 @@ type InputAttributes = Omit<
 >;
 
 export interface ComboboxControlProps<T extends string = string> extends InteractiveProps, InputAttributes {
-  value?: T;
+  value?: T | undefined;
   /** Submitted through a hidden field: the visible input shows the label, not the value */
-  name?: string;
-  onChange?: (value: T) => void;
+  name?: string | undefined;
+  onChange?: ((value: T) => void) | undefined;
   options: ComboboxOption<T>[];
-  placeholder?: string;
-  required?: boolean;
-  id?: string;
+  placeholder?: string | undefined;
+  required?: boolean | undefined;
+  id?: string | undefined;
   /** Shown when the query matches nothing (default: "No results") */
-  emptyLabel?: string;
+  emptyLabel?: string | undefined;
   /** Overrides the default case-insensitive substring match */
-  filter?: (option: ComboboxOption<T>, query: string) => boolean;
+  filter?: ((option: ComboboxOption<T>, query: string) => boolean) | undefined;
 }
 
 export interface ComboboxProps<T extends string = string> extends ComboboxControlProps<T> {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 function defaultFilter<T extends string>(option: ComboboxOption<T>, query: string): boolean {
@@ -131,7 +131,7 @@ export function ComboboxControl<T extends string = string>(props: ComboboxContro
     // Step over disabled options rather than landing on them.
     for (let i = 0; i < list.length; i++) {
       next = (next + offsetBy + list.length) % list.length;
-      if (!list[next].disabled) break;
+      if (!list[next]?.disabled) break;
     }
     setActive(next);
   }

@@ -12,12 +12,12 @@ type RadioGroupAttributes = Omit<
 >;
 
 export interface RadioGroupProps extends CommonProps {
-  value?: string;
-  onChange?: (value: string) => void;
-  name?: string;
-  label?: string;
-  error?: string;
-  hint?: string;
+  value?: string | undefined;
+  onChange?: ((value: string) => void) | undefined;
+  name?: string | undefined;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
   children: JSX.Element;
 }
 

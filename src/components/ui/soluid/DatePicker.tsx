@@ -18,26 +18,26 @@ type TriggerAttributes = Omit<
 
 export interface DatePickerControlProps extends InteractiveProps, TriggerAttributes {
   /** Selected day as `YYYY-MM-DD` */
-  value?: string;
-  onChange?: (value: string) => void;
-  min?: string;
-  max?: string;
-  weekStartsOn?: WeekStart;
-  locale?: string;
-  placeholder?: string;
-  required?: boolean;
-  id?: string;
-  name?: string;
+  value?: string | undefined;
+  onChange?: ((value: string) => void) | undefined;
+  min?: string | undefined;
+  max?: string | undefined;
+  weekStartsOn?: WeekStart | undefined;
+  locale?: string | undefined;
+  placeholder?: string | undefined;
+  required?: boolean | undefined;
+  id?: string | undefined;
+  name?: string | undefined;
   /** Formats the value for the field; defaults to the raw ISO string */
-  format?: (value: string) => string;
+  format?: ((value: string) => string) | undefined;
   /** Accessible label for the calendar panel and its grid (default: "Choose a date") */
-  openLabel?: string;
+  openLabel?: string | undefined;
 }
 
 export interface DatePickerProps extends DatePickerControlProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function DatePickerControl(props: DatePickerControlProps) {

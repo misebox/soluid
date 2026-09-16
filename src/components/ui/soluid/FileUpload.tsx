@@ -6,18 +6,18 @@ import { cls } from "./core/utils";
 export interface FileUploadProps extends CommonProps {
   onSelect: (files: File[]) => void;
   /** Accept attribute forwarded to the file input, e.g. "image/*" */
-  accept?: string;
-  multiple?: boolean;
-  disabled?: boolean;
+  accept?: string | undefined;
+  multiple?: boolean | undefined;
+  disabled?: boolean | undefined;
   /** Instruction shown inside the drop zone */
-  label?: string;
+  label?: string | undefined;
   /** Secondary text under the instruction */
-  hint?: string;
+  hint?: string | undefined;
   /** Files to list under the drop zone */
-  files?: File[];
-  onRemove?: (file: File, index: number) => void;
+  files?: File[] | undefined;
+  onRemove?: ((file: File, index: number) => void) | undefined;
   /** Accessible label for a file's remove button (default: `Remove {name}`) */
-  removeLabel?: (file: File) => string;
+  removeLabel?: ((file: File) => string) | undefined;
 }
 
 /** Renders a byte count as a short human-readable size. */

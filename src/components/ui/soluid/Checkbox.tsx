@@ -11,16 +11,16 @@ type CheckboxAttributes = Omit<
 >;
 
 export interface CheckboxProps extends CommonProps, CheckboxAttributes {
-  checked?: boolean;
-  onChange?: (checked: boolean) => void;
-  indeterminate?: boolean;
-  disabled?: boolean;
-  size?: SmallSize;
-  label?: string;
-  value?: string;
-  error?: string;
-  hint?: string;
-  children?: JSX.Element;
+  checked?: boolean | undefined;
+  onChange?: ((checked: boolean) => void) | undefined;
+  indeterminate?: boolean | undefined;
+  disabled?: boolean | undefined;
+  size?: SmallSize | undefined;
+  label?: string | undefined;
+  value?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
+  children?: JSX.Element | undefined;
 }
 
 export function Checkbox(props: CheckboxProps) {

@@ -9,22 +9,22 @@ import { cls } from "./core/utils";
  */
 export interface CalendarProps extends CommonProps {
   /** Selected day as `YYYY-MM-DD` */
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | undefined;
+  onChange?: ((value: string) => void) | undefined;
   /** Visible month as `YYYY-MM`; omit to let the calendar manage it */
-  month?: string;
-  onMonthChange?: (month: string) => void;
+  month?: string | undefined;
+  onMonthChange?: ((month: string) => void) | undefined;
   /** Earliest and latest selectable day, inclusive */
-  min?: string;
-  max?: string;
+  min?: string | undefined;
+  max?: string | undefined;
   /** First column of the week (default: 0, Sunday) */
-  weekStartsOn?: WeekStart;
+  weekStartsOn?: WeekStart | undefined;
   /** BCP 47 tag for month and weekday names (default: the browser's) */
-  locale?: string;
+  locale?: string | undefined;
   /** Accessible label for the grid */
-  label?: string;
-  previousLabel?: string;
-  nextLabel?: string;
+  label?: string | undefined;
+  previousLabel?: string | undefined;
+  nextLabel?: string | undefined;
 }
 
 const DAY_MS = 86_400_000;
@@ -38,13 +38,19 @@ function toISO(utc: number): string {
   return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
 }
 
+/** Year, month and day of an ISO string; NaN for any part the string is missing. */
+function partsOf(value: string): [number, number, number] {
+  const [year = Number.NaN, month = Number.NaN, day = Number.NaN] = value.split("-").map(Number);
+  return [year, month, day];
+}
+
 function startOfMonth(month: string): number {
-  const [year, m] = month.split("-").map(Number);
+  const [year, m] = partsOf(month);
   return Date.UTC(year, m - 1, 1);
 }
 
 function addMonths(month: string, delta: number): string {
-  const [year, m] = month.split("-").map(Number);
+  const [year, m] = partsOf(month);
   const shifted = new Date(Date.UTC(year, m - 1 + delta, 1));
   return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}`;
 }
@@ -164,25 +170,26 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   }
 
   function moveFocus(from: string, deltaDays: number): void {
-    const [y, m, d] = from.split("-").map(Number);
+    const [y, m, d] = partsOf(from);
     focusDay(toISO(Date.UTC(y, m - 1, d) + deltaDays * DAY_MS));
   }
 
   /** The same day of the month `deltaMonths` away, clamped to that month's length. */
   function moveMonth(from: string, deltaMonths: number): void {
-    const [y, m, d] = from.split("-").map(Number);
+    const [y, m, d] = partsOf(from);
     const lastDay = new Date(Date.UTC(y, m - 1 + deltaMonths + 1, 0)).getUTCDate();
     focusDay(toISO(Date.UTC(y, m - 1 + deltaMonths, Math.min(d, lastDay))));
   }
 
   function handleKeyDown(iso: string, e: KeyboardEvent): void {
     const steps: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
-    if (steps[e.key] !== undefined) {
+    const step = steps[e.key];
+    if (step !== undefined) {
       e.preventDefault();
-      moveFocus(iso, steps[e.key]);
+      moveFocus(iso, step);
     } else if (e.key === "Home" || e.key === "End") {
       e.preventDefault();
-      const [y, m, d] = iso.split("-").map(Number);
+      const [y, m, d] = partsOf(iso);
       const weekday = (new Date(Date.UTC(y, m - 1, d)).getUTCDay() - weekStart() + 7) % 7;
       moveFocus(iso, e.key === "Home" ? -weekday : 6 - weekday);
     } else if (e.key === "PageUp" || e.key === "PageDown") {

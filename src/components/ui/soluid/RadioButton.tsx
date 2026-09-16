@@ -12,9 +12,9 @@ type RadioAttributes = Omit<
 
 export interface RadioButtonProps extends CommonProps, RadioAttributes {
   value: string;
-  label?: string;
-  disabled?: boolean;
-  children?: JSX.Element;
+  label?: string | undefined;
+  disabled?: boolean | undefined;
+  children?: JSX.Element | undefined;
 }
 
 export function RadioButton(props: RadioButtonProps) {

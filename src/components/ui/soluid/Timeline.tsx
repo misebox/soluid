@@ -5,13 +5,13 @@ import { cls } from "./core/utils";
 
 export interface TimelineItem {
   title: string;
-  description?: JSX.Element;
+  description?: JSX.Element | undefined;
   /** Formatted timestamp; pass a machine-readable `dateTime` alongside it */
-  timestamp?: string;
+  timestamp?: string | undefined;
   /** ISO 8601 value for the <time> element */
-  dateTime?: string;
-  variant?: FeedbackVariant;
-  icon?: JSX.Element;
+  dateTime?: string | undefined;
+  variant?: FeedbackVariant | undefined;
+  icon?: JSX.Element | undefined;
 }
 
 export interface TimelineProps extends CommonProps {

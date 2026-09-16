@@ -13,18 +13,18 @@ type SegmentedControlAttributes = Omit<
 export interface SegmentedControlOption<T extends string = string> {
   value: T;
   label: string;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }
 
 export interface SegmentedControlProps<T extends string = string> extends CommonProps {
   value: T;
   onChange: (value: T) => void;
   options: SegmentedControlOption<T>[];
-  size?: SmallSize;
+  size?: SmallSize | undefined;
   /** Accessible label describing what is being chosen */
-  label?: string;
+  label?: string | undefined;
   /** Stretch the segments to fill the available width */
-  fullWidth?: boolean;
+  fullWidth?: boolean | undefined;
 }
 
 /**
@@ -71,8 +71,8 @@ export function SegmentedControl<T extends string = string>(
     const options = selectable();
     if (options.length === 0) return;
     const current = options.findIndex((option) => option.value === local.value);
-    const next = (current + offset + options.length) % options.length;
-    choose(options[next]);
+    const option = options[(current + offset + options.length) % options.length];
+    if (option) choose(option);
   }
 
   function handleKeyDown(e: KeyboardEvent): void {

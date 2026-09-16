@@ -4,10 +4,10 @@ import type { Align, CommonProps, Gap, Justify } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface HStackProps extends CommonProps {
-  gap?: Gap;
-  align?: Align;
-  justify?: Justify;
-  wrap?: boolean;
+  gap?: Gap | undefined;
+  align?: Align | undefined;
+  justify?: Justify | undefined;
+  wrap?: boolean | undefined;
   children: JSX.Element;
 }
 

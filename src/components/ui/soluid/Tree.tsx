@@ -6,8 +6,8 @@ import { cls } from "./core/utils";
 export interface TreeNode {
   id: string;
   label: string;
-  children?: TreeNode[];
-  disabled?: boolean;
+  children?: TreeNode[] | undefined;
+  disabled?: boolean | undefined;
 }
 
 export interface TreeProps extends CommonProps {
@@ -15,10 +15,10 @@ export interface TreeProps extends CommonProps {
   /** Ids of the expanded branches */
   expanded: string[];
   onExpandedChange: (expanded: string[]) => void;
-  selected?: string;
-  onSelect?: (id: string) => void;
+  selected?: string | undefined;
+  onSelect?: ((id: string) => void) | undefined;
   /** Accessible label for the tree */
-  label?: string;
+  label?: string | undefined;
 }
 
 /** The rows on screen in order, with the depth each renders at. */
@@ -84,8 +84,9 @@ export function Tree(props: TreeProps & Omit<JSX.HTMLAttributes<HTMLUListElement
   function focusRow(index: number, step: 1 | -1): void {
     const rows = visible();
     for (let i = index; i >= 0 && i < rows.length; i += step) {
-      if (rows[i].disabled) continue;
-      document.getElementById(rowId(rows[i].id))?.focus();
+      const row = rows[i];
+      if (row === undefined || row.disabled) continue;
+      document.getElementById(rowId(row.id))?.focus();
       return;
     }
   }
@@ -116,7 +117,8 @@ export function Tree(props: TreeProps & Omit<JSX.HTMLAttributes<HTMLUListElement
         // Walk back to the nearest shallower row: the parent.
         const level = levelOf(node);
         for (let i = index - 1; i >= 0; i--) {
-          if (levelOf(rows[i]) < level) {
+          const row = rows[i];
+          if (row !== undefined && levelOf(row) < level) {
             focusRow(i, -1);
             break;
           }

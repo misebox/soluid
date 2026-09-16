@@ -7,21 +7,21 @@ const EXIT_DURATION = 150;
 export interface Toast {
   id: string;
   message: string;
-  variant?: FeedbackVariant;
-  duration?: number;
-  dismissing?: boolean;
+  variant?: FeedbackVariant | undefined;
+  duration?: number | undefined;
+  dismissing?: boolean | undefined;
 }
 
 export interface ToastOptions {
   /** Default auto-dismiss duration in ms (default: 5000) */
-  defaultDuration?: number;
+  defaultDuration?: number | undefined;
 }
 
 export interface ToastInput {
   message: string;
-  variant?: FeedbackVariant;
+  variant?: FeedbackVariant | undefined;
   /** Duration in ms. Set to 0 to disable auto-dismiss. */
-  duration?: number;
+  duration?: number | undefined;
 }
 
 export interface ToastReturn {

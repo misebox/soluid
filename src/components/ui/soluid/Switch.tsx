@@ -11,14 +11,14 @@ type SwitchAttributes = Omit<
 >;
 
 export interface SwitchProps extends CommonProps, SwitchAttributes {
-  checked?: boolean;
-  onChange?: (checked: boolean) => void;
-  disabled?: boolean;
-  size?: SmallSize;
-  label?: string;
-  error?: string;
-  hint?: string;
-  children?: JSX.Element;
+  checked?: boolean | undefined;
+  onChange?: ((checked: boolean) => void) | undefined;
+  disabled?: boolean | undefined;
+  size?: SmallSize | undefined;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
+  children?: JSX.Element | undefined;
 }
 
 export function Switch(props: SwitchProps) {

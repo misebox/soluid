@@ -11,15 +11,15 @@ type InputAttributes = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" |
 export type TextFieldType = "text" | "email" | "password" | "url" | "tel" | "search" | "number" | "date";
 
 export interface TextFieldInputProps extends InteractiveProps, InputAttributes {
-  value?: string;
-  onInput?: (value: string) => void;
-  type?: TextFieldType;
+  value?: string | undefined;
+  onInput?: ((value: string) => void) | undefined;
+  type?: TextFieldType | undefined;
 }
 
 export interface TextFieldProps extends TextFieldInputProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function TextFieldInput(props: TextFieldInputProps) {

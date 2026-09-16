@@ -5,14 +5,14 @@ import { cls, mergeStyle } from "./core/utils";
 
 export interface GridProps extends CommonProps {
   /** Fixed column count. Ignored when `minItemWidth` is set. */
-  columns?: GridColumns;
+  columns?: GridColumns | undefined;
   /**
    * Responsive mode: fit as many columns as possible, each at least this wide
    * (any CSS length, e.g. "16rem"). Takes precedence over `columns`.
    */
-  minItemWidth?: string;
-  gap?: Gap;
-  align?: Align;
+  minItemWidth?: string | undefined;
+  gap?: Gap | undefined;
+  align?: Align | undefined;
   children: JSX.Element;
 }
 

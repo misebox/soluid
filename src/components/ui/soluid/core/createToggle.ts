@@ -3,11 +3,11 @@ import type { Accessor } from "solid-js";
 
 export interface ToggleOptions {
   /** Initial pressed state (uncontrolled) */
-  defaultPressed?: boolean;
+  defaultPressed?: boolean | undefined;
   /** Controlled pressed state; while it yields undefined the internal state applies */
-  pressed?: Accessor<boolean | undefined>;
+  pressed?: Accessor<boolean | undefined> | undefined;
   /** Called when pressed state changes */
-  onPressedChange?: (pressed: boolean) => void;
+  onPressedChange?: ((pressed: boolean) => void) | undefined;
 }
 
 export interface ToggleReturn {

@@ -4,11 +4,11 @@ import type { CommonProps, FeedbackVariant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface AlertProps extends CommonProps {
-  variant?: FeedbackVariant;
+  variant?: FeedbackVariant | undefined;
   children: JSX.Element;
-  onDismiss?: () => void;
+  onDismiss?: (() => void) | undefined;
   /** Accessible label for the dismiss button (default: "Dismiss") */
-  dismissLabel?: string;
+  dismissLabel?: string | undefined;
 }
 
 export function Alert(props: AlertProps & Omit<JSX.HTMLAttributes<HTMLDivElement>, "role">) {

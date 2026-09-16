@@ -8,13 +8,13 @@ export type LinkUnderline = "always" | "hover" | "none";
 export type LinkTone = "primary" | "neutral" | "danger";
 
 export interface LinkProps extends CommonProps {
-  href?: string;
+  href?: string | undefined;
   /** Open in a new tab, with the matching rel and an announced hint */
-  external?: boolean;
+  external?: boolean | undefined;
   /** Text appended for screen readers on external links */
-  externalLabel?: string;
-  underline?: LinkUnderline;
-  tone?: LinkTone;
+  externalLabel?: string | undefined;
+  underline?: LinkUnderline | undefined;
+  tone?: LinkTone | undefined;
   children: JSX.Element;
 }
 

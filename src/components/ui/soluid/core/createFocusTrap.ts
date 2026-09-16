@@ -22,7 +22,7 @@ export interface FocusTrapOptions {
   /** Whether the trap is active */
   isActive: Accessor<boolean>;
   /** Called when Escape is pressed */
-  onClose?: () => void;
+  onClose?: (() => void) | undefined;
 }
 
 /** Open traps, oldest first. Tab is steered by the last one only. */
@@ -33,8 +33,8 @@ interface EscapeOwner {
   /** Opening order; a higher number sits on top. */
   layer: number;
   /** The overlay itself, and whatever opened it. */
-  panel?: HTMLElement;
-  anchor?: HTMLElement;
+  panel?: HTMLElement | undefined;
+  anchor?: HTMLElement | undefined;
 }
 
 /**
@@ -111,9 +111,9 @@ export function createFocusTrap(options: FocusTrapOptions): void {
   const id = createUniqueId();
 
   function focusFirst(container: HTMLElement): void {
-    const focusable = getFocusableElements(container);
-    if (focusable.length > 0) {
-      focusable[0].focus();
+    const first = getFocusableElements(container)[0];
+    if (first) {
+      first.focus();
       return;
     }
     // An overlay with nothing to focus still has to take focus, or the reader
@@ -171,13 +171,12 @@ export function createFocusTrap(options: FocusTrapOptions): void {
     if (escapeOwners.some((owner) => owner.id !== id && owner.panel?.contains(active) === true)) return;
 
     const focusable = getFocusableElements(container);
-    if (focusable.length === 0) {
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (first === undefined || last === undefined) {
       e.preventDefault();
       return;
     }
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
 
     // Focus can sit outside the overlay — a click on the backdrop, or a trap
     // that opened with nothing focusable. Tab has to pull it back in rather

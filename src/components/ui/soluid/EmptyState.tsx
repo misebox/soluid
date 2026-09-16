@@ -5,9 +5,9 @@ import { cls } from "./core/utils";
 
 export interface EmptyStateProps extends CommonProps {
   title: string;
-  description?: string;
-  icon?: JSX.Element;
-  action?: JSX.Element;
+  description?: string | undefined;
+  icon?: JSX.Element | undefined;
+  action?: JSX.Element | undefined;
 }
 
 // title is omitted because EmptyStateProps uses it for the heading, not the tooltip.

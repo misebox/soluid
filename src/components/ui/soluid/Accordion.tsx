@@ -9,9 +9,9 @@ export interface AccordionProps extends CommonProps {
 
 export interface AccordionItemProps {
   title: string;
-  open?: boolean;
-  disabled?: boolean;
-  class?: string;
+  open?: boolean | undefined;
+  disabled?: boolean | undefined;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

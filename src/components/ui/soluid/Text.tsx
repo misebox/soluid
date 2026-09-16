@@ -11,14 +11,14 @@ export type TextTone = "default" | "muted" | "primary" | "danger" | "success" | 
 
 export interface TextProps extends CommonProps {
   /** Element to render (default: "p") */
-  as?: TextElement;
-  size?: TextSize;
-  weight?: TextWeight;
+  as?: TextElement | undefined;
+  size?: TextSize | undefined;
+  weight?: TextWeight | undefined;
   /** Colour role (default: "default") */
-  tone?: TextTone;
-  align?: TextAlign;
+  tone?: TextTone | undefined;
+  align?: TextAlign | undefined;
   /** Clamp to a single line with an ellipsis */
-  truncate?: boolean;
+  truncate?: boolean | undefined;
   children: JSX.Element;
 }
 

@@ -4,7 +4,7 @@ import type { CommonProps, Orientation } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface DividerProps extends CommonProps {
-  orientation?: Orientation;
+  orientation?: Orientation | undefined;
 }
 
 export function Divider(props: DividerProps & JSX.HTMLAttributes<HTMLHRElement>) {

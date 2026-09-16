@@ -20,9 +20,9 @@ export type HeadingSize = "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
 export interface HeadingProps extends CommonProps {
   /** Document outline level, rendered as h1-h6 (default: 2) */
-  level?: HeadingLevel;
+  level?: HeadingLevel | undefined;
   /** Visual size, decoupled from `level` so the outline stays correct */
-  size?: HeadingSize;
+  size?: HeadingSize | undefined;
   children: JSX.Element;
 }
 

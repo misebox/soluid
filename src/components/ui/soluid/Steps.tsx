@@ -6,18 +6,18 @@ import { VisuallyHidden } from "./VisuallyHidden";
 
 export interface Step {
   label: string;
-  description?: string;
+  description?: string | undefined;
 }
 
 export interface StepsProps extends CommonProps {
   steps: Step[];
   /** Zero-based index of the active step */
   current: number;
-  orientation?: Orientation;
+  orientation?: Orientation | undefined;
   /** Accessible label for the step list */
-  label?: string;
+  label?: string | undefined;
   /** Text announced for steps before the current one (default: "completed") */
-  completedLabel?: string;
+  completedLabel?: string | undefined;
 }
 
 export function Steps(props: StepsProps & JSX.HTMLAttributes<HTMLElement>) {

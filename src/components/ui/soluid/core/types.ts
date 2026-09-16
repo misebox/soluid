@@ -38,17 +38,17 @@ export type WeekStart = 0 | 1;
 // --- Common Props ---
 
 export interface CommonProps {
-  class?: string;
-  density?: Density;
+  class?: string | undefined;
+  density?: Density | undefined;
 }
 
 export interface InteractiveProps extends CommonProps {
-  disabled?: boolean;
-  size?: Size;
+  disabled?: boolean | undefined;
+  size?: Size | undefined;
 }
 
 export interface VariantProps<V extends string = Variant> extends InteractiveProps {
-  variant?: V;
+  variant?: V | undefined;
 }
 
 // --- Theme ---

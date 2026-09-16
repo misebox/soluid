@@ -34,27 +34,27 @@ type DialogAttributes = Omit<
 export interface DialogProps extends CommonProps {
   open: boolean;
   onClose: () => void;
-  size?: Size;
+  size?: Size | undefined;
   children: JSX.Element;
 }
 
 export interface DialogHeaderProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface DialogBodyProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface DialogFooterProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 
 export interface DialogDescriptionProps {
-  class?: string;
+  class?: string | undefined;
   children: JSX.Element;
 }
 

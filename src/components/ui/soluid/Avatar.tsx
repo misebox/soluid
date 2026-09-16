@@ -5,11 +5,11 @@ import type { Size, Variant } from "./core/types";
 import { cls } from "./core/utils";
 
 export interface AvatarProps extends CommonProps {
-  src?: string;
-  alt?: string;
-  name?: string;
-  size?: Size;
-  variant?: Variant;
+  src?: string | undefined;
+  alt?: string | undefined;
+  name?: string | undefined;
+  size?: Size | undefined;
+  variant?: Variant | undefined;
 }
 
 function getInitials(name: string): string {

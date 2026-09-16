@@ -8,10 +8,10 @@ import type { FormFieldContextValue } from "./FormFieldContext";
 export interface FormFieldProps extends CommonProps {
   label: string;
   /** Id of the control the label points at; generated when omitted */
-  id?: string;
-  error?: string;
-  hint?: string;
-  required?: boolean;
+  id?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
+  required?: boolean | undefined;
   children: JSX.Element;
 }
 

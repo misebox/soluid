@@ -7,7 +7,7 @@ export type DescriptionListColumns = 1 | 2;
 
 export interface DescriptionListProps extends CommonProps {
   items: Array<{ term: string; description: JSX.Element }>;
-  columns?: DescriptionListColumns;
+  columns?: DescriptionListColumns | undefined;
 }
 
 export function DescriptionList(props: DescriptionListProps & JSX.HTMLAttributes<HTMLDListElement>) {

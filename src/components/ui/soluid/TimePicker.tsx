@@ -17,32 +17,32 @@ type TriggerAttributes = Omit<
 
 /** Times are `HH:MM` on a 24-hour clock, matching `<input type="time">`. */
 export interface TimePickerControlProps extends InteractiveProps, TriggerAttributes {
-  value?: string;
+  value?: string | undefined;
   /** Submitted through a visually hidden text input, since the trigger is a button; `required` applies to it */
-  name?: string;
-  onChange?: (value: string) => void;
+  name?: string | undefined;
+  onChange?: ((value: string) => void) | undefined;
   /** Minutes between offered times (default: 30) */
-  step?: number;
+  step?: number | undefined;
   /** Earliest and latest offered time, inclusive */
-  min?: string;
-  max?: string;
-  placeholder?: string;
-  required?: boolean;
-  id?: string;
+  min?: string | undefined;
+  max?: string | undefined;
+  placeholder?: string | undefined;
+  required?: boolean | undefined;
+  id?: string | undefined;
   /** Formats an option for display; defaults to the raw `HH:MM` */
-  format?: (value: string) => string;
+  format?: ((value: string) => string) | undefined;
   /** Accessible label for the list of times */
-  listLabel?: string;
+  listLabel?: string | undefined;
 }
 
 export interface TimePickerProps extends TimePickerControlProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 function toMinutes(time: string): number {
-  const [hours, minutes] = time.split(":").map(Number);
+  const [hours = Number.NaN, minutes = Number.NaN] = time.split(":").map(Number);
   return hours * 60 + minutes;
 }
 

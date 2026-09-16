@@ -32,28 +32,28 @@ type TriggerAttributes = Omit<
 
 /** Colours are `#rrggbb`, the form `<input type="color">` accepts. */
 export interface ColorPickerControlProps extends InteractiveProps, TriggerAttributes {
-  value?: string;
+  value?: string | undefined;
   /** Submitted through a visually hidden text input, since the trigger is a button; `required` applies to it */
-  name?: string;
-  onChange?: (value: string) => void;
+  name?: string | undefined;
+  onChange?: ((value: string) => void) | undefined;
   /** Preset colours offered in the panel */
-  swatches?: string[];
-  required?: boolean;
-  id?: string;
+  swatches?: string[] | undefined;
+  required?: boolean | undefined;
+  id?: string | undefined;
   /** Accessible label for the panel */
-  panelLabel?: string;
+  panelLabel?: string | undefined;
   /** Accessible label for a preset, given its hex value */
-  swatchLabel?: (color: string) => string;
+  swatchLabel?: ((color: string) => string) | undefined;
   /** Label for the native colour input inside the panel */
-  customLabel?: string;
+  customLabel?: string | undefined;
   /** Label for the hex text field inside the panel */
-  hexLabel?: string;
+  hexLabel?: string | undefined;
 }
 
 export interface ColorPickerProps extends ColorPickerControlProps {
-  label?: string;
-  error?: string;
-  hint?: string;
+  label?: string | undefined;
+  error?: string | undefined;
+  hint?: string | undefined;
 }
 
 export function ColorPickerControl(props: ColorPickerControlProps) {

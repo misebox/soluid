@@ -13,7 +13,7 @@ export interface ContextMenuProps extends CommonProps {
   /** Menu body — compose from MenuItem and MenuSeparator */
   content: JSX.Element;
   /** Accessible label for the menu */
-  label?: string;
+  label?: string | undefined;
   /** Region that responds to a right-click */
   children: JSX.Element;
 }
@@ -102,16 +102,16 @@ export function ContextMenu(props: ContextMenuProps & Omit<JSX.HTMLAttributes<HT
       close();
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      items[index < items.length - 1 ? index + 1 : 0].focus();
+      items[index < items.length - 1 ? index + 1 : 0]?.focus();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      items[index > 0 ? index - 1 : items.length - 1].focus();
+      items[index > 0 ? index - 1 : items.length - 1]?.focus();
     } else if (e.key === "Home") {
       e.preventDefault();
-      items[0].focus();
+      items[0]?.focus();
     } else if (e.key === "End") {
       e.preventDefault();
-      items[items.length - 1].focus();
+      items.at(-1)?.focus();
     }
   }
 
