@@ -251,11 +251,18 @@ async function installNpmDependencies(npmDeps: string[], cwd: string, interactiv
 }
 
 interface InstallOptions {
-  interactive?: boolean;
+  interactive?: boolean | undefined;
   /** Overwrite locally changed files, and skip every prompt. */
-  force?: boolean;
+  force?: boolean | undefined;
   /** Install this release instead of the one in the config; recorded once it succeeds. */
-  version?: string;
+  version?: string | undefined;
+}
+
+/** The archive paths of one registry entry. An unknown name is a broken config, not a crash. */
+function filesOf(name: string): string[] {
+  const entry = registry[name];
+  if (!entry) throw new Error(`Unknown component in registry lookup: ${name}`);
+  return entry.files;
 }
 
 /** Relative import specifiers in `source`, resolved to archive paths. */
@@ -263,7 +270,9 @@ function importsOf(source: string, file: string): string[] {
   const dir = path.posix.dirname(file);
   const targets: string[] = [];
   for (const match of source.matchAll(/from\s+["'](\.[^"']*)["']/g)) {
-    const resolved = path.posix.normalize(path.posix.join(dir, match[1]));
+    const specifier = match[1];
+    if (specifier === undefined) continue;
+    const resolved = path.posix.normalize(path.posix.join(dir, specifier));
     targets.push(...[".ts", ".tsx"].map((extension) => resolved + extension));
   }
   return targets;
@@ -280,9 +289,10 @@ function packagesImportedBy(archive: Map<string, string>, writing: string[]): st
     if (!file.endsWith(".ts") && !file.endsWith(".tsx")) continue;
     for (const match of (archive.get(file) ?? "").matchAll(/from\s+["']([^."'][^"']*)["']/g)) {
       const specifier = match[1];
+      if (specifier === undefined) continue;
       if (specifier === "solid-js" || specifier.startsWith("solid-js/")) continue;
       const parts = specifier.split("/");
-      packages.add(specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0]);
+      packages.add(specifier.startsWith("@") ? parts.slice(0, 2).join("/") : (parts[0] ?? specifier));
     }
   }
   return [...packages];
@@ -297,7 +307,7 @@ function packagesImportedBy(archive: Map<string, string>, writing: string[]): st
  * would write are checked.
  */
 function checkDrift(archive: Map<string, string>, resolved: string[], version: string): void {
-  const writing = resolved.flatMap((name) => registry[name].files);
+  const writing = resolved.flatMap(filesOf);
 
   const missing = writing.filter((file) => !archive.has(file));
   if (missing.length > 0) {
@@ -370,13 +380,7 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
   // The union covers both directions of drift: a package this CLI knows about
   // and one only the release's own imports reveal.
   const npmDeps = [
-    ...new Set([
-      ...collectNpmDeps(resolved),
-      ...packagesImportedBy(
-        archive,
-        resolved.flatMap((name) => registry[name].files),
-      ),
-    ]),
+    ...new Set([...collectNpmDeps(resolved), ...packagesImportedBy(archive, resolved.flatMap(filesOf))]),
   ].sort();
 
   const targetRoot = path.resolve(cwd, config.componentDir);
@@ -411,7 +415,7 @@ export async function install(cwd: string, options: InstallOptions = {}): Promis
 
   // Files of components dropped from the config are the user's now; say so
   // rather than deleting them.
-  const wanted = new Set(resolved.flatMap((name) => registry[name].files.map(stripPrefix)));
+  const wanted = new Set(resolved.flatMap((name) => filesOf(name).map(stripPrefix)));
   const stale = Object.values(registry)
     .flatMap((entry) => entry.files.map(stripPrefix))
     .filter((file) => !wanted.has(file) && !file.endsWith(".css") && fs.existsSync(path.join(targetRoot, file)));
