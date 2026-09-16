@@ -7,6 +7,13 @@ Components and the CLI are released separately, so they are listed separately.
 
 ## Components
 
+### Unreleased
+
+#### Fixed
+
+- The components did not compile in a project using `exactOptionalPropertyTypes`. An optional prop written `disabled?: boolean` is not identical to the `disabled?: boolean | undefined` of the JSX attribute type it extends, so the interfaces collided, and passing a possibly-undefined value to any optional prop was an error. Every optional property now declares `| undefined`.
+- Array and record lookups in `Menu`, `ContextMenu`, `Tabs`, `Combobox`, `CommandPalette`, `Tree`, `PinInput`, `SegmentedControl`, `Calendar`, `TimePicker` and the focus trap were indexed without a guard, so the components did not compile under `noUncheckedIndexedAccess`. Behaviour is unchanged.
+
 ### components-v0.2.14 — 2026-09-03
 
 #### Fixed

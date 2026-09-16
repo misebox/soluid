@@ -4,6 +4,7 @@ import type { JSX } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, describe, expect, it } from "vitest";
 import { Dialog, DialogBody, DialogHeader } from "../components/ui/soluid/Dialog";
+import { nth } from "./support";
 
 /**
  * Behaviour a modal owes the page around it: hold the scroll, take focus, give
@@ -174,7 +175,7 @@ describe("Tab", () => {
     await settle();
 
     const buttons = document.querySelectorAll<HTMLElement>(".so-dialog button");
-    buttons[buttons.length - 1].focus();
+    nth(buttons, buttons.length - 1).focus();
     press("Tab");
 
     expect(document.activeElement?.textContent).toBe("first");

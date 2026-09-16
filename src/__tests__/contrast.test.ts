@@ -15,9 +15,18 @@ function tokensOf(selector: string): Record<string, string> {
 }
 
 function relativeLuminance(hex: string): number {
-  const channels = [1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16) / 255);
-  const [r, g, b] = channels.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  const channel = (offset: number) => {
+    const v = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(1) + 0.7152 * channel(3) + 0.0722 * channel(5);
+}
+
+/** A token the test needs; an absent one means the CSS moved, so say which. */
+function hex(tokens: Record<string, string>, name: string): string {
+  const value = tokens[name];
+  if (value === undefined) throw new Error(`${name} is not a literal hex token`);
+  return value;
 }
 
 function contrast(a: string, b: string): number {
@@ -35,24 +44,24 @@ for (const [theme, tokens] of [
 ] as const) {
   it(`${theme}: a control boundary is distinguishable from both backgrounds`, () => {
     // WCAG 1.4.11: the boundary that identifies a control needs 3:1.
-    expect(contrast(tokens["--so-border-control"], tokens["--so-bg"])).toBeGreaterThanOrEqual(3);
-    expect(contrast(tokens["--so-border-control"], tokens["--so-bg-subtle"])).toBeGreaterThanOrEqual(3);
+    expect(contrast(hex(tokens, "--so-border-control"), hex(tokens, "--so-bg"))).toBeGreaterThanOrEqual(3);
+    expect(contrast(hex(tokens, "--so-border-control"), hex(tokens, "--so-bg-subtle"))).toBeGreaterThanOrEqual(3);
   });
 
   it(`${theme}: body and muted text are readable on both backgrounds`, () => {
     for (const text of ["--so-text", "--so-text-muted"]) {
-      expect(contrast(tokens[text], tokens["--so-bg"])).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(tokens[text], tokens["--so-bg-subtle"])).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(hex(tokens, text), hex(tokens, "--so-bg"))).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(hex(tokens, text), hex(tokens, "--so-bg-subtle"))).toBeGreaterThanOrEqual(4.5);
     }
   });
 
   it(`${theme}: the focus ring stands out from the page`, () => {
-    expect(contrast(tokens["--so-color-primary-base"], tokens["--so-bg"])).toBeGreaterThanOrEqual(3);
+    expect(contrast(hex(tokens, "--so-color-primary-base"), hex(tokens, "--so-bg"))).toBeGreaterThanOrEqual(3);
   });
 
   it(`${theme}: white text is readable on every solid fill`, () => {
     for (const role of ["primary", "neutral", "danger", "success", "warning", "info"]) {
-      const base = tokens[`--so-color-${role}-base`];
+      const base = hex(tokens, `--so-color-${role}-base`);
       expect(contrast("#ffffff", base), role).toBeGreaterThanOrEqual(4.5);
     }
   });

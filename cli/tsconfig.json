@@ -4,6 +4,8 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "../dist",

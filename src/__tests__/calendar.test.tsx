@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 import { render } from "solid-js/web";
 import { afterEach, expect, it } from "vitest";
 import { Calendar } from "../components/ui/soluid/Calendar";
+import { nth } from "./support";
 
 let dispose: (() => void) | undefined;
 let host: HTMLElement | undefined;
@@ -33,7 +34,7 @@ it("moves focus within its own grid when another calendar shows the same month",
     </>
   ));
 
-  const second = root.querySelectorAll(".so-calendar")[1];
+  const second = nth(root.querySelectorAll(".so-calendar"), 1);
   const day = second.querySelector<HTMLButtonElement>('[data-so-day="2026-05-10"]');
   day?.focus();
   press(day as Element, "ArrowRight");

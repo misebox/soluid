@@ -168,7 +168,9 @@ function TrendChart(props: { data: { label: string; value: number }[] }) {
       <polyline class="dash-chart__line" points={points()} />
 
       {/* Only the latest point is marked: it is the figure quoted on the left. */}
-      <circle class="dash-chart__dot" cx={x(last())} cy={y(props.data[last()].value)} r="4" />
+      <Show when={props.data[last()]}>
+        {(latest) => <circle class="dash-chart__dot" cx={x(last())} cy={y(latest().value)} r="4" />}
+      </Show>
 
       <For each={props.data}>
         {(d, i) => (

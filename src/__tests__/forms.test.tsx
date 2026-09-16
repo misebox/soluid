@@ -11,6 +11,7 @@ import type { PinInputProps } from "../components/ui/soluid/PinInput";
 import { SearchField } from "../components/ui/soluid/SearchField";
 import { Switch } from "../components/ui/soluid/Switch";
 import { TextField } from "../components/ui/soluid/TextField";
+import { nth } from "./support";
 
 let dispose: (() => void) | undefined;
 let host: HTMLElement | undefined;
@@ -53,7 +54,7 @@ function mountPin(initial: string[], extra: Partial<PinInputProps> = {}) {
 
 it("PinInput keeps focus in the box cleared by Backspace", () => {
   const { value, boxes } = mountPin(["1", "2", "", ""]);
-  const box = boxes()[1];
+  const box = nth(boxes(), 1);
   box.focus();
 
   press(box, "Backspace");
@@ -66,10 +67,10 @@ it("PinInput keeps each box bound to its position after a paste", () => {
   const { value, boxes } = mountPin(["2", "", "", ""]);
   const paste = new Event("paste", { bubbles: true, cancelable: true });
   Object.defineProperty(paste, "clipboardData", { value: { getData: () => "12" } });
-  boxes()[0].dispatchEvent(paste);
+  nth(boxes(), 0).dispatchEvent(paste);
   expect(value()).toEqual(["1", "2", "", ""]);
 
-  type(boxes()[1], "9");
+  type(nth(boxes(), 1), "9");
 
   expect(value()).toEqual(["1", "9", "", ""]);
 });
@@ -78,7 +79,7 @@ it("PinInput does not re-fire onComplete for a rejected character", () => {
   const onComplete = vi.fn();
   const { boxes } = mountPin(["1", "2", "3", "4"], { onComplete });
 
-  type(boxes()[0], "a");
+  type(nth(boxes(), 0), "a");
 
   expect(onComplete).not.toHaveBeenCalled();
 });
@@ -86,7 +87,7 @@ it("PinInput does not re-fire onComplete for a rejected character", () => {
 it("PinInput spreads a whole code arriving in one input event across the boxes", () => {
   const { value, boxes } = mountPin(["", "", "", "", "", ""]);
 
-  type(boxes()[0], "123456");
+  type(nth(boxes(), 0), "123456");
 
   expect(value()).toEqual(["1", "2", "3", "4", "5", "6"]);
 });
@@ -94,7 +95,7 @@ it("PinInput spreads a whole code arriving in one input event across the boxes",
 it("PinInput clears a box whose character was deleted", () => {
   const { value, boxes } = mountPin(["1", "2", "", ""]);
 
-  type(boxes()[0], "");
+  type(nth(boxes(), 0), "");
 
   expect(value()).toEqual(["", "2", "", ""]);
 });
@@ -202,7 +203,7 @@ it("FileUpload passes a single file from a drop when multiple is off", () => {
 
   q(".so-file-upload__zone").dispatchEvent(drop);
 
-  expect(onSelect.mock.calls[0][0]).toHaveLength(1);
+  expect(nth(nth(onSelect.mock.calls, 0), 0)).toHaveLength(1);
 });
 
 it("FileUpload refuses a drop while disabled", () => {

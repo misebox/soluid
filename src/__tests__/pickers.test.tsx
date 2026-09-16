@@ -12,6 +12,7 @@ import { Rating } from "../components/ui/soluid/Rating";
 import { SegmentedControl } from "../components/ui/soluid/SegmentedControl";
 import { Select } from "../components/ui/soluid/Select";
 import { TimePickerControl } from "../components/ui/soluid/TimePicker";
+import { nth } from "./support";
 
 // A zone east of UTC, where the local date runs ahead of the UTC one.
 process.env.TZ = "Asia/Tokyo";
@@ -174,7 +175,8 @@ it("TimePicker drops its list when focus leaves via Tab", () => {
 it("SegmentedControl moves focus along with the selection", () => {
   const [value, setValue] = createSignal("a");
   const root = mount(() => <SegmentedControl options={letters} value={value()} onChange={setValue} />);
-  const [first, second] = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+  const radios = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+  const [first, second] = [nth(radios, 0), nth(radios, 1)];
   first.focus();
 
   press(first, "ArrowRight");
@@ -187,7 +189,7 @@ it("Rating moves focus along with the selection", () => {
   const [value, setValue] = createSignal(2);
   const root = mount(() => <Rating value={value()} onChange={setValue} />);
   const stars = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
-  stars[1].focus();
+  nth(stars, 1).focus();
 
   press(stars[1], "ArrowRight");
 

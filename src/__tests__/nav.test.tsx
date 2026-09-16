@@ -9,6 +9,7 @@ import { SegmentedControl } from "../components/ui/soluid/SegmentedControl";
 import { Tab, TabList, TabPanel, Tabs } from "../components/ui/soluid/Tabs";
 import { Tree } from "../components/ui/soluid/Tree";
 import type { TreeNode } from "../components/ui/soluid/Tree";
+import { nth } from "./support";
 
 // jsdom has neither; the Carousel needs both to mount.
 (globalThis as { ResizeObserver?: unknown }).ResizeObserver = class {
@@ -112,7 +113,7 @@ it("Tree keeps focus in its own rows when another tree uses the same ids", () =>
       <Tree nodes={nodes} expanded={[]} onExpandedChange={() => {}} />
     </>
   ));
-  const second = root.querySelectorAll(".so-tree")[1];
+  const second = nth(root.querySelectorAll(".so-tree"), 1);
   const a = row(second, "A");
   a?.focus();
 
@@ -254,9 +255,9 @@ it("Tabs ArrowLeft from the first tab wraps to the last", () => {
     </Tabs>
   ));
   const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-  tabs[0].focus();
+  nth(tabs, 0).focus();
 
-  press(tabs[0], "ArrowLeft");
+  press(nth(tabs, 0), "ArrowLeft");
 
   expect(document.activeElement).toBe(tabs[2]);
   expect(value()).toBe("c");
@@ -276,9 +277,9 @@ it("Tabs arrow keys step over a disabled tab", () => {
     </Tabs>
   ));
   const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-  tabs[0].focus();
+  nth(tabs, 0).focus();
 
-  press(tabs[0], "ArrowRight");
+  press(nth(tabs, 0), "ArrowRight");
 
   expect(document.activeElement).toBe(tabs[2]);
   expect(value()).toBe("c");
@@ -288,7 +289,7 @@ it("Pagination disables Next on the last page", () => {
   const root = mount(() => <Pagination page={5} totalPages={5} onChange={() => {}} />);
   const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>(".so-pagination__button"));
 
-  expect(buttons[buttons.length - 1].disabled).toBe(true);
+  expect(nth(buttons, buttons.length - 1).disabled).toBe(true);
 });
 
 it("Tree puts its tab stop on the first row the keyboard can reach", () => {

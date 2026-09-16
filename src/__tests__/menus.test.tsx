@@ -11,6 +11,7 @@ import { Dialog, DialogBody, DialogHeader } from "../components/ui/soluid/Dialog
 import { Drawer } from "../components/ui/soluid/Drawer";
 import { Menu, MenuItem } from "../components/ui/soluid/Menu";
 import { Popover } from "../components/ui/soluid/Popover";
+import { nth } from "./support";
 
 if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
 
@@ -480,7 +481,7 @@ it("Menu ArrowDown wraps from the last item to the first", async () => {
   ));
   await settle();
   const items = [...document.querySelectorAll<HTMLElement>('[role="menuitem"]')];
-  items[items.length - 1].focus();
+  nth(items, items.length - 1).focus();
 
   keydown(document, "ArrowDown");
 
