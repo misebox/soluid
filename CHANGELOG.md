@@ -174,6 +174,13 @@ Components and the CLI are released separately, so they are listed separately.
 
 ## CLI
 
+### Unreleased
+
+#### Fixed
+
+- `install` looked for a lockfile only beside the config, so in a workspace member — which holds none — it fell back to `npm install`. npm cannot resolve the `catalog:` and `workspace:*` specifiers a Bun or pnpm workspace puts in its members' dependencies, so the dependency install failed after the components had already been written. The search now walks up to the root that holds the lockfile, and with no lockfile anywhere it follows the manager that launched it rather than assuming npm.
+- Regex captures and registry lookups in `install` were indexed without a guard; a name missing from the registry now reports itself instead of failing on `undefined`.
+
 ### v0.2.11 — 2026-09-03
 
 #### Fixed

@@ -262,3 +262,56 @@ test("npm packages are taken from the release, not only from this CLI's registry
   expect(logs.join("\n")).toContain("@solid-primitives/scheduled");
   expect(packageManagerRuns.join(" ")).toContain("@solid-primitives/scheduled");
 });
+
+describe("package manager detection", () => {
+  /** A dependency the project does not have yet, so an install is actually attempted. */
+  async function installNeedingADep(cwd: string) {
+    stubArchiveFetch(
+      await makeArchive(
+        fixtureFor(["core", "Button"], {
+          "soluid/core/createToast.ts":
+            'import { debounce } from "@solid-primitives/scheduled";\nexport const t = debounce;\n',
+        }),
+      ),
+    );
+    await install(cwd, { interactive: false });
+  }
+
+  test("a workspace member uses the manager of the root holding the lockfile", async () => {
+    // Members carry no lockfile, and npm cannot resolve the `catalog:` specifiers
+    // a Bun workspace puts in their dependencies.
+    const member = path.join(proj, "packages/web");
+    fs.mkdirSync(member, { recursive: true });
+    fs.writeFileSync(path.join(proj, "bun.lock"), "");
+    const root = proj;
+    proj = member;
+    writeConfig(["Button"]);
+    fs.writeFileSync(path.join(member, "package.json"), JSON.stringify({ dependencies: {} }));
+
+    await installNeedingADep(member);
+    proj = root;
+
+    expect(packageManagerRuns.join(" ")).toContain("bun add @solid-primitives/scheduled");
+    expect(logs.join("\n")).toContain("bun.lock");
+  });
+
+  test("with no lockfile anywhere the manager that launched the install is used", async () => {
+    vi.stubEnv("npm_config_user_agent", "bun/1.3.14 npm/? node/v24.0.0 darwin arm64");
+    writeConfig(["Button"]);
+    fs.writeFileSync(path.join(proj, "package.json"), JSON.stringify({ dependencies: {} }));
+
+    await installNeedingADep(proj);
+
+    expect(packageManagerRuns.join(" ")).toContain("bun add @solid-primitives/scheduled");
+  });
+
+  test("npm remains the fallback when nothing identifies a manager", async () => {
+    vi.stubEnv("npm_config_user_agent", "");
+    writeConfig(["Button"]);
+    fs.writeFileSync(path.join(proj, "package.json"), JSON.stringify({ dependencies: {} }));
+
+    await installNeedingADep(proj);
+
+    expect(packageManagerRuns.join(" ")).toContain("npm install @solid-primitives/scheduled");
+  });
+});

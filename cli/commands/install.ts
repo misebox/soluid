@@ -21,21 +21,46 @@ import { rewriteImports } from "../rewrite-imports.js";
 
 const ARCHIVE_PREFIX = "soluid/";
 
+const LOCKFILES: Record<string, string[]> = {
+  "bun.lockb": ["bun", "add"],
+  "bun.lock": ["bun", "add"],
+  "pnpm-lock.yaml": ["pnpm", "add"],
+  "yarn.lock": ["yarn", "add"],
+  "package-lock.json": ["npm", "install"],
+  "bunfig.toml": ["bun", "add"],
+};
+
+/** The manager that launched this process, from the user agent every one of them sets. */
+function managerFromUserAgent(): string[] | null {
+  const agent = process.env.npm_config_user_agent ?? "";
+  for (const [name, command] of [
+    ["bun", ["bun", "add"]],
+    ["pnpm", ["pnpm", "add"]],
+    ["yarn", ["yarn", "add"]],
+    ["npm", ["npm", "install"]],
+  ] as const) {
+    if (agent.startsWith(`${name}/`)) return [...command];
+  }
+  return null;
+}
+
+/**
+ * A workspace member holds no lockfile of its own, so the search walks up to
+ * the root that does. Installing with the wrong manager there is not a slow
+ * path but a broken one: npm cannot resolve the `catalog:` and `workspace:*`
+ * specifiers a Bun or pnpm workspace puts in its members' dependencies.
+ */
 function detectInstallCommand(cwd: string): { lockfile: string | null; command: string[] } {
-  const lockfiles: Record<string, string[]> = {
-    "bun.lockb": ["bun", "add"],
-    "bun.lock": ["bun", "add"],
-    "pnpm-lock.yaml": ["pnpm", "add"],
-    "yarn.lock": ["yarn", "add"],
-    "package-lock.json": ["npm", "install"],
-  };
-  for (const [lockfile, command] of Object.entries(lockfiles)) {
-    if (fs.existsSync(path.join(cwd, lockfile))) return { lockfile, command };
+  for (let dir = path.resolve(cwd); ; dir = path.dirname(dir)) {
+    for (const [lockfile, command] of Object.entries(LOCKFILES)) {
+      const found = path.join(dir, lockfile);
+      if (fs.existsSync(found)) return { lockfile: path.relative(cwd, found) || lockfile, command };
+    }
+    if (path.dirname(dir) === dir) break;
   }
-  if (fs.existsSync(path.join(cwd, "bunfig.toml"))) {
-    return { lockfile: "bunfig.toml", command: ["bun", "add"] };
-  }
-  return { lockfile: null, command: ["npm", "install"] };
+  // No lockfile anywhere: fall back to whoever invoked us, then to npm, which
+  // is the one manager a project with Node installed is certain to have.
+  return { lockfile: null, command: managerFromUserAgent() ?? ["npm", "install"] };
 }
 
 function checkRateLimit(res: Response): void {
