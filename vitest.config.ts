@@ -7,6 +7,6 @@ export default defineConfig({
   resolve: { conditions: ["development", "browser"] },
   test: {
     // Both extensions: a .ts test under src/__tests__ would otherwise be skipped in silence.
-    include: ["cli/__tests__/**/*.test.ts", "src/__tests__/**/*.test.{ts,tsx}"],
+    include: ["cli/__tests__/**/*.test.ts", "scripts/__tests__/**/*.test.ts", "src/__tests__/**/*.test.{ts,tsx}"],
   },
 });

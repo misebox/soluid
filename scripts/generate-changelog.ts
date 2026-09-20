@@ -29,6 +29,8 @@ export interface ReleaseSection {
 
 /** `### components-v0.2.10 — 2026-08-19`, under a `## Components` or `## CLI` section. */
 const HEADING = /^###\s+(\S+)\s+—\s+(\d{4}-\d{2}-\d{2})/;
+/** Any section heading, dated or not: each one ends the release above it. */
+const SECTION = /^#{2,3}\s/;
 const GROUP = /^####\s+(.+?)\s*$/;
 const ENTRY = /^-\s+(.+?)\s*$/;
 
@@ -38,8 +40,16 @@ export function parseChangelog(markdown: string): ReleaseSection[] {
   let group: { title: string; entries: string[] } | undefined;
 
   for (const line of markdown.split("\n")) {
-    const heading = HEADING.exec(line);
-    if (heading) {
+    if (SECTION.test(line)) {
+      const heading = HEADING.exec(line);
+      group = undefined;
+      // A section with no date is not a release — `### Unreleased`, or the
+      // `## CLI` divider. Folding its entries into the release above would
+      // file them under a version that never carried them.
+      if (!heading) {
+        release = undefined;
+        continue;
+      }
       const tag = heading[1];
       const components = tag.startsWith("components-v");
       release = {
@@ -50,7 +60,6 @@ export function parseChangelog(markdown: string): ReleaseSection[] {
         groups: [],
       };
       releases.push(release);
-      group = undefined;
       continue;
     }
     if (!release) continue;
