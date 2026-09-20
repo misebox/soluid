@@ -2,6 +2,8 @@
 set -euo pipefail
 
 # Check if cli/ or package.json have changed since the last remote CLI release tag.
+# Tests are excluded: cli/tsconfig.json leaves them out of the build, so nothing
+# in __tests__ reaches dist/ and a test-only change needs no release.
 # Exit 0 = no changes, Exit 1 = unreleased changes.
 
 TAG=$(git ls-remote --tags origin 'refs/tags/v*' 2>/dev/null \
@@ -12,7 +14,7 @@ if [ -z "$TAG" ]; then
   exit 1
 fi
 
-changes=$(git diff --name-only "$TAG"..HEAD -- cli/ package.json 2>/dev/null | head -20)
+changes=$(git diff --name-only "$TAG"..HEAD -- cli/ package.json ':(exclude)cli/__tests__/' 2>/dev/null | head -20)
 if [ -n "$changes" ]; then
   echo "CLI: Last release $TAG — unreleased changes:"
   echo "$changes" | sed 's/^/  /'
