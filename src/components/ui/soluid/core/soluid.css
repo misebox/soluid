@@ -192,6 +192,14 @@
   --so-color-info-fg: var(--so-bg);
 }
 
+/* --- Box-sizing reset --- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* --- Root container --- */
 
 body {

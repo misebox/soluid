@@ -11,6 +11,7 @@ Components and the CLI are released separately, so they are listed separately.
 
 #### Fixed
 
+- `soluid.css` had no global `box-sizing: border-box` reset, so a padded `Container` computed its width in content-box mode and overflowed its parent by the sum of its horizontal padding (32 px at default density), producing an unwanted horizontal scrollbar. All elements now inherit `border-box` sizing from the reset.
 - The components did not compile in a project using `exactOptionalPropertyTypes`. An optional prop written `disabled?: boolean` is not identical to the `disabled?: boolean | undefined` of the JSX attribute type it extends, so the interfaces collided, and passing a possibly-undefined value to any optional prop was an error. Every optional property now declares `| undefined`.
 - Array and record lookups in `Menu`, `ContextMenu`, `Tabs`, `Combobox`, `CommandPalette`, `Tree`, `PinInput`, `SegmentedControl`, `Calendar`, `TimePicker` and the focus trap were indexed without a guard, so the components did not compile under `noUncheckedIndexedAccess`. Behaviour is unchanged.
 
