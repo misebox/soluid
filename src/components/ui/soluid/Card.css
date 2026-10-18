@@ -3,6 +3,9 @@
   border: 1px solid var(--so-border);
   border-radius: var(--so-radius);
   overflow: hidden;
+  /* A card stretched by a grid row keeps its footer at the bottom edge. */
+  display: flex;
+  flex-direction: column;
 }
 
 .so-card--elevated {
@@ -21,6 +24,7 @@
 .so-card__body {
   padding: var(--so-space-4) var(--so-space-5);
   color: var(--so-text);
+  flex: 1;
 }
 
 .so-card__footer {

@@ -16,7 +16,8 @@ export interface DrawerProps extends CommonProps {
   open: boolean;
   onClose: () => void;
   side?: DrawerSide | undefined;
-  size?: Size | undefined;
+  /** `full` takes the whole viewport width, for a phone. The others stop at 80vw. */
+  size?: Size | "full" | undefined;
   children: JSX.Element;
 }
 

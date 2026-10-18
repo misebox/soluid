@@ -1952,12 +1952,13 @@
       },
       {
         "name": "size",
-        "type": "Size",
+        "type": "Size | \"full\"",
         "optional": true,
         "values": [
           "\"sm\"",
           "\"md\"",
-          "\"lg\""
+          "\"lg\"",
+          "\"full\""
         ],
         "default": "\"md\""
       },
@@ -2172,6 +2173,16 @@
         "name": "minItemWidth",
         "type": "string",
         "optional": true
+      },
+      {
+        "name": "fit",
+        "type": "\"fit\" | \"fill\"",
+        "optional": true,
+        "values": [
+          "\"fit\"",
+          "\"fill\""
+        ],
+        "default": "\"fit\""
       },
       {
         "name": "gap",

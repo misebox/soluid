@@ -8,6 +8,7 @@ import { ColorPickerControl } from "../components/ui/soluid/ColorPicker";
 import { ComboboxControl } from "../components/ui/soluid/Combobox";
 import { CommandPalette } from "../components/ui/soluid/CommandPalette";
 import { DatePickerControl } from "../components/ui/soluid/DatePicker";
+import { Grid } from "../components/ui/soluid/Grid";
 import { Rating } from "../components/ui/soluid/Rating";
 import { Tag } from "../components/ui/soluid/Tag";
 import { TimePickerControl } from "../components/ui/soluid/TimePicker";
@@ -175,6 +176,34 @@ it("Rating keeps a tab stop when max shrinks below the value", () => {
   setMax(3);
 
   expect(root.querySelector('[role="radio"][tabindex="0"]')).not.toBeNull();
+});
+
+it("Grid with minItemWidth fits its columns to the row unless told to fill", () => {
+  const root = mount(() => (
+    <>
+      <Grid minItemWidth="16rem">a</Grid>
+      <Grid minItemWidth="16rem" fit="fill">
+        b
+      </Grid>
+    </>
+  ));
+  const [fit, fill] = Array.from(root.querySelectorAll(".so-grid"));
+
+  expect(fit?.getAttribute("style")).toContain("auto-fit");
+  expect(fill?.getAttribute("style")).toContain("auto-fill");
+});
+
+it("a read-only Rating leads its value with the label", () => {
+  const root = mount(() => (
+    <>
+      <Rating readOnly value={4} label="Miso ramen" />
+      <Rating readOnly value={4} />
+    </>
+  ));
+  const [labelled, bare] = Array.from(root.querySelectorAll(".so-rating"));
+
+  expect(labelled?.getAttribute("aria-label")).toBe("Miso ramen: 4 of 5");
+  expect(bare?.getAttribute("aria-label")).toBe("4 of 5");
 });
 
 it("Tooltip keeps focus on the trigger when its content is cleared", () => {

@@ -658,6 +658,17 @@ it("a Menu trigger takes its accessible name from triggerLabel", () => {
   expect(q(".so-menu-trigger").getAttribute("aria-label")).toBe("Row actions");
 });
 
+it("a Drawer takes size full", async () => {
+  mount(() => (
+    <Drawer open size="full" onClose={() => {}}>
+      <DrawerHeader>Title</DrawerHeader>
+    </Drawer>
+  ));
+  await settle();
+
+  expect(q(".so-drawer").classList.contains("so-drawer--full")).toBe(true);
+});
+
 it("a Drawer takes a body and a footer beside its header", async () => {
   mount(() => (
     <Drawer open onClose={() => {}}>

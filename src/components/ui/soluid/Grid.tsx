@@ -11,6 +11,12 @@ export interface GridProps extends CommonProps {
    * (any CSS length, e.g. "16rem"). Takes precedence over `columns`.
    */
   minItemWidth?: string | undefined;
+  /**
+   * With `minItemWidth`: "fit" (default) stretches the columns that hold an item
+   * to fill the row, so a lone item spans it; "fill" keeps the empty columns, so
+   * an item stays one column wide.
+   */
+  fit?: "fit" | "fill" | undefined;
   gap?: Gap | undefined;
   align?: Align | undefined;
   children: JSX.Element;
@@ -22,6 +28,7 @@ export function Grid(props: GridProps & JSX.HTMLAttributes<HTMLDivElement>) {
     "density",
     "columns",
     "minItemWidth",
+    "fit",
     "gap",
     "align",
     "children",
@@ -30,7 +37,9 @@ export function Grid(props: GridProps & JSX.HTMLAttributes<HTMLDivElement>) {
 
   // min() keeps a single narrow item from overflowing its container.
   const autoColumns = () =>
-    local.minItemWidth ? `repeat(auto-fit, minmax(min(${local.minItemWidth}, 100%), 1fr))` : undefined;
+    local.minItemWidth
+      ? `repeat(auto-${local.fit ?? "fit"}, minmax(min(${local.minItemWidth}, 100%), 1fr))`
+      : undefined;
 
   return (
     <div

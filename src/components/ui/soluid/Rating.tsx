@@ -62,6 +62,8 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
   // reachable when the value is 0, fractional or above max.
   const tabStop = createMemo(() => (items().includes(local.value) ? local.value : 1));
   const itemLabel = (value: number) => local.itemLabel?.(value, max()) ?? `${value} of ${max()}`;
+  // A single image has no group name to carry the subject, so it leads the value.
+  const readOnlyLabel = () => (local.label ? `${local.label}: ${itemLabel(local.value)}` : itemLabel(local.value));
 
   let root: HTMLDivElement | undefined;
 
@@ -95,7 +97,7 @@ export function Rating(props: RatingProps & Omit<JSX.HTMLAttributes<HTMLDivEleme
       class={cls("so-rating", `so-rating--${local.size ?? "md"}`, local.disabled && "so-rating--disabled", local.class)}
       // Read-only ratings are a single image, not a set of controls.
       role={local.readOnly ? "img" : "radiogroup"}
-      aria-label={local.readOnly ? itemLabel(local.value) : local.label}
+      aria-label={local.readOnly ? readOnlyLabel() : local.label}
       data-density={local.density}
       onKeyDown={handleKeyDown}
       {...others}

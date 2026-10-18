@@ -62,6 +62,11 @@
   max-width: 80vw;
 }
 
+.so-drawer--full {
+  width: 100%;
+  max-width: 100%;
+}
+
 /* A <form> wrapped around the sections stands in for the drawer as the flex
    column, so the footer stays in view and the body is what scrolls. */
 .so-drawer > form {

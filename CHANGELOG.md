@@ -15,6 +15,8 @@ Components and the CLI are released separately, so they are listed separately.
 - `useToast().add` and `createToast`'s `add` take an `action` (`{ label, onClick }`), shown as a button on the toast. Picking it runs `onClick` and dismisses the toast, so "Undo" after a destructive action is possible.
 - `Table` columns take `nowrap`, which keeps a column's text on one line, and `sticky: "end"`, which pins a column such as row actions to the end edge while the table scrolls sideways.
 - `Menu` takes `triggerLabel`, the accessible name of its trigger button.
+- `Grid` takes `fit="fill"` next to `minItemWidth`, which keeps the empty columns so a lone item stays one column wide. The default, `fit`, still stretches the filled columns across the row.
+- `Drawer` takes `size="full"`, the whole viewport width. The other sizes stop at 80vw, which leaves a strip of the page behind them on a phone.
 
 #### Fixed
 
@@ -27,6 +29,8 @@ Components and the CLI are released separately, so they are listed separately.
 - `Calendar` and `DatePicker` named the month and the weekdays in the browser's language even when the page declared another. Without a `locale` prop they use the page's `lang`, then the browser's.
 - The hover, active and subtle-foreground colours were mixed in oklch, which interpolates the hue too and takes the short way round the wheel: the subtle foreground of warning, base hue 54°, came out at 2° and read as the red of danger. They are mixed in oklab, which keeps the hue within a few degrees of the base.
 - `Tooltip` was positioned inside its wrapper, so a scrolling ancestor such as the `Table` wrapper clipped it and gained a scrollbar. The tip is now rendered at the end of the document and positioned with floating-ui, as `Menu` and `Popover` are, so `soluid install Tooltip` also installs `@floating-ui/dom`. The tip stays up while the pointer moves from the trigger onto it.
+- `CardFooter` ended where its content ended, so in a card stretched by a `Grid` row it floated above the card's bottom edge. `Card` is a flex column and `CardBody` takes the spare height, which puts the footer on the bottom edge.
+- A read-only `Rating` ignored `label` and announced only "4 of 5". The label now leads the value: "Miso ramen: 4 of 5".
 
 ### components-v0.2.14 — 2026-09-03
 
