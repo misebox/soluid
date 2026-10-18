@@ -6,6 +6,10 @@
 .so-menu-trigger {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  /* An icon alone is smaller than the 24px a pressable target has to clear. */
+  min-width: 24px;
+  min-height: 24px;
   background: none;
   border: none;
   padding: 0;

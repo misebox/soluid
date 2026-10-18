@@ -9,11 +9,23 @@ Components and the CLI are released separately, so they are listed separately.
 
 ### Unreleased
 
+#### Added
+
+- `DrawerBody` and `DrawerFooter` give `Drawer` a scrolling body and a footer that stays in view under `DrawerHeader`, as `Dialog` has.
+- `useToast().add` and `createToast`'s `add` take an `action` (`{ label, onClick }`), shown as a button on the toast. Picking it runs `onClick` and dismisses the toast, so "Undo" after a destructive action is possible.
+- `Table` columns take `nowrap`, which keeps a column's text on one line, and `sticky: "end"`, which pins a column such as row actions to the end edge while the table scrolls sideways.
+- `Menu` takes `triggerLabel`, the accessible name of its trigger button.
+
 #### Fixed
 
 - `soluid.css` had no global `box-sizing: border-box` reset, so a padded `Container` computed its width in content-box mode and overflowed its parent by the sum of its horizontal padding (32 px at default density), producing an unwanted horizontal scrollbar. All elements now inherit `border-box` sizing from the reset.
 - The components did not compile in a project using `exactOptionalPropertyTypes`. An optional prop written `disabled?: boolean` is not identical to the `disabled?: boolean | undefined` of the JSX attribute type it extends, so the interfaces collided, and passing a possibly-undefined value to any optional prop was an error. Every optional property now declares `| undefined`.
 - Array and record lookups in `Menu`, `ContextMenu`, `Tabs`, `Combobox`, `CommandPalette`, `Tree`, `PinInput`, `SegmentedControl`, `Calendar`, `TimePicker` and the focus trap were indexed without a guard, so the components did not compile under `noUncheckedIndexedAccess`. Behaviour is unchanged.
+- A `<form>` wrapped around `DialogHeader`, `DialogBody` and `DialogFooter` stood in for the dialog without being a flex column, so on a short viewport the footer was pushed out of the dialog and the body did not scroll. A `<form>` that is a direct child of a `Dialog` or `Drawer` is now the flex column.
+- `Table` put `aria-label` and `aria-labelledby` on its wrapper `<div>`, leaving the `<table>` without a name. They now go on the `<table>`. The selection checkboxes were the browser's 13 px defaults; they are 18 px and take the primary colour.
+- The `Menu` trigger was only as large as its content, 16 × 24 px with an icon. It is at least 24 × 24 px.
+- `Calendar` and `DatePicker` named the month and the weekdays in the browser's language even when the page declared another. Without a `locale` prop they use the page's `lang`, then the browser's.
+- The hover, active and subtle-foreground colours were mixed in oklch, which interpolates the hue too and takes the short way round the wheel: the subtle foreground of warning, base hue 54°, came out at 2° and read as the red of danger. They are mixed in oklab, which keeps the hue within a few degrees of the base.
 
 ### components-v0.2.14 — 2026-09-03
 

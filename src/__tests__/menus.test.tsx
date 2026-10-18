@@ -8,9 +8,10 @@ import { ContextMenu } from "../components/ui/soluid/ContextMenu";
 import { createToast } from "../components/ui/soluid/core/createToast";
 import { DatePickerControl } from "../components/ui/soluid/DatePicker";
 import { Dialog, DialogBody, DialogHeader } from "../components/ui/soluid/Dialog";
-import { Drawer } from "../components/ui/soluid/Drawer";
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader } from "../components/ui/soluid/Drawer";
 import { Menu, MenuItem } from "../components/ui/soluid/Menu";
 import { Popover } from "../components/ui/soluid/Popover";
+import { ToastContainer, useToast } from "../components/ui/soluid/Toast";
 import { nth } from "./support";
 
 if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
@@ -593,4 +594,42 @@ it("a toast dismissed just before disposal does not touch the store afterwards",
   vi.advanceTimersByTime(1000);
 
   expect(store.toasts.length).toBe(before);
+});
+
+it("a toast action runs its handler and dismisses the toast", () => {
+  vi.useFakeTimers();
+  const onClick = vi.fn();
+  mount(() => <ToastContainer />);
+
+  useToast().add({ message: "Deleted", duration: 0, action: { label: "Undo", onClick } });
+  q<HTMLButtonElement>(".so-toast__action").click();
+
+  expect(onClick).toHaveBeenCalledTimes(1);
+  expect(q(".so-toast").classList.contains("so-toast--dismissing")).toBe(true);
+  vi.advanceTimersByTime(200);
+  expect(document.querySelector(".so-toast")).toBeNull();
+});
+
+it("a Menu trigger takes its accessible name from triggerLabel", () => {
+  mount(() => (
+    <Menu open={false} onOpenChange={() => {}} triggerLabel="Row actions" trigger={<span aria-hidden="true">...</span>}>
+      <MenuItem>Edit</MenuItem>
+    </Menu>
+  ));
+
+  expect(q(".so-menu-trigger").getAttribute("aria-label")).toBe("Row actions");
+});
+
+it("a Drawer takes a body and a footer beside its header", async () => {
+  mount(() => (
+    <Drawer open onClose={() => {}}>
+      <DrawerHeader>Title</DrawerHeader>
+      <DrawerBody>content</DrawerBody>
+      <DrawerFooter>actions</DrawerFooter>
+    </Drawer>
+  ));
+  await settle();
+
+  expect(q(".so-drawer .so-drawer__body").textContent).toBe("content");
+  expect(q(".so-drawer .so-drawer__footer").textContent).toBe("actions");
 });

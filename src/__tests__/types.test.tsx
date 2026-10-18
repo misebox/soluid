@@ -79,6 +79,29 @@ it("Table accepts rows typed by an interface", () => {
   expect(q("tbody td").textContent).toBe("one");
 });
 
+it("Table puts its accessible name on the <table>, not on the wrapper", () => {
+  mount(() => <Table aria-label="Users" data={[{ name: "one" }]} columns={[{ key: "name", header: "Name" }]} />);
+
+  expect(q("table").getAttribute("aria-label")).toBe("Users");
+  expect(q(".so-table-wrapper").hasAttribute("aria-label")).toBe(false);
+});
+
+it("Table marks the nowrap and sticky columns", () => {
+  mount(() => (
+    <Table
+      data={[{ name: "one", actions: "edit" }]}
+      columns={[
+        { key: "name", header: "Name", nowrap: true },
+        { key: "actions", header: "Actions", sticky: "end" },
+      ]}
+    />
+  ));
+
+  expect(q("tbody td").classList.contains("so-table__cell--nowrap")).toBe(true);
+  expect(q("th.so-table__cell--sticky-end").textContent).toBe("Actions");
+  expect(q("td.so-table__cell--sticky-end").textContent).toBe("edit");
+});
+
 it("DatePickerControl forwards native button attributes", () => {
   const onBlur = vi.fn();
   mount(() => <DatePickerControl onBlur={onBlur} />);

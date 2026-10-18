@@ -89,7 +89,7 @@ export const ja: Record<string, string> = {
   "CalendarProps.min": "選択可能な最も古い日（含む）",
   "CalendarProps.max": "選択可能な最も新しい日（含む）",
   "CalendarProps.weekStartsOn": "週の先頭列: 0 日曜、1 月曜",
-  "CalendarProps.locale": "月名・曜日名に使う BCP 47 タグ",
+  "CalendarProps.locale": "月名・曜日名に使う BCP 47 タグ（既定: ページの lang、なければブラウザの言語）",
   "CalendarProps.label": "グリッドのアクセシブルラベル",
   "CalendarProps.previousLabel": "前月ボタンのアクセシブルラベル",
   "CalendarProps.nextLabel": "翌月ボタンのアクセシブルラベル",
@@ -224,7 +224,7 @@ export const ja: Record<string, string> = {
   "DatePickerControlProps.min": "選択可能な最も古い日（含む）",
   "DatePickerControlProps.max": "選択可能な最も新しい日（含む）",
   "DatePickerControlProps.weekStartsOn": "週の先頭列: 0 日曜、1 月曜",
-  "DatePickerControlProps.locale": "月名・曜日名に使う BCP 47 タグ",
+  "DatePickerControlProps.locale": "月名・曜日名に使う BCP 47 タグ（既定: ページの lang、なければブラウザの言語）",
   "DatePickerControlProps.placeholder": "未選択時に表示するテキスト",
   "DatePickerControlProps.required": "入力を必須にする",
   "DatePickerControlProps.id": "トリガーの id。FormField のラベルはこれを指す",
@@ -270,6 +270,14 @@ export const ja: Record<string, string> = {
   "DividerProps.orientation": "水平または垂直",
   "DividerProps.class": "追加CSSクラス",
   "DividerProps.density": "コンポーネントの密度",
+
+  // DrawerBodyProps
+  "DrawerBodyProps.class": "追加CSSクラス",
+  "DrawerBodyProps.children": "ドロワー本文の内容",
+
+  // DrawerFooterProps
+  "DrawerFooterProps.class": "追加CSSクラス",
+  "DrawerFooterProps.children": "ドロワーフッターの内容",
 
   // DrawerHeaderProps
   "DrawerHeaderProps.class": "追加CSSクラス",
@@ -376,6 +384,7 @@ export const ja: Record<string, string> = {
   "MenuProps.onOpenChange": "開閉状態変更時のコールバック",
   "MenuProps.placement": "ドロップダウンの配置",
   "MenuProps.trigger": "トリガーの内容。ボタンではなく素の内容を渡す（ボタンはコンポーネントが用意する）",
+  "MenuProps.triggerLabel": "トリガーボタンのアクセシブルな名前（トリガーがアイコンだけのときに必要）",
   "MenuProps.children": "MenuItem要素",
   "MenuProps.class": "追加CSSクラス",
   "MenuProps.density": "コンポーネントの密度",
@@ -858,6 +867,8 @@ export const ja: Record<string, string> = {
   "apiDesc.DialogHeaderProps": "",
   "apiDesc.DialogProps": "フォーカストラップ付きモーダルダイアログ",
   "apiDesc.DividerProps": "水平/垂直セパレーター",
+  "apiDesc.DrawerBodyProps": "",
+  "apiDesc.DrawerFooterProps": "",
   "apiDesc.DrawerHeaderProps": "",
   "apiDesc.DrawerProps": "フォーカストラップ付きサイドパネル",
   "apiDesc.EmptyStateProps": "アクション付き空データ表示",

@@ -62,7 +62,16 @@
   max-width: 80vw;
 }
 
-/* --- Header --- */
+/* A <form> wrapped around the sections stands in for the drawer as the flex
+   column, so the footer stays in view and the body is what scrolls. */
+.so-drawer > form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* --- Sections --- */
 
 .so-drawer__header {
   padding: var(--so-space-4);
@@ -70,6 +79,26 @@
   font-weight: 600;
   color: var(--so-text);
   border-bottom: 1px solid var(--so-border);
+  flex-shrink: 0;
+}
+
+.so-drawer__body {
+  padding: var(--so-space-4);
+  overflow-y: auto;
+  flex: 1;
+  /* Keeps a scroll that reaches the end from carrying on into the page behind. */
+  overscroll-behavior: contain;
+  color: var(--so-text);
+}
+
+.so-drawer__footer {
+  padding: var(--so-space-3) var(--so-space-4);
+  border-top: 1px solid var(--so-border);
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--so-space-2);
+  flex-shrink: 0;
 }
 
 /* --- Animations --- */

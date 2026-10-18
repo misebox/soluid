@@ -11,11 +11,20 @@ export interface Column<T> {
   width?: string | undefined;
   sortable?: boolean | undefined;
   align?: TextAlign | undefined;
+  /** Keeps the column's text on one line, so a narrow table scrolls sideways instead of wrapping. */
+  nowrap?: boolean | undefined;
+  /** Pins the column to the end edge while the rest of the table scrolls, such as a column of row actions. */
+  sticky?: "end" | undefined;
   render?: ((value: unknown, row: T) => JSX.Element) | undefined;
 }
 
 export interface TableProps<T> extends CommonProps {
   columns: Column<T>[];
+  /**
+   * Rows are keyed by object identity: a row whose object is replaced is built
+   * again, and takes focus with it. Keep the objects stable (a store with
+   * `reconcile`) to preserve the row.
+   */
   data: T[];
   sortKey?: string | undefined;
   sortDirection?: SortDirection | undefined;
@@ -23,6 +32,7 @@ export interface TableProps<T> extends CommonProps {
   selectable?: boolean | undefined;
   selectedKeys?: Set<string> | undefined;
   onSelect?: ((keys: Set<string>) => void) | undefined;
+  /** Identifies a row in `selectedKeys`. It does not key the rendering. */
   rowKey?: ((row: T) => string) | undefined;
   /** Accessible label for the select-all checkbox (default: "Select all rows") */
   selectAllLabel?: string | undefined;
@@ -46,7 +56,17 @@ export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivE
     "rowKey",
     "selectAllLabel",
     "selectRowLabel",
+    "aria-label",
+    "aria-labelledby",
   ]);
+
+  const cellClass = (col: Column<T>) =>
+    cls(
+      "so-table__cell",
+      col.align && `so-table__cell--${col.align}`,
+      col.nowrap && "so-table__cell--nowrap",
+      col.sticky && `so-table__cell--sticky-${col.sticky}`,
+    );
 
   function getRowKey(row: T, index: number): string {
     if (local.rowKey) return local.rowKey(row);
@@ -93,7 +113,7 @@ export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivE
 
   return (
     <div class={cls("so-table-wrapper", local.class)} data-density={local.density} {...others}>
-      <table class="so-table">
+      <table class="so-table" aria-label={local["aria-label"]} aria-labelledby={local["aria-labelledby"]}>
         <thead>
           <tr class="so-table__row so-table__row--header">
             <Show when={local.selectable}>
@@ -109,7 +129,7 @@ export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivE
             <For each={local.columns}>
               {(col) => (
                 <th
-                  class={cls("so-table__cell", "so-table__header", col.align && `so-table__cell--${col.align}`)}
+                  class={cls(cellClass(col), "so-table__header")}
                   scope="col"
                   style={{ width: col.width }}
                   aria-sort={
@@ -152,7 +172,7 @@ export function Table<T>(props: TableProps<T> & Omit<JSX.HTMLAttributes<HTMLDivE
                   </Show>
                   <For each={local.columns}>
                     {(col) => (
-                      <td class={cls("so-table__cell", col.align && `so-table__cell--${col.align}`)}>
+                      <td class={cellClass(col)}>
                         {col.render
                           ? col.render(row[col.key as keyof T], row)
                           : (row[col.key as keyof T] as JSX.Element)}

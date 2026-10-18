@@ -25,6 +25,16 @@ export interface DrawerHeaderProps {
   children: JSX.Element;
 }
 
+export interface DrawerBodyProps {
+  class?: string | undefined;
+  children: JSX.Element;
+}
+
+export interface DrawerFooterProps {
+  class?: string | undefined;
+  children: JSX.Element;
+}
+
 export function Drawer(props: DrawerProps & DrawerAttributes) {
   const [local, others] = splitProps(props, ["class", "density", "open", "onClose", "side", "size", "children"]);
 
@@ -75,6 +85,26 @@ export function DrawerHeader(props: DrawerHeaderProps & Omit<JSX.HTMLAttributes<
 
   return (
     <div id={titleId} class={cls("so-drawer__header", local.class)} {...others}>
+      {local.children}
+    </div>
+  );
+}
+
+export function DrawerBody(props: DrawerBodyProps & JSX.HTMLAttributes<HTMLDivElement>) {
+  const [local, others] = splitProps(props, ["class", "children"]);
+
+  return (
+    <div class={cls("so-drawer__body", local.class)} {...others}>
+      {local.children}
+    </div>
+  );
+}
+
+export function DrawerFooter(props: DrawerFooterProps & JSX.HTMLAttributes<HTMLDivElement>) {
+  const [local, others] = splitProps(props, ["class", "children"]);
+
+  return (
+    <div class={cls("so-drawer__footer", local.class)} {...others}>
       {local.children}
     </div>
   );

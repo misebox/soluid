@@ -88,11 +88,13 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
   };
 
   const weekStart = () => local.weekStartsOn ?? 0;
+  // Without a `locale` prop the page's own language wins, so a calendar in a
+  // `<html lang="en">` page does not follow the browser into Japanese.
   // Intl throws on a tag it cannot parse, and "en_US" is what several backends
   // emit; an unusable tag falls back to the browser's own.
   const locale = createMemo(() => {
-    const tag = local.locale;
-    if (tag == null) return undefined;
+    const tag = local.locale ?? (typeof document === "undefined" ? undefined : document.documentElement.lang);
+    if (!tag) return undefined;
     try {
       new Intl.DateTimeFormat(tag);
       return tag;

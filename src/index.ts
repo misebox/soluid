@@ -25,7 +25,13 @@ export type {
 export { createFocusTrap } from "./components/ui/soluid/core/createFocusTrap";
 export type { FocusTrapOptions } from "./components/ui/soluid/core/createFocusTrap";
 export { createToast } from "./components/ui/soluid/core/createToast";
-export type { Toast, ToastInput, ToastOptions, ToastReturn } from "./components/ui/soluid/core/createToast";
+export type {
+  Toast,
+  ToastAction,
+  ToastInput,
+  ToastOptions,
+  ToastReturn,
+} from "./components/ui/soluid/core/createToast";
 export { createToggle } from "./components/ui/soluid/core/createToggle";
 export type { ToggleOptions, ToggleReturn } from "./components/ui/soluid/core/createToggle";
 
@@ -156,8 +162,14 @@ export type {
   DialogHeaderProps,
   DialogProps,
 } from "./components/ui/soluid/Dialog";
-export { Drawer, DrawerHeader } from "./components/ui/soluid/Drawer";
-export type { DrawerHeaderProps, DrawerProps, DrawerSide } from "./components/ui/soluid/Drawer";
+export { Drawer, DrawerBody, DrawerFooter, DrawerHeader } from "./components/ui/soluid/Drawer";
+export type {
+  DrawerBodyProps,
+  DrawerFooterProps,
+  DrawerHeaderProps,
+  DrawerProps,
+  DrawerSide,
+} from "./components/ui/soluid/Drawer";
 export { Progress } from "./components/ui/soluid/Progress";
 export type { ProgressProps, ProgressSegment } from "./components/ui/soluid/Progress";
 export { Spinner } from "./components/ui/soluid/Spinner";

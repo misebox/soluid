@@ -38,9 +38,22 @@
   text-align: end;
 }
 
+.so-table__cell--nowrap {
+  white-space: nowrap;
+}
+
 .so-table__cell--checkbox {
   width: 40px;
   text-align: center;
+}
+
+.so-table__cell--checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  vertical-align: middle;
+  accent-color: var(--so-color-primary-base);
+  cursor: pointer;
 }
 
 .so-table__row:last-child .so-table__cell {
@@ -57,6 +70,29 @@
 
 .so-table__row--selected:hover {
   background-color: var(--so-color-primary-subtle);
+}
+
+/* --- Sticky column --- */
+
+/* Pinned to the end edge of the scrolling wrapper. It needs a fill of its own to
+   cover what scrolls under it, and the fills below follow the row states above. */
+.so-table__cell--sticky-end {
+  position: sticky;
+  inset-inline-end: 0;
+  background-color: var(--so-bg);
+  box-shadow: inset 1px 0 0 var(--so-border);
+}
+
+.so-table__row--header .so-table__cell--sticky-end {
+  background-color: var(--so-bg-subtle);
+}
+
+.so-table__row--selected .so-table__cell--sticky-end {
+  background-color: var(--so-color-primary-subtle);
+}
+
+.so-table__row:hover:not(.so-table__row--header) .so-table__cell--sticky-end {
+  background-color: var(--so-bg-subtle);
 }
 
 /* --- Sort --- */

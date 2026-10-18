@@ -12,6 +12,8 @@ export interface MenuProps extends CommonProps {
   onOpenChange: (open: boolean) => void;
   placement?: Placement | undefined;
   trigger: JSX.Element;
+  /** Accessible name for the trigger button, needed when the trigger shows only an icon. */
+  triggerLabel?: string | undefined;
   children: JSX.Element;
 }
 
@@ -43,6 +45,7 @@ export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
     "onOpenChange",
     "placement",
     "trigger",
+    "triggerLabel",
     "children",
   ]);
 
@@ -157,6 +160,7 @@ export function Menu(props: MenuProps & JSX.HTMLAttributes<HTMLSpanElement>) {
         ref={triggerRef}
         type="button"
         class="so-menu-trigger"
+        aria-label={local.triggerLabel}
         aria-haspopup="menu"
         aria-expanded={local.open}
         aria-controls={local.open ? menuId : undefined}

@@ -25,7 +25,7 @@ import { DatePicker } from "../../components/ui/soluid/DatePicker";
 import { DescriptionList } from "../../components/ui/soluid/DescriptionList";
 import { Dialog, DialogBody, DialogDescription, DialogFooter, DialogHeader } from "../../components/ui/soluid/Dialog";
 import { Divider } from "../../components/ui/soluid/Divider";
-import { Drawer, DrawerHeader } from "../../components/ui/soluid/Drawer";
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader } from "../../components/ui/soluid/Drawer";
 import { EmptyState } from "../../components/ui/soluid/EmptyState";
 import { FileUpload } from "../../components/ui/soluid/FileUpload";
 import { FormField } from "../../components/ui/soluid/FormField";
@@ -156,7 +156,7 @@ export const SUB_COMPONENTS: Record<string, string[]> = {
   Stack: ["Stack", "HStack"],
   Card: ["Card", "CardHeader", "CardBody", "CardFooter"],
   Dialog: ["Dialog", "DialogHeader", "DialogDescription", "DialogBody", "DialogFooter"],
-  Drawer: ["Drawer", "DrawerHeader"],
+  Drawer: ["Drawer", "DrawerHeader", "DrawerBody", "DrawerFooter"],
   Tabs: ["Tabs", "TabList", "Tab", "TabPanel"],
   Breadcrumb: ["Breadcrumb", "BreadcrumbItem"],
   Accordion: ["Accordion", "AccordionItem"],
@@ -1086,9 +1086,14 @@ function DrawerDemo(): JSX.Element {
       </Button>
       <Drawer open={open()} onClose={() => setOpen(false)}>
         <DrawerHeader>Settings</DrawerHeader>
-        <div style={{ padding: "var(--so-space-4)" }}>
+        <DrawerBody>
           <p>Drawer content goes here.</p>
-        </div>
+        </DrawerBody>
+        <DrawerFooter>
+          <Button variant="primary" onClick={() => setOpen(false)}>
+            Done
+          </Button>
+        </DrawerFooter>
       </Drawer>
     </>
   );
@@ -1122,6 +1127,18 @@ function ToastDemo(): JSX.Element {
           onClick={() => toast.add({ message: "Something failed", variant: "danger" })}
         >
           Danger
+        </Button>
+        <Button
+          variant="neutral"
+          size="sm"
+          onClick={() =>
+            toast.add({
+              message: "Item deleted",
+              action: { label: "Undo", onClick: () => toast.add({ message: "Restored", variant: "success" }) },
+            })
+          }
+        >
+          With action
         </Button>
       </div>
       <ToastContainer />

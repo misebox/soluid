@@ -89,7 +89,7 @@ export const en: Record<string, string> = {
   "CalendarProps.min": "Earliest selectable day, inclusive",
   "CalendarProps.max": "Latest selectable day, inclusive",
   "CalendarProps.weekStartsOn": "First column of the week: 0 Sunday, 1 Monday",
-  "CalendarProps.locale": "BCP 47 tag for month and weekday names",
+  "CalendarProps.locale": "BCP 47 tag for month and weekday names (default: the page's lang, else the browser's)",
   "CalendarProps.label": "Accessible label for the grid",
   "CalendarProps.previousLabel": "Accessible label for the previous-month button",
   "CalendarProps.nextLabel": "Accessible label for the next-month button",
@@ -224,7 +224,8 @@ export const en: Record<string, string> = {
   "DatePickerControlProps.min": "Earliest selectable day, inclusive",
   "DatePickerControlProps.max": "Latest selectable day, inclusive",
   "DatePickerControlProps.weekStartsOn": "First column of the week: 0 Sunday, 1 Monday",
-  "DatePickerControlProps.locale": "BCP 47 tag for month and weekday names",
+  "DatePickerControlProps.locale":
+    "BCP 47 tag for month and weekday names (default: the page's lang, else the browser's)",
   "DatePickerControlProps.placeholder": "Text shown while nothing is selected",
   "DatePickerControlProps.required": "Mark the field as required",
   "DatePickerControlProps.id": "Id for the trigger; a FormField label points at it",
@@ -270,6 +271,14 @@ export const en: Record<string, string> = {
   "DividerProps.orientation": "Horizontal or vertical",
   "DividerProps.class": "Additional CSS class",
   "DividerProps.density": "Component density",
+
+  // DrawerBodyProps
+  "DrawerBodyProps.class": "Additional CSS class",
+  "DrawerBodyProps.children": "Drawer body content",
+
+  // DrawerFooterProps
+  "DrawerFooterProps.class": "Additional CSS class",
+  "DrawerFooterProps.children": "Drawer footer content",
 
   // DrawerHeaderProps
   "DrawerHeaderProps.class": "Additional CSS class",
@@ -376,6 +385,7 @@ export const en: Record<string, string> = {
   "MenuProps.onOpenChange": "Callback when open state changes",
   "MenuProps.placement": "Dropdown placement",
   "MenuProps.trigger": "Trigger content. Plain content, not a button: the component supplies its own.",
+  "MenuProps.triggerLabel": "Accessible name for the trigger button, needed when the trigger shows only an icon",
   "MenuProps.children": "MenuItem elements",
   "MenuProps.class": "Additional CSS class",
   "MenuProps.density": "Component density",
@@ -857,6 +867,8 @@ export const en: Record<string, string> = {
   "apiDesc.DialogHeaderProps": "",
   "apiDesc.DialogProps": "Modal dialog with focus trap",
   "apiDesc.DividerProps": "Horizontal/vertical separator",
+  "apiDesc.DrawerBodyProps": "",
+  "apiDesc.DrawerFooterProps": "",
   "apiDesc.DrawerHeaderProps": "",
   "apiDesc.DrawerProps": "Side panel with focus trap",
   "apiDesc.EmptyStateProps": "Empty data display with action",

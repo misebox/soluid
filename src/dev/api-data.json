@@ -1873,6 +1873,40 @@
     ]
   },
   {
+    "name": "DrawerBodyProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
+    "name": "DrawerFooterProps",
+    "description": "",
+    "dependencies": [],
+    "props": [
+      {
+        "name": "class",
+        "type": "string",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      }
+    ]
+  },
+  {
     "name": "DrawerHeaderProps",
     "description": "",
     "dependencies": [],
@@ -2542,6 +2576,11 @@
         "name": "trigger",
         "type": "JSX.Element",
         "optional": false
+      },
+      {
+        "name": "triggerLabel",
+        "type": "string",
+        "optional": true
       },
       {
         "name": "children",

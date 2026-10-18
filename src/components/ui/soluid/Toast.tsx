@@ -1,4 +1,4 @@
-import { For, splitProps } from "solid-js";
+import { For, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 import { createToast } from "./core/createToast";
@@ -58,6 +58,20 @@ export function ToastContainer(props: ToastContainerProps) {
               role={toast.variant === "danger" || toast.variant === "warning" ? "alert" : "status"}
             >
               <span class="so-toast__message">{toast.message}</span>
+              <Show when={toast.action}>
+                {(action) => (
+                  <button
+                    type="button"
+                    class="so-toast__action"
+                    onClick={() => {
+                      action().onClick();
+                      store.dismiss(toast.id);
+                    }}
+                  >
+                    {action().label}
+                  </button>
+                )}
+              </Show>
               <button
                 type="button"
                 class="so-toast__dismiss"

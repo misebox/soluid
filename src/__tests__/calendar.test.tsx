@@ -81,3 +81,25 @@ it("keeps focus on the day it arrows to across a month boundary", async () => {
   expect(month()).toBe("2026-08");
   expect((document.activeElement as HTMLElement)?.dataset.soDay).toBe("2026-08-31");
 });
+
+it("labels the month in the page language when no locale is given", () => {
+  document.documentElement.lang = "ja";
+  try {
+    const root = mount(() => <Calendar month="2026-05" label="date" />);
+
+    expect(root.querySelector(".so-calendar")?.textContent).toContain("2026年5月");
+  } finally {
+    document.documentElement.removeAttribute("lang");
+  }
+});
+
+it("lets the locale prop win over the page language", () => {
+  document.documentElement.lang = "ja";
+  try {
+    const root = mount(() => <Calendar month="2026-05" label="date" locale="en-US" />);
+
+    expect(root.querySelector(".so-calendar")?.textContent).toContain("May 2026");
+  } finally {
+    document.documentElement.removeAttribute("lang");
+  }
+});

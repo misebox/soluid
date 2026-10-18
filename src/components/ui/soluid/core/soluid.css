@@ -7,6 +7,9 @@
    - hover/active/subtle/subtle-fg/border/fg are derived via color-mix()
      against --so-text and --so-bg, so dark mode "just works" by
      swapping --so-bg and --so-text.
+   - The ones that move toward --so-text mix in oklab: oklch interpolates
+     the hue as well, and takes the short way round the wheel, which turns
+     the orange of warning into a red.
    - To customize: override any --*-base in your own CSS, or set them
      via soluid.config.json `colors` field.
    ============================================ */
@@ -123,50 +126,50 @@
 :root {
   /* primary */
   --so-color-primary-fg: #ffffff;
-  --so-color-primary-hover: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 14%);
-  --so-color-primary-active: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 26%);
+  --so-color-primary-hover: color-mix(in oklab, var(--so-color-primary-base), var(--so-text) 14%);
+  --so-color-primary-active: color-mix(in oklab, var(--so-color-primary-base), var(--so-text) 26%);
   --so-color-primary-subtle: color-mix(in oklch, var(--so-color-primary-base) 14%, var(--so-bg));
-  --so-color-primary-subtle-fg: color-mix(in oklch, var(--so-color-primary-base), var(--so-text) 35%);
+  --so-color-primary-subtle-fg: color-mix(in oklab, var(--so-color-primary-base), var(--so-text) 35%);
   --so-color-primary-border: color-mix(in oklch, var(--so-color-primary-base) 50%, var(--so-bg));
 
   /* neutral */
   --so-color-neutral-fg: #ffffff;
-  --so-color-neutral-hover: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 14%);
-  --so-color-neutral-active: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 26%);
+  --so-color-neutral-hover: color-mix(in oklab, var(--so-color-neutral-base), var(--so-text) 14%);
+  --so-color-neutral-active: color-mix(in oklab, var(--so-color-neutral-base), var(--so-text) 26%);
   --so-color-neutral-subtle: color-mix(in oklch, var(--so-color-neutral-base) 10%, var(--so-bg));
-  --so-color-neutral-subtle-fg: color-mix(in oklch, var(--so-color-neutral-base), var(--so-text) 40%);
+  --so-color-neutral-subtle-fg: color-mix(in oklab, var(--so-color-neutral-base), var(--so-text) 40%);
   --so-color-neutral-border: color-mix(in oklch, var(--so-color-neutral-base) 35%, var(--so-bg));
 
   /* danger */
   --so-color-danger-fg: #ffffff;
-  --so-color-danger-hover: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 14%);
-  --so-color-danger-active: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 26%);
+  --so-color-danger-hover: color-mix(in oklab, var(--so-color-danger-base), var(--so-text) 14%);
+  --so-color-danger-active: color-mix(in oklab, var(--so-color-danger-base), var(--so-text) 26%);
   --so-color-danger-subtle: color-mix(in oklch, var(--so-color-danger-base) 14%, var(--so-bg));
-  --so-color-danger-subtle-fg: color-mix(in oklch, var(--so-color-danger-base), var(--so-text) 35%);
+  --so-color-danger-subtle-fg: color-mix(in oklab, var(--so-color-danger-base), var(--so-text) 35%);
   --so-color-danger-border: color-mix(in oklch, var(--so-color-danger-base) 50%, var(--so-bg));
 
   /* success */
   --so-color-success-fg: #ffffff;
-  --so-color-success-hover: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 14%);
-  --so-color-success-active: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 26%);
+  --so-color-success-hover: color-mix(in oklab, var(--so-color-success-base), var(--so-text) 14%);
+  --so-color-success-active: color-mix(in oklab, var(--so-color-success-base), var(--so-text) 26%);
   --so-color-success-subtle: color-mix(in oklch, var(--so-color-success-base) 14%, var(--so-bg));
-  --so-color-success-subtle-fg: color-mix(in oklch, var(--so-color-success-base), var(--so-text) 35%);
+  --so-color-success-subtle-fg: color-mix(in oklab, var(--so-color-success-base), var(--so-text) 35%);
   --so-color-success-border: color-mix(in oklch, var(--so-color-success-base) 50%, var(--so-bg));
 
   /* warning */
   --so-color-warning-fg: #ffffff;
-  --so-color-warning-hover: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 14%);
-  --so-color-warning-active: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 26%);
+  --so-color-warning-hover: color-mix(in oklab, var(--so-color-warning-base), var(--so-text) 14%);
+  --so-color-warning-active: color-mix(in oklab, var(--so-color-warning-base), var(--so-text) 26%);
   --so-color-warning-subtle: color-mix(in oklch, var(--so-color-warning-base) 14%, var(--so-bg));
-  --so-color-warning-subtle-fg: color-mix(in oklch, var(--so-color-warning-base), var(--so-text) 35%);
+  --so-color-warning-subtle-fg: color-mix(in oklab, var(--so-color-warning-base), var(--so-text) 35%);
   --so-color-warning-border: color-mix(in oklch, var(--so-color-warning-base) 50%, var(--so-bg));
 
   /* info */
   --so-color-info-fg: #ffffff;
-  --so-color-info-hover: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 14%);
-  --so-color-info-active: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 26%);
+  --so-color-info-hover: color-mix(in oklab, var(--so-color-info-base), var(--so-text) 14%);
+  --so-color-info-active: color-mix(in oklab, var(--so-color-info-base), var(--so-text) 26%);
   --so-color-info-subtle: color-mix(in oklch, var(--so-color-info-base) 14%, var(--so-bg));
-  --so-color-info-subtle-fg: color-mix(in oklch, var(--so-color-info-base), var(--so-text) 35%);
+  --so-color-info-subtle-fg: color-mix(in oklab, var(--so-color-info-base), var(--so-text) 35%);
   --so-color-info-border: color-mix(in oklch, var(--so-color-info-base) 50%, var(--so-bg));
 }
 

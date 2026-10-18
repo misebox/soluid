@@ -4,11 +4,17 @@ import type { FeedbackVariant } from "./types";
 
 const EXIT_DURATION = 150;
 
+export interface ToastAction {
+  label: string;
+  onClick: () => void;
+}
+
 export interface Toast {
   id: string;
   message: string;
   variant?: FeedbackVariant | undefined;
   duration?: number | undefined;
+  action?: ToastAction | undefined;
   dismissing?: boolean | undefined;
 }
 
@@ -22,6 +28,8 @@ export interface ToastInput {
   variant?: FeedbackVariant | undefined;
   /** Duration in ms. Set to 0 to disable auto-dismiss. */
   duration?: number | undefined;
+  /** A button on the toast, such as "Undo". Picking it runs `onClick` and dismisses the toast. */
+  action?: ToastAction | undefined;
 }
 
 export interface ToastReturn {
@@ -98,6 +106,7 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
       message: input.message,
       variant: input.variant,
       duration,
+      action: input.action,
     };
 
     setToasts(

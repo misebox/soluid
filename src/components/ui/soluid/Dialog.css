@@ -47,6 +47,15 @@
   max-width: 90vw;
 }
 
+/* A <form> wrapped around the sections stands in for the dialog as the flex
+   column, so the footer stays in view and the body is what scrolls. */
+.so-dialog > form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 /* --- Sections --- */
 
 .so-dialog__header {
