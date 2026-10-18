@@ -1,10 +1,13 @@
 .so-tooltip-wrapper {
-  position: relative;
   display: inline-flex;
 }
 
+/* Portalled to <body>, so it sits at the document origin until floating-ui
+   writes its coordinates. */
 .so-tooltip {
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: var(--so-z-overlay);
   padding: var(--so-space-1) var(--so-space-2);
   border-radius: var(--so-radius);
@@ -29,40 +32,7 @@
   inset: -6px;
 }
 
-.so-tooltip-wrapper:hover .so-tooltip,
-.so-tooltip-wrapper:focus-within .so-tooltip {
+.so-tooltip--shown[data-so-placed] {
   visibility: visible;
   opacity: 1;
-}
-
-.so-tooltip-wrapper--dismissed:hover .so-tooltip,
-.so-tooltip-wrapper--dismissed:focus-within .so-tooltip {
-  visibility: hidden;
-  opacity: 0;
-}
-
-/* --- Placements --- */
-
-.so-tooltip--top {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.so-tooltip--bottom {
-  top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.so-tooltip--left {
-  right: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.so-tooltip--right {
-  left: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
 }

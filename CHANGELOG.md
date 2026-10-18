@@ -26,6 +26,7 @@ Components and the CLI are released separately, so they are listed separately.
 - The `Menu` trigger was only as large as its content, 16 × 24 px with an icon. It is at least 24 × 24 px.
 - `Calendar` and `DatePicker` named the month and the weekdays in the browser's language even when the page declared another. Without a `locale` prop they use the page's `lang`, then the browser's.
 - The hover, active and subtle-foreground colours were mixed in oklch, which interpolates the hue too and takes the short way round the wheel: the subtle foreground of warning, base hue 54°, came out at 2° and read as the red of danger. They are mixed in oklab, which keeps the hue within a few degrees of the base.
+- `Tooltip` was positioned inside its wrapper, so a scrolling ancestor such as the `Table` wrapper clipped it and gained a scrollbar. The tip is now rendered at the end of the document and positioned with floating-ui, as `Menu` and `Popover` are, so `soluid install Tooltip` also installs `@floating-ui/dom`. The tip stays up while the pointer moves from the trigger onto it.
 
 ### components-v0.2.14 — 2026-09-03
 

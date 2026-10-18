@@ -226,10 +226,11 @@ it("Tooltip is dismissed with Escape while shown", () => {
   ));
   const button = q<HTMLButtonElement>("button");
   button.focus();
+  expect(q(".so-tooltip").classList.contains("so-tooltip--shown")).toBe(true);
 
   const e = press(button, "Escape");
 
-  expect(q(".so-tooltip-wrapper").classList.contains("so-tooltip-wrapper--dismissed")).toBe(true);
+  expect(q(".so-tooltip").classList.contains("so-tooltip--shown")).toBe(false);
   expect(e.defaultPrevented).toBe(true);
 });
 

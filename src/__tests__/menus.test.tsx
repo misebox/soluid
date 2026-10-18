@@ -12,6 +12,7 @@ import { Drawer, DrawerBody, DrawerFooter, DrawerHeader } from "../components/ui
 import { Menu, MenuItem } from "../components/ui/soluid/Menu";
 import { Popover } from "../components/ui/soluid/Popover";
 import { ToastContainer, useToast } from "../components/ui/soluid/Toast";
+import { Tooltip } from "../components/ui/soluid/Tooltip";
 import { nth } from "./support";
 
 if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};
@@ -608,6 +609,43 @@ it("a toast action runs its handler and dismisses the toast", () => {
   expect(q(".so-toast").classList.contains("so-toast--dismissing")).toBe(true);
   vi.advanceTimersByTime(200);
   expect(document.querySelector(".so-toast")).toBeNull();
+});
+
+it("a Tooltip tip sits outside the trigger's wrapper and names the trigger through aria-describedby", () => {
+  const host = mount(() => (
+    <Tooltip content="tip">
+      <button>b</button>
+    </Tooltip>
+  ));
+  const tip = q(".so-tooltip");
+
+  expect(host.contains(tip)).toBe(false);
+  expect(tip.getAttribute("role")).toBe("tooltip");
+  expect(q("button").getAttribute("aria-describedby")).toBe(tip.id);
+});
+
+it("a Tooltip tip stays shown while the pointer moves from the trigger onto it", () => {
+  vi.useFakeTimers();
+  mount(() => (
+    <Tooltip content="tip">
+      <button>b</button>
+    </Tooltip>
+  ));
+  const wrapper = q(".so-tooltip-wrapper");
+  const tip = q(".so-tooltip");
+  const shown = () => tip.classList.contains("so-tooltip--shown");
+
+  wrapper.dispatchEvent(new MouseEvent("mouseenter"));
+  expect(shown()).toBe(true);
+
+  wrapper.dispatchEvent(new MouseEvent("mouseleave"));
+  tip.dispatchEvent(new MouseEvent("mouseenter"));
+  vi.advanceTimersByTime(300);
+  expect(shown()).toBe(true);
+
+  tip.dispatchEvent(new MouseEvent("mouseleave"));
+  vi.advanceTimersByTime(300);
+  expect(shown()).toBe(false);
 });
 
 it("a Menu trigger takes its accessible name from triggerLabel", () => {

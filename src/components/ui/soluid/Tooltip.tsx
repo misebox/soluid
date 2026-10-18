@@ -1,5 +1,7 @@
-import { children, createEffect, createSignal, createUniqueId, Show, splitProps } from "solid-js";
+import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/dom";
+import { children, createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
+import { Portal } from "solid-js/web";
 import { cls } from "./core/utils";
 
 export type TooltipPlacement = "top" | "bottom" | "left" | "right";
@@ -10,6 +12,10 @@ export interface TooltipProps {
   class?: string | undefined;
   children: JSX.Element;
 }
+
+// Long enough for the pointer to cross the gap onto the tip, which has to stay
+// reachable (WCAG 1.4.13).
+const HIDE_DELAY_MS = 100;
 
 export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement>) {
   const [local, others] = splitProps(props, ["content", "placement", "class", "children"]);
@@ -34,20 +40,60 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
   // Escape hides the tip until the pointer or focus leaves (WCAG 1.4.13).
   const [shown, setShown] = createSignal(false);
   const [dismissed, setDismissed] = createSignal(false);
-  const leave = () => {
+  const visible = () => shown() && !dismissed();
+
+  let hideTimer: ReturnType<typeof setTimeout> | undefined;
+  const show = () => {
+    clearTimeout(hideTimer);
+    setShown(true);
+  };
+  const hide = () => {
+    clearTimeout(hideTimer);
     setShown(false);
     setDismissed(false);
   };
+  const hideSoon = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, HIDE_DELAY_MS);
+  };
+  onCleanup(() => clearTimeout(hideTimer));
+
+  let wrapperRef: HTMLSpanElement | undefined;
+  const [tipRef, setTipRef] = createSignal<HTMLSpanElement | undefined>(undefined);
+
+  // The tip lives at the end of the document, so no scrolling ancestor of the
+  // trigger can clip it. Only a tip that is on screen is kept anchored.
+  createEffect(() => {
+    const tip = tipRef();
+    const anchor = wrapperRef;
+    if (!tip || !anchor || !visible()) return;
+    onCleanup(
+      autoUpdate(anchor, tip, () => {
+        computePosition(anchor, tip, {
+          placement: local.placement ?? "top",
+          middleware: [offset(6), flip(), shift({ padding: 8 })],
+        }).then(({ x, y }) => {
+          if (!visible()) return;
+          tip.style.left = `${x}px`;
+          tip.style.top = `${y}px`;
+          // Until this runs the tip sits at the document origin, hidden by the CSS.
+          tip.dataset.soPlaced = "";
+        });
+      }),
+    );
+    onCleanup(() => delete tip.dataset.soPlaced);
+  });
 
   return (
     <span
-      class={cls("so-tooltip-wrapper", dismissed() && "so-tooltip-wrapper--dismissed", local.class)}
-      onMouseEnter={() => setShown(true)}
-      onMouseLeave={leave}
-      onFocusIn={() => setShown(true)}
-      onFocusOut={leave}
+      ref={wrapperRef}
+      class={cls("so-tooltip-wrapper", local.class)}
+      onMouseEnter={show}
+      onMouseLeave={hideSoon}
+      onFocusIn={show}
+      onFocusOut={hide}
       onKeyDown={(e) => {
-        if (e.key !== "Escape" || !shown() || dismissed()) return;
+        if (e.key !== "Escape" || !visible()) return;
         e.preventDefault();
         setDismissed(true);
       }}
@@ -55,9 +101,18 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
     >
       {trigger()}
       <Show when={local.content}>
-        <span id={tooltipId} class={cls("so-tooltip", `so-tooltip--${local.placement ?? "top"}`)} role="tooltip">
-          {local.content}
-        </span>
+        <Portal>
+          <span
+            ref={setTipRef}
+            id={tooltipId}
+            class={cls("so-tooltip", visible() && "so-tooltip--shown")}
+            role="tooltip"
+            onMouseEnter={show}
+            onMouseLeave={hideSoon}
+          >
+            {local.content}
+          </span>
+        </Portal>
       </Show>
     </span>
   );

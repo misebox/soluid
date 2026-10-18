@@ -117,6 +117,7 @@ export const registry: Record<string, RegistryEntry> = {
     category: "components",
     files: ["soluid/Tooltip.tsx", "soluid/Tooltip.css"],
     dependencies: ["core"],
+    npmDependencies: ["@floating-ui/dom"],
     description: "Tooltip",
   },
 
