@@ -56,6 +56,10 @@ export function ToastContainer(props: ToastContainerProps) {
                 toast.dismissing && "so-toast--dismissing",
               )}
               role={toast.variant === "danger" || toast.variant === "warning" ? "alert" : "status"}
+              onMouseEnter={() => store.pause(toast.id)}
+              onMouseLeave={() => store.resume(toast.id)}
+              onFocusIn={() => store.pause(toast.id)}
+              onFocusOut={() => store.resume(toast.id)}
             >
               <span class="so-toast__message">{toast.message}</span>
               <Show when={toast.action}>

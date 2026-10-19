@@ -1,4 +1,4 @@
-import { createComputed, createMemo, createSignal, For, on, splitProps } from "solid-js";
+import { createComputed, createMemo, createSignal, For, on, onCleanup, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import type { CommonProps, WeekStart } from "./core/types";
 import { cls } from "./core/utils";
@@ -89,11 +89,18 @@ export function Calendar(props: CalendarProps & Omit<JSX.HTMLAttributes<HTMLDivE
 
   const weekStart = () => local.weekStartsOn ?? 0;
   // Without a `locale` prop the page's own language wins, so a calendar in a
-  // `<html lang="en">` page does not follow the browser into Japanese.
+  // `<html lang="en">` page does not follow the browser into Japanese, and
+  // follows the page when an app switches `lang` at runtime.
   // Intl throws on a tag it cannot parse, and "en_US" is what several backends
   // emit; an unusable tag falls back to the browser's own.
+  const [pageLang, setPageLang] = createSignal(typeof document === "undefined" ? "" : document.documentElement.lang);
+  if (typeof document !== "undefined") {
+    const watcher = new MutationObserver(() => setPageLang(document.documentElement.lang));
+    watcher.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    onCleanup(() => watcher.disconnect());
+  }
   const locale = createMemo(() => {
-    const tag = local.locale ?? (typeof document === "undefined" ? undefined : document.documentElement.lang);
+    const tag = local.locale ?? pageLang();
     if (!tag) return undefined;
     try {
       new Intl.DateTimeFormat(tag);

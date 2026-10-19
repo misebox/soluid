@@ -93,6 +93,21 @@ it("labels the month in the page language when no locale is given", () => {
   }
 });
 
+it("follows the page language when it changes while mounted", async () => {
+  document.documentElement.lang = "en-US";
+  try {
+    const root = mount(() => <Calendar month="2026-05" label="date" />);
+    expect(root.querySelector(".so-calendar")?.textContent).toContain("May 2026");
+
+    document.documentElement.lang = "ja";
+    await Promise.resolve();
+
+    expect(root.querySelector(".so-calendar")?.textContent).toContain("2026年5月");
+  } finally {
+    document.documentElement.removeAttribute("lang");
+  }
+});
+
 it("lets the locale prop win over the page language", () => {
   document.documentElement.lang = "ja";
   try {

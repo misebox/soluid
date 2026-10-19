@@ -26,7 +26,7 @@ export interface ToastOptions {
 export interface ToastInput {
   message: string;
   variant?: FeedbackVariant | undefined;
-  /** Duration in ms. Set to 0 to disable auto-dismiss. */
+  /** Duration in ms. Set to 0 to disable auto-dismiss. The countdown is held while the toast is hovered or focused. */
   duration?: number | undefined;
   /** A button on the toast, such as "Undo". Picking it runs `onClick` and dismisses the toast. */
   action?: ToastAction | undefined;
@@ -36,6 +36,10 @@ export interface ToastReturn {
   toasts: Toast[];
   add: (input: ToastInput) => string;
   dismiss: (id: string) => void;
+  /** Hold the auto-dismiss countdown of a toast, e.g. while the pointer is over it. */
+  pause: (id: string) => void;
+  /** Undo one `pause`; the countdown restarts from its full duration once none is left. */
+  resume: (id: string) => void;
 }
 
 let toastCounter = 0;
@@ -60,12 +64,45 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
     );
   }
 
-  function dismiss(id: string): void {
+  function countdown(id: string, duration: number): void {
+    timers.set(
+      id,
+      setTimeout(() => dismiss(id), duration),
+    );
+  }
+
+  function stop(id: string): void {
     const timer = timers.get(id);
     if (timer !== undefined) {
       clearTimeout(timer);
       timers.delete(id);
     }
+  }
+
+  // Each pause is undone by one resume, so a toast that is both hovered and
+  // focused keeps its countdown held until the pointer and the focus have left.
+  const holds = new Map<string, number>();
+
+  function pause(id: string): void {
+    holds.set(id, (holds.get(id) ?? 0) + 1);
+    stop(id);
+  }
+
+  function resume(id: string): void {
+    const left = (holds.get(id) ?? 0) - 1;
+    if (left > 0) {
+      holds.set(id, left);
+      return;
+    }
+    holds.delete(id);
+    const toast = toasts.find((t) => t.id === id);
+    if (!toast?.duration || toast.dismissing || timers.has(id)) return;
+    countdown(id, toast.duration);
+  }
+
+  function dismiss(id: string): void {
+    stop(id);
+    holds.delete(id);
 
     // Mark as dismissing for exit animation
     setToasts(
@@ -115,12 +152,7 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
       }),
     );
 
-    if (duration > 0) {
-      timers.set(
-        id,
-        setTimeout(() => dismiss(id), duration),
-      );
-    }
+    if (duration > 0) countdown(id, duration);
 
     return id;
   }
@@ -129,5 +161,7 @@ export function createToast(options: ToastOptions = {}): ToastReturn {
     toasts,
     add,
     dismiss,
+    pause,
+    resume,
   };
 }

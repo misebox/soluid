@@ -611,6 +611,40 @@ it("a toast action runs its handler and dismisses the toast", () => {
   expect(document.querySelector(".so-toast")).toBeNull();
 });
 
+it("a toast holds its countdown until every pause is undone, then restarts it", () => {
+  vi.useFakeTimers();
+  const store = createRoot(() => createToast({ defaultDuration: 1000 }));
+  const id = store.add({ message: "saved" });
+
+  store.pause(id);
+  store.pause(id);
+  vi.advanceTimersByTime(5000);
+  expect(store.toasts.length).toBe(1);
+
+  store.resume(id);
+  vi.advanceTimersByTime(5000);
+  expect(store.toasts.length).toBe(1);
+
+  store.resume(id);
+  vi.advanceTimersByTime(1200);
+  expect(store.toasts.length).toBe(0);
+});
+
+it("a toast in the container is held while the pointer is over it", () => {
+  vi.useFakeTimers();
+  mount(() => <ToastContainer />);
+  useToast().add({ message: "Saved", duration: 1000 });
+  const toast = q(".so-toast");
+
+  toast.dispatchEvent(new MouseEvent("mouseenter"));
+  vi.advanceTimersByTime(5000);
+  expect(document.querySelector(".so-toast")).not.toBeNull();
+
+  toast.dispatchEvent(new MouseEvent("mouseleave"));
+  vi.advanceTimersByTime(1200);
+  expect(document.querySelector(".so-toast")).toBeNull();
+});
+
 it("a Tooltip tip sits outside the trigger's wrapper and names the trigger through aria-describedby", () => {
   const host = mount(() => (
     <Tooltip content="tip">
