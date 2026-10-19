@@ -4860,14 +4860,23 @@
         "default": "\"top\""
       },
       {
+        "name": "children",
+        "type": "JSX.Element",
+        "optional": false
+      },
+      {
         "name": "class",
         "type": "string",
         "optional": true
       },
       {
-        "name": "children",
-        "type": "JSX.Element",
-        "optional": false
+        "name": "density",
+        "type": "Density",
+        "optional": true,
+        "values": [
+          "\"normal\"",
+          "\"dense\""
+        ]
       }
     ]
   },

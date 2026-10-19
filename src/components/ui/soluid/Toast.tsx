@@ -64,8 +64,8 @@ export function ToastContainer(props: ToastContainerProps) {
                     type="button"
                     class="so-toast__action"
                     onClick={() => {
-                      action().onClick();
                       store.dismiss(toast.id);
+                      action().onClick();
                     }}
                   >
                     {action().label}

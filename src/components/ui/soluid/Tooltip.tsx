@@ -2,14 +2,14 @@ import { autoUpdate, computePosition, flip, offset, shift } from "@floating-ui/d
 import { children, createEffect, createSignal, createUniqueId, onCleanup, Show, splitProps } from "solid-js";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import type { CommonProps } from "./core/types";
 import { cls } from "./core/utils";
 
 export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
-export interface TooltipProps {
+export interface TooltipProps extends CommonProps {
   content?: string | undefined;
   placement?: TooltipPlacement | undefined;
-  class?: string | undefined;
   children: JSX.Element;
 }
 
@@ -18,7 +18,7 @@ export interface TooltipProps {
 const HIDE_DELAY_MS = 100;
 
 export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement>) {
-  const [local, others] = splitProps(props, ["content", "placement", "class", "children"]);
+  const [local, others] = splitProps(props, ["content", "placement", "class", "density", "children"]);
 
   const tooltipId = `so-tooltip-${createUniqueId()}`;
   const trigger = children(() => local.children);
@@ -48,13 +48,27 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
     setShown(true);
   };
   const hide = () => {
-    clearTimeout(hideTimer);
     setShown(false);
     setDismissed(false);
   };
-  const hideSoon = () => {
+  // The tip stays up while the pointer is over the trigger or the tip, or focus is on the trigger.
+  let hovered = false;
+  let focused = false;
+  const settle = () => {
+    if (hovered || focused) {
+      show();
+      return;
+    }
     clearTimeout(hideTimer);
     hideTimer = setTimeout(hide, HIDE_DELAY_MS);
+  };
+  const setHovered = (value: boolean) => {
+    hovered = value;
+    settle();
+  };
+  const setFocused = (value: boolean) => {
+    focused = value;
+    settle();
   };
   onCleanup(() => clearTimeout(hideTimer));
 
@@ -66,11 +80,12 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
   createEffect(() => {
     const tip = tipRef();
     const anchor = wrapperRef;
-    if (!tip || !anchor || !visible()) return;
+    if (!tip || !anchor || !local.content || !visible()) return;
     onCleanup(
       autoUpdate(anchor, tip, () => {
         computePosition(anchor, tip, {
           placement: local.placement ?? "top",
+          strategy: "fixed",
           middleware: [offset(6), flip(), shift({ padding: 8 })],
         }).then(({ x, y }) => {
           if (!visible()) return;
@@ -88,10 +103,10 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
     <span
       ref={wrapperRef}
       class={cls("so-tooltip-wrapper", local.class)}
-      onMouseEnter={show}
-      onMouseLeave={hideSoon}
-      onFocusIn={show}
-      onFocusOut={hide}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusIn={() => setFocused(true)}
+      onFocusOut={() => setFocused(false)}
       onKeyDown={(e) => {
         if (e.key !== "Escape" || !visible()) return;
         e.preventDefault();
@@ -107,8 +122,9 @@ export function Tooltip(props: TooltipProps & JSX.HTMLAttributes<HTMLSpanElement
             id={tooltipId}
             class={cls("so-tooltip", visible() && "so-tooltip--shown")}
             role="tooltip"
-            onMouseEnter={show}
-            onMouseLeave={hideSoon}
+            data-density={local.density}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
           >
             {local.content}
           </span>

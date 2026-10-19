@@ -2,10 +2,11 @@
   display: inline-flex;
 }
 
-/* Portalled to <body>, so it sits at the document origin until floating-ui
-   writes its coordinates. */
+/* Portalled to <body>, so it sits at the viewport origin until floating-ui
+   writes its coordinates. Fixed, so coordinates left over from the last time
+   it was shown cannot widen or lengthen the page. */
 .so-tooltip {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: var(--so-z-overlay);

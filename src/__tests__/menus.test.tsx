@@ -648,6 +648,38 @@ it("a Tooltip tip stays shown while the pointer moves from the trigger onto it",
   expect(shown()).toBe(false);
 });
 
+it("a Tooltip tip stays shown while focus remains on the trigger after the pointer leaves", () => {
+  vi.useFakeTimers();
+  mount(() => (
+    <Tooltip content="tip">
+      <button>b</button>
+    </Tooltip>
+  ));
+  const button = q<HTMLButtonElement>("button");
+  const wrapper = q(".so-tooltip-wrapper");
+  const shown = () => q(".so-tooltip").classList.contains("so-tooltip--shown");
+
+  button.focus();
+  wrapper.dispatchEvent(new MouseEvent("mouseenter"));
+  wrapper.dispatchEvent(new MouseEvent("mouseleave"));
+  vi.advanceTimersByTime(300);
+  expect(shown()).toBe(true);
+
+  button.blur();
+  vi.advanceTimersByTime(300);
+  expect(shown()).toBe(false);
+});
+
+it("a Tooltip tip carries the density it is given, since it sits outside the density of its ancestors", () => {
+  mount(() => (
+    <Tooltip content="tip" density="dense">
+      <button>b</button>
+    </Tooltip>
+  ));
+
+  expect(q(".so-tooltip").getAttribute("data-density")).toBe("dense");
+});
+
 it("a Menu trigger takes its accessible name from triggerLabel", () => {
   mount(() => (
     <Menu open={false} onOpenChange={() => {}} triggerLabel="Row actions" trigger={<span aria-hidden="true">...</span>}>
