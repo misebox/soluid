@@ -49,7 +49,7 @@
     "shadcn"
   ],
   "bin": {
-    "soluid": "./dist/index.js"
+    "soluid": "dist/index.js"
   },
   "files": [
     "dist/*.js",
